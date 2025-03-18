@@ -1,0 +1,28 @@
+﻿@model CostEstimate.Models.Common.Class;
+@{
+    ViewData["Title"] = "New | ThaiStanley";
+    Layout = "~/Views/Shared/_MenuBar.cshtml";
+}
+@{
+    string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+@*after document ready*@
+<script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("PageNotFound"); } }</script>
+<div class="home-content">
+    <div id="DisplayContent" class="content-box">
+        <div class="row center" style="padding:5px;margin-bottom:5px;border:0px solid black">
+            <div class="col-60 " style="text-align:left">
+                <div class="grid-item fw-800  " style="text-align:left;font-size:24px;padding-top:8px">404 The requested document was not found.</div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,313 @@
+﻿@model CostEstimate.Models.Common.Class;
+@*@model IEnumerable<IGrouping<string, CostEstimate.Models.Table.MK.ViewceMastProcess>>*@
+@{
+    //string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+
+<div class="row center">
+    @*<div class="col-5 " style="">
+        </div>*@
+    <div class="col-100 " style="border:1.5px solid gray;padding:10px">
+        <div class="row center">
+            <div class="col-20 " style="">
+                <div class="grid-item fw-800 center" style="text-align:left;text-decoration: underline;font-size:13px">PROCESS DETAIL</div>
+            </div>
+            <div class="col-80 " style="">
+            </div>
+
+        </div>
+        <div class="row center" style="">
+            <div class="col-5 " style="margin-bottom:0px">
+            </div>
+            <div class="col-90" style=" display: flex;align-items: center;">
+            
+                <table class="summarys" id="tbDetailSubMakerRequest">
+                    <tr>
+                        <th style="text-align:left;">DETAIL</th>
+                        <th style="text-align:center">WORKING TIME (MAN)</th>
+                        <th style="text-align:center">WORKING TIME (TOTAL)</th>
+
+                        <th style="text-align:center;">dsLabour_Rate</th>
+                        <th style="text-align:center;">dsDP_Rate</th>
+                        <th style="text-align:center;">dsME_Rate</th>
+
+                        <th style="text-align:center;">dsLabour_Cost</th>
+                        <th style="text-align:center;">dsDP_Cost</th>
+                        <th style="text-align:center;">dsME_Cost</th>
+                        <th style="text-align:center;">Total_Cost</th>
+                    </tr>
+                    @*<tbody>*@
+
+
+
+                    @if (@Model._ListGroupViewceDetailSubMakerRequest != null)
+                    {
+                        int RowCount = 0;
+                        @foreach (var group in @Model._ListGroupViewceDetailSubMakerRequest)
+                        {
+                            @for (int i = 0; i < group.DetailSubMakerRequest.Count(); i++)
+                            {
+
+                                <tr class="@group.GroupName.Trim()">
+                                    <td style="text-align:left;">
+                                        <span style="font-size:10px">@group.DetailSubMakerRequest[i].dsProcessName</span>
+                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsGroupName" type="text" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@group.DetailSubMakerRequest[i].dsGroupName.Trim()" />
+                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsProcessName" type="text" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@group.DetailSubMakerRequest[i].dsProcessName.Trim()" />
+                                    </td>
+                                    <td>
+                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsEnable_WTMan" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@group.DetailSubMakerRequest[i].dsEnable_WTMan" type="text" />
+                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsWT_Man" class="form-control center WT_Man" autocomplete="off" style="@(@group.DetailSubMakerRequest[i].dsEnable_WTMan == false ? "width:100%;height:80%;font-size:10px;background-color:darkgrey" : "width:100%;height:80%;font-size:10px;background-color:yellow")" value="@group.DetailSubMakerRequest[i].dsWT_Man" type="number"  readonly="@(@group.DetailSubMakerRequest[i].dsEnable_WTMan == false ? "readonly" : null)" min="0" />
+                                    </td>
+                                    <td style="">
+                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsEnable_WTAuto" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@group.DetailSubMakerRequest[i].dsEnable_WTAuto" type="text" />
+                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsWT_Auto" class="form-control center WT_Auto" autocomplete="off" style="@(@group.DetailSubMakerRequest[i].dsEnable_WTAuto == false ? "width:100%;height:80%;font-size:10px;background-color:darkgrey" : "width:100%;height:80%;font-size:10px;background-color:yellow")" value="@group.DetailSubMakerRequest[i].dsWT_Auto" type="number"  readonly="@(@group.DetailSubMakerRequest[i].dsEnable_WTAuto == false ? "readonly" : null)"  min="0"/>
+                                    </td>
+                                    <td style="text-align:center;">
+
+                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsLabour_Rate" class="form-control center Labour_Rate" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsLabour_Rate" type="number" min="0" />
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsDP_Rate" class="form-control center DP_Rate" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsDP_Rate" type="number" min="0" />
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsME_Rate" class="form-control center ME_Rate" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsME_Rate" type="number" min="0" />
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsLabour_Cost" class="form-control center Labour_Cost" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsLabour_Cost" type="number" min="0" />
+                                    </td>
+                                    <td style="text-align:center;">
+
+                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsDP_Cost" class="form-control center DP_Cost" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsDP_Cost" type="number" min="0" />
+                                    </td>
+                                    <td style="text-align:center;">
+
+                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsME_Cost" class="form-control center ME_Cost" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsME_Cost" type="number" min="0" />
+
+                                    </td>
+                                    <td style="text-align:center">
+                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsTotalCost" class="form-control center totalCost" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsTotalCost" type="number" min="0" />
+                                        <span style="display:none">@(RowCount += 1)</span>
+                                    </td>
+                                </tr>
+
+                            }
+                            <tr>
+                                <td style="text-align:left"><span style="font-weight:600">@group.GroupName.Trim()</span></td>
+                                <td style="text-align:left"><input class="form-control center dsWT_Man @group.GroupName.Trim()" id="dsWT_Man @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
+                                <td style="text-align:left"><input class="form-control center dsWT_Auto @group.GroupName.Trim()" id="dsWT_Auto @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
+                            </tr>
+
+
+                        }
+
+                    }
+
+
+
+
+
+
+
+                    @*</tbody>*@
+                </table>
+            </div>
+
+            <div class="col-5 " style="">
+            </div>
+        </div>
+
+    </div>
+    @*<div class="col-5 " style="">
+        </div>*@
+</div>
+<script type="text/javascript">
+
+    function calTotalProcessWT() {
+        let sum = 0;
+
+        // วน Loop ทุก Textbox ที่มี class .amount
+        $(".WT_Man").each(function () {
+            let value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
+            sum += value; // บวกค่า
+        });
+
+        $(".WT_Auto").each(function () {
+            let value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
+            sum += value; // บวกค่า
+        });
+
+        //console.log("sum.toFixed(2)" + sum.toFixed(2));
+        // แสดงผลรวมทั้งหมด
+        $("#i_New_TotalProcessWT").val(sum.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+
+
+
+    }
+    function calcRow(row) {
+        let WT_Man = parseFloat(row.find(".WT_Man").val()) || 0;
+        let Labour_Rate = parseFloat(row.find(".Labour_Rate").val()) || 0;
+
+        let WT_Auto = parseFloat(row.find(".WT_Auto").val()) || 0;
+        let DP_Rate = parseFloat(row.find(".DP_Rate").val()) || 0;
+
+        let ME_Rate = parseFloat(row.find(".ME_Rate").val()) || 0;
+
+        let Labour_Cost = WT_Man * Labour_Rate / 1000;
+        let DP_Cost = WT_Auto * DP_Rate / 1000;
+        let ME_Cost = WT_Man * ME_Rate / 1000;
+        let total = Labour_Cost + DP_Cost + ME_Cost;
+
+
+
+
+        row.find(".Labour_Cost").val(Labour_Cost.toFixed(2)); // Set Total
+        row.find(".DP_Cost").val(DP_Cost.toFixed(2)); // Set Total
+        row.find(".ME_Cost").val(ME_Cost.toFixed(2)); // Set Total
+
+
+        row.find(".totalCost").val(total.toFixed(2)); // Set Total
+
+        // row.find(".total").val(total.toFixed(2)); // Set Total
+    }
+    // Function คำนวณรวมทุกแถว
+    function calcAll() {
+        let sum = 0;
+        //$("#tbDetailSubMakerRequest tbody tr").each(function () {
+        $("#tbDetailSubMakerRequest tr").each(function () {
+            calcRow($(this)); // เรียก Function คำนวณแถว
+            sum += parseFloat($(this).find(".totalCost").val()) || 0;
+        });
+
+        $("#i_New_ProcessCost").val(sum.toFixed(2)); // Set ค่า Sum Total
+    }
+
+    function sumValuesByGroupdsWT_Man() {
+        var groupSumsWT_Man = {};  // Object to store sums for each group
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".WT_Man").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsWT_Man[groupClass]) {
+                    groupSumsWT_Man[groupClass] = 0;
+                }
+                groupSumsWT_Man[groupClass] += rowWT_Man;
+            }
+        });
+
+        $.each(groupSumsWT_Man, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            console.log('group' + group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            console.log('WT_Man <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsWT_Man" + "." + str).each(function () {
+                $(this).val(total);
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+
+    }
+    function FuntionTotalProCost() {
+
+        let TotalProcessWT = document.getElementById("i_New_TotalProcessWT") ? parseFloat(document.getElementById("i_New_TotalProcessWT").value) || 0 : 0;//N15
+
+        let ProcessCost = document.getElementById("i_New_ProcessCost") ? parseFloat(document.getElementById("i_New_ProcessCost").value) || 0 : 0; //16
+        let New_OrderMatl = document.getElementById("i_New_OrderMatl") ? parseFloat(document.getElementById("i_New_OrderMatl").value) || 0 : 0;//17
+        let TotalCost = document.getElementById("i_New_TotalCost") ? parseFloat(document.getElementById("i_New_TotalCost").value) || 0 : 0;//18
+        let New_RoundUp = document.getElementById("i_New_RoundUp") ? parseFloat(document.getElementById("i_New_RoundUp").value) || 0 : 0;//19
+
+        let i_New_TotalCost = parseFloat(ProcessCost + New_OrderMatl).toFixed(2);
+        let i_New_RoundUp = parseFloat(TotalCost).toFixed(2);
+        let i_New_TotalProCost = parseFloat(TotalProcessWT + ProcessCost + New_OrderMatl + TotalCost + New_RoundUp).toFixed(2);
+  
+        $("#i_New_TotalCost").val(i_New_TotalCost); // Set ค่า Sum Total
+        $("#i_New_RoundUp").val(i_New_RoundUp); // Set ค่า Sum Total
+        $("#i_New_TotalProCost").val(i_New_TotalProCost);  // Set ค่า Sum Total
+
+    }
+
+    function sumValuesByGroupdsWT_Auto() {
+        var groupSumsWT_Man = {};  // Object to store sums for each group
+        var groupSumsWT_Auto = {};
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".WT_Auto").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsWT_Auto[groupClass]) {
+                    groupSumsWT_Auto[groupClass] = 0;
+                }
+                groupSumsWT_Auto[groupClass] += rowWT_Man;
+            }
+        });
+
+        //$.each(groupSumsWT_Auto, function (group, total) {
+
+        //    console.log('WT_Man <p>' + group + ' Total: ' + total + '</p>');
+        //    $(".dsWT_Auto" + "." + group).each(function () {
+        //        $(this).val(total);
+        //        // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+        //    });
+        //});
+
+        $.each(groupSumsWT_Auto, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            console.log('group'+group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            console.log('dsWT_Auto <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsWT_Auto" + "." + str).each(function () {
+                $(this).val(total);
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+
+
+    }
+    $(document).on("keyup change", ".WT_Man, .WT_Auto", function () {
+        calTotalProcessWT();
+        calcAll();
+
+        sumValuesByGroupdsWT_Man();
+        sumValuesByGroupdsWT_Auto();
+
+        FuntionTotalProCost();
+    });
+
+    calTotalProcessWT();
+    calcAll();
+
+    sumValuesByGroupdsWT_Man();
+    sumValuesByGroupdsWT_Auto();
+
+    FuntionTotalProCost();
+
+</script>

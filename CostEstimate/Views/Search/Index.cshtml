@@ -1,0 +1,372 @@
+﻿@model CostEstimate.Models.Common.Class;
+@{
+    ViewData["Title"] = "Search | Thai Stanley";
+    Layout = "~/Views/Shared/_MenuBar.cshtml";
+}
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("Search"); } }</script>
+<div class="home-content">
+    <div id="DisplayContent" class="content-box">
+        @*<div class="white-space"></div>*@
+        <div class="row center">
+            <div class="col-70 ">
+            </div>
+            <div class="col-15" style="text-align:right">
+                <button class="button btnOrange " style="width:auto" onclick="GoSideMenuNewRequest('New')">
+                    <img src="~/images/tool.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                    New Sub Maker
+                </button>
+            </div>
+            <div class="col-15" style="text-align:right">
+                @*<a href="@Url.Action("ExportExcel", "Search")" class="btn btn-primary">Download Excel</a>
+                    <a href="@Url.Action("btnExportExcel", "Search")" class="btn btn-primary">Download Excel1</a>*@
+                <a asp-area="" asp-controller="Search" asp-action="btnExportExcel" style="margin-right:5px;font-size:10px;text-decoration:auto" class="button">
+                    <img src="~/images/excel.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />Search
+                </a>
+
+                @*<button class="button" style="width:auto" onclick="Menubar_ExportExcel('@Url.Action("ExportExcel","Search")')">
+                        <img src="~/images/excel.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                        Export to Excel
+                    </button>*@
+            </div>
+
+
+            @*<input type="button" style="font-size:18px" value="&#x1F50E;" onclick="GoNewRequest('@item.srRequestBy','Edit','@Url.Action("Index", "RequestForm")','@item.srFrom','@item.srType','@item.srSubject','@item.srNo')">*@
+            @*<input type="button" style="font-size:18px" value="New Sub Maker Request Sheet " class=" btn-login">*@
+            @*<button class="button" style="@( (@_UserId == @Model._ViewsvsServiceRequest.srRequestBy || @_UserId == @Model._ViewsvsServiceRequest.srApproveEmpcode) && Model._ViewsvsServiceRequest.srStep >2 && Model._ViewsvsServiceRequest.srStep < 5 ? "width:100px; " : "display:none;")" onclick="savesubmit('@Url.Action("SavePageForm","RequestForm")')">
+                    <img src="~/images/save_1.png" style="width:30px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                    บันทึก
+                </button>*@
+
+        </div>
+        @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { enctype = "multipart/form-data", id = "formSearch", name = "formSearch" }))
+        {
+            <div style="" class="content-text">
+
+
+                @*<div style="min-height: 600px;max-height:600px;overflow-y: auto;padding:0px;border:0px solid white;scrollbar-color: #c9c3f0 white;">*@
+
+                <div style="width:100%;">
+                    <div id="divSearchMain" style="margin-inline: auto;border: 0px solid #a39e9e; background-color: aliceblue;padding:15px;border-radius:2px;">
+
+                        <div style=" display: flex;margin-top:6px;margin-bottom:6px ">
+                            <div class="grid-item fw-800 center" style="font-size:22px">ค้นหาข้อมูล</div>
+                        </div>
+
+                        <div class="row center">
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5 " style=" display: flex;align-items: center;background-color:#cbeff7;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Document No</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DocumentNo">
+                                </div>
+                                <div class="col-20" style=" display: flex;align-items: center;background-color:#cbeff7 ">
+                                  
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                 
+                                </div>
+                                <div class="col-5 " style="">
+
+                                </div>
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5 " style=" display: flex;align-items: center;background-color:#cbeff7;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Lot No.</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_LotNo">
+                                </div>
+                                <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Mold No.</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_MoldNo">
+                                </div>
+                                <div class="col-5 " style="">
+
+                                </div>
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Customer Name</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_CusName">
+                                </div>
+                                <div class="col-20 border1_5" style=" display: flex;align-items: center; background-color:#cbeff7">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Mold Name</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_MoldName">
+                                </div>
+                                <div class="col-5 " style="">
+
+                                </div>
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5" style=" display: flex;align-items: center; background-color:#cbeff7">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Model Name</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_ModelName">
+                                </div>
+                                <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Cavity No.</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="number" class="form-control left" style="width:45%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_CavityNo">
+                                    <span style="margin-left:10px;color:blue">*กรอกตัวเลขเท่านั่น</span>
+                                </div>
+                                <div class="col-5 " style="">
+
+                                </div>
+
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Function</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_Function">
+                                </div>
+                                <div class="col-20 border1_5" style=" display: flex;align-items: center; background-color:#cbeff7">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Development Stage</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DevelopmentStage">
+                                </div>
+                                <div class="col-5 " style="">
+
+                                </div>
+
+
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Material Out/Date(from)</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+
+                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_MaterialOutDateFrom">
+
+                                </div>
+                                <div class="col-20 border1_5" style=" display: flex;align-items: center; background-color:#cbeff7">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Material Out/Date(To)</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+
+                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_MaterialOutDateTo">
+
+                                </div>
+                                <div class="col-5 " style="">
+
+                                </div>
+
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Delivery/Date (from)</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+
+                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DaliverryDateFrom">
+
+                                </div>
+                                <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7;">
+
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Delivery/Date (To)</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DaliverryDateTo">
+                                </div>
+                                <div class="col-5 " style="">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="row center">
+                    <div class="col-30 ">
+                    </div>
+                    <div class="col-40 ">
+                        <button class="button btnBlue" style="width:auto">
+                            <img src="~/images/search.png" style="width:35px;height:26px;padding-right:2px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                            SEARCH
+                        </button>
+                    </div>
+                    <div class="col-30 " style="text-align:right">
+
+
+                    </div>
+                    @*<input type="button" style="font-size:18px" value="&#x1F50E;" onclick="GoNewRequest('@item.srRequestBy','Edit','@Url.Action("Index", "RequestForm")','@item.srFrom','@item.srType','@item.srSubject','@item.srNo')">*@
+                    @*<input type="button" style="font-size:18px" value="New Sub Maker Request Sheet " class=" btn-login">*@
+                    @*<button class="button" style="@( (@_UserId == @Model._ViewsvsServiceRequest.srRequestBy || @_UserId == @Model._ViewsvsServiceRequest.srApproveEmpcode) && Model._ViewsvsServiceRequest.srStep >2 && Model._ViewsvsServiceRequest.srStep < 5 ? "width:100px; " : "display:none;")" onclick="savesubmit('@Url.Action("SavePageForm","RequestForm")')">
+                            <img src="~/images/save_1.png" style="width:30px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                            บันทึก
+                        </button>*@
+
+
+                </div>
+                <div class="grid-item fw-800" style="text-align:left;padding-left:10px">
+                    <label style="font-size:14px">
+                        จำนวน
+                        @if (Model._ListceMastSubMakerRequest != null)
+                        {
+                            <span style="color:royalblue">
+                                @Model._ListceMastSubMakerRequest.Count
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="color:royalblue">
+                                0
+                            </span>
+                        }
+                        แถว
+
+                    </label>
+                </div>
+                <div class="row center" style="background-color:aliceblue">
+                    <div class="col-5 " style="">
+
+                    </div>
+                    <div class="col-90 " style="border:0px solid gray;padding:10px">
+
+                        <div class="row center" style="">
+
+                            <div class="col-100" style=" display: flex;align-items: center;">
+                                <table class="summarys">
+                                    <tr>
+                                        <th style="text-align:center">No.​</th>
+                                        <th style="text-align:center;">Document No.​</th>
+                                        <th style="text-align:center">Lot No.​</th>
+                                        <th style="text-align:center">Customer Name​</th>
+                                        <th style="text-align:center">Rev. No​</th>
+                                        <th style="text-align:center">Model Name</th>
+                                        <th style="text-align:center">Function</th>
+                                        <th style="text-align:center">Mold No. ​</th>
+                                        <th style="text-align:center">Mold Name​</th>
+                                        <th style="text-align:center">Cavity No.​</th>
+                                        <th style="text-align:center">Development Stage</th>
+                                        <th style="text-align:center">Material Out/Date​</th>
+                                        <th style="text-align:center">Delivery/Date​</th>
+                                        <th style="text-align:center">Waiting Approve​</th>
+                                        <th style="text-align:center">Status​</th>
+                                        <th style="text-align:center">Action​</th>
+                                    </tr>
+
+                                    @if (Model._ListceMastSubMakerRequest != null)
+                                    {
+                                        var row = 0;
+                                        @foreach (var item in @Model._ListceMastSubMakerRequest)
+                                        {
+                                            <tr>
+                                                <td style="width:50px"> <tlabel>@(row += 1)</tlabel></td>
+                                                <td style="text-align:center">@item.smDocumentNo​</td>
+                                                <td style="text-align:center">@item.smLotNo​</td>
+                                                <td style="text-align:center">@item.smCustomerName</td>
+                                                <td style="text-align:center">@item.smRevision</td>
+                                                <td style="text-align:center">@item.smModelName</td>
+                                                <td style="text-align:center">@item.smFunction</td>
+                                                <td style="text-align:center">@item.smMoldNo</td>
+                                                <td style="text-align:center">@item.smMoldName</td>
+                                                <td style="text-align:center">@item.smCavityNo</td>
+                                                <td style="text-align:center">@item.smDevelopmentStage</td>
+                                                <td style="text-align:center">@item.smMatOutDate @item.smMatOutTime</td>
+                                                <td style="text-align:center">@item.smDeliveryDate   @item.smDeliveryTime</td>
+                                                <td style="text-align:center">@item.smNameApprove</td>
+                                                <td style="text-align:center">
+                                                    @*@item.smStep*@
+                                                    @if (@item.smStep == 0 && @item.smStatus.Contains("Disapprove"))
+                                                    {
+                                                        {<img src="~/images/stepDis.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                                    }
+                                                    else if (@item.smStep == 0) /*//new*/
+                                                    {<img src="~/images/step0.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                                    else if (@item.smStep == 1) 
+                                                    { <img src="~/images/step2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                                    else if (@item.smStep == 2)
+                                                    { <img src="~/images/step3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    else if (@item.smStep == 3)/*//issue*/
+                                                    { <img src="~/images/notes.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    else if (@item.smStep == 4) 
+                                                    { <img src="~/images/step5.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    else if (@item.smStep == 5)
+                                                    { <img src="~/images/step6.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    else if (@item.smStep == 6)
+                                                    { <img src="~/images/step7.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    else if (@item.smStep == 7)
+                                                    { <img src="~/images/stepfinish1.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    @*else if (@item.smStep == 8)
+                                                    { <img src="~/images/stepFinish.png" alt="icon" style="height: 23px; width: 23px;" /> }*@
+
+
+
+
+
+
+
+
+                                                    @*@item.smStatus*@
+                                                </td>
+                                                @*<td style="text-align:center"> <input type="button" style="font-size:18px" value="&#x1F50E;" onclick="GoNewRequest('@item.smLotNo','@item.smOrderNo','@item.smRevision')">​</td>*@
+
+
+                                                <td style="text-align:center">
+                                                    @if (@item.smStep == 7)
+                                                    {
+                                                        <img src="~/images/revision.png" alt="icon" onclick="GoNewRevision('@item.smDocumentNo','@item.smRevision')" class="img" />
+                                                    }
+                                                    <input type="button" style="font-size:18px" value="&#x1F50E;" onclick="GoNewRequest('@item.smDocumentNo')">
+                                                </td>
+                                            </tr>
+
+                                        }
+
+                                    }
+
+                                </table>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <div class="col-5 " style="">
+
+                    </div>
+                </div>
+            </div>
+        }
+
+
+    </div>
+</div>

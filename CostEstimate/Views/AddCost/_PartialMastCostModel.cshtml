@@ -1,0 +1,192 @@
+﻿@model CostEstimate.Models.Common.Class;
+@{
+    //string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<div class="row center">
+    <div class="col-10">
+    </div>
+    <div class="col-80 ">
+        <table class="summarys" >
+            <tr>
+                <th>COST PLANNING NO</th>
+                <td colspan="2" >
+                    @Html.DisplayFor(m => m.paramCostNo)
+                    <input type="text" class="form-control " style="width:100%;font-size:12px;text-align:center;pointer-events:none;display:none" autocomplete="off" id="i_PartailMastCOst_paramCostNo" asp-for="paramCostNo" readonly>
+
+                </td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td colspan="2">
+                    @Html.DisplayFor(m => m.paramCostDes)
+                    <input type="text" class="form-control " style="width:100%;font-size:12px;text-align:center;pointer-events:none;display:none" autocomplete="off" id="i_PartailMastCOst_paramDescription" asp-for="paramCostDes" readonly>
+                </td>
+            </tr>
+            <tr>
+                <th>Model Name</th>
+                <td>
+                    @Html.DropDownListFor(m => m._ViewceMastModel.mmModelName, (SelectList)ViewBag.formMastModel, "กรุณาเลือก", new { @class = "form-control", id = "i_PartailMastModel", autocomplete = "off", @style = "width:100%;font-size:12px" })
+
+                    @*<input type="text" class="form-control " style="width:100%;font-size:12px;text-align:center" autocomplete="off" id="i_PartailMastCOst_paramCostNo" asp-for="paramCostNo" readonly>*@
+                </td>
+                <td>
+                    @*<input type='button' class='AddMasterCost button ' value='+ เพิ่ม' style="width:80px;height:30px">*@
+
+                    <button class="button btn-login AddMasterCost" onclick="addMaster()" >
+                        <img src="~/images/addcost.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                        Add
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <br />
+    </div>
+    <div class="col-10">
+    </div>
+</div>
+@if (@Model._ListceMastCostModel != null)
+{
+    <span style="font-weight:600">Total:  @(Model._ListceMastCostModel == null ? 0 : @Model._ListceMastCostModel.Count()) Row</span>
+
+}
+<div class="row center">
+
+    <div class="col-10 ">
+
+    </div>
+    <div class="col-80 ">
+        <form action="" id="formMastCostModel" name="formMastCostModel">
+            <table class="summarys" id="tbMastCostModel">
+                <tr>
+                    <th style="text-align:center" width="10%">No.</th>
+                    <th style="text-align:center">ModelName</th>
+                    <th style="text-align:center">Action</th>
+                </tr>
+                @if (@Model._ListceMastCostModel != null)
+                {
+                    var row = 0;
+                    @for (int i = 0; i < @Model._ListceMastCostModel.Count(); i++)
+                    {
+                        <tr>
+                            <td style="text-align:left">@(row += 1)</td>
+                            <td style="text-align:center">
+                                <span style="font-size: 12px;  color: black;">
+                                    @Html.DisplayFor(m => m._ListceMastCostModel[i].mcModelName)
+                                </span>
+                                @*@Html.TextBoxFor(model => model._ListceMastCostModel[i].mcCostPlanningNo, new { @class = "text-control", @readonly = "true", @id = "@Model._ListceMastCostModel[i].mcCostPlanningNo" })*@
+                                <input type="text" class="form-control " style="width:100%;font-size:12px;text-align:center;display:none" autocomplete="off" id="i_PatialmcCostPlanningNo" asp-for="_ListceMastCostModel[i].mcCostPlanningNo" readonly>
+                                <input type="text" class="form-control " style="width:100%;font-size:12px;text-align:center;display:none" autocomplete="off" id="i_PatialmcModelName" asp-for="_ListceMastCostModel[i].mcModelName" readonly>
+                                <input type="text" class="form-control " style="width:100%;font-size:12px;text-align:center;display:none" autocomplete="off" id="i_PatialmcDescription" asp-for="_ListceMastCostModel[i].mcDescription" readonly>
+                            </td>
+                            <td style="text-align:center">
+
+                                @*<input type="button" style="font-size:14px" value="&#x274C" disabled>*@
+                                <input type="button" style="font-size:14px" value="&#x274C" onclick="DeleteMasterPlanning('@Model._ListceMastCostModel[i].mcCostPlanningNo','@Model._ListceMastCostModel[i].mcModelName','@Url.Action("DeleteMasterPlanning","AddCost")')">
+                            </td>
+                        </tr>
+                    }
+                }
+
+
+
+
+            </table>
+            <br />
+            <div class="modal-footer">
+                <br />
+                <button type="button" class="btn btn-primary" onclick="Menubar_AddMaster('@Url.Action("AddMaster","AddCost")')">Save</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            </div>
+
+        </form>
+    </div>
+    <div class="col-10 ">
+    </div>
+
+</div>
+<script>
+    function addMaster() {
+        var selectedValue = $("#i_PartailMastModel").val();
+        var vCostPlanningNo = $("#i_PartailMastCOst_paramCostNo").val();
+        var vCostDescription = $("#i_PartailMastCOst_paramDescription").val();
+        
+        var table = document.getElementById("tbMastCostModel");
+        var rows = table.getElementsByTagName("tr"); // เลือกแถวทั้งหมด
+        var msg = ""; // เลือกแถวทั้งหมด
+        var found = false; // ตัวแปรเช็คว่าเจอข้อมูลหรือไม่
+        if (selectedValue == "") {
+            swal.fire({
+                title: 'แจ้งเตือน',
+                icon: "warning",
+                text: "Please select Model Name!!!!",
+            })
+                .then((result) => {
+
+                });
+
+        }
+
+
+        else {
+            for (var i = 1; i < rows.length; i++) { // เริ่มจากแถวที่ 1 เพราะแถวที่ 0 คือ header
+                var cells = rows[i].getElementsByTagName("td"); // เลือกเซลล์ในแถว
+                var cellText = cells[1].innerText || cells[1].textContent; // ดึงข้อความจากเซลล์
+                // เช็คว่าเซลล์มีข้อความที่เราต้องการหรือไม่
+                if (cellText.includes(selectedValue)) {
+                    //alert("พบข้อความที่ค้นหาในแถว " + (i) + " คอลัมน์ " + (j + 1) + ": " + cellText);
+                    found = true;
+                    break; // หยุดการค้นหาเมื่อเจอ
+                }
+
+                if (found) break; // หยุดการค้นหาเมื่อเจอข้อความ
+            }
+            if (!found) {
+                console.log("ไม่พบข้อความที่ค้นหา");
+                var rowCount = document.getElementById('tbMastCostModel').rows.length;
+                var htmls = "";
+                var rowi = rowCount - 1;
+                htmls += "<tr align='Center' style='vertical-align: top;'>";
+                htmls += "<td style='text-align: left'>";
+                htmls += rowCount;
+                htmls += "</td>";
+                htmls += "<td style='font-size:12px; color: blue;'> ";
+                htmls += "<input type='text' name='_ListceMastCostModel[" + rowi + "].mcCostPlanningNo' value='" + vCostPlanningNo + "' class='form - control' style='display:none' />";
+                htmls += "<input type='text' name='_ListceMastCostModel[" + rowi + "].mcModelName' value='" + selectedValue + "' class='form - control' style='display:none'/>";
+                htmls += "<input type='text' name='_ListceMastCostModel[" + rowi + "].mcDescription' value='" + vCostDescription + "' class='form - control' style='display:none'/>";
+                htmls += selectedValue;
+                htmls += "</td>";
+                htmls += "<td>";
+                htmls += "<input type='button' class='RemoveRow' value='&#x274C' onclick='deleteRow(this)' style='font-size:14px'>";
+                htmls += "</td>";
+                htmls += "</tr>";
+                $("#tbMastCostModel").append(htmls);
+            }
+            else {
+                swal.fire({
+                    title: 'แจ้งเตือน',
+                    icon: "warning",
+                    text: "Model name is duplicate. Please select a different model.",
+                })
+                    .then((result) => {
+
+                    });
+                //alert("Model name is duplicate. Please select a different model. ");
+            }
+
+        }
+
+    }
+    function deleteRow(button) {
+        // ใช้ parentNode เพื่อลบแถวที่ปุ่มนั้นอยู่
+        var row = button.parentNode.parentNode; // button อยู่ใน <td>, td อยู่ใน <tr>
+        row.parentNode.removeChild(row); // ลบแถวที่เลือก
+    }
+</script>

@@ -1,0 +1,111 @@
+﻿@model CostEstimate.Models.Common.Class;
+@{
+    //string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<div class="row center">
+    <form action="" id="formMastCostplanning" name="formMastCostplanning">
+        <div class="row center">
+            <div class="col-10">
+            </div>
+            <div class="col-80 ">
+                <table class="summarys">
+                    <tr>
+                        <th width="30%">COST PLANNING NO</th>
+                        <td colspan="2">
+                            @Html.DisplayFor(m => m.paramCostNo)
+                            <input type="text" class="form-control " style="width:100%;font-size:12px;text-align:center;pointer-events:none;display:none" autocomplete="off" id="i_PartailMastPlan_paramCostNo" asp-for="paramCostNo" readonly>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td colspan="2">
+                            @*@Html.DisplayFor(m => m.paramCostDes)*@
+                            <input type="text" class="form-control " style="width:100%;font-size:12px;text-align:center;" autocomplete="off" id="i_PartailMastPlan_paramDescription" asp-for="paramCostDes">
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="col-10">
+            </div>
+        </div>
+        <div class="row center">
+            <div class="col-5">
+            </div>
+            <div class="col-90 ">
+
+                <table class="summarys" id="tbMastCostPlanning">
+                    <tr>
+                        <th style="text-align:left;">DETAIL</th>
+                        <th style="text-align:center;">LABOUR RATE</th>
+                        <th style="text-align:center;">DEPRECIATION (DP)​</th>
+                        <th style="text-align:center;">MANUFACTURING EXPENSES(ME)​</th>
+
+                    </tr>
+                    @*<tbody>*@
+
+
+
+                    @if (@Model._ListGroupViewCostPlanning != null)
+                    {
+                        int RowCount = 0;
+                        @foreach (var group in @Model._ListGroupViewCostPlanning)
+                        {
+                            @for (int i = 0; i < group.ceCostPlanning.Count(); i++)
+                            {
+                                <tr class="@group.GroupName">
+                                    <td style="text-align:left;">
+                                        <span style="font-size:10px">@group.ceCostPlanning[i].cpProcessName</span>
+                                        <input asp-for="_ListViewceCostPlanning[RowCount].cpCostPlanningNo" type="text" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none;" value="@group.ceCostPlanning[i].cpCostPlanningNo" />
+                                        <input asp-for="_ListViewceCostPlanning[RowCount].cpNo" type="text" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none;" value="@group.ceCostPlanning[i].cpNo" />
+                                        <input asp-for="_ListViewceCostPlanning[RowCount].cpDescription" type="text" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none;" value="@group.ceCostPlanning[i].cpDescription" />
+                                        <input asp-for="_ListViewceCostPlanning[RowCount].cpGroupName" type="text" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none;" value="@group.ceCostPlanning[i].cpGroupName" />
+                                        <input asp-for="_ListViewceCostPlanning[RowCount].cpProcessName" type="text" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none;" value="@group.ceCostPlanning[i].cpProcessName" />
+                                    </td>
+                                    <td style="text-align:left;">
+                                        <input asp-for="_ListViewceCostPlanning[RowCount].cpLabour_Rate" type="number" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;" value="@group.ceCostPlanning[i].cpLabour_Rate" />
+                                    </td>
+                                    <td style="text-align:left;">
+                                        <input asp-for="_ListViewceCostPlanning[RowCount].cpDP_Rate" type="number" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;" value="@group.ceCostPlanning[i].cpDP_Rate" />
+                                    </td>
+                                    <td style="text-align:left;">
+                                        <input asp-for="_ListViewceCostPlanning[RowCount].cpME_Rate" type="number" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;" value="@group.ceCostPlanning[i].cpME_Rate" />
+                                        <span style="display:none">@(RowCount += 1)</span>
+                                    </td>
+                                </tr>
+                            }
+                            <tr>
+                                <th style="text-align:left" colspan="4"><span style="font-weight:600"> @group.GroupName</span></th>
+                                @*<td style="text-align:left"><input class="form-control center cpLabour_Rate @group.GroupName" id="cpLabour_Rate @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
+                                <td style="text-align:left"><input class="form-control center cpDP_Rate @group.GroupName" id="cpDP_Rate @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
+                                <td style="text-align:left"><input class="form-control center cpME_Rate @group.GroupName" id="cpME_Rate @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>*@
+                            </tr>
+
+                        }
+
+
+                    }
+                    @*</tbody>*@
+                </table>
+                <br />
+                <div class="modal-footer">
+                    <br />
+                    <button type="button" class="btn btn-primary" onclick="Menubar_AddMasterCostPlanning('@Url.Action("AddMasterCostPlanning","AddCost")')">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                </div>
+
+            </div>
+            <div class="col-5">
+            </div>
+        </div>
+    </form>
+</div>
