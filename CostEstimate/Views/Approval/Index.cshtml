@@ -68,24 +68,44 @@
                                     <div class="col-20" style=" display: flex;align-items: left;">
                                         @if (@item.smStep == 0 && @item.smStatus.Contains("Disapprove"))
                                         {
-                                            {<img src="~/images/stepDis.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                            <img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" /> 
                                         }
                                         else if (@item.smStep == 0) /*//new*/
-                                        {<img src="~/images/step0.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                        {<img src="~/images/1.png" alt="icon" style="height: 23px; width: 23px;" /> }
                                         else if (@item.smStep == 1)
-                                        { <img src="~/images/step2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                        { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
                                         else if (@item.smStep == 2)
-                                        { <img src="~/images/step3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                        { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
                                         else if (@item.smStep == 3)/*//issue*/
-                                        { <img src="~/images/notes.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                        { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
                                         else if (@item.smStep == 4)
-                                        { <img src="~/images/step5.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                        { <img src="~/images/5.png" alt="icon" style="height: 23px; width: 23px;" />}
                                         else if (@item.smStep == 5)
-                                        { <img src="~/images/step6.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                        { <img src="~/images/6.png" alt="icon" style="height: 23px; width: 23px;" />}
                                         else if (@item.smStep == 6)
-                                        { <img src="~/images/step7.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                        { <img src="~/images/7.png" alt="icon" style="height: 23px; width: 23px;" />}
                                         else if (@item.smStep == 7)
-                                        { <img src="~/images/stepfinish1.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                        { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                        @*@if (@item.smStep == 0 && @item.smStatus.Contains("Disapprove"))
+        {
+            {<img src="~/images/stepDis.png" alt="icon" style="height: 23px; width: 23px;" /> }
+        }
+        else if (@item.smStep == 0) /*//new*/
+        {<img src="~/images/step0.png" alt="icon" style="height: 23px; width: 23px;" /> }
+        else if (@item.smStep == 1)
+        { <img src="~/images/step2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+        else if (@item.smStep == 2)
+        { <img src="~/images/step3.png" alt="icon" style="height: 23px; width: 23px;" />}
+        else if (@item.smStep == 3)/*//issue*/
+        { <img src="~/images/notes.png" alt="icon" style="height: 23px; width: 23px;" />}
+        else if (@item.smStep == 4)
+        { <img src="~/images/step5.png" alt="icon" style="height: 23px; width: 23px;" />}
+        else if (@item.smStep == 5)
+        { <img src="~/images/step6.png" alt="icon" style="height: 23px; width: 23px;" />}
+        else if (@item.smStep == 6)
+        { <img src="~/images/step7.png" alt="icon" style="height: 23px; width: 23px;" />}
+        else if (@item.smStep == 7)
+        { <img src="~/images/stepfinish1.png" alt="icon" style="height: 23px; width: 23px;" />}*@
                                     </div>
                                     <div class="col-30" style=" display: flex;align-items: right;">
 

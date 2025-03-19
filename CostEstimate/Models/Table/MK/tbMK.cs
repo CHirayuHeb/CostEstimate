@@ -223,6 +223,7 @@ namespace CostEstimate.Models.Table.MK
     public class ViewSearchData
     {
         public string v_DocumentNo{ get; set; }
+      
         public string v_LotNo { get; set; }
         public string v_MoldNo { get; set; }
         public string v_CusName { get; set; }

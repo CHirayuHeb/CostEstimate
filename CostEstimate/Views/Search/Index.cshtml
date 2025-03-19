@@ -64,11 +64,13 @@
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
                                     <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DocumentNo">
                                 </div>
-                                <div class="col-20" style=" display: flex;align-items: center;background-color:#cbeff7 ">
-                                  
+                                <div class="col-20 border1_5 " style=" display: flex;align-items: center;background-color:#cbeff7 ">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Status</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                 
+                                    @*v_status*@
+                                    @Html.DropDownListFor(m => m._ViewSearchData.v_status, (SelectList)ViewBag.vbformStatus, "กรุณาเลือก", new { @class = "form-control", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:12px" })
+
                                 </div>
                                 <div class="col-5 " style="">
 
@@ -307,26 +309,26 @@
                                                     @*@item.smStep*@
                                                     @if (@item.smStep == 0 && @item.smStatus.Contains("Disapprove"))
                                                     {
-                                                        {<img src="~/images/stepDis.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                                        <img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />
                                                     }
                                                     else if (@item.smStep == 0) /*//new*/
-                                                    {<img src="~/images/step0.png" alt="icon" style="height: 23px; width: 23px;" /> }
-                                                    else if (@item.smStep == 1) 
-                                                    { <img src="~/images/step2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                                    {<img src="~/images/1.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                                    else if (@item.smStep == 1)
+                                                    { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
                                                     else if (@item.smStep == 2)
-                                                    { <img src="~/images/step3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
                                                     else if (@item.smStep == 3)/*//issue*/
-                                                    { <img src="~/images/notes.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                    else if (@item.smStep == 4) 
-                                                    { <img src="~/images/step5.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    else if (@item.smStep == 4)
+                                                    { <img src="~/images/5.png" alt="icon" style="height: 23px; width: 23px;" />}
                                                     else if (@item.smStep == 5)
-                                                    { <img src="~/images/step6.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    { <img src="~/images/6.png" alt="icon" style="height: 23px; width: 23px;" />}
                                                     else if (@item.smStep == 6)
-                                                    { <img src="~/images/step7.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    { <img src="~/images/7.png" alt="icon" style="height: 23px; width: 23px;" />}
                                                     else if (@item.smStep == 7)
-                                                    { <img src="~/images/stepfinish1.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
                                                     @*else if (@item.smStep == 8)
-                                                    { <img src="~/images/stepFinish.png" alt="icon" style="height: 23px; width: 23px;" /> }*@
+        { <img src="~/images/stepFinish.png" alt="icon" style="height: 23px; width: 23px;" /> }*@
 
 
 

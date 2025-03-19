@@ -813,7 +813,15 @@ function Menubar_sendmail(getID, action) {
                         console.log("OK")
                         htmls += "     <div class='panel-heading panel-heading-custom property' tabindex = '0' >"
                         htmls += "         <h4 class='panel-title faq-title-range collapsed' data-bs-toggle='collapse' data-bs-target='#Ans" + item.htStep + "' aria-expanded='false' aria-controls='collapseExample'>"
-                        htmls += "             <label style='font-size: 13px;'>Step : " + item.htStep + "</label> <label class='lbV'></label>"
+                        htmls += "             <label style='font-size: 13px;'>Step : "
+                        if (item.htStep == 0) {
+                            htmls += item.htStep
+                        }
+                        else {
+                            htmls += (item.htStep + 1)
+                        }
+
+                        htmls += "  </label > <label class='lbV'></label>"
                         htmls += "         </h4>"
                         htmls += "     </div >"
                         htmls += "     <div class='panel-collapse collapse' style = 'overflow: auto;' id = 'Ans" + item.htStep + "' > "

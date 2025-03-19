@@ -290,8 +290,8 @@ namespace CostEstimate.Controllers.New
                     {
                         // htCostPlanningNo
                         String htDocNo = @classs._ViewceMastSubMakerRequest.smDocumentNo.ToString(); //htCostPlanningNo
-                        _listHistory = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == htDocNo).OrderBy(x => x.htStep).ToList();
-
+                        //_listHistory = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == htDocNo).OrderBy(x => x.htStep).ThenBy(x=>x.htDate).ThenBy(x=>x.htTime).ToList();
+                        _listHistory = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == htDocNo).OrderBy(x => x.htDate).ThenBy(x => x.htTime).ThenBy(x => x.htStep).ToList();
 
                         return Json(new { status = "hasHistory", listHistory = _listHistory, partial = partialUrl });
                     }

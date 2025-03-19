@@ -18,7 +18,7 @@ using CostEstimate.Models.Table.MK;
 
 using OfficeOpenXml;
 using System.IO;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CostEstimate.Controllers.Search
 {
@@ -46,6 +46,10 @@ namespace CostEstimate.Controllers.Search
         [Authorize("Checked")]
         public IActionResult Index(Class @class)
         {
+            List<ViewceMastFlowApprove> _ViewceMastFlowApprove = _MK._ViewceMastFlowApprove.OrderBy(x => x.mfStep).Distinct().ToList();
+            SelectList formStatus = new SelectList(_ViewceMastFlowApprove.Select(s => s.mfSubject).Distinct());
+            ViewBag.vbformStatus = formStatus;
+
 
             if (@class._ViewSearchData != null)
             {
@@ -53,6 +57,13 @@ namespace CostEstimate.Controllers.Search
                 if (@class._ViewSearchData.v_DocumentNo != null && @class._ViewSearchData.v_DocumentNo != "")
                 {
                     @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smDocumentNo.Contains(@class._ViewSearchData.v_DocumentNo)).ToList();
+                }
+                if (@class._ViewSearchData.v_status != null)
+                {
+                    //int smstep = _MK._ViewceMastFlowApprove.Where(x => x.mfSubject.Contains(@class._ViewSearchData.v_status)).Select(x => x.mfStep).FirstOrDefault();
+                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smStatus.Contains(@class._ViewSearchData.v_status)).ToList();
+                   // @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smStep == smstep).OrderBy(x => x.smStep).ThenBy(x => x.smIssueDate).ToList();
+
                 }
                 if (@class._ViewSearchData.v_LotNo != null && @class._ViewSearchData.v_LotNo != "")
                 {
