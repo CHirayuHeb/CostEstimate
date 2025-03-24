@@ -1,7 +1,7 @@
 ﻿@using System.Security.Claims;
 @using CostEstimate.Models.Common;
 @{
-    //string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
     string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
     string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
     string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
@@ -13,7 +13,8 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <meta charset="UTF-8">
-    <link rel="icon" type="image/x-icon" href="~/images/site/Stanley.ico" />
+    @*<link rel="icon" type="image/x-icon" href="~/images/site/Stanley.ico" />*@
+    <link rel="icon" type="image/x-icon" href="~/images/site/dollar-coins.ico" />
     <link href="~/css/_menuBar.css" rel="stylesheet" />
     <link href="~/css/stepper.css" rel="stylesheet" />
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -69,7 +70,7 @@
                     <div class="nav-item">
                         <div class="program-box">
                             <div class="program-name">
-                                <span class="name" style="color:orangered">COST <span style="color:black">ESTIMATE</span></span>
+                                <span class="name" style="color:orangered;font-size:20px"><img src="~/images/site/dollar-coins.png" width="35px" height="30px" />  COST<span style="color:black"> ESTIMATE</span></span>
                             </div>
                         </div>
                     </div>
@@ -172,19 +173,15 @@
                                 <span class="approval"><span class="material-icon-symbols-outlined fs-30">order_approve</span>การอนุมัติ</span>
                             </button>
                         </div>
-                        <div class="menu-item" tabindex="0">
-                            <button class="nav-link text-gray align-middle px-0 add_card">
-                                <span class="create"><span class="material-icon-symbols-outlined fs-30">add_card</span>Add Cost</span>
-                            </button>
-                        </div>
-                        @*@if (_Permission.ToUpper() == GlobalVariable.perAdmin.ToUpper())
-                            {
-                                <div class="menu-item" tabindex="0">
-                                    <button class="nav-link text-gray align-middle px-0 administrator">
-                                        <span class="administrator"><span class="material-icon-symbols-outlined fs-30">settings_account_box</span>ผู้ดูแลระบบ</span>
-                                    </button>
-                                </div>
-                            }*@
+
+                        @if (_Permission.ToUpper() == GlobalVariable.perAdmin.ToUpper())
+                        {
+                            <div class="menu-item" tabindex="0">
+                                <button class="nav-link text-gray align-middle px-0 add_card">
+                                    <span class="create"><span class="material-icon-symbols-outlined fs-30">add_card</span>Add Cost</span>
+                                </button>
+                            </div>
+                        }
                         <div id="selector" class="selecter"></div>
                     </li>
                 </ul>
@@ -325,21 +322,27 @@
     </div>
     <script src="~/js/Shared/_MenuBar.js"></script>
     @*<script>
-            window.addEventListener("beforeunload", function (event) {
-                event.preventDefault();
-                event.returnValue = "คุณต้องการออกจากหน้านี้หรือไม่?";
-            });
+        // เมื่อโหลดหน้าหรือแอปพลิเคชัน
+        window.onload = function () {
+            // เพิ่มสถานะใหม่ในประวัติ
+            history.pushState(null, null, location.href);
+
+            // บล็อกการกดปุ่ม Back
+            window.onpopstate = function () {
+                history.pushState(null, null, location.href);
+            };
+        };
+
         </script>*@
-    @*<script>
+    <script>
         window.addEventListener("popstate", function (event) {
-            setTimeout(function () {
-                if (!confirm("คุณต้องการย้อนกลับหรือไม่?")) {
-                    history.pushState(null, "", location.href);
-                }
-            }, 0);
+            var confirmation = confirm("Are you sure you want to leave this page?");
+            if (!confirmation) {
+                history.pushState(null, null, location.href);  // ป้องกันการย้อนกลับ
+            }
         });
 
         history.pushState(null, "", location.href);
-    </script>*@
+    </script>
 </body>
 </html>

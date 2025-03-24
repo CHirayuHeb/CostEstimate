@@ -11,7 +11,7 @@
 <link href="~/css/Home/siteHome.css" rel="stylesheet" />
 <div class="row center">
     <form action="" id="formMastCostplanning" name="formMastCostplanning">
-        <div class="row center">
+        <div class="row center" style="margin-top:-28px">
             <div class="col-10">
             </div>
             <div class="col-80 ">
@@ -37,17 +37,21 @@
             <div class="col-10">
             </div>
         </div>
+        <br />
         <div class="row center">
-            <div class="col-5">
-            </div>
-            <div class="col-90 ">
-
+            <div class="col-100 ">
                 <table class="summarys" id="tbMastCostPlanning">
                     <tr>
-                        <th style="text-align:left;">DETAIL</th>
-                        <th style="text-align:center;">LABOUR RATE</th>
-                        <th style="text-align:center;">DEPRECIATION (DP)​</th>
-                        <th style="text-align:center;">MANUFACTURING EXPENSES(ME)​</th>
+                        <th style="text-align:center;" rowspan="2">DETAIL</th>
+                        <th style="text-align:center;font-size:9px" width="20%">LABOUR RATE</th>
+                        <th style="text-align:center;font-size:9px" width="20%">DEPRECIATION (DP)​</th>
+                        <th style="text-align:center;font-size:9px" width="20%">MANUFACTURING EXPENSES(ME)​</th>
+
+                    </tr>
+                    <tr style="height:30px">
+                        <th style="text-align:center;font-size:9px" width="20%">RATE</th>
+                        <th style="text-align:center;font-size:9px" width="20%">RATE</th>
+                        <th style="text-align:center;font-size:9px" width="20%">RATE​</th>
 
                     </tr>
                     @*<tbody>*@
@@ -85,8 +89,8 @@
                             <tr>
                                 <th style="text-align:left" colspan="4"><span style="font-weight:600"> @group.GroupName</span></th>
                                 @*<td style="text-align:left"><input class="form-control center cpLabour_Rate @group.GroupName" id="cpLabour_Rate @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
-                                <td style="text-align:left"><input class="form-control center cpDP_Rate @group.GroupName" id="cpDP_Rate @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
-                                <td style="text-align:left"><input class="form-control center cpME_Rate @group.GroupName" id="cpME_Rate @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>*@
+                                    <td style="text-align:left"><input class="form-control center cpDP_Rate @group.GroupName" id="cpDP_Rate @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
+                                    <td style="text-align:left"><input class="form-control center cpME_Rate @group.GroupName" id="cpME_Rate @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>*@
                             </tr>
 
                         }
@@ -104,8 +108,7 @@
                 </div>
 
             </div>
-            <div class="col-5">
-            </div>
+
         </div>
     </form>
 </div>

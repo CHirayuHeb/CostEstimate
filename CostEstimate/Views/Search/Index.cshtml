@@ -13,31 +13,17 @@
             </div>
             <div class="col-15" style="text-align:right">
                 <button class="button btnOrange " style="width:auto" onclick="GoSideMenuNewRequest('New')">
-                    <img src="~/images/tool.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                    <img src="~/images/tool.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;font-size:10px" />
                     New Sub Maker
                 </button>
             </div>
-            <div class="col-15" style="text-align:right">
-                @*<a href="@Url.Action("ExportExcel", "Search")" class="btn btn-primary">Download Excel</a>
-                    <a href="@Url.Action("btnExportExcel", "Search")" class="btn btn-primary">Download Excel1</a>*@
+            <div class="col-10" style="text-align:right">
                 <a asp-area="" asp-controller="Search" asp-action="btnExportExcel" style="margin-right:5px;font-size:10px;text-decoration:auto" class="button">
                     <img src="~/images/excel.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />Search
                 </a>
-
-                @*<button class="button" style="width:auto" onclick="Menubar_ExportExcel('@Url.Action("ExportExcel","Search")')">
-                        <img src="~/images/excel.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                        Export to Excel
-                    </button>*@
             </div>
-
-
-            @*<input type="button" style="font-size:18px" value="&#x1F50E;" onclick="GoNewRequest('@item.srRequestBy','Edit','@Url.Action("Index", "RequestForm")','@item.srFrom','@item.srType','@item.srSubject','@item.srNo')">*@
-            @*<input type="button" style="font-size:18px" value="New Sub Maker Request Sheet " class=" btn-login">*@
-            @*<button class="button" style="@( (@_UserId == @Model._ViewsvsServiceRequest.srRequestBy || @_UserId == @Model._ViewsvsServiceRequest.srApproveEmpcode) && Model._ViewsvsServiceRequest.srStep >2 && Model._ViewsvsServiceRequest.srStep < 5 ? "width:100px; " : "display:none;")" onclick="savesubmit('@Url.Action("SavePageForm","RequestForm")')">
-                    <img src="~/images/save_1.png" style="width:30px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                    บันทึก
-                </button>*@
-
+            <div class="col-5" style="text-align:right">
+            </div>
         </div>
         @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { enctype = "multipart/form-data", id = "formSearch", name = "formSearch" }))
         {
@@ -56,7 +42,6 @@
                         <div class="row center">
                             <div class="row center">
                                 <div class="col-5 " style="">
-
                                 </div>
                                 <div class="col-20 border1_5 " style=" display: flex;align-items: center;background-color:#cbeff7;">
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Document No</div>
@@ -70,7 +55,6 @@
                                 <div class="col-25" style=" display: flex;align-items: center; ">
                                     @*v_status*@
                                     @Html.DropDownListFor(m => m._ViewSearchData.v_status, (SelectList)ViewBag.vbformStatus, "กรุณาเลือก", new { @class = "form-control", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:12px" })
-
                                 </div>
                                 <div class="col-5 " style="">
 
@@ -278,6 +262,7 @@
                                         <th style="text-align:center">Mold Name​</th>
                                         <th style="text-align:center">Cavity No.​</th>
                                         <th style="text-align:center">Development Stage</th>
+                                        <th style="text-align:center">Issue By ,Date</th>
                                         <th style="text-align:center">Material Out/Date​</th>
                                         <th style="text-align:center">Delivery/Date​</th>
                                         <th style="text-align:center">Waiting Approve​</th>
@@ -302,17 +287,25 @@
                                                 <td style="text-align:center">@item.smMoldName</td>
                                                 <td style="text-align:center">@item.smCavityNo</td>
                                                 <td style="text-align:center">@item.smDevelopmentStage</td>
+                                                <td style="text-align:center">@item.smEmpCodeRequest @item.smNameRequest @item.smIssueDate</td>
                                                 <td style="text-align:center">@item.smMatOutDate @item.smMatOutTime</td>
                                                 <td style="text-align:center">@item.smDeliveryDate   @item.smDeliveryTime</td>
-                                                <td style="text-align:center">@item.smNameApprove</td>
+                                                <td style="text-align:center">
+                                                    @if (@item.smStep < 7)
+                                                    {
+                                                        @item.smNameApprove
+                                                    }
+                                                </td>
                                                 <td style="text-align:center">
                                                     @*@item.smStep*@
                                                     @if (@item.smStep == 0 && @item.smStatus.Contains("Disapprove"))
-                                                    {
-                                                        <img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />
-                                                    }
+                                                    {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
                                                     else if (@item.smStep == 0) /*//new*/
-                                                    {<img src="~/images/1.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                                    {
+                                                        @*<img src="~/images/1.png" alt="icon" style="height: 23px; width: 23px;" />*@
+
+                                                        <img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />
+                                                    }
                                                     else if (@item.smStep == 1)
                                                     { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
                                                     else if (@item.smStep == 2)
@@ -327,20 +320,8 @@
                                                     { <img src="~/images/7.png" alt="icon" style="height: 23px; width: 23px;" />}
                                                     else if (@item.smStep == 7)
                                                     { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
-                                                    @*else if (@item.smStep == 8)
-        { <img src="~/images/stepFinish.png" alt="icon" style="height: 23px; width: 23px;" /> }*@
 
-
-
-
-
-
-
-
-                                                    @*@item.smStatus*@
                                                 </td>
-                                                @*<td style="text-align:center"> <input type="button" style="font-size:18px" value="&#x1F50E;" onclick="GoNewRequest('@item.smLotNo','@item.smOrderNo','@item.smRevision')">​</td>*@
-
 
                                                 <td style="text-align:center">
                                                     @if (@item.smStep == 7)

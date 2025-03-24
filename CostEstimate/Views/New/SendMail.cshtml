@@ -46,7 +46,7 @@
                         <span style="padding-left:5px">DM up.</span>
                     }*@
             </span>
-            <input type="text" class="form-control" id="searchInputTO" asp-for="_ViewceHistoryApproved.htTo" required style="font-size: 13px;" />
+            <input type="text" class="form-control" id="searchInputTO" asp-for="_ViewceHistoryApproved.htTo" required style="font-size: 13px;" readonly="@(ViewBag.step == 6  ?  "readonly" : null)" />
             @*<input type="text" class="form-control" id="searchInputTO" />*@
 
         </div>
@@ -65,10 +65,10 @@
 
         <div class="d-flex justify-content-center" style="width: 100%; text-align: center; padding-top: 5px; padding-bottom: 5px;">
             <div class="p-1-modify" style="width: 100%; border: 1px grey;   ">
-                <div class="form-check form-check-inline">
+                <div class="form-check form-check-inline" style="@(ViewBag.step == 7 ? "display: none;" : "")">
                     @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Approve", new { @class = "", id = "StatusApp", onclick = "CheckDis('Approve')", required = "required", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Approve</label><br />
                 </div>
-                <div class="form-check form-check-inline " style="@(ViewBag.step == 0   ? "display: none;" : "")">
+                <div class="form-check form-check-inline " style="@(ViewBag.step == 0 || (ViewBag.step <8 && ViewBag.step>3 ) ? "display: none;" : "")">
                     @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Disapprove", new { @class = "", id = "StatusApp", onclick = "CheckDis('Disapprove')", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Disapprove</label><br />
                 </div>
                 @*<div class="form-check form-check-inline">

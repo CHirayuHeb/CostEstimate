@@ -13,16 +13,26 @@
 
 }
 
-<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+@*<link href="~/css/Home/siteHome.css" rel="stylesheet" />*@
+<link href="~/css/AddCost/addCost.css" rel="stylesheet" />
 @*after document ready*@
 <script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("PageNotFound"); } }</script>
 <div class="home-content">
     <div id="DisplayContent" class="content-box">
-        <div class="row center" style="padding:5px;margin-bottom:5px;border:0px solid black">
-            <div class="col-60 " style="text-align:left">
-                <div class="grid-item fw-800  " style="text-align:left;font-size:24px;padding-top:8px">404 The requested document was not found.</div>
-
+        <div style="text-align:center; margin:0 auto;  padding: 10px;">
+            <div class="container">
+                <h1 class="error-code">404</h1>
+                <p class="error-message">Oops! Page not found.</p>
+                @*<a href="/" class="home-link">Go back to Home</a>*@
             </div>
         </div>
+
+        @*<div class="row center" style="padding:5px;margin-bottom:5px;border:0px solid black">
+            <div class="col-60 " style="text-align:left">
+                <br />
+                <div class="grid-item fw-800" style="text-align:left;font-size:28px;padding-top:8px;color: coral;"><span>404 The requested document was not found. </span></div>
+
+            </div>
+        </div>*@
     </div>
 </div>

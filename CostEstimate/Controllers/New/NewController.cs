@@ -279,9 +279,9 @@ namespace CostEstimate.Controllers.New
             string partialUrl = "";
             string v_status = "";
             int v_step = @classs._ViewceMastSubMakerRequest != null ? @classs._ViewceMastSubMakerRequest.smStep : 0;
-
+            string v_issue = @classs._ViewceMastSubMakerRequest != null ? @classs._ViewceMastSubMakerRequest.smEmpCodeRequest : "";
             List<ViewceHistoryApproved> _listHistory = new List<ViewceHistoryApproved>();
-            partialUrl = Url.Action("SendMail", "New", new { @class = @classs, s_step = v_step });
+            partialUrl = Url.Action("SendMail", "New", new { @class = @classs, s_step = v_step , s_issue =v_issue });
             try
             {
                 if (@classs._ViewceMastSubMakerRequest != null)
@@ -295,7 +295,6 @@ namespace CostEstimate.Controllers.New
 
                         return Json(new { status = "hasHistory", listHistory = _listHistory, partial = partialUrl });
                     }
-
                 }
 
             }
@@ -309,13 +308,24 @@ namespace CostEstimate.Controllers.New
         }
 
         //[HttpPost]
-        public ActionResult SendMail(Class @class, int s_step)
+        public ActionResult SendMail(Class @class, int s_step,string s_issue)
         {
             ViewBag.vDate = DateTime.Now.ToString("yyyy/MM/dd") + " " + DateTime.Now.ToString("HH:mm:ss");
             string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
 
             @class._ViewceHistoryApproved = new ViewceHistoryApproved();
             var v_emailFrom = _IT.rpEmails.Where(x => x.emEmpcode == _UserId).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
+
+            //step 6 Waiting Apporve By DM For ST Department ==> issue
+            if (s_step ==6)
+            {
+                var v_emailTo = _IT.rpEmails.Where(x => x.emEmpcode == s_issue).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
+                @class._ViewceHistoryApproved.htTo = v_emailTo;
+            }
+          
+
+            //step 4 fix ST dept check
+
             @class._ViewceHistoryApproved.htFrom = v_emailFrom;
             @class._ViewceHistoryApproved.htStatus = "Approve";
             ViewBag.step = s_step;
@@ -443,7 +453,7 @@ namespace CostEstimate.Controllers.New
 
                 if (config == "S")
                 {
-                    //check dm cs
+                    //check dm cs , DM Step 0-3  , ST Step 4-7
                     //if (i_Step < 3)
                     //{
                     //    //check emp positon
@@ -452,11 +462,11 @@ namespace CostEstimate.Controllers.New
                     //        string v_POS_HCM_CODE = "";
                     //        string v_empcsup = _IT.rpEmails.Where(w => w.emName_M365 == @class._ViewceHistoryApproved.htTo).Select(x => x.emEmpcode).FirstOrDefault();
 
-                    //        if (i_Step == 1)
+                    //        if (i_Step == 1) //GL up
                     //        {
-                    //            v_POS_HCM_CODE = _HRMS.AccPOSMAST.Where(x => x.POS_CODE == "TM").Select(x => x.POS_HCM_CODE).FirstOrDefault();
+                    //            v_POS_HCM_CODE = _HRMS.AccPOSMAST.Where(x => x.POS_CODE == "TL").Select(x => x.POS_HCM_CODE).FirstOrDefault();
                     //        }
-                    //        else if (i_Step == 2)
+                    //        else if (i_Step == 2) //DM up
                     //        {
                     //            v_POS_HCM_CODE = _HRMS.AccPOSMAST.Where(x => x.POS_CODE == "DDM").Select(x => x.POS_HCM_CODE).FirstOrDefault();
                     //        }
@@ -649,7 +659,7 @@ namespace CostEstimate.Controllers.New
                     var smtp1 = new SmtpClient();
                     //smtp.Connect("mail.csloxinfo.com");
                     smtp1.Connect("203.146.237.138");
-                    //smtp.Connect("10.200.128.12");s
+                    //smtp.Connect("10.200.128.12");
                     smtp1.Send(email);
                     smtp1.Disconnect(true);
 

@@ -96,3 +96,13 @@ function CheckStatus(status) {
 $("#btnfile").click(function () {
     $("#myModal2").modal("show");
 });
+
+
+//window.addEventListener("popstate", function (event) {
+//    var confirmation = confirm("Are you sure you want to leave this page?");
+//    if (!confirmation) {
+//        history.pushState(null, null, location.href);  // ป้องกันการย้อนกลับ
+//    }
+//});
+
+//history.pushState(null, "", location.href);

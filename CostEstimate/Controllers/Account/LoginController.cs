@@ -59,7 +59,7 @@ namespace CostEstimate.Controllers.Account
                 accData = _HRMS.AccEMPLOYEE.FirstOrDefault(x => x.EMP_CODE == _ViewLoginPgm.Empcode);
                 if (accData != null)
                 {
-                    string[] stat = await Task.Run(() => SetClaim(accData));
+                    string[] stat = await Task.Run(() => SetClaim(accData, _ViewLoginPgm.Permission));
                     if (stat[0] == "Ok")
                     {
                         if(@class.param != null){
@@ -106,7 +106,7 @@ namespace CostEstimate.Controllers.Account
 
         }
 
-        public async Task<string[]> SetClaim(ViewAccEMPLOYEE accdata)
+        public async Task<string[]> SetClaim(ViewAccEMPLOYEE accdata,string vAccess)
         {
             try
             {
@@ -144,7 +144,7 @@ namespace CostEstimate.Controllers.Account
                 claims.Add(new Claim("UserId", acc.EMP_CODE.ToString()));
                 //claims.Add(new Claim("Password", login.Password.ToString()));
                 claims.Add(new Claim("EmpCode", acc.EMP_CODE?.ToString()));
-                // claims.Add(new Claim("Permission", login.Permission?.ToString()));
+                claims.Add(new Claim("Permission", vAccess?.ToString()));
                 // claims.Add(new Claim(ClaimTypes.Role, login.Permission?.ToString()));
                 claims.Add(new Claim("Division", acc.DIVI_CODE.ToUpper()));
                 claims.Add(new Claim("Department", acc.DEPT_CODE.ToUpper()));

@@ -12,6 +12,7 @@ namespace CostEstimate.Models.Common
 {
     public class Class
     {
+        public static string perAdmin = "admin";
         public ViewLogin _ViewLogin { get; set; }
         public Error _Error { get; set; }
         public string param { get; set; }
