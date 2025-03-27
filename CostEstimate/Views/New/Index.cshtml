@@ -206,7 +206,7 @@
 
                                 </div>
                             </div>
-                            <div class="row center" >
+                            <div class="row center">
                                 <div class="col-5 " style="">
 
                                 </div>
@@ -259,23 +259,29 @@
                         </div>
 
 
-                        @await Html.PartialAsync("_PartialNewRequestDetail", Model)
+                        <div class="row center" style="@(Model._ViewceMastSubMakerRequest.smStep == 7 ? "pointer-events: none; " : "")">
+                            @await Html.PartialAsync("_PartialNewRequestDetail", Model)
+                        </div>
 
+                        @await Html.PartialAsync("_PartialNewAttachFile", Model)
+
+                        <div class="row center" style="@(Model._ViewceMastSubMakerRequest.smStep == 7 ? "pointer-events: none; " : "")">
+                            @await Html.PartialAsync("_PartialNewSummary", Model)
+                        </div>
                     </div>
-                </div>
 
 
 
-                <!-- Modal send mail -->
-                <div class="modal modal-lg fade" id="myModal1" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content ">
-                            <div class="modal-body" id="myModalBodyDiv1">
+                    <!-- Modal send mail -->
+                    <div class="modal modal-lg fade" id="myModal1" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content ">
+                                <div class="modal-body" id="myModalBodyDiv1">
 
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
             </form>
 
 

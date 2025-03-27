@@ -176,11 +176,38 @@
 
                         @if (_Permission.ToUpper() == GlobalVariable.perAdmin.ToUpper())
                         {
+                           <hr style="border:1px solid black;margin-left:5px;margin-right:5px" />
                             <div class="menu-item" tabindex="0">
-                                <button class="nav-link text-gray align-middle px-0 add_card">
-                                    <span class="create"><span class="material-icon-symbols-outlined fs-30">add_card</span>Add Cost</span>
+                                <button class="nav-link text-gray align-middle px-0 Master_add">
+                                    <span class="Master_add"><span class="material-icon-symbols-outlined fs-30">credit_card_gear</span><span style="font-size:8px;font-weight:600">MASTER COST</span></span>
                                 </button>
                             </div>
+                            @*<div class="menu-item" tabindex="0">
+                                <button class="nav-link text-gray align-middle px-0 add_card">
+                                    <span class="Master_add"><span class="material-icon-symbols-outlined fs-30">add_card</span><span style="font-size:8px;font-weight:600">COST PLANNING</span></span>
+                                </button>
+                            </div>
+
+                     
+                            <div class="menu-item" tabindex="0">
+                                <button class="nav-link text-gray align-middle px-0 Master_add" id="dropdownButton">
+                                    <span class="Master_add">
+                                        <span class="material-icon-symbols-outlined fs-30">library_books</span>
+                                        <span style="font-size:8px;font-weight:600">COST MODEL</span>
+                                    </span>
+                                </button>
+
+                                <div class="dropdown-menu" id="dropdownMenu" style="display: none; position: absolute; background-color: white; border: 1px solid #ccc; padding: 10px;margin-left: 50px;margin-top:-40px">
+                                    <button class="nav-link text-gray align-middle px-0 process_add dropdown-item">
+                                        <span class="process_add"><span class="material-icon-symbols-outlined fs-30">library_books</span><span style="font-size:8px;font-weight:600">COST PROCESS</span></span>
+                                    </button>
+                                    <button class="nav-link text-gray align-middle px-0 model_add dropdown-item">
+                                        <span class="model_add"><span class="material-icon-symbols-outlined fs-30">library_books</span><span style="font-size:8px;font-weight:600">COST PROCESS</span></span>
+                                    </button>
+                                </div>
+                            </div>*@
+
+
                         }
                         <div id="selector" class="selecter"></div>
                     </li>
@@ -343,6 +370,23 @@
         });
 
         history.pushState(null, "", location.href);
+
+
+
+        const dropdownButton = document.getElementById('dropdownButton');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        dropdownButton.addEventListener('click', () => {
+            const isVisible = dropdownMenu.style.display === 'block';
+            dropdownMenu.style.display = isVisible ? 'none' : 'block';
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.style.display = 'none';
+            }
+        });
     </script>
+
 </body>
 </html>

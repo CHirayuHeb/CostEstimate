@@ -314,6 +314,10 @@ ul li div.menu-item {
 .nav-item button span.create,
 .nav-item button span.my-request,
 .nav-item button span.approval,
+.nav-item button span.Master_cost,
+.nav-item button span.Master_add,
+.nav-item button span.process_add,
+.nav-item button span.model_add,
 .nav-item button span.administrator {
     display: flex;
     flex-direction: column;
@@ -324,6 +328,10 @@ ul li div.menu-item {
     .nav-item button span.Home span,
     .nav-item button span.create span,
     .nav-item button span.my-request span,
+    .nav-item button span.Master_cost span,
+    .nav-item button span.Master_add span,
+    .nav-item button span.process_add span,
+    .nav-item button span.model_add span,
     .nav-item button span.approval span,
     .nav-item button span.administrator {
         padding: 5px 0;

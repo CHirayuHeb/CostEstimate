@@ -21,8 +21,9 @@ var administrator = document.querySelector("button.administrator");
 var mywork = document.querySelector("button.work");
 var signOut = document.querySelector("button.signOut");
 var addCard = document.querySelector("button.add_card");
-
-
+var addProcess = document.querySelector("button.process_add");
+var addModel = document.querySelector("button.model_add");
+var addMaster = document.querySelector("button.Master_add");
 
 
 //a tag
@@ -33,9 +34,22 @@ var amyRequest = document.querySelector("div.app a.my-request");
 var aapproval = document.querySelector("div.app a.approval");
 var aadministrator = document.querySelector("div.app a.administrator");
 
+if (addMaster != null)
+    addMaster.addEventListener("click", function () {
+        GoSideMenu("MasterCost");
+    });
 if (addCard != null)
     addCard.addEventListener("click", function () {
         GoSideMenu("AddCost");
+    });
+if (addModel != null)
+    addProcess.addEventListener("click", function () {
+        GoSideMenu("addModel");
+    });
+
+if (addProcess != null)
+    addProcess.addEventListener("click", function () {
+        GoSideMenu("addProcess");
     });
 if (home != null)
     home.addEventListener("click", function () {
@@ -231,6 +245,18 @@ function PositionY(menu) {
             //LoadScript("js\\Admin\\Index.js", "AdminSetting");
             opacity = "opacity-dot-3";
             break;
+        case "MasterCost":
+            //LoadScript("js/New/Index.js", "NewItem");
+            //LoadScript("js/New/EventMore.js", "EventNewMore");
+            LoadScript("js/Home/Index.js", "Home");
+            //LoadScript("js/New/Index.js", "New");
+            //LoadScript("js/Home/Hour.js", "EventHomeHour");
+            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
+            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
+
+            PY = "333px";
+            opacity = "opacity-dot-3";
+            break;
         case "AddCost":
             //LoadScript("js/New/Index.js", "NewItem");
             //LoadScript("js/New/EventMore.js", "EventNewMore");
@@ -240,9 +266,21 @@ function PositionY(menu) {
             //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
             //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
 
-            PY = "300px";
+            PY = "331px";
             opacity = "opacity-dot-3";
             break;
+        //addProcess
+        case "AddProcess":
+            LoadScript("js/Home/Index.js", "Home");
+            PY = "331px";
+            opacity = "opacity-dot-3";
+            break;
+        case "AddModel":
+            LoadScript("js/Home/Index.js", "Home");
+            PY = "331px";
+            opacity = "opacity-dot-3";
+            break;
+            
     }
     var Selector = document.getElementById("selector");
     var bg = document.getElementsByClassName("banner").item(0);
@@ -782,7 +820,12 @@ function Menubar_sendmail(getID, action) {
     //const formdata = new FormData(document.forms.item(0)).serialize();
 
     let msg = "";
-
+    if (document.getElementById("i_New_OrderNo").value == "") {
+        msg = "กรุณากรอกข้อมูล Order No !!!";
+    }
+    else if (document.getElementById("i_New_LotNo").value == "") {
+        msg = "กรุณากรอกข้อมูล Lot No !!!";
+    }
 
     if (msg != "") {
         swal.fire({
@@ -897,78 +940,101 @@ function Menubar_sendmail(getID, action) {
 
 
 function Menubar_saveDraft(action) {
-    let formData = document.forms.namedItem("formRequest");
-    let viewModel = new FormData(formData);
+    let vmsg = "";
+    if (document.getElementById("i_New_OrderNo").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Order No !!!";
+    }
+    else if (document.getElementById("i_New_LotNo").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Lot No !!!";
+    }
 
-    $.each(formData, function (index, input) {
-        viewModel.append(input.name, input.value);
-    });
+    if (vmsg != "") {
+        swal.fire({
+            title: 'แจ้งเตือน',
+            icon: 'warning',
+            text: vmsg,
 
-    $.ajax({
-        type: "POST",
-        url: action,
-        data: viewModel,
-        processData: false,
-        contentType: false,
-        beforeSend: function () {
-            swal.fire({
-                html: '<h5>Loading...</h5>',
-                showConfirmButton: false,
-                onRender: function () {
-                    // there will only ever be one sweet alert open.
-                    //$('.swal2-content').prepend(sweet_loader);
-                }
+        })
+            .then((result) => {
             });
-        },
-        success: async function (config) {
-            // alert(config.c1);
-            if (config.c1 == "S" || config.c1 == "D") {
-                // $("#loaderDiv").hide();
-                //await $("#myModal1").modal("hide");
-                swal.fire({
-                    title: 'SUCCESS',
-                    icon: 'success',
-                    text: "Save data Already !!!!",
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        //console.log("config.c3" + config.c3);
-                        GoSideMenu("Search");
+    }
+    else {
+        let formData = document.forms.namedItem("formRequest");
+        let viewModel = new FormData(formData);
 
-                        //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+        $.each(formData, function (index, input) {
+            viewModel.append(input.name, input.value);
+        });
+
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: viewModel,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                swal.fire({
+                    html: '<h5>Loading...</h5>',
+                    showConfirmButton: false,
+                    onRender: function () {
+                        // there will only ever be one sweet alert open.
+                        //$('.swal2-content').prepend(sweet_loader);
                     }
                 });
-            }
-            else if (config.c1 == "E") {
-                //$("#loaderDiv").hide();
-                //await $("#myModal1").modal("hide");
-                Swal.fire({
-                    icon: 'error',
-                    title: 'ERROR',
-                    text: config.c2,
-                })
-                    .then((result) => {
-                        $("#myModal1").modal("show");
+            },
+            success: async function (config) {
+                // alert(config.c1);
+                if (config.c1 == "S" || config.c1 == "D") {
+                    // $("#loaderDiv").hide();
+                    //await $("#myModal1").modal("hide");
+                    swal.fire({
+                        title: 'SUCCESS',
+                        icon: 'success',
+                        text: "Save data Already !!!!",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            //console.log("config.c3" + config.c3);
+                            GoSideMenu("Search");
+
+                            //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                        }
                     });
+                }
+                else if (config.c1 == "E") {
+                    //$("#loaderDiv").hide();
+                    //await $("#myModal1").modal("hide");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ERROR',
+                        text: config.c2,
+                    })
+                        .then((result) => {
+                            $("#myModal1").modal("show");
+                        });
+
+                }
+                else if (config.c1 == "P") {
+                    //$("#loaderDiv").hide();
+                    //await $("#myModal1").modal("hide");
+                    await $("#myModal1").modal("hide");
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'warning',
+                        text: config.c2,
+                    })
+                        .then((result) => {
+
+                            //$("#myModal1").modal("show");
+                        });
+
+                }
 
             }
-            else if (config.c1 == "P") {
-                //$("#loaderDiv").hide();
-                //await $("#myModal1").modal("hide");
-                await $("#myModal1").modal("hide");
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'warning',
-                    text: config.c2,
-                })
-                    .then((result) => {
+        });
+    }
 
-                        //$("#myModal1").modal("show");
-                    });
 
-            }
 
-        }
-    });
 
 
 }
@@ -1216,16 +1282,15 @@ function DeleteFileUser(id, vname, action) {
     });
 }
 
-function DeleteMasterPlanning(DocNo, ModelName, action) {
+function DeleteMasterPlanning(DocNo, action) {
     //var getID = document.getElementById("i_New_DocumentNo").value; //txtMIssueID
 
 
     //action, vForm, vTeam, vSubject, vSrNo
 
-
     Swal.fire({
         title: "Are you sure?",
-        text: "Are you sure delete Model Name ?",
+        text: "Are you sure delete Master Planning ?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Yes",
@@ -1235,7 +1300,7 @@ function DeleteMasterPlanning(DocNo, ModelName, action) {
             $.ajax({
                 type: 'post',
                 url: action,
-                data: { DocNo: DocNo, ModelName: ModelName },
+                data: { DocNo: DocNo },
                 success: function (res) {
                     swal.fire({
                         title: 'แจ้งเตือน',
@@ -1243,8 +1308,8 @@ function DeleteMasterPlanning(DocNo, ModelName, action) {
                         text: res.res,
                     })
                         .then((result) => {
-                            $("#myModal3").modal("hide");
-                            //GoSideMenu("Home");
+                            //$("#myModal3").modal("hide");
+                            GoSideMenu("AddCost");
                             // GoNewRequest(getID)
                             //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
                         });
@@ -1381,13 +1446,8 @@ function Menubar_AddCostPlanning(CostNo, Desc, action) {
 }
 
 
-function DeleteCostMOdel(DocNo, ModelName, action) {
-    //var getID = document.getElementById("i_New_DocumentNo").value; //txtMIssueID
-
-
-    //action, vForm, vTeam, vSubject, vSrNo
-
-
+function DeleteCostModel(DocNo, ModelName, action) {
+ 
     Swal.fire({
         title: "Are you sure?",
         text: "Are you sure delete Model Name ?",
@@ -1400,7 +1460,7 @@ function DeleteCostMOdel(DocNo, ModelName, action) {
             $.ajax({
                 type: 'post',
                 url: action,
-                data: { DocNo: DocNo, ModelName: ModelName },
+                data: { DocNo: DocNo, ModelName: ModelName},
                 success: function (res) {
                     swal.fire({
                         title: 'แจ้งเตือน',
@@ -1409,7 +1469,7 @@ function DeleteCostMOdel(DocNo, ModelName, action) {
                     })
                         .then((result) => {
                             // $("#myModal3").modal("hide");
-                            //GoSideMenu("Home");
+                            GoSideMenu("AddCost");
                             // GoNewRequest(getID)
                             //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
                         });
@@ -1496,4 +1556,335 @@ function Menubar_AddMasterCostPlanning(action) {
     });
 }
 
+function DeleteCost(DocNo, ModelName, action) {
+    //var getID = document.getElementById("i_New_DocumentNo").value; //txtMIssueID
+
+
+    //action, vForm, vTeam, vSubject, vSrNo
+
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure delete Master Process Name ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { DocNo: DocNo, ModelName: ModelName },
+                success: function (res) {
+                    swal.fire({
+                        title: 'แจ้งเตือน',
+                        icon: res.res,
+                        text: res.res,
+                    })
+                        .then((result) => {
+                            // $("#myModal3").modal("hide");
+                            //GoSideMenu("Home");
+                            // GoNewRequest(getID)
+                            //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                        });
+
+
+
+                }
+            });
+        } else {
+            //console.log('Cancel');
+            return false;
+        }
+    });
+}
+
+
+//Process
+function Menubar_EditMasterProcess(mpNo, action) {
+    console.log("Menubar_AddCostPlanning");
+    let mydata = $("#formRequestCost").serialize();
+    //'@Url.Action("SearchbyModelName", "New")',
+    $.ajax({
+        url: action,//'/New/SearchbyModelName', // URL ของ Controller
+        type: 'POST',
+        data: {
+            mpNo: mpNo
+        },
+        beforeSend: function () {
+            console.log("Showing loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorProcess").css("display", "block"); // แสดง Loader
+            $("#ResultMastProcess").css("display", "none"); // ซ่อน Loader
+        },
+        success: function (response) {
+            $("#ResultMastProcess").css("display", "block"); // แสดง Loader
+            $("#ResultMastProcess").html(response); // เอา HTML Partial View มาใส่ใน Div
+        },
+        error: function () {
+            alert("Error!!");
+        },
+        complete: function () {
+            // ซ่อนรูปโหลดเมื่อ request เสร็จ
+            console.log("Hiding loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorProcess").css("display", "none"); // ซ่อน Loader
+        }
+    });
+
+    $("#myModal5").modal("show");
+}
+
+function Menubar_DeleteMasterProcess(processGroup, processName, action) {
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure delete Master Process ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { processGroup: processGroup, processName: processName },
+                success: function (res) {
+                    swal.fire({
+                        title: 'แจ้งเตือน',
+                        icon: res.res,
+                        text: res.res,
+                    })
+                        .then((result) => {
+                            // $("#myModal3").modal("hide");
+                            GoSideMenu("AddProcess");
+                            // GoNewRequest(getID)
+                            //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                        });
+
+
+
+                }
+            });
+        } else {
+            //console.log('Cancel');
+            return false;
+        }
+    });
+}
+
+function Menubar_AddMasterProcess(action) {
+    let formData = document.forms.namedItem("formMastProcess");
+    let viewModel = new FormData(formData);
+
+    $.each(formData, function (index, input) {
+        viewModel.append(input.name, input.value);
+    });
+
+    $.ajax({
+        type: "POST",
+        url: action,
+        data: viewModel,
+        processData: false,
+        contentType: false,
+        beforeSend: function () {
+            swal.fire({
+                html: '<h5>Loading...</h5>',
+                showConfirmButton: false,
+                onRender: function () {
+                    // there will only ever be one sweet alert open.
+                    //$('.swal2-content').prepend(sweet_loader);
+                }
+            });
+        },
+        success: async function (config) {
+            // alert(config.c1);
+            if (config.c1 == "S") {
+                // $("#loaderDiv").hide();
+                await $("#myModal5").modal("hide");
+                swal.fire({
+                    title: 'SUCCESS',
+                    icon: 'success',
+                    text: config.c2,
+                }).then((result) => {
+                    //if (result.isConfirmed) {
+                    //    console.log("config.c3" + config.c3);
+                    GoSideMenu("AddProcess");
+                    //}
+                });
+            }
+            else if (config.c1 == "E") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        $("#myModal5").modal("show");
+                    });
+
+            }
+            else if (config.c1 == "N") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                Swal.fire({
+                    icon: 'แจ้งเตือน',
+                    title: 'warning',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        $("#myModal5").modal("show");
+                    });
+
+            }
+        }
+    });
+}
+
+
+
+//Master Model
+function Menubar_EditMasterModel(mmNo,mmmodelName, action) {
+    console.log("Menubar_AddMast Model");
+   // let mydata = $("#formRequestCost").serialize();
+    //'@Url.Action("SearchbyModelName", "New")',
+    $.ajax({
+        url: action,//'/New/SearchbyModelName', // URL ของ Controller
+        type: 'POST',
+        data: {
+            mmNo: mmNo,
+            ModelName: mmmodelName,
+        },
+        beforeSend: function () {
+            console.log("Showing loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorModel").css("display", "block"); // แสดง Loader
+            $("#ResultMastModel").css("display", "none"); // ซ่อน Loader
+        },
+        success: function (response) {
+            $("#ResultMastModel").css("display", "block"); // แสดง Loader
+            $("#ResultMastModel").html(response); // เอา HTML Partial View มาใส่ใน Div
+        },
+        error: function () {
+            alert("Error!!");
+        },
+        complete: function () {
+            // ซ่อนรูปโหลดเมื่อ request เสร็จ
+            console.log("Hiding loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorModel").css("display", "none"); // ซ่อน Loader
+        }
+    });
+
+    $("#myModal6").modal("show");
+}
+
+function Menubar_DeleteMasterModel(mmNo, ModelName, action) {
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure delete Master Model ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { mmNo: mmNo, ModelName: ModelName },
+                success: function (res) {
+                    swal.fire({
+                        title: 'แจ้งเตือน',
+                        icon: res.res,
+                        text: res.res,
+                    })
+                        .then((result) => {
+                            // $("#myModal3").modal("hide");
+                            GoSideMenu("AddModel");
+                            // GoNewRequest(getID)
+                            //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                        });
+
+
+
+                }
+            });
+        } else {
+            //console.log('Cancel');
+            return false;
+        }
+    });
+}
+
+function Menubar_AddMasterModel(action) {
+    let formData = document.forms.namedItem("formMastModel");
+    let viewModel = new FormData(formData);
+
+    $.each(formData, function (index, input) {
+        viewModel.append(input.name, input.value);
+    });
+
+    $.ajax({
+        type: "POST",
+        url: action,
+        data: viewModel,
+        processData: false,
+        contentType: false,
+        beforeSend: function () {
+            swal.fire({
+                html: '<h5>Loading...</h5>',
+                showConfirmButton: false,
+                onRender: function () {
+                    // there will only ever be one sweet alert open.
+                    //$('.swal2-content').prepend(sweet_loader);
+                }
+            });
+        },
+        success: async function (config) {
+            // alert(config.c1);
+            if (config.c1 == "S") {
+                // $("#loaderDiv").hide();
+                await $("#myModal6").modal("hide");
+                swal.fire({
+                    title: 'SUCCESS',
+                    icon: 'success',
+                    text: config.c2,
+                }).then((result) => {
+                    //if (result.isConfirmed) {
+                    //    console.log("config.c3" + config.c3);
+                    GoSideMenu("AddModel");
+                    //}
+                });
+            }
+            else if (config.c1 == "E") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        $("#myModal6").modal("show");
+                    });
+
+            }
+            else if (config.c1 == "N") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                Swal.fire({
+                    icon: 'แจ้งเตือน',
+                    title: 'warning',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        $("#myModal6").modal("show");
+                    });
+
+            }
+        }
+    });
+}
 

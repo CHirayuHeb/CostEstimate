@@ -18,7 +18,7 @@
     @*<div class="col-5 " style="">
         </div>*@
     <div class="col-100 " style="border:1.5px solid gray;padding:10px">
-        <div class="row center" >
+        <div class="row center">
             <div class="col-20 " style="">
                 <div class="grid-item fw-800 center" style="text-align:left;text-decoration: underline;font-size:13px">PROCESS DETAIL</div>
             </div>
@@ -31,21 +31,39 @@
             </div>
             <div class="col-90" style=" display: flex;align-items: center;">
 
-                <table class="summarys" id="tbDetailSubMakerRequest" >
+                <table class="summarys" id="tbDetailSubMakerRequest">
                     <tr>
-                        <th style="@(_Permission.ToUpper() !=_admin ? "text-align:center;width: 60% " : "text-align:center;width: 10% ")">DETAIL</th>
-                        <th style="@(_Permission.ToUpper() != _admin ? "text-align:center;width: 20% " : "text-align:center;")">WORKING TIME (MAN)</th>
-                        <th style="@(_Permission.ToUpper() != _admin ? "text-align:center;width: 20% " : "text-align:center; ")">WORKING TIME (AUTO)</th>
-
-
-                        <th style="@(_Permission.ToUpper() != _admin ? "display:none" : "text-align:center;")">Labour Rate</th>
-                        <th style="@(_Permission.ToUpper() != _admin ? "display:none" : "text-align:center;")">DP Rate</th>
-                        <th style="@(_Permission.ToUpper() != _admin ? "display:none" : "text-align:center;")">ME Rate</th>
-                        <th style="@(_Permission.ToUpper() != _admin ? "display:none" : "text-align:center;")">Labour Cost</th>
-                        <th style="@(_Permission.ToUpper() != _admin ? "display:none" : "text-align:center;")">DP Cost</th>
-                        <th style="@(_Permission.ToUpper() != _admin ? "display:none" : "text-align:center;")">ME Cost</th>
-                        <th style="@(_Permission.ToUpper() != _admin ? "display:none" : "text-align:center;")">Total Cost</th>
+                        <th style="@(_Permission.ToUpper() !=_admin ? "text-align:center;width: 60% " : "text-align:center;width: 10% ")" rowspan="2">DETAIL</th>
+                        <th style="@(_Permission.ToUpper() != _admin ? "text-align:center;width: 20% " : "text-align:center;")" colspan="2">WORKING TIME</th>
+                        <th style="@(_Permission.ToUpper() != _admin ? "display:none" : "text-align:center;")" colspan="2">LABOUR (L)</th>
+                        <th style="@(_Permission.ToUpper() != _admin ? "display:none" : "text-align:center;")" colspan="2">DEPRECIATION (DP)</th>
+                        <th style="@(_Permission.ToUpper() != _admin ? "display:none" : "text-align:center;")" colspan="2">MANUFACTURING  EXPENSES(ME)</th>
+                        <th style="@(_Permission.ToUpper() != _admin ? "display:none" : "text-align:center;")">TOTAL COST</th>
                     </tr>
+                    <tr>
+                        <th style="@(_Permission.ToUpper() !=_admin ? "text-align:center;width: 20% " : "text-align:center;width: 10% ")">(MAN)</th>
+                        <th style="@(_Permission.ToUpper() !=_admin ? "text-align:center;width: 20% " : "text-align:center;")">(AUTO)</th>
+                        <th style="@(_Permission.ToUpper() !=_admin ? "display:none" : "text-align:center;")">RATE</th>
+                        <th style="@(_Permission.ToUpper() !=_admin ? "display:none" : "text-align:center;")">COST(KB)</th>
+                        <th style="@(_Permission.ToUpper() !=_admin ? "display:none" : "text-align:center;")">RATE</th>
+                        <th style="@(_Permission.ToUpper() !=_admin ? "display:none" : "text-align:center;")">COST(KB)</th>
+                        <th style="@(_Permission.ToUpper() !=_admin ? "display:none" : "text-align:center;")">RATE</th>
+                        <th style="@(_Permission.ToUpper() !=_admin ? "display:none" : "text-align:center;")">COST(KB)</th>
+                        <th style="@(_Permission.ToUpper() !=_admin ? "display:none" : "text-align:center;")">COST(KB)</th>
+                    </tr>
+
+                    @*<tr>
+                            <th style="@(_Permission.ToUpper() !=_admin ? "text-align:center;width: 60% " : "text-align:center;width: 10% ")">DETAIL</th>
+                            <th style="@(_Permission.ToUpper() != _admin ? "text-align:center;width: 20% " : "text-align:center;")">WORKING TIME (MAN)</th>
+                            <th style="@(_Permission.ToUpper() != _admin ? "text-align:center;width: 20% " : "text-align:center; ")">WORKING TIME (AUTO)</th>
+                            <th style="@(_Permission.ToUpper() != _admin ? "display:none" : "text-align:center;")">LABOUR RATE</th>
+                            <th style="@(_Permission.ToUpper() != _admin ? "display:none" : "text-align:center;")">DP Rate</th>
+                            <th style="@(_Permission.ToUpper() != _admin ? "display:none" : "text-align:center;")">ME Rate</th>
+                            <th style="@(_Permission.ToUpper() != _admin ? "display:none" : "text-align:center;")">Labour Cost</th>
+                            <th style="@(_Permission.ToUpper() != _admin ? "display:none" : "text-align:center;")">DP Cost</th>
+                            <th style="@(_Permission.ToUpper() != _admin ? "display:none" : "text-align:center;")">ME Cost</th>
+                            <th style="@(_Permission.ToUpper() != _admin ? "display:none" : "text-align:center;")">Total Cost</th>
+                        </tr>*@
                     @*<tbody>*@
 
 
@@ -75,23 +93,22 @@
                                     <td style="@(_Permission.ToUpper() !=_admin ? "display: none;text-align:center;" : "text-align:center;")">
                                         <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsLabour_Rate" class="form-control center Labour_Rate" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsLabour_Rate" type="number" min="0" readonly />
                                     </td>
-                                    <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:center;" : "text-align:center;")">
-                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsDP_Rate" class="form-control center DP_Rate" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsDP_Rate" type="number" min="0" readonly />
-                                    </td>
-                                    <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:center;" : "text-align:center;")">
-                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsME_Rate" class="form-control center ME_Rate" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsME_Rate" type="number" min="0" readonly />
-                                    </td>
                                     <td style="@(_Permission.ToUpper() !=_admin ? "display: none;text-align:center;" : "text-align:center;")">
                                         <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsLabour_Cost" class="form-control center Labour_Cost" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsLabour_Cost" type="number" min="0" readonly />
+                                    </td>
+
+                                    <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:center;" : "text-align:center;")">
+                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsDP_Rate" class="form-control center DP_Rate" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsDP_Rate" type="number" min="0" readonly />
                                     </td>
                                     <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:center;" : "text-align:center;")">
 
                                         <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsDP_Cost" class="form-control center DP_Cost" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsDP_Cost" type="number" min="0" readonly />
                                     </td>
                                     <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:center;" : "text-align:center;")">
-
+                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsME_Rate" class="form-control center ME_Rate" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsME_Rate" type="number" min="0" readonly />
+                                    </td>
+                                    <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:center;" : "text-align:center;")">
                                         <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsME_Cost" class="form-control center ME_Cost" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsME_Cost" type="number" min="0" readonly />
-
                                     </td>
                                     <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:center;" : "text-align:center;")">
                                         <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsTotalCost" class="form-control center totalCost" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsTotalCost" type="number" min="0" readonly />
@@ -104,13 +121,16 @@
                                 <td style="text-align:left"><span style="font-weight:600">TOTAL:  @group.GroupName.Trim()</span></td>
                                 <td style="text-align:left"><input class="form-control center dsWT_Man @group.GroupName.Trim()" id="dsWT_Man @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
                                 <td style="text-align:left"><input class="form-control center dsWT_Auto @group.GroupName.Trim()" id="dsWT_Auto @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
-                                <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center dsLabour_Rate @group.GroupName.Trim()" id="dsLabour_Rate @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
-                                <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center dsDP_Rate @group.GroupName.Trim()" id="dsDP_Rate @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
-                                <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center dsME_Rate @group.GroupName.Trim()" id="dsME_Rate @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
-                                <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center dsLabour_Cost @group.GroupName.Trim()" id="dsLabour_Cost @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
-                                <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center dsDP_Cost @group.GroupName.Trim()" id="dsDP_Cost @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
-                                <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center dsME_Cost @group.GroupName.Trim()" id="dsME_Cost @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
-                                <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center dsTotalCost @group.GroupName.Trim()" id="dsTotalCost @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
+                                <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center dsLabour_Rate @group.GroupName.Trim()" id="dsLabour_Rate @group.GroupName.Trim()" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
+                                <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center dsLabour_Cost @group.GroupName.Trim()" id="dsLabour_Cost @group.GroupName.Trim()" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
+
+                                <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center dsDP_Rate @group.GroupName.Trim()" id="dsDP_Rate @group.GroupName.Trim()" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
+                                <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center dsDP_Cost @group.GroupName.Trim()" id="dsDP_Cost @group.GroupName.Trim()" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
+
+                                <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center dsME_Rate @group.GroupName.Trim()" id="dsME_Rate @group.GroupName.Trim()" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
+                                <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center dsME_Cost @group.GroupName.Trim()" id="dsME_Cost @group.GroupName.Trim()" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
+
+                                <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center dsTotalCost @group.GroupName.Trim()" id="dsTotalCost @group.GroupName.Trim()" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
 
                             </tr>
 
@@ -121,12 +141,16 @@
                             <td style="text-align:left"><input class="form-control center " id="i_TotalPocessMan" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
                             <td style="text-align:left"><input class="form-control center " id="i_TotalPocessAuto" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
                             <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center" id="i_TotalPocessLabour_Rate" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
-                            <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center" id="i_TotalPocessDP_Rate" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
-                            <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center" id="i_TotalPocessME_Rate" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
                             <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center" id="i_TotalPocessLabour_Cost" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
+
+                            <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center" id="i_TotalPocessDP_Rate" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
                             <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center" id="i_TotalPocessDP_Cost" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
+
+                            <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center" id="i_TotalPocessME_Rate" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
                             <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center" id="i_TotalPocessME_Cost" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
+
                             <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center" id="i_TotalPocessTotalCost" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
+                            @*<td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")"><input class="form-control center" id="i_TotalPocessTotalCost" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>*@
 
 
 
@@ -202,17 +226,20 @@
             let value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
             TotalsumME_Cost += value; // บวกค่า
         });
-        $(".TotalCost").each(function () {
-            let value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
-            TotalsumTotalCost += value; // บวกค่า
-        });
+
+
+        //$("#tbDetailSubMakerRequest tr").each(function () {
+        //    let sum = parseFloat($(this).find(".dsTotalCost").val()) || 0;
+        //    TotalsumTotalCost += sum;
+        //    // calcRow($(this)); // เรียก Function คำนวณแถว
+        //    // sum += parseFloat($(this).find(".dsTotalCost").val()) || 0;
+        //});
+
 
 
         //console.log("sum.toFixed(2)" + sum.toFixed(2));
         // แสดงผลรวมทั้งหมด
         $("#i_New_TotalProcessWT").val(sum.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
-
-
         $("#i_TotalPocessMan").val(TotalsumMan.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
         $("#i_TotalPocessAuto").val(TotalsumAuto.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
         $("#i_TotalPocessLabour_Rate").val(TotalsumLabour_Rate.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
@@ -221,7 +248,8 @@
         $("#i_TotalPocessLabour_Cost").val(TotalsumLabour_Cost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
         $("#i_TotalPocessDP_Cost").val(TotalsumDP_Cost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
         $("#i_TotalPocessME_Cost").val(TotalsumME_Cost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
-        $("#i_TotalPocessTotalCost").val(TotalsumTotalCost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+
+        // $("#i_TotalPocessTotalCost").val(TotalsumTotalCost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
 
 
 
@@ -265,8 +293,6 @@
 
         $("#i_New_ProcessCost").val(sum.toFixed(2)); // Set ค่า Sum Total
     }
-
-
     function FuntionTotalProCost() {
 
         let TotalProcessWT = document.getElementById("i_New_TotalProcessWT") ? parseFloat(document.getElementById("i_New_TotalProcessWT").value) || 0 : 0;//N15
@@ -307,14 +333,14 @@
         $.each(groupSumsWT_Man, function (group, total) {
             //dsWT_Auto HW.
             let str = group;
-            console.log('group' + group);
+            //console.log('group' + group);
             // Find the last index of the period
             let lastIndex = str.lastIndexOf('.');
             if (lastIndex !== -1) {
                 // Replace the last period with "\\."
                 str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
             }
-            console.log('WT_Man <p>' + str + ' Total: ' + total + '</p>');
+            //console.log('WT_Man <p>' + str + ' Total: ' + total + '</p>');
             $(".dsWT_Man" + "." + str).each(function () {
                 // parseFloat(total).toFixed(2);
                 $(this).val(parseFloat(total).toFixed(2));
@@ -345,14 +371,14 @@
         $.each(groupSumsWT_Auto, function (group, total) {
             //dsWT_Auto HW.
             let str = group;
-            console.log('group' + group);
+            //console.log('group' + group);
             // Find the last index of the period
             let lastIndex = str.lastIndexOf('.');
             if (lastIndex !== -1) {
                 // Replace the last period with "\\."
                 str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
             }
-            console.log('dsWT_Auto <p>' + str + ' Total: ' + total + '</p>');
+            // console.log('dsWT_Auto <p>' + str + ' Total: ' + total + '</p>');
             $(".dsWT_Auto" + "." + str).each(function () {
                 // $(this).val(total);
                 $(this).val(parseFloat(total).toFixed(2));
@@ -385,14 +411,14 @@
         $.each(groupSumsLabour_Rate, function (group, total) {
             //dsWT_Auto HW.
             let str = group;
-            console.log('group' + group);
+            // console.log('group' + group);
             // Find the last index of the period
             let lastIndex = str.lastIndexOf('.');
             if (lastIndex !== -1) {
                 // Replace the last period with "\\."
                 str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
             }
-            console.log('dsLabour_Rate <p>' + str + ' Total: ' + total + '</p>');
+            //console.log('dsLabour_Rate <p>' + str + ' Total: ' + total + '</p>');
             $(".dsLabour_Rate" + "." + str).each(function () {
                 // $(this).val(total);
                 $(this).val(parseFloat(total).toFixed(2));
@@ -424,14 +450,14 @@
         $.each(groupSumsLabour_Rate, function (group, total) {
             //dsWT_Auto HW.
             let str = group;
-            console.log('group' + group);
+            // console.log('group' + group);
             // Find the last index of the period
             let lastIndex = str.lastIndexOf('.');
             if (lastIndex !== -1) {
                 // Replace the last period with "\\."
                 str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
             }
-            console.log('dsDP_Rate <p>' + str + ' Total: ' + total + '</p>');
+            //console.log('dsDP_Rate <p>' + str + ' Total: ' + total + '</p>');
             $(".dsDP_Rate" + "." + str).each(function () {
                 //$(this).val(total);
                 $(this).val(parseFloat(total).toFixed(2));
@@ -462,14 +488,14 @@
         $.each(groupSumsLabour_Rate, function (group, total) {
             //dsWT_Auto HW.
             let str = group;
-            console.log('group' + group);
+            // console.log('group' + group);
             // Find the last index of the period
             let lastIndex = str.lastIndexOf('.');
             if (lastIndex !== -1) {
                 // Replace the last period with "\\."
                 str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
             }
-            console.log('dsME_Rate <p>' + str + ' Total: ' + total + '</p>');
+            // console.log('dsME_Rate <p>' + str + ' Total: ' + total + '</p>');
             $(".dsME_Rate" + "." + str).each(function () {
                 // $(this).val(total);
                 $(this).val(parseFloat(total).toFixed(2));
@@ -500,14 +526,14 @@
         $.each(groupSumsLabour_Rate, function (group, total) {
             //dsWT_Auto HW.
             let str = group;
-            console.log('group' + group);
+            //console.log('group' + group);
             // Find the last index of the period
             let lastIndex = str.lastIndexOf('.');
             if (lastIndex !== -1) {
                 // Replace the last period with "\\."
                 str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
             }
-            console.log('dsLabour_Cost <p>' + str + ' Total: ' + total + '</p>');
+            // console.log('dsLabour_Cost <p>' + str + ' Total: ' + total + '</p>');
             $(".dsLabour_Cost" + "." + str).each(function () {
                 // $(this).val(total);
                 $(this).val(parseFloat(total).toFixed(2));
@@ -538,14 +564,14 @@
         $.each(groupSumsLabour_Rate, function (group, total) {
             //dsWT_Auto HW.
             let str = group;
-            console.log('group' + group);
+            //console.log('group' + group);
             // Find the last index of the period
             let lastIndex = str.lastIndexOf('.');
             if (lastIndex !== -1) {
                 // Replace the last period with "\\."
                 str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
             }
-            console.log('dsDP_Cost <p>' + str + ' Total: ' + total + '</p>');
+            //console.log('dsDP_Cost <p>' + str + ' Total: ' + total + '</p>');
             $(".dsDP_Cost" + "." + str).each(function () {
                 // $(this).val(total);
                 $(this).val(parseFloat(total).toFixed(2));
@@ -576,14 +602,14 @@
         $.each(groupSumsLabour_Rate, function (group, total) {
             //dsWT_Auto HW.
             let str = group;
-            console.log('group' + group);
+            // console.log('group' + group);
             // Find the last index of the period
             let lastIndex = str.lastIndexOf('.');
             if (lastIndex !== -1) {
                 // Replace the last period with "\\."
                 str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
             }
-            console.log('dsME_Cost <p>' + str + ' Total: ' + total + '</p>');
+            //console.log('dsME_Cost <p>' + str + ' Total: ' + total + '</p>');
             $(".dsME_Cost" + "." + str).each(function () {
                 // $(this).val(total);
                 $(this).val(parseFloat(total).toFixed(2));
@@ -614,14 +640,14 @@
         $.each(groupSumsLabour_Rate, function (group, total) {
             //dsWT_Auto HW.
             let str = group;
-            console.log('group' + group);
+            // console.log('group' + group);
             // Find the last index of the period
             let lastIndex = str.lastIndexOf('.');
             if (lastIndex !== -1) {
                 // Replace the last period with "\\."
                 str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
             }
-            console.log('dsTotalCost <p>' + str + ' Total: ' + total + '</p>');
+            //console.log('dsME_Cost <p>' + str + ' Total: ' + total + '</p>');
             $(".dsTotalCost" + "." + str).each(function () {
                 // $(this).val(total);
                 $(this).val(parseFloat(total).toFixed(2));
@@ -632,13 +658,22 @@
 
     }
 
+    function sumtotalProcess() {
+        let TotalsumTotalCost = 0;
+        $("#tbDetailSubMakerRequest tr").each(function () {
+            let sum = parseFloat($(this).find(".dsTotalCost").val()) || 0;
+            TotalsumTotalCost += sum;
+            // calcRow($(this)); // เรียก Function คำนวณแถว
+            // sum += parseFloat($(this).find(".dsTotalCost").val()) || 0;
+        });
+        $("#i_TotalPocessTotalCost").val(TotalsumTotalCost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+
+    }
+
     $(document).on("keyup change", ".WT_Man, .WT_Auto", function () {
-        calTotalProcessWT();
-        calcAll();
 
         sumValuesByGroupdsWT_Man();
         sumValuesByGroupdsWT_Auto();
-
         sumValuesByGroupdsLabour_Rate();
         sumValuesByGroupdsDP_Rate();
         sumValuesByGroupdsME_Rate();
@@ -646,13 +681,30 @@
         sumValuesByGroupdsDP_Cost();
         sumValuesByGroupdsME_Cost();
         sumValuesByGroupdsTotalCost();
+        sumtotalProcess();
 
-
+        calTotalProcessWT();
+        calcAll();
         FuntionTotalProCost();
+
+        ////reload ?
+        //sumValuesByGroupdsWT_Man();
+        //sumValuesByGroupdsWT_Auto();
+        //sumValuesByGroupdsLabour_Rate();
+        //sumValuesByGroupdsDP_Rate();
+        //sumValuesByGroupdsME_Rate();
+        //sumValuesByGroupdsLabour_Cost();
+        //sumValuesByGroupdsDP_Cost();
+        //sumValuesByGroupdsME_Cost();
+        //sumValuesByGroupdsTotalCost();
+        //sumtotalProcess();
+
+        //calTotalProcessWT();
+        //calcAll();
+        //FuntionTotalProCost();
     });
 
-    calTotalProcessWT();
-    calcAll();
+
 
     sumValuesByGroupdsWT_Man();
     sumValuesByGroupdsWT_Auto();
@@ -664,7 +716,24 @@
     sumValuesByGroupdsME_Cost();
     sumValuesByGroupdsTotalCost();
 
+    calTotalProcessWT();
+    calcAll();
+    FuntionTotalProCost();
 
+    //why reload again ? anwser: i don t know but can work.....
+    sumValuesByGroupdsWT_Man();
+    sumValuesByGroupdsWT_Auto();
+    sumValuesByGroupdsLabour_Rate();
+    sumValuesByGroupdsDP_Rate();
+    sumValuesByGroupdsME_Rate();
+    sumValuesByGroupdsLabour_Cost();
+    sumValuesByGroupdsDP_Cost();
+    sumValuesByGroupdsME_Cost();
+    sumValuesByGroupdsTotalCost();
+    sumtotalProcess();
+
+    calTotalProcessWT();
+    calcAll();
     FuntionTotalProCost();
 
 </script>

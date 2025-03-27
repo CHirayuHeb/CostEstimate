@@ -1,0 +1,116 @@
+﻿@model CostEstimate.Models.Common.Class;
+@{
+    //string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+@*summary*@
+<div class="row center" style="@(Model._ViewceMastSubMakerRequest.smStep == 7 ? "pointer-events: none; " : "")">
+    <div class="col-5 " style="">
+
+    </div>
+    <div class="col-90 " style="border:1.5px solid gray;padding:10px">
+        <div class="row center">
+            <div class="col-5 " style="">
+                <div class="grid-item fw-800 center" style="text-align:left;text-decoration: underline;font-size:13px">Summary</div>
+            </div>
+            <div class="col-90 " style="">
+            </div>
+            <div class="col-5 " style="">
+            </div>
+        </div>
+        <div class="row center" style="">
+            <div class="col-5 " style="margin-bottom:0px">
+            </div>
+            <div class="col-90" style=" display: flex;align-items: center;">
+                <table class="summarys">
+                    <tr>
+                        <th>DETAIL</th>
+                        <th width="10%"></th>
+                        <th style="text-align:center" width="10%">UNIT</th>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left">TOTAL PROCESS WT.</td>
+                        <td style="text-align:right">
+                            <input type="number" class="form-control " style="width:100%;font-size:12px;text-align:right;background-color:#FFD580" autocomplete="off" id="i_New_TotalProcessWT" asp-for="_ViewceMastSubMakerRequest.smTotalProcessWT" readonly>
+                        </td>
+                        <td>Hr.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left">TOTAL PROCESS COST.</td>
+                        <td style="text-align:right">
+                            <input type="number" class="form-control " style="width:100%;font-size:12px;text-align:right;background-color:#FFD580" autocomplete="off" id="i_New_ProcessCost" asp-for="_ViewceMastSubMakerRequest.smTotalProcessCost" readonly>
+                        </td>
+                        <td>KB.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;background-color:pink">ORDER MATL</td>
+                        <td style="text-align:right;background-color:pink">
+                            <input type="number" class="form-control " style="width:100%;font-size:12px;text-align:right;background-color:yellow" autocomplete="off" id="i_New_OrderMatl" asp-for="_ViewceMastSubMakerRequest.smOrderMatl" min="0">
+                        </td>
+                        <td style="background-color:pink">KB.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left">TOTAL COST</td>
+                        <td style="text-align:right">
+                            <input type="number" class="form-control " style="width:100%;font-size:12px;text-align:right;background-color:#FFD580" autocomplete="off" id="i_New_TotalCost" asp-for="_ViewceMastSubMakerRequest.smTotalCost" readonly>
+                        </td>
+                        <td>KB.</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left">ROUND UP T.PRO COST.</td>
+                        <td style="text-align:right">
+                            <input type="number" class="form-control " style="width:100%;font-size:12px;text-align:right;background-color:#FFD580" autocomplete="off" id="i_New_RoundUp" asp-for="_ViewceMastSubMakerRequest.smRoundUp" readonly>
+                        </td>
+                        <td>KB.</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align:left;background-color:#98FB98;">TOTAL PRO COST.</th>
+                        <th style="text-align:right;background-color:#98FB98">
+                            <input type="number" class="form-control " style="width:100%;font-size:12px;text-align:right;background-color:#b1fab1;border:0px solid white" autocomplete="off" id="i_New_TotalProCost" asp-for="_ViewceMastSubMakerRequest.smTotalProCost" readonly>
+                        </th>
+                        <th style="text-align:center;background-color:#98FB98;">KB.</th>
+                    </tr>
+
+                </table>
+            </div>
+
+            <div class="col-5 " style="">
+            </div>
+        </div>
+
+    </div>
+    <div class="col-5 " style="">
+
+    </div>
+</div>
+
+<script>
+    document.getElementById("i_New_OrderMatl").addEventListener("change", FuntionTotalProCost);
+    function FuntionTotalProCost() {
+        let TotalProcessWT = document.getElementById("i_New_TotalProcessWT") ? parseFloat(document.getElementById("i_New_TotalProcessWT").value) || 0 : 0;//N15
+
+        let ProcessCost = document.getElementById("i_New_ProcessCost") ? parseFloat(document.getElementById("i_New_ProcessCost").value) || 0 : 0; //16
+        let New_OrderMatl = document.getElementById("i_New_OrderMatl") ? parseFloat(document.getElementById("i_New_OrderMatl").value) || 0 : 0;//17
+        let TotalCost = document.getElementById("i_New_TotalCost") ? parseFloat(document.getElementById("i_New_TotalCost").value) || 0 : 0;//18
+        let New_RoundUp = document.getElementById("i_New_RoundUp") ? parseFloat(document.getElementById("i_New_RoundUp").value) || 0 : 0;//19
+
+        let i_New_TotalCost = parseFloat(ProcessCost + New_OrderMatl).toFixed(2);
+        let i_New_RoundUp = parseFloat(TotalCost).toFixed(2);
+        let i_New_TotalProCost = parseFloat(TotalProcessWT + ProcessCost + New_OrderMatl + TotalCost + New_RoundUp).toFixed(2);
+
+
+        $("#i_New_TotalCost").val(i_New_TotalCost); // Set ค่า Sum Total
+        $("#i_New_RoundUp").val(i_New_RoundUp); // Set ค่า Sum Total
+        $("#i_New_TotalProCost").val(i_New_TotalProCost);  // Set ค่า Sum Total
+
+    }
+
+    FuntionTotalProCost();
+
+</script>

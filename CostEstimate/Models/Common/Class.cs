@@ -35,7 +35,7 @@ namespace CostEstimate.Models.Common
         public List<ViewceMastProcess> _ListceMastProcess { get; set; }
         public List<ViewceCostPlanning> _ListceCostPlanning { get; set; }
         public List<ViewceMastCostModel> _ListceMastCostModel { get; set; }
-        public List<ViewceMastCostModel> _ListwceMastModel { get; set; }
+        public List<ViewceMastModel> _ListceMastModel { get; set; }
         public List<ViewceMastFlowApprove> _ListceMastFlowApprove { get; set; }
         public List<ViewceHistoryApproved> _ListceHistoryApproved { get; set; }
         public List<ViewceRunDocument> _ListViewceRunDocument { get; set; }

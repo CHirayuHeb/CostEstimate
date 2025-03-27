@@ -118,7 +118,7 @@ namespace CostEstimate.Controllers.New
 
                     @class._ListGroupViewceDetailSubMakerRequest = @class._ListceDetailSubMakerRequest.GroupBy(p => p.dsGroupName).Select(g => new GroupViewceDetailSubMakerRequest
                     {
-                        GroupName = g.Key,
+                        GroupName = g.Key.Trim(),
                         DetailSubMakerRequest = g.ToList()
                     }).ToList();
 
@@ -208,7 +208,7 @@ namespace CostEstimate.Controllers.New
                             dsLotNo = "",
                             dsOrderNo = "",
                             dsRevision = "",
-                            dsGroupName = v_ListceCostPlanning[i].cpGroupName,
+                            dsGroupName = v_ListceCostPlanning[i].cpGroupName.Trim(),
                             dsProcessName = v_ListceCostPlanning[i].cpProcessName,
 
                             dsWT_Man = 0,
@@ -240,7 +240,7 @@ namespace CostEstimate.Controllers.New
                 @class._ListGroupViewceDetailSubMakerRequest = new List<GroupViewceDetailSubMakerRequest>();
                 @class._ListGroupViewceDetailSubMakerRequest = _ListceDetailSubMakerRequest.GroupBy(p => p.dsGroupName).Select(g => new GroupViewceDetailSubMakerRequest
                 {
-                    GroupName = g.Key,
+                    GroupName = g.Key.Trim(),
                     DetailSubMakerRequest = g.ToList()
                 }
                 ).ToList();

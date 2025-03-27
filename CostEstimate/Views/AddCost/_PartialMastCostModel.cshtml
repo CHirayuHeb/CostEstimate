@@ -88,7 +88,7 @@
                             <td style="text-align:center">
 
                                 @*<input type="button" style="font-size:14px" value="&#x274C" disabled>*@
-                                <input type="button" style="font-size:14px" value="&#x274C" onclick="DeleteMasterPlanning('@Model._ListceMastCostModel[i].mcCostPlanningNo','@Model._ListceMastCostModel[i].mcModelName','@Url.Action("DeleteMasterPlanning","AddCost")')">
+                                <input type="button" style="font-size:14px" value="&#x274C" onclick="DeleteCostModel('@Model._ListceMastCostModel[i].mcCostPlanningNo','@Model._ListceMastCostModel[i].mcModelName','@Url.Action("DeleteMasterModel","AddCost")')">
                             </td>
                         </tr>
                     }

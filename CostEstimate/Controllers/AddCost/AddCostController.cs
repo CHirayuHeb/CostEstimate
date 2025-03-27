@@ -50,11 +50,16 @@ namespace CostEstimate.Controllers.AddCost
             {
                 for (int i = 0; i < _ViewcceRunCostpalnning.Count(); i++)
                 {
+                    string v_des = _MK._ViewceCostPlanning.Where(x => x.cpCostPlanningNo == _ViewcceRunCostpalnning[i].rcDocCode + "-" + _ViewcceRunCostpalnning[i].rcYear + "-" + String.Format("{0:D2}", _ViewcceRunCostpalnning[i].rcRunNo)).Select(x => x.cpDescription).FirstOrDefault() is null ?
+                                    "" :
+                                   _MK._ViewceCostPlanning.Where(x => x.cpCostPlanningNo == _ViewcceRunCostpalnning[i].rcDocCode + "-" + _ViewcceRunCostpalnning[i].rcYear + "-" + String.Format("{0:D2}", _ViewcceRunCostpalnning[i].rcRunNo)).Select(x => x.cpDescription).FirstOrDefault();
                     var _GroupViewceMastCostModel = new GroupViewceMastCostModel()
                     {
                         //exp: CP-2025-01
                         CostPlanningNo = _ViewcceRunCostpalnning[i].rcDocCode + "-" + _ViewcceRunCostpalnning[i].rcYear + "-" + String.Format("{0:D2}", _ViewcceRunCostpalnning[i].rcRunNo),
-                        Description = _MK._ViewceMastCostModel.Where(x => x.mcCostPlanningNo == _ViewcceRunCostpalnning[i].rcDocCode + "-" + _ViewcceRunCostpalnning[i].rcYear + "-" + String.Format("{0:D2}", _ViewcceRunCostpalnning[i].rcRunNo)).Select(x => x.mcDescription).First(),
+                        //Description = _MK._ViewceMastCostModel.Where(x => x.mcCostPlanningNo == _ViewcceRunCostpalnning[i].rcDocCode + "-" + _ViewcceRunCostpalnning[i].rcYear + "-" + String.Format("{0:D2}", _ViewcceRunCostpalnning[i].rcRunNo)).Select(x => x.mcDescription).FirstOrDefault() is null ? "" : _MK._ViewceMastCostModel.Where(x => x.mcCostPlanningNo == _ViewcceRunCostpalnning[i].rcDocCode + "-" + _ViewcceRunCostpalnning[i].rcYear + "-" + String.Format("{0:D2}", _ViewcceRunCostpalnning[i].rcRunNo)).Select(x => x.mcDescription).FirstOrDefault(),
+                        Description = v_des,
+                        // Description =  _MK._ViewceMastCostModel.Where(x => x.mcCostPlanningNo == _ViewcceRunCostpalnning[i].rcDocCode + "-" + _ViewcceRunCostpalnning[i].rcYear + "-" + String.Format("{0:D2}", _ViewcceRunCostpalnning[i].rcRunNo)) is null ? "" : _MK._ViewceMastCostModel.Where(x => x.mcCostPlanningNo == _ViewcceRunCostpalnning[i].rcDocCode + "-" + _ViewcceRunCostpalnning[i].rcYear + "-" + String.Format("{0:D2}", _ViewcceRunCostpalnning[i].rcRunNo)).Select(x => x.mcDescription).First() ,
                     };
                     //@class._ListGroupViewceMastCostModel.Add(new GroupViewceMastCostModel { CostPlanningNo = _ViewcceRunCostpalnning[i].rcDocCode + "-" + _ViewcceRunCostpalnning[i].rcYear + "-" + String.Format("{0:D2}", _ViewcceRunCostpalnning[i].rcRunNo),
                     //                                                                        Description = _MK._ViewceMastCostModel.Where(x => x.mcCostPlanningNo == _ViewcceRunCostpalnning[i].rcDocCode + "-" + _ViewcceRunCostpalnning[i].rcYear + "-" + String.Format("{0:D2}", _ViewcceRunCostpalnning[i].rcRunNo)).Select(x => x.mcDescription).First()
@@ -110,21 +115,49 @@ namespace CostEstimate.Controllers.AddCost
         }
 
 
-        public ActionResult DeleteMasterPlanning(string DocNo, string ModelName)
+        public ActionResult DeleteMasterPlanning(string DocNo)
         {
             try
             {
                 //var find = _IT.Attachment(X => X.)
-                ViewceMastCostModel find = _MK._ViewceMastCostModel.Where(x => x.mcCostPlanningNo == DocNo && x.mcModelName == ModelName).FirstOrDefault();
+                string[] vDocNo = DocNo.Split('-');
+                string vDoc = vDocNo[0].ToString();
+                string vYear = vDocNo[1].ToString();
+                int vRunNo = int.Parse(vDocNo[2].ToString());
+
+                //cerunCostPalnning
+                ViewcceRunCostpalnning vRun = _MK._ViewcceRunCostpalnning.Where(x => x.rcRunNo == vRunNo && x.rcDocCode == vDoc && x.rcYear == vYear).FirstOrDefault();
+                if (vRun != null)
+                {
+                    _MK._ViewcceRunCostpalnning.Remove(vRun);
+                }
+
+
+                //MastCostModel
+                ViewceMastCostModel find = _MK._ViewceMastCostModel.Where(x => x.mcCostPlanningNo == DocNo).FirstOrDefault();
                 // ViewAttachment find = _IT.Attachment.Where(x => x.fnNo == id && x.fnFilename == vname && x.fnProgram == "CostEstimate").FirstOrDefault();
-                var delete = _MK._ViewceMastCostModel.Remove(find);
+                if (find != null)
+                {
+                    _MK._ViewceMastCostModel.Remove(find);
+                }
+
+
+
+                //ceCostPlanning
+                var products = _MK._ViewceCostPlanning.Where(p => p.cpCostPlanningNo == DocNo).ToList();
+                if (products != null)
+                {
+                    _MK._ViewceCostPlanning.RemoveRange(products);
+                }
+
+
 
 
                 _MK.SaveChanges();
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { res = "error" });
+                return Json(new { res = "error: " + ex.Message });
 
             }
             return Json(new { res = "success" });
@@ -133,6 +166,38 @@ namespace CostEstimate.Controllers.AddCost
             //return Json(_IT.rpEmails.Where(p => p.emEmail.Contains(term) || p.emEmail_M365.Contains(term)).Select(p => p.emEmail_M365).ToList());
 
         }
+
+
+        public ActionResult DeleteMasterModel(string DocNo, string ModelName)
+        {
+            try
+            {
+
+
+                //cerunCostPalnning
+                ViewceMastCostModel vRun = _MK._ViewceMastCostModel.Where(x => x.mcCostPlanningNo == DocNo && x.mcModelName == ModelName).FirstOrDefault();
+                if (vRun != null)
+                {
+                    _MK._ViewceMastCostModel.Remove(vRun);
+                }
+
+
+                
+
+                _MK.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return Json(new { res = "error: " + ex.Message });
+
+            }
+            return Json(new { res = "success" });
+
+
+            //return Json(_IT.rpEmails.Where(p => p.emEmail.Contains(term) || p.emEmail_M365.Contains(term)).Select(p => p.emEmail_M365).ToList());
+
+        }
+
 
         [HttpPost]
         public ActionResult AddMaster(Class @class)
@@ -362,6 +427,9 @@ namespace CostEstimate.Controllers.AddCost
                         _ViewcceRunCostpalnning.rcUpdateBy = IssueBy;
                         _MK._ViewcceRunCostpalnning.AddAsync(_ViewcceRunCostpalnning);
 
+                        
+
+
                         //_ListViewceCostPlanning = Count = 34
                         if (@class._ListViewceCostPlanning.Count() > 0)
                         {
@@ -385,7 +453,7 @@ namespace CostEstimate.Controllers.AddCost
 
                         }
                         _MK.SaveChanges();
-                        dbContextTransaction.Commit();
+                        //dbContextTransaction.Commit();
                     }
                     else
                     {
@@ -413,17 +481,24 @@ namespace CostEstimate.Controllers.AddCost
                                     };
                                     _MK._ViewceCostPlanning.AddAsync(_ViewceCostPlanning);
                                 }
-
+                                //_MK._ViewceCostPlanning.AddRangeAsync(@class._ListViewceCostPlanning);
                             }
+
+                            List<ViewceMastCostModel> _ViewceMastCostModel = _MK._ViewceMastCostModel.Where(x=>x.mcCostPlanningNo == RunCostNo).ToList();
+                            _ViewceMastCostModel.Where(p => p.mcCostPlanningNo == RunCostNo).ToList().ForEach(p =>
+                            {
+                                p.mcDescription = @class.paramCostDes;
+                            });
+                            
                             _MK.SaveChanges();
-                            dbContextTransaction.Commit();
+                            // dbContextTransaction.Commit();
                         }
 
 
                     }
-
+                    dbContextTransaction.Commit();
                     //save cecostplanning
-                  
+
 
                 }
                 catch (Exception ex)

@@ -69,7 +69,7 @@
                                     <td style="text-align:left;">
                                         <span style="font-size:10px">@group.ceCostPlanning[i].cpProcessName</span>
                                         <input asp-for="_ListViewceCostPlanning[RowCount].cpCostPlanningNo" type="text" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none;" value="@group.ceCostPlanning[i].cpCostPlanningNo" />
-                                        <input asp-for="_ListViewceCostPlanning[RowCount].cpNo" type="text" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none;" value="@group.ceCostPlanning[i].cpNo" />
+                                        <input asp-for="_ListViewceCostPlanning[RowCount].cpNo" type="text" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none;" value="@RowCount" />
                                         <input asp-for="_ListViewceCostPlanning[RowCount].cpDescription" type="text" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none;" value="@group.ceCostPlanning[i].cpDescription" />
                                         <input asp-for="_ListViewceCostPlanning[RowCount].cpGroupName" type="text" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none;" value="@group.ceCostPlanning[i].cpGroupName" />
                                         <input asp-for="_ListViewceCostPlanning[RowCount].cpProcessName" type="text" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none;" value="@group.ceCostPlanning[i].cpProcessName" />
@@ -83,6 +83,7 @@
                                     <td style="text-align:left;">
                                         <input asp-for="_ListViewceCostPlanning[RowCount].cpME_Rate" type="number" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;" value="@group.ceCostPlanning[i].cpME_Rate" />
                                         <span style="display:none">@(RowCount += 1)</span>
+                                        @*<input asp-for="_ListViewceCostPlanning[RowCount].cpNo" type="text" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;" value="@(RowCount += 1)" />*@
                                     </td>
                                 </tr>
                             }
