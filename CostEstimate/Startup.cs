@@ -52,7 +52,8 @@ namespace CostEstimate
                options.UseSqlServer(Configuration.GetConnectionString("MOLD")));
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(x => {
+                .AddCookie(x =>
+                {
                     x.Cookie.Name = "Remember";
                     x.ExpireTimeSpan = TimeSpan.FromDays(1);
                     x.LoginPath = "/Login/Index"; //path login
@@ -92,6 +93,7 @@ namespace CostEstimate
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+           
 
             app.UseStaticFiles();
             app.UseAuthentication();

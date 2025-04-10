@@ -378,6 +378,7 @@ col-100 {
     overflow-y: auto;
     /*border: 1px solid #ccc;*/
 }
+
 .table-container400 {
     width: 100%;
     max-height: 400px;
@@ -393,6 +394,7 @@ col-100 {
     border-collapse: collapse;
     width: 100%;
     overflow-y: auto;
+    /*table-layout: fixed; /* ทำให้การจัดเรียงตารางเป็นแบบตายตัว */*/
 }
 
     .summarys td, .summarys th {
@@ -401,6 +403,7 @@ col-100 {
         padding-right: 8px;
         padding-top: 4px;
         padding-bottom: 4px;
+      
         /*padding: 8px;*/
     }
 
@@ -418,6 +421,7 @@ col-100 {
         text-align: left;
         background-color: #cbeff7;
         color: black;
+        vertical-align: baseline;
     }
 
     .summarys thead th {
@@ -461,3 +465,55 @@ col-100 {
         transform: rotate(360deg);
     }
 }
+
+
+
+
+/* Pagination Container */
+/* Pagination Container */
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    /*margin-top: 20px;*/
+}
+
+    /* Pagination Links */
+    .pagination a {
+        padding: 4px 8px;
+        margin: 0 5px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #007bff;
+        font-size: 14px;
+    }
+
+        /* Hover and Active Links */
+        .pagination a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+    /* Active Page */
+    .pagination .active {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+        pointer-events: none; /* Disable click on the active page */
+    }
+
+    /* Disabled Links (Previous and Next) */
+    .pagination .disabled {
+        color: #ccc;
+        pointer-events: none;
+        border-color: #ddd;
+    }
+
+    /* Add ellipsis "..." for large page numbers */
+    .pagination .ellipsis {
+        padding: 8px 16px;
+        color: #007bff;
+        pointer-events: none;
+    }
+
+

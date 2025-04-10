@@ -221,7 +221,45 @@
 
 
                 </div>
-                <div class="grid-item fw-800" style="text-align:left;padding-left:10px">
+                <div class="row">
+                    <div class="col-30 ">
+                        <label style="font-size:14px;font-weight:600">
+                            จำนวน
+                            <span style="color:royalblue">
+                                @Model._ListceMastSubMakerRequest.Count
+                                @*@ViewBag.Listcount*@
+                            </span>
+                            แถว
+                        </label>
+                    </div>
+                    <div class="col-20 fw-800"></div>
+                    <div class="col-50" style="">
+                        <!-- Pagination Section -->
+                        @*<div class="pagination" style="text-align:right">
+                            
+
+                            @if (ViewBag.CurrentPage > 1)
+                            {
+                                <a href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, @class = ViewData.Model })" class="prev">&laquo; Previous</a>
+                            }
+
+                            @for (int i = ViewBag.StartPage; i <= ViewBag.EndPage; i++)
+                            {
+                                <a href="@Url.Action("Index", new { page = i, @class = ViewData.Model })" class="@(i == ViewBag.CurrentPage ? "active" : "")">@i</a>
+                            }
+
+                            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                            {
+                                <a href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1, @class = ViewData.Model })" class="next">Next &raquo;</a>
+                            }
+                           
+
+                        </div>*@
+                    </div>
+                </div>
+
+
+                @*<div class="grid-item fw-800" style="text-align:left;padding-left:10px">
                     <label style="font-size:14px">
                         จำนวน
                         @if (Model._ListceMastSubMakerRequest != null)
@@ -239,7 +277,7 @@
                         แถว
 
                     </label>
-                </div>
+                </div>*@
                 <div class="row center" style="background-color:aliceblue">
                     <div class="col-5 " style="">
 
@@ -261,7 +299,7 @@
                                             <th style="text-align:center">Function</th>
                                             <th style="text-align:center">Mold No. ​</th>
                                             <th style="text-align:center">Mold Name​</th>
-                                            <th style="text-align:center">Cavity No.​</th>
+                                            @*<th style="text-align:center">Cavity No.​</th>*@
                                             <th style="text-align:center">Development Stage</th>
                                             <th style="text-align:center">Issue By ,Date</th>
                                             <th style="text-align:center">Material Out/Date​</th>
@@ -289,7 +327,7 @@
                                                 <td style="text-align:center">@item.smFunction</td>
                                                 <td style="text-align:center">@item.smMoldNo</td>
                                                 <td style="text-align:center">@item.smMoldName</td>
-                                                <td style="text-align:center">@item.smCavityNo</td>
+                                                @*<td style="text-align:center">@item.smCavityNo</td>*@
                                                 <td style="text-align:center">@item.smDevelopmentStage</td>
                                                 <td style="text-align:center">@item.smEmpCodeRequest @item.smNameRequest @item.smIssueDate</td>
                                                 <td style="text-align:center">@item.smMatOutDate @item.smMatOutTime</td>
@@ -341,6 +379,8 @@
                                     }
 
                                 </table>
+
+
                             </div>
 
 

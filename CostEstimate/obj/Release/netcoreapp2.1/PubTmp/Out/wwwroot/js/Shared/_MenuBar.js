@@ -1888,3 +1888,13 @@ function Menubar_AddMasterModel(action) {
     });
 }
 
+
+//main web
+//window.addEventListener("popstate", function (event) {
+//    var confirmation = confirm("Are you sure you want to leave this page?");
+//    if (!confirmation) {
+//        history.pushState(null, null, location.href);  // ป้องกันการย้อนกลับ
+//    }
+//});
+
+//history.pushState(null, "", location.href);

@@ -20,6 +20,9 @@ using OfficeOpenXml;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
+
+using PagedList;
+
 namespace CostEstimate.Controllers.Search
 {
     public class SearchController : Controller
@@ -44,83 +47,114 @@ namespace CostEstimate.Controllers.Search
         }
 
         [Authorize("Checked")]
-        public IActionResult Index(Class @class)
+       //public IActionResult Index(Class @class, int? page)
+       public IActionResult Index(Class @class)
         {
-            List<ViewceMastFlowApprove> _ViewceMastFlowApprove = _MK._ViewceMastFlowApprove.OrderBy(x => x.mfStep).Distinct().ToList();
-            SelectList formStatus = new SelectList(_ViewceMastFlowApprove.Select(s => s.mfSubject).Distinct());
-            ViewBag.vbformStatus = formStatus;
+            try {
+
+                //int pageSize = 10; // จำนวนรายการที่จะแสดงต่อหน้า
+                //int pageNumber = (page ?? 1); // หน้าเริ่มต้นคือหน้า 1 ถ้าไม่มีการระบุ
+
+                List<ViewceMastFlowApprove> _ViewceMastFlowApprove = _MK._ViewceMastFlowApprove.OrderBy(x => x.mfStep).Distinct().ToList();
+                SelectList formStatus = new SelectList(_ViewceMastFlowApprove.Select(s => s.mfSubject).Distinct());
+                ViewBag.vbformStatus = formStatus;
+
+                @class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.OrderByDescending(x => x.smIssueDate).ToList();
+                if (@class._ViewSearchData != null)
+                {
+
+                    if (@class._ViewSearchData.v_DocumentNo != null && @class._ViewSearchData.v_DocumentNo != "")
+                    {
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smDocumentNo.Contains(@class._ViewSearchData.v_DocumentNo)).ToList();
+                    }
+                    if (@class._ViewSearchData.v_status != null)
+                    {
+                        //int smstep = _MK._ViewceMastFlowApprove.Where(x => x.mfSubject.Contains(@class._ViewSearchData.v_status)).Select(x => x.mfStep).FirstOrDefault();
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smStatus.Contains(@class._ViewSearchData.v_status)).ToList();
+                        // @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smStep == smstep).OrderBy(x => x.smStep).ThenBy(x => x.smIssueDate).ToList();
+
+                    }
+                    if (@class._ViewSearchData.v_LotNo != null && @class._ViewSearchData.v_LotNo != "")
+                    {
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smLotNo.Contains(@class._ViewSearchData.v_LotNo)).ToList();
+                    }
+                    if (@class._ViewSearchData.v_MoldNo != null && @class._ViewSearchData.v_MoldNo != "")
+                    {
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smMoldNo.Contains(@class._ViewSearchData.v_MoldNo)).ToList();
+                    }
+                    if (@class._ViewSearchData.v_CusName != null && @class._ViewSearchData.v_CusName != "")
+                    {
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smCustomerName.Contains(@class._ViewSearchData.v_CusName)).ToList();
+                    }
+                    if (@class._ViewSearchData.v_ModelName != null && @class._ViewSearchData.v_ModelName != "")
+                    {
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smModelName.Contains(@class._ViewSearchData.v_ModelName)).ToList();
+                    }
+                    if (@class._ViewSearchData.v_CavityNo != null && @class._ViewSearchData.v_CavityNo != "")
+                    {
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smCavityNo == int.Parse(@class._ViewSearchData.v_CavityNo)).ToList();
+                    }
+                    if (@class._ViewSearchData.v_Function != null && @class._ViewSearchData.v_Function != "")
+                    {
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smFunction.Contains(@class._ViewSearchData.v_Function)).ToList();
+                    }
+                    if (@class._ViewSearchData.v_DevelopmentStage != null && @class._ViewSearchData.v_DevelopmentStage != "")
+                    {
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smDevelopmentStage.Contains(@class._ViewSearchData.v_DevelopmentStage)).ToList();
+                    }
+
+                    //Material
+                    if (@class._ViewSearchData.v_MaterialOutDateFrom != null && @class._ViewSearchData.v_MaterialOutDateFrom != "")
+                    {
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smMatOutDate) >= DateTime.Parse(@class._ViewSearchData.v_MaterialOutDateFrom)).ToList();
+                    }
+                    if (@class._ViewSearchData.v_MaterialOutDateTo != null && @class._ViewSearchData.v_MaterialOutDateTo != "")
+                    {
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smMatOutDate) <= DateTime.Parse(@class._ViewSearchData.v_MaterialOutDateTo)).ToList();
+                    }
+
+                    //DaliverryDate
+                    if (@class._ViewSearchData.v_DaliverryDateFrom != null && @class._ViewSearchData.v_DaliverryDateFrom != "")
+                    {
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smDeliveryDate) >= DateTime.Parse(@class._ViewSearchData.v_DaliverryDateFrom)).ToList();
+                    }
+                    if (@class._ViewSearchData.v_DaliverryDateTo != null && @class._ViewSearchData.v_MaterialOutDateTo != "")
+                    {
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smDeliveryDate) <= DateTime.Parse(@class._ViewSearchData.v_DaliverryDateTo)).ToList();
+                    }
 
 
-            if (@class._ViewSearchData != null)
+                }
+               // ViewBag.Listcount = @class._ListceMastSubMakerRequest.Count();
+               // var pagedList = @class._ListceMastSubMakerRequest
+               //.Skip((pageNumber - 1) * pageSize) // ข้ามหน้าที่แล้ว
+               //.Take(pageSize) // เลือกข้อมูลในหน้า
+               //.ToList();
+
+               // // คำนวณจำนวนหน้าทั้งหมด
+               // ViewBag.CurrentPage = pageNumber;
+               // //ViewBag.TotalPages = Math.Ceiling((double)@class._ListceMastSubMakerRequest.Count() / pageSize);
+               // ViewBag.TotalPages = (int)Math.Ceiling((double)@class._ListceMastSubMakerRequest.Count() / pageSize);
+               // // คำนวณหน้าใกล้เคียงที่จะแสดง (เช่น 3 หน้า)
+               // int startPage = Math.Max(1, pageNumber - 1); // คำนวณหน้าเริ่มต้น (แสดงหน้า 1 ถึง 3)
+               // int endPage = Math.Min(ViewBag.TotalPages, pageNumber + 1); // คำนวณหน้าสิ้นสุด
+
+
+
+               // ViewBag.StartPage = startPage;
+               // ViewBag.EndPage = endPage;
+
+               // @class._ListceMastSubMakerRequest = pagedList; // ส่งข้อมูลที่แบ่งหน้าแล้วไปยัง View
+            }
+            catch(Exception ex)
             {
-                @class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.OrderByDescending(x=>x.smIssueDate).ToList();
-                if (@class._ViewSearchData.v_DocumentNo != null && @class._ViewSearchData.v_DocumentNo != "")
-                {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smDocumentNo.Contains(@class._ViewSearchData.v_DocumentNo)).ToList();
-                }
-                if (@class._ViewSearchData.v_status != null)
-                {
-                    //int smstep = _MK._ViewceMastFlowApprove.Where(x => x.mfSubject.Contains(@class._ViewSearchData.v_status)).Select(x => x.mfStep).FirstOrDefault();
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smStatus.Contains(@class._ViewSearchData.v_status)).ToList();
-                   // @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smStep == smstep).OrderBy(x => x.smStep).ThenBy(x => x.smIssueDate).ToList();
-
-                }
-                if (@class._ViewSearchData.v_LotNo != null && @class._ViewSearchData.v_LotNo != "")
-                {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smLotNo.Contains(@class._ViewSearchData.v_LotNo)).ToList();
-                }
-                if (@class._ViewSearchData.v_MoldNo != null && @class._ViewSearchData.v_MoldNo != "")
-                {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smMoldNo.Contains(@class._ViewSearchData.v_MoldNo)).ToList();
-                }
-                if (@class._ViewSearchData.v_CusName != null && @class._ViewSearchData.v_CusName != "")
-                {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smCustomerName.Contains(@class._ViewSearchData.v_CusName)).ToList();
-                }
-                if (@class._ViewSearchData.v_ModelName != null && @class._ViewSearchData.v_ModelName != "")
-                {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smModelName.Contains(@class._ViewSearchData.v_ModelName)).ToList();
-                }
-                if (@class._ViewSearchData.v_CavityNo != null && @class._ViewSearchData.v_CavityNo != "")
-                {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smCavityNo == int.Parse(@class._ViewSearchData.v_CavityNo)).ToList();
-                }
-                if (@class._ViewSearchData.v_Function != null && @class._ViewSearchData.v_Function != "")
-                {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smFunction.Contains(@class._ViewSearchData.v_Function)).ToList();
-                }
-                if (@class._ViewSearchData.v_DevelopmentStage != null && @class._ViewSearchData.v_DevelopmentStage != "")
-                {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smDevelopmentStage.Contains(@class._ViewSearchData.v_DevelopmentStage)).ToList();
-                }
-
-                //Material
-                if (@class._ViewSearchData.v_MaterialOutDateFrom != null && @class._ViewSearchData.v_MaterialOutDateFrom != "")
-                {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smMatOutDate) >= DateTime.Parse(@class._ViewSearchData.v_MaterialOutDateFrom)).ToList();
-                }
-                if (@class._ViewSearchData.v_MaterialOutDateTo != null && @class._ViewSearchData.v_MaterialOutDateTo != "")
-                {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smMatOutDate) <= DateTime.Parse(@class._ViewSearchData.v_MaterialOutDateTo)).ToList();
-                }
-
-                //DaliverryDate
-                if (@class._ViewSearchData.v_DaliverryDateFrom != null && @class._ViewSearchData.v_DaliverryDateFrom != "")
-                {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smDeliveryDate) >= DateTime.Parse(@class._ViewSearchData.v_DaliverryDateFrom)).ToList();
-                }
-                if (@class._ViewSearchData.v_DaliverryDateTo != null && @class._ViewSearchData.v_MaterialOutDateTo != "")
-                {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smDeliveryDate) <= DateTime.Parse(@class._ViewSearchData.v_DaliverryDateTo)).ToList();
-                }
-
-
+                string a = ex.Message;
             }
 
             return View(@class);
         }
 
-        
+
         public IActionResult btnExportExcel(Class @class)
         {
             string slipMat = DateTime.Now.ToString("yyyyMMdd:HHmmss");
@@ -186,47 +220,81 @@ namespace CostEstimate.Controllers.Search
 
 
             }
-
-
-            using (var package = new ExcelPackage())
+            using (ExcelPackage package = new ExcelPackage())
             {
-                var addWorkSheet = package.Workbook.Worksheets.Add("Sheet1");
-                int onRow = 1;
-                int mainCol = 1;
+                var worksheet = package.Workbook.Worksheets.Add("Sheet1");
 
+                int startRow = 1;
 
-                foreach (string name in Header_FileExport)
+                // เขียนหัวตาราง (ชื่อ property)
+                var properties = typeof(ViewceMastSubMakerRequest).GetProperties();
+                for (int col = 0; col < properties.Length; col++)
                 {
-                    addWorkSheet.Cells[1, mainCol].Value = name;
-                    mainCol++;
-                }
-                foreach (var item in @class._ListceMastSubMakerRequest)
-                {
-                    onRow++;
-                    addWorkSheet.Cells[onRow, 1].Value = onRow - 1;
-                    addWorkSheet.Cells[onRow, 2].Value = item.smDocumentNo;
-                    addWorkSheet.Cells[onRow, 3].Value = item.smLotNo;
-                    addWorkSheet.Cells[onRow, 4].Value = item.smCustomerName;
-                    addWorkSheet.Cells[onRow, 5].Value = item.smRevision;
-                    addWorkSheet.Cells[onRow, 6].Value = item.smModelName;
-                    addWorkSheet.Cells[onRow, 7].Value = item.smFunction;
-                    addWorkSheet.Cells[onRow, 8].Value = item.smMoldNo;
-                    addWorkSheet.Cells[onRow, 9].Value = item.smMoldName;
-                    addWorkSheet.Cells[onRow, 10].Value = item.smCavityNo;
-                    addWorkSheet.Cells[onRow, 11].Value = item.smDevelopmentStage;
-                    addWorkSheet.Cells[onRow, 12].Value = item.smMatOutDate + " : " + item.smMatOutTime;
-                    addWorkSheet.Cells[onRow, 13].Value = item.smDeliveryDate + " : " + item.smDeliveryTime;
-                    addWorkSheet.Cells[onRow, 14].Value = item.smEmpCodeApprove + " : " + item.smNameApprove;
-                    addWorkSheet.Cells[onRow, 15].Value = item.smStatus;
+                    worksheet.Cells[startRow, col + 1].Value = properties[col].Name;
                 }
 
+                // เขียนข้อมูลจาก list
+                for (int row = 0; row < @class._ListceMastSubMakerRequest.Count; row++)
+                {
+                    for (int col = 0; col < properties.Length; col++)
+                    {
+                        var value = properties[col].GetValue(@class._ListceMastSubMakerRequest[row]);
+                        worksheet.Cells[row + 2, col + 1].Value = value;
+                    }
+                }
 
+                // Auto fit column width
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+                // Export เป็น stream
                 var stream = new MemoryStream();
                 package.SaveAs(stream);
                 stream.Position = 0;
 
+                // ส่งไฟล์ออก (ใช้ใน ASP.NET Core)
+                // string fileName = $"Export_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
                 return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
             }
+
+            //using (var package = new ExcelPackage())
+            //{
+            //    var addWorkSheet = package.Workbook.Worksheets.Add("Sheet1");
+            //    int onRow = 1;
+            //    int mainCol = 1;
+
+
+            //    foreach (string name in Header_FileExport)
+            //    {
+            //        addWorkSheet.Cells[1, mainCol].Value = name;
+            //        mainCol++;
+            //    }
+            //    foreach (var item in @class._ListceMastSubMakerRequest)
+            //    {
+            //        onRow++;
+            //        addWorkSheet.Cells[onRow, 1].Value = onRow - 1;
+            //        addWorkSheet.Cells[onRow, 2].Value = item.smDocumentNo;
+            //        addWorkSheet.Cells[onRow, 3].Value = item.smLotNo;
+            //        addWorkSheet.Cells[onRow, 4].Value = item.smCustomerName;
+            //        addWorkSheet.Cells[onRow, 5].Value = item.smRevision;
+            //        addWorkSheet.Cells[onRow, 6].Value = item.smModelName;
+            //        addWorkSheet.Cells[onRow, 7].Value = item.smFunction;
+            //        addWorkSheet.Cells[onRow, 8].Value = item.smMoldNo;
+            //        addWorkSheet.Cells[onRow, 9].Value = item.smMoldName;
+            //        addWorkSheet.Cells[onRow, 10].Value = item.smCavityNo;
+            //        addWorkSheet.Cells[onRow, 11].Value = item.smDevelopmentStage;
+            //        addWorkSheet.Cells[onRow, 12].Value = item.smMatOutDate + " : " + item.smMatOutTime;
+            //        addWorkSheet.Cells[onRow, 13].Value = item.smDeliveryDate + " : " + item.smDeliveryTime;
+            //        addWorkSheet.Cells[onRow, 14].Value = item.smEmpCodeApprove + " : " + item.smNameApprove;
+            //        addWorkSheet.Cells[onRow, 15].Value = item.smStatus;
+            //    }
+
+
+            //    var stream = new MemoryStream();
+            //    package.SaveAs(stream);
+            //    stream.Position = 0;
+
+            //    return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            //}
         }
 
         [HttpPost]
@@ -326,6 +394,12 @@ namespace CostEstimate.Controllers.Search
                         addWorkSheet.Cells[onRow, 13].Value = item.smEmpCodeApprove + " : " + item.smNameApprove;
                         addWorkSheet.Cells[onRow, 14].Value = item.smStatus;
                     }
+
+                    //int vRow = 1;
+                    //int columnCount = typeof(ViewceMastSubMakerRequest).GetProperties().Length;
+
+
+
                     //FileInfo fileTemp = new FileInfo(TempPath + fileName);
                     //package.SaveAs(fileTemp);
                     //byte[] fileByte = System.IO.File.ReadAllBytes(TempPath + fileName);

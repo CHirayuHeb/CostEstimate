@@ -11,10 +11,8 @@
 <link href="~/css/Home/siteHome.css" rel="stylesheet" />
 @*summary*@
 <div class="row center" style="@(Model._ViewceMastSubMakerRequest.smStep == 7 ? "pointer-events: none; " : "")">
-    <div class="col-5 " style="">
 
-    </div>
-    <div class="col-90 " style="border:1.5px solid gray;padding:10px">
+    <div class="col-100 " style="border:1.5px solid gray;padding:10px">
         <div class="row center">
             <div class="col-5 " style="">
                 <div class="grid-item fw-800 center" style="text-align:left;text-decoration: underline;font-size:13px">Summary</div>
@@ -85,9 +83,7 @@
         </div>
 
     </div>
-    <div class="col-5 " style="">
 
-    </div>
 </div>
 
 <script>
@@ -101,16 +97,41 @@
         let New_RoundUp = document.getElementById("i_New_RoundUp") ? parseFloat(document.getElementById("i_New_RoundUp").value) || 0 : 0;//19
 
         let i_New_TotalCost = parseFloat(ProcessCost + New_OrderMatl).toFixed(2);
-        let i_New_RoundUp = parseFloat(TotalCost).toFixed(2);
+        let i_New_RoundUp = Math.ceil(parseFloat(ProcessCost + New_OrderMatl).toFixed(2));
+        //let i_New_RoundUp = parseFloat(TotalCost).toFixed(2);
         let i_New_TotalProCost = parseFloat(TotalProcessWT + ProcessCost + New_OrderMatl + TotalCost + New_RoundUp).toFixed(2);
+        let TotalsumMAN = 0;
+        let TotalsumTOTAL = 0;
+        $('input.dsWT_Auto').each(function () {
+            const className = ($(this).attr('class') || '').toLowerCase();
+            let value = 0;
+            if (className.includes('nc.')) {
+                // ทำอะไรกับ element ที่มี "NC."
+                let value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
+                TotalsumMAN += value
+            }
+        });
 
+        $('input.dsWT_Man').each(function () {
+            const className = ($(this).attr('class') || '').toLowerCase();
+            let value = 0;
+            if (!className.includes('nc.')) {
+                // ทำอะไรกับ element ที่มี "NC."
+                value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
+                TotalsumTOTAL += value;
+
+
+            }
+        });
+
+        $("#i_New_TotalProcessWT").val((TotalsumTOTAL + TotalsumMAN).toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
 
         $("#i_New_TotalCost").val(i_New_TotalCost); // Set ค่า Sum Total
         $("#i_New_RoundUp").val(i_New_RoundUp); // Set ค่า Sum Total
-        $("#i_New_TotalProCost").val(i_New_TotalProCost);  // Set ค่า Sum Total
+        $("#i_New_TotalProCost").val(i_New_RoundUp);  // Set ค่า Sum Total
+        // i_New_RoundUp
 
     }
-
     FuntionTotalProCost();
 
 </script>

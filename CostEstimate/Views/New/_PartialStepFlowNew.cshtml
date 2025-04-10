@@ -1,0 +1,111 @@
+﻿@model CostEstimate.Models.Common.Class;
+<div class="card-body" id="FormFlow" style="background-color: unset;padding-top:10px;">
+    <div class="grid-item fw-800 center " style="text-align:left;font-size:15px">Approve and Check step </div>
+
+    <br />
+
+    <div>
+        <div class="containerli">
+            <ul class="progressbar">
+                @if (@Model._ListceMastFlowApprove != null && @Model._ViewceMastSubMakerRequest != null)
+                {
+                    @for (int i = 0; i < Model._ListceMastFlowApprove.Count - 1; i++)
+                    {
+                        <li class="@(@Model._ViewceMastSubMakerRequest.smStep >= i ? "active" : "")">
+                            <span style="@(@Model._ViewceMastSubMakerRequest.smStep >= i ? "font-size:11px;color:green;font-weight: 700":"font-size:10px;color:black")" class="step-title">@Model._ListceMastFlowApprove[i].mfSubject</span>
+
+
+                            @*<span style="font-size:10px;color:black" class="step-title">@Model._ListceMastFlowApprove[i].mfSubject</span>*@
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+
+
+
+       
+    </div>
+    <hr />
+</div>
+
+
+
+<style>
+
+    .containerli {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    .progressbar {
+        counter-reset: step;
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        margin: 40px 0;
+        padding: 0;
+    }
+
+        .progressbar li {
+            list-style: none;
+            text-align: center;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+            .progressbar li::before {
+                content: counter(step);
+                counter-increment: step;
+                width: 45px;
+                height: 45px;
+                line-height: 45px;
+                border: 2px solid #ccc;
+                display: block;
+                text-align: center;
+                margin: 0 auto 10px auto;
+                border-radius: 50%;
+                background-color: white;
+                color: #999;
+                font-weight: bold;
+                transition: all 0.4s ease;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            }
+
+            .progressbar li::after {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 4px;
+                background-color: #ccc;
+                top: 22px;
+                left: -25%;
+                z-index: -1;
+                transition: background-color 0.4s ease;
+            }
+
+            .progressbar li:first-child::after {
+                content: none;
+            }
+
+            .progressbar li.active::before {
+                background-color: #4CAF50;
+                border-color: #4CAF50;
+                color: white;
+                box-shadow: 0 4px 10px rgba(76, 175, 80, 0.4);
+            }
+
+            .progressbar li.active + li::after {
+                background-color: #4CAF50;
+            }
+
+            .progressbar li span {
+                display: block;
+                margin-top: 6px;
+                font-size: 15px;
+                color: #333;
+            }
+
+
+</style>

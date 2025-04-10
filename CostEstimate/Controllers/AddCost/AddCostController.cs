@@ -134,11 +134,11 @@ namespace CostEstimate.Controllers.AddCost
 
 
                 //MastCostModel
-                ViewceMastCostModel find = _MK._ViewceMastCostModel.Where(x => x.mcCostPlanningNo == DocNo).FirstOrDefault();
+                var find = _MK._ViewceMastCostModel.Where(x => x.mcCostPlanningNo == DocNo).ToList();
                 // ViewAttachment find = _IT.Attachment.Where(x => x.fnNo == id && x.fnFilename == vname && x.fnProgram == "CostEstimate").FirstOrDefault();
                 if (find != null)
                 {
-                    _MK._ViewceMastCostModel.Remove(find);
+                    _MK._ViewceMastCostModel.RemoveRange(find);
                 }
 
 
@@ -182,7 +182,7 @@ namespace CostEstimate.Controllers.AddCost
                 }
 
 
-                
+
 
                 _MK.SaveChanges();
             }
@@ -427,7 +427,7 @@ namespace CostEstimate.Controllers.AddCost
                         _ViewcceRunCostpalnning.rcUpdateBy = IssueBy;
                         _MK._ViewcceRunCostpalnning.AddAsync(_ViewcceRunCostpalnning);
 
-                        
+
 
 
                         //_ListViewceCostPlanning = Count = 34
@@ -484,12 +484,12 @@ namespace CostEstimate.Controllers.AddCost
                                 //_MK._ViewceCostPlanning.AddRangeAsync(@class._ListViewceCostPlanning);
                             }
 
-                            List<ViewceMastCostModel> _ViewceMastCostModel = _MK._ViewceMastCostModel.Where(x=>x.mcCostPlanningNo == RunCostNo).ToList();
+                            List<ViewceMastCostModel> _ViewceMastCostModel = _MK._ViewceMastCostModel.Where(x => x.mcCostPlanningNo == RunCostNo).ToList();
                             _ViewceMastCostModel.Where(p => p.mcCostPlanningNo == RunCostNo).ToList().ForEach(p =>
                             {
                                 p.mcDescription = @class.paramCostDes;
                             });
-                            
+
                             _MK.SaveChanges();
                             // dbContextTransaction.Commit();
                         }

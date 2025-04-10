@@ -35,11 +35,15 @@ namespace CostEstimate.Controllers.Account
         }
         public IActionResult Index(string DocumentNo)
         {
-            //string remember = User.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value;
+            string remember = User.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value;
             Class @class = new Class();
             if (DocumentNo != null)
                 @class.param = DocumentNo;
 
+            if (remember != null)
+            {
+                return RedirectToAction("RememberMe", "Login", @class);
+            }
             return View(@class);
         }
 
@@ -59,27 +63,18 @@ namespace CostEstimate.Controllers.Account
                 accData = _HRMS.AccEMPLOYEE.FirstOrDefault(x => x.EMP_CODE == _ViewLoginPgm.Empcode);
                 if (accData != null)
                 {
-                    string[] stat = await Task.Run(() => SetClaim(accData, _ViewLoginPgm.Permission));
+                    string[] stat = await Task.Run(() => SetClaim(accData, _ViewLoginPgm.Permission, sUsername, sPassword));
                     if (stat[0] == "Ok")
                     {
-                        if(@class.param != null){
-                            return RedirectToAction("Index", "New",new { smDocumentNo  = @class.param });
+                        if (@class.param != null)
+                        {
+                            return RedirectToAction("Index", "New", new { smDocumentNo = @class.param });
                         }
-                        else{
+                        else
+                        {
                             return RedirectToAction("Index", "Home");
                         }
 
-                     
-
-
-                        //if (TempData["vSrNo"] != null)
-                        //{
-                        //    return RedirectToAction("Index", "FakePage", new { vSrNo = TempData["vSrNo"] });
-                        //}
-                        //else
-                        //{
-                        //    return RedirectToAction("Index", "Home");
-                        //}
 
                     }
                     else
@@ -106,7 +101,7 @@ namespace CostEstimate.Controllers.Account
 
         }
 
-        public async Task<string[]> SetClaim(ViewAccEMPLOYEE accdata,string vAccess)
+        public async Task<string[]> SetClaim(ViewAccEMPLOYEE accdata, string vAccess, string vusername, string vpassword)
         {
             try
             {
@@ -142,7 +137,10 @@ namespace CostEstimate.Controllers.Account
                 claims.Add(new Claim(ClaimTypes.Name, acc.EMP_CODE.ToString()));
                 claims.Add(new Claim(ClaimTypes.Actor, acc.EMP_TNAME + " " + acc.LAST_TNAME));
                 claims.Add(new Claim("UserId", acc.EMP_CODE.ToString()));
-                //claims.Add(new Claim("Password", login.Password.ToString()));
+
+                claims.Add(new Claim("Username", vusername?.ToString()));
+                claims.Add(new Claim("Password", vpassword?.ToString()));
+
                 claims.Add(new Claim("EmpCode", acc.EMP_CODE?.ToString()));
                 claims.Add(new Claim("Permission", vAccess?.ToString()));
                 // claims.Add(new Claim(ClaimTypes.Role, login.Permission?.ToString()));
@@ -159,12 +157,16 @@ namespace CostEstimate.Controllers.Account
                 claims.Add(new Claim("SurName", acc.LAST_TNAME));
                 claims.Add(new Claim("NICKNAME", acc.NICKNAME.ToUpper()));
                 claims.Add(new Claim("Email", Email));
-              
+
                 ClaimsIdentity identity = new ClaimsIdentity(claims,
                     CookieAuthenticationDefaults.AuthenticationScheme);
                 ClaimsPrincipal principal = new ClaimsPrincipal(identity);
                 await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme
-                    , principal, new AuthenticationProperties() { IsPersistent = true }); //true is remember login
+                    , principal, new AuthenticationProperties()
+                    {
+                        IsPersistent = true,
+                        ExpiresUtc = DateTime.UtcNow.AddMinutes(30)
+                    }); //true is remember login
 
                 string[] stat = { "Ok" };
                 return stat;
@@ -222,29 +224,26 @@ namespace CostEstimate.Controllers.Account
             try
             {
                 ViewLogin login = new ViewLogin();
-
-                string sUsername = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value;
+                string sUsername = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "Username")?.Value;
                 string sPassword = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "Password")?.Value;
-
-                if (sUsername != GlobalVariable.AdminUserName && sPassword != GlobalVariable.AdminPassword)
-                {
-                    login = _LAMP.Login.FirstOrDefault(s => s.UserId == sUsername && s.Password == sPassword && s.Program == GlobalVariable.ProgramName);
-                }
-                else
-                {
-                    login.UserId = GlobalVariable.AdminUserName;
-                    login.Password = GlobalVariable.AdminPassword;
-                    login.Permission = GlobalVariable.AdminPermission;
-                }
-
-                string[] stat = await Task.Run(() => SetClaim(login));
-
+                // login = _LAMP.Login.FirstOrDefault(s => s.UserId == sUsername && s.Password == sPassword && s.Program == GlobalVariable.ProgramName);
+                ViewLoginPgm _ViewLoginPgm = _MK._ViewLoginPgm.FirstOrDefault(x => x.UserId == sUsername && x.Password == sPassword && x.Program == "CostEstimateRequest");
+                // string[] stat = await Task.Run(() => SetClaim(login));
+                ViewAccEMPLOYEE accData = new ViewAccEMPLOYEE();
+                accData = _HRMS.AccEMPLOYEE.FirstOrDefault(x => x.EMP_CODE == _ViewLoginPgm.Empcode);
+                string[] stat = await Task.Run(() => SetClaim(accData, _ViewLoginPgm.Permission, sUsername, sPassword));
                 if (stat[0] == "Ok")
                 {
-                    if (@class.param != null && @class.param != "")
-                        return RedirectToAction("Index", "Approval", new { req = @class.param });
+                    if (@class.param != null)
+                    {
+                        return RedirectToAction("Index", "New", new { smDocumentNo = @class.param });
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
 
-                    return RedirectToAction("Index", "Home");
+
                 }
 
                 await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -335,7 +334,11 @@ namespace CostEstimate.Controllers.Account
                     CookieAuthenticationDefaults.AuthenticationScheme);
                 ClaimsPrincipal principal = new ClaimsPrincipal(identity);
                 await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme
-                    , principal, new AuthenticationProperties() { IsPersistent = true }); //true is remember login
+                    , principal, new AuthenticationProperties()
+                    {
+                        IsPersistent = true,
+                        ExpiresUtc = DateTime.UtcNow.AddMinutes(30)
+                    }); //true is remember login
 
                 string[] stat = { "Ok" };
                 return stat;

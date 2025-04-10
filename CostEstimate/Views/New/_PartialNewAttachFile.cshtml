@@ -1,6 +1,7 @@
 ﻿@model CostEstimate.Models.Common.Class;
 @{
     //string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
     string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
     string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
     string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
@@ -19,12 +20,11 @@
             <div class="col-20 " style="">
                 <div class="grid-item fw-800 center" style="text-align:left;text-decoration: underline;font-size:13px">Attach file</div>
             </div>
-            <div class="col-80 " style="">
-            </div>
-        </div>
-        <div class="row center">
-            <div class="col-80 " style="">
-                <input name="files" type="file" id="files" multiple="" class="button btnGray " style="@(Model._ViewceMastSubMakerRequest.smStep == 7 ? "pointer-events: none;width:300px;margin-right:10px; " : "width:300px;margin-right:10px;")">
+            <div class="col-80 " style="text-align:left">
+                <input name="files" type="file" id="files" multiple="" class="button btnGray " style="width:auto; @(Model._ViewceMastSubMakerRequest.smStep == 7
+                                                                            || (Model._ViewceMastSubMakerRequest.smStep == 0 && (Model._ViewceMastSubMakerRequest.smEmpCodeRequest != null && Model._ViewceMastSubMakerRequest.smEmpCodeRequest != "") && Model._ViewceMastSubMakerRequest.smEmpCodeRequest != _UserId )
+                                                                            || (Model._ViewceMastSubMakerRequest.smStep > 0 && (Model._ViewceMastSubMakerRequest.smEmpCodeApprove != null && Model._ViewceMastSubMakerRequest.smEmpCodeApprove != "") && Model._ViewceMastSubMakerRequest.smEmpCodeApprove != _UserId )
+                                                                            ? "pointer-events: none;" : "")">
                 <button type="button" class="button notification" style="width:auto; height:28px;background-color:#7286D3" data-bs-dismiss="modal" id="btnfile">
                     <img src="~/images/open-folder.png" style="width:25px;height:25px;margin-left:0px;text-align:left">
                     @*<span class="badge">2</span>*@
@@ -36,9 +36,8 @@
                     @*<span class="badge">0</span>*@
                 </button>
             </div>
-            <div class="col-20 " style="">
-            </div>
         </div>
+    
     </div>
     <div class="col-5 " style="">
 

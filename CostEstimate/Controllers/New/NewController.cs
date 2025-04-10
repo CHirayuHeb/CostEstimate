@@ -60,9 +60,9 @@ namespace CostEstimate.Controllers.New
         //public IActionResult Index(Class @class, string smLotNo, string smOrderNo, string smRevision)
         public IActionResult Index(Class @class, string smDocumentNo, string smRevision)
         {
-            
 
-            List <ViewmtMaster_Mold_Control> _ViewmtMaster_Mold_Control = _MOLD._ViewmtMaster_Mold_Control.OrderBy(x => x.mcLedger_Number).Distinct().ToList();
+
+            List<ViewmtMaster_Mold_Control> _ViewmtMaster_Mold_Control = _MOLD._ViewmtMaster_Mold_Control.OrderBy(x => x.mcLedger_Number).Distinct().ToList();
             SelectList formMaster_Mold_Control = new SelectList(_ViewmtMaster_Mold_Control.Select(s => s.mcLedger_Number).Distinct());
             ViewBag.vbformMaster_Mold_Control = formMaster_Mold_Control;
 
@@ -77,10 +77,10 @@ namespace CostEstimate.Controllers.New
                 {
                     //@class._ViewceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smLotNo == smLotNo && x.smOrderNo == smOrderNo && x.smRevision == smRevision).FirstOrDefault();
                     @class._ViewceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smDocumentNo == smDocumentNo).FirstOrDefault();
-                    if(@class._ViewceMastSubMakerRequest == null)
+                    if (@class._ViewceMastSubMakerRequest == null)
                     {
                         return RedirectToAction("Index", "PageNotFound");
-                       // return View(@class);
+                        // return View(@class);
                     }
 
                     //@class._ListceDetailSubMakerRequest = _MK._ViewceDetailSubMakerRequest.Where(x => x.dsDocumentNo == smDocumentNo).ToList();
@@ -185,7 +185,7 @@ namespace CostEstimate.Controllers.New
             {
 
                 List<ViewceMastProcess> _ListceMastProcess = new List<ViewceMastProcess>();
-                string v_CostPlanningNo = _MK._ViewceMastCostModel.Where(x => x.mcModelName == search).OrderByDescending(x=> x.mcCostPlanningNo).Select(x => x.mcCostPlanningNo).First();
+                string v_CostPlanningNo = _MK._ViewceMastCostModel.Where(x => x.mcModelName == search).OrderByDescending(x => x.mcCostPlanningNo).Select(x => x.mcCostPlanningNo).First();
 
                 List<ViewceCostPlanning> _ViewceCostPlanning = new List<ViewceCostPlanning>();
                 var v_ListceCostPlanning = _MK._ViewceCostPlanning.Where(x => x.cpCostPlanningNo == v_CostPlanningNo).ToList();
@@ -281,7 +281,7 @@ namespace CostEstimate.Controllers.New
             int v_step = @classs._ViewceMastSubMakerRequest != null ? @classs._ViewceMastSubMakerRequest.smStep : 0;
             string v_issue = @classs._ViewceMastSubMakerRequest != null ? @classs._ViewceMastSubMakerRequest.smEmpCodeRequest : "";
             List<ViewceHistoryApproved> _listHistory = new List<ViewceHistoryApproved>();
-            partialUrl = Url.Action("SendMail", "New", new { @class = @classs, s_step = v_step , s_issue =v_issue });
+            partialUrl = Url.Action("SendMail", "New", new { @class = @classs, s_step = v_step, s_issue = v_issue });
             try
             {
                 if (@classs._ViewceMastSubMakerRequest != null)
@@ -308,7 +308,7 @@ namespace CostEstimate.Controllers.New
         }
 
         //[HttpPost]
-        public ActionResult SendMail(Class @class, int s_step,string s_issue)
+        public ActionResult SendMail(Class @class, int s_step, string s_issue)
         {
             ViewBag.vDate = DateTime.Now.ToString("yyyy/MM/dd") + " " + DateTime.Now.ToString("HH:mm:ss");
             string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
@@ -316,13 +316,22 @@ namespace CostEstimate.Controllers.New
             @class._ViewceHistoryApproved = new ViewceHistoryApproved();
             var v_emailFrom = _IT.rpEmails.Where(x => x.emEmpcode == _UserId).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
 
+         
+            //get emp operator
+            var v_empstep = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step) != null ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step).Select(x => x.mfTo).FirstOrDefault() : "";
+            if (v_empstep != null) //step 2-5
+            {
+                var v_emailTo = _IT.rpEmails.Where(x => x.emEmpcode == v_empstep).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
+                @class._ViewceHistoryApproved.htTo = v_emailTo;
+            }
+          
             //step 6 Waiting Apporve By DM For ST Department ==> issue
-            if (s_step ==6)
+            if (s_step == 6)
             {
                 var v_emailTo = _IT.rpEmails.Where(x => x.emEmpcode == s_issue).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
                 @class._ViewceHistoryApproved.htTo = v_emailTo;
             }
-          
+
 
             //step 4 fix ST dept check
 
@@ -454,41 +463,43 @@ namespace CostEstimate.Controllers.New
                 if (config == "S")
                 {
                     //check dm cs , DM Step 0-3  , ST Step 4-7
-                    //if (i_Step < 3)
-                    //{
-                    //    //check emp positon
-                    //    try
-                    //    {
-                    //        string v_POS_HCM_CODE = "";
-                    //        string v_empcsup = _IT.rpEmails.Where(w => w.emName_M365 == @class._ViewceHistoryApproved.htTo).Select(x => x.emEmpcode).FirstOrDefault();
+                    if (i_Step < 3)
+                    {
+                        //check emp positon
+                        try
+                        {
+                            string v_POS_HCM_CODE = "";
+                            string v_empcsup = _IT.rpEmails.Where(w => w.emName_M365 == @class._ViewceHistoryApproved.htTo).Select(x => x.emEmpcode).FirstOrDefault();
 
-                    //        if (i_Step == 1) //GL up
-                    //        {
-                    //            v_POS_HCM_CODE = _HRMS.AccPOSMAST.Where(x => x.POS_CODE == "TL").Select(x => x.POS_HCM_CODE).FirstOrDefault();
-                    //        }
-                    //        else if (i_Step == 2) //DM up
-                    //        {
-                    //            v_POS_HCM_CODE = _HRMS.AccPOSMAST.Where(x => x.POS_CODE == "DDM").Select(x => x.POS_HCM_CODE).FirstOrDefault();
-                    //        }
+                            if (i_Step == 1) //GL up
+                            {
+                                v_POS_HCM_CODE = _HRMS.AccPOSMAST.Where(x => x.POS_CODE == "TL").Select(x => x.POS_HCM_CODE).FirstOrDefault();
+                                msg = "Please send approval to GL Up of Dept.!!!";
+                            }
+                            else if (i_Step == 2) //DM up
+                            {
+                                v_POS_HCM_CODE = _HRMS.AccPOSMAST.Where(x => x.POS_CODE == "DDM").Select(x => x.POS_HCM_CODE).FirstOrDefault();
+                                msg = "Please send approval to DM Up of Dept.!!!";
+                            }
 
-                    //        ViewAccEMPLOYEE _ViewAccEMPLOYEE = _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == v_empcsup).FirstOrDefault();
-                    //        List<ViewAccPOSMAST> _ViewAccPOSMAST = _HRMS.AccPOSMAST.Where(x => int.Parse(x.POS_HCM_CODE) <= int.Parse(v_POS_HCM_CODE)).ToList();
-                    //        string v_chk = _ViewAccPOSMAST.Where(x => x.POS_CODE == _ViewAccEMPLOYEE.POS_CODE).Select(x => x.POS_CODE).FirstOrDefault();
+                            ViewAccEMPLOYEE _ViewAccEMPLOYEE = _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == v_empcsup).FirstOrDefault();
+                            List<ViewAccPOSMAST> _ViewAccPOSMAST = _HRMS.AccPOSMAST.Where(x => int.Parse(x.POS_HCM_CODE) <= int.Parse(v_POS_HCM_CODE)).ToList();
+                            string v_chk = _ViewAccPOSMAST.Where(x => x.POS_CODE == _ViewAccEMPLOYEE.POS_CODE).Select(x => x.POS_CODE).FirstOrDefault();
 
-                    //        if (v_chk == null || v_chk == "")
-                    //        {
-                    //            config = "E";
-                    //            msg = "Please send approval to CS or DM Up of Dept.!!!";
-                    //            return Json(new { c1 = config, c2 = msg });
-                    //        }
-                    //    }
-                    //    catch (Exception ex)
-                    //    {
-                    //        config = "E";
-                    //        msg = "Please check email send to !!!!";
-                    //        return Json(new { c1 = config, c2 = msg });
-                    //    }
-                    //}
+                            if (v_chk == null || v_chk == "")
+                            {
+                                config = "E";
+                               // msg = msg;
+                                return Json(new { c1 = config, c2 = msg });
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            config = "E";
+                            msg = "Please check email send to !!!!";
+                            return Json(new { c1 = config, c2 = msg });
+                        }
+                    }
 
                     //    //save 
 
@@ -1070,7 +1081,7 @@ namespace CostEstimate.Controllers.New
                 else
                 {
                     //CE-S-25-03-001 10,3
-                    i_rundoc = _MK._ViewceRunDocument.Where(x => x.rmDocCode == vDocCode && x.rmDocSub == vDocSub && x.rmYear == vYY && x.rmMonth == vMM).OrderByDescending(x => x.rmRunNo).Select(x => x.rmRunNo).First();
+                    i_rundoc =  _MK._ViewceRunDocument.Where(x => x.rmDocCode == vDocCode && x.rmDocSub == vDocSub && x.rmYear == vYY && x.rmMonth == vMM).OrderByDescending(x => x.rmRunNo).Select(x => x.rmRunNo).FirstOrDefault();
                     v_msg = "New";
                     // i_rundoc = i_rundoc > 0 ? i_rundoc + 1 : 0;
                     if (i_rundoc > 0)
