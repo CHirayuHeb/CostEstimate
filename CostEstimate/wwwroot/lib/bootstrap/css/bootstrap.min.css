@@ -5867,6 +5867,12 @@ textarea.form-control-lg {
     }
 }
 
+@media (min-width:1000px) {
+    .modal-sxl {
+        --bs-modal-width: 900px
+    }
+}
+
 .modal-fullscreen {
     width: 100vw;
     max-width: none;

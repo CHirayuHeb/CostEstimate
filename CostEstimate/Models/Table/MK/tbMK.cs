@@ -58,6 +58,9 @@ namespace CostEstimate.Models.Table.MK
         public string smStatus { get; set; }
         public double smTotalProCost { get; set; }
 
+        public string smTypeCavity { get; set; }
+        
+
     }
 
     [Table("ceDetailSubMakerRequest", Schema = "dbo")]
@@ -267,5 +270,14 @@ namespace CostEstimate.Models.Table.MK
         public string rcIssueBy { get; set; }
         public string rcUpdateBy { get; set; }
     }
+    public class ViewOperaterCP
+    {
+        public string IssueBy { get; set; }
+        public string CheckedBy { get; set; }
+        public string ApproveBy { get; set; }
 
+        public string empIssueBy { get; set; }
+        public string empCheckedBy { get; set; }
+        public string empApproveBy { get; set; }
+    }
 }

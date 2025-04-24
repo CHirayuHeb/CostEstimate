@@ -1,0 +1,75 @@
+﻿body {
+    /*font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #ccc;*/
+}
+
+.a4-page {
+    width: 210mm;
+    height: 297mm;
+    padding: 5mm;
+    margin: 5px auto;
+    background: white;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    /*font-family: Arial, sans-serif;*/
+    font-family: KodchiangUPC Bold;
+    /*font-family: Angsana New;*/
+    font-weight: 600;
+}
+
+@media print {
+    body {
+        background: none;
+    }
+
+    .a4-page {
+        margin: 0;
+        box-shadow: none;
+        page-break-after: always;
+    }
+
+    .no-print {
+        display: none;
+    }
+}
+
+
+.circle {
+    width: 50px;
+    height: 35px;
+    border-radius: 50%;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.content {
+    font-size: 12px;
+}
+
+.yellow-box {
+    width: 80px; /* กว้าง 200 พิกเซล */
+    height: 30px; /* สูง 200 พิกเซล */
+    background-color: yellow; /* พื้นหลังสีเหลือง */
+    border: 2px solid #000; /* เส้นขอบสีดำ */
+}
+.green-box {
+    width: 80px; /* กว้าง 200 พิกเซล */
+    height: 30px; /* สูง 200 พิกเซล */
+    background-color: green; /* พื้นหลังสีเหลือง */
+    border: 2px solid #000; /* เส้นขอบสีดำ */
+}
+.font-Arial {
+    font-family: Arial, sans-serif;
+    font-weight: 600;
+}
+.font-KodchiangUPC {
+    font-family: KodchiangUPC Bold;
+    /*font-size:12px;*/
+    /*font-weight: 600;*/
+    /*font-family: Angsana New;*/
+}

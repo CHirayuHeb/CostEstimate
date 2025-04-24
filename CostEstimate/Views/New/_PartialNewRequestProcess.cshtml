@@ -274,8 +274,11 @@
 
         }
         else {
-            DP_Cost = WT_Auto * DP_Rate / 1000;
+            DP_Cost = WT_Man * DP_Rate / 1000;
             ME_Cost = WT_Man * ME_Rate / 1000;
+
+            //DP_Cost = WT_Auto * DP_Rate / 1000;
+            //ME_Cost = WT_Man * ME_Rate / 1000;
         }
 
 
@@ -283,12 +286,9 @@
 
 
         let total = Labour_Cost + DP_Cost + ME_Cost;
-
-
-
+        
 
         row.find(".Labour_Cost").val(Labour_Cost.toFixed(2)); // Set Total
-
         row.find(".DP_Cost").val(DP_Cost.toFixed(2)); // Set Total
         row.find(".ME_Cost").val(ME_Cost.toFixed(2)); // Set Total
 

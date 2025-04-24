@@ -1,0 +1,339 @@
+﻿@model CostEstimate.Models.Common.Class;
+@{
+    //string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<link href="~/css/New/pageQuotation.css" rel="stylesheet" />
+<body>
+    <div class="a4-page">
+        <div class="row">
+            <div class="col-30">
+                <table style="width:100%; border-collapse: collapse;">
+                    <tr>
+                        <td style="width:20%; padding: 0;">
+                            <span style="font-size:10px; display: block; padding: 0;">MAIL :</span>
+                        </td>
+                        <td style="text-align:center; border:1px solid black; padding: 0;">
+                            <span style="font-size:10px; display: block; padding: 0;">Purchasing</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0;"></td>
+                        <td style="text-align:center; border:1px solid black; padding: 0;">
+                            <span style="font-size:10px; display: block; padding: 0;">PU</span>
+                        </td>
+                    </tr>
+                </table>
+
+
+            </div>
+            <div class="col-60">
+            </div>
+            <div class="col-10">
+                <div class="circle">
+                    <div class="content">
+                        1/1
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-60">
+                @*<span style="font-size:40px">
+                        ESTIMATION
+                        <span style="font-size:30px">
+                            in  Manufacturing Cost.
+                        </span>
+                    </span>*@
+                <span style="font-size:25px">
+                    ESTIMATION
+                    <span style="font-size:20px">
+                        in  Manufacturing Cost.
+                    </span>
+                </span>
+
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-60">
+            </div>
+            <div class="col-40" style="text-align:right">
+                @*<span style="font-size:22px">
+                        ISSUE DATE :
+                        <span style="background-color:yellow;text-decoration: underline; text-underline-offset:5px;font-size:20px"> @DateTime.Now.ToString("yyyy/MM/dd HH:mm") </span>
+                    </span>*@
+                <span style="font-size:16px">
+                    ISSUE DATE :
+                    <span style="text-decoration: underline; text-underline-offset:5px;font-size:16px"> @DateTime.Now.ToString("yyyy/MM/dd HH:mm") </span>
+                </span>
+            </div>
+
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-50">
+                @*<span style="font-size:18px">
+                        Lot No.& Order No.
+                        <span style="font-size:18px"> @Html.DisplayFor(model => model._ViewceMastSubMakerRequest.smLotNo)</span>
+                        <span style="font-size:18px">- @Html.DisplayFor(model => model._ViewceMastSubMakerRequest.smOrderNo)</span>
+                        <span style="font-size:18px">-REV @Html.DisplayFor(model => model._ViewceMastSubMakerRequest.smRevision)</span>
+                    </span>*@
+                <span style="font-size:14px">
+                    Lot No.& Order No.
+                    <span style="font-size:14px"> @Html.DisplayFor(model => model._ViewceMastSubMakerRequest.smLotNo)</span>
+                    <span style="font-size:14px">- @Html.DisplayFor(model => model._ViewceMastSubMakerRequest.smOrderNo)</span>
+                    <span style="font-size:14px">-REV @Html.DisplayFor(model => model._ViewceMastSubMakerRequest.smRevision)</span>
+                </span>
+            </div>
+            <div class="col-50" style="text-align:right">
+
+                <span style="font-size:25px;border: 0px solid black; padding: 5px;text-decoration: underline; text-underline-offset:5px;"> @Html.DisplayFor(model => model._ViewceMastSubMakerRequest.smCustomerName)  @Html.DisplayFor(model => model._ViewceMastSubMakerRequest.smModelName)</span>
+            </div>
+
+        </div>
+
+        <div class="row" style="margin-top:10px">
+            <div class="col-30" >
+                <span style="font-size:16px;padding:0.5px">@Html.DisplayFor(model => model._ViewceMastSubMakerRequest.smDocumentNo)</span>
+
+            </div>
+            <div class="col-30">
+
+            </div>
+            <div class="col-40" style="text-align:right;">
+                <span style="font-size:16px">
+                    SUB MAKER REQUEST SHEET.
+                </span>
+            </div>
+
+        </div>
+
+        <hr style="border:1px solid black;margin-top:1px;margin-bottom:1px" />
+        <br />
+        <div class="row" style="height:200px">
+            <div class="col-100" >
+                <div class="row" style="margin-bottom:10px">
+                    <div class="col-40">
+                        <span style="font-size:14px; text-decoration-line: underline;">
+                            Mold No. & Name :
+                        </span>
+                    </div>
+                    <div class="col-60 left">
+                        <span style="font-size:25px;padding:0.5px;">@Html.DisplayFor(model => model._ViewceMastSubMakerRequest.smMoldName)</span>
+                    </div>
+                    @*<div class="col-10">
+
+                        </div>*@
+                </div>
+
+                <div class="row" style="margin-bottom:10px">
+                    <div class="col-40">
+                        <span style="font-size:14px; text-decoration-line: underline;">
+                            Numbers  of  cavity :
+                        </span>
+                    </div>
+                    <div class="col-30 center">
+                        <span style="font-size:20px;padding:0.5px">@Html.DisplayFor(model => model._ViewceMastSubMakerRequest.smCavityNo)</span>
+                    </div>
+                    <div class="col-30 " style="align-items:flex-end">
+                        <span style="font-size:14px;padding:0.5px">@Html.DisplayFor(model => model._ViewceMastSubMakerRequest.smTypeCavity)</span>
+
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-bottom:10px">
+                    <div class="col-40">
+                        <span style="font-size:14px; text-decoration-line: underline;">
+                            IN-HOUSE COST :
+                        </span>
+                    </div>
+                    <div class="col-30 center">
+                        @{
+                            var vIN_HOUSE = @Model._ViewceMastSubMakerRequest.smRoundUp * 1000;
+                        }
+                        <span style="font-size:20px;padding:0.5px;">@vIN_HOUSE</span>
+                    </div>
+                    <div class="col-30">
+                        <span style="font-size:14px;">BAHT.</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        @*<div style="margin-bottom:5px;margin-top:40px;display:none">
+                <span style="font-size:20px;  text-decoration: underline; text-underline-offset: 3px;">
+                    Item of Modification & Contents
+                </span>
+
+            </div>*@
+        <div class="row" style="margin-bottom:5px;">
+            <div class="row" style="margin-bottom:5px">
+                <div class="col-80">
+                    <span style="font-size:14px;  text-decoration: underline; ">
+                        Item of Modification & Contents
+                    </span>
+                </div>
+
+                <div class="col-20">
+                    @*<span style="font-size:18px;">BAHT.</span>*@
+                </div>
+            </div>
+
+        </div>
+        <div style="margin-bottom:5px;height:320px">
+            @*<span style="font-size:20px;  text-decoration: underline; text-underline-offset: 3px;">
+                    Item of Modification & Contents
+                </span>
+                <br />*@
+            <span style="font-size:14px;">
+                1.) According to you request MAIL BY MOLD
+            </span>
+            <div class="row">
+                <div class="col-5 ">
+                </div>
+                <div class="col-90 " >
+                    @Html.TextAreaFor(model => model._ViewceMastSubMakerRequest.smDetail, new { @class = "font-Arial", rows = 10, @readonly = "readonly", @style = "border: none; resize: none; background: transparent; width: 100%;font-size:12px;margin-left:20px" })
+                </div>
+                <div class="col-5">
+                </div>
+            </div>
+        </div>
+        <br />
+
+        <div style="margin-bottom:5px">
+            <span style="font-size:16px;text-decoration: underline; text-underline-offset:4px; margin-bottom:10px">
+                Making  schedule
+            </span>
+
+
+            <div class="row">
+                <div class="col-10">
+
+                </div>
+                <div class="col-30">
+                    <span style="font-size:12px;padding:0.5px">MATERIAL OUT. / DATE.</span>
+                </div>
+                <div class="col-20 ">
+                    <span style="font-size:12px;padding:0.5px">@Html.DisplayFor(model => model._ViewceMastSubMakerRequest.smMatOutDate)</span>
+                </div>
+                <div class="col-20">
+                    <span style="font-size:12px;padding:0.5px">TIME</span>
+
+                </div>
+                <div class="col-20 ">
+                    <span style="font-size:12px;padding:0.5px">@Html.DisplayFor(model => model._ViewceMastSubMakerRequest.smMatOutTime)</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-10">
+
+                </div>
+                <div class="col-30">
+                    <span style="font-size:12px;padding:0.5px">DELIVERY. / DATE</span>
+
+                </div>
+                <div class="col-20 ">
+                    <span style="font-size:12px;padding:0.5px">@Html.DisplayFor(model => model._ViewceMastSubMakerRequest.smDeliveryDate)</span>
+                </div>
+                <div class="col-20">
+                    <span style="font-size:12px;padding:0.5px">TIME</span>
+
+                </div>
+                <div class="col-20 ">
+                    <span style="font-size:12px;padding:0.5px">@Html.DisplayFor(model => model._ViewceMastSubMakerRequest.smDeliveryTime)</span>
+                </div>
+            </div>
+            <br />
+            <hr style="border:1px solid black;" />
+           
+            <div class="row">
+                <div class="col-80">
+                </div>
+                <div class="col-20">
+                    <span style="font-size:14px;padding:0.5px">Yours  faithfully,</span>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-20">
+                    <span style="font-size:12px;padding:0.5px">ISSUED BY:</span>
+                </div>
+                <div class="col-50">
+                    <span style="font-size:12px;padding:0.5px">@Html.DisplayFor(model => model._ViewOperaterCP.IssueBy)</span>
+                </div>
+                <div class="col-20 center">
+                    @if (@Model._ViewOperaterCP.empIssueBy == "004168")
+                    {
+                        <img src="~/images/004168.png" style="width:100px;height:20px;" />
+                    }
+
+                    @*<img src="~/images/@(Model._ViewOperaterCP.empIssueBy + ".png")" style="width:100px;height:30px;" />*@
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-20">
+                    <span style="font-size:12px;padding:0.5px">CHECKED BY:</span>
+                </div>
+                <div class="col-50">
+                    <span style="font-size:12px;padding:0.5px">@Html.DisplayFor(model => model._ViewOperaterCP.CheckedBy)</span>
+
+                </div>
+                <div class="col-20 center">
+                    @*<img src="~/images/@(Model._ViewOperaterCP.empCheckedBy + ".png")" style="width:100px;height:30px;" />*@
+                    @if (@Model._ViewOperaterCP.empCheckedBy == "002429")
+                    {
+                        <img src="~/images/002429.png" style="width:100px;height:20px;" />
+                    }
+                    else if (@Model._ViewOperaterCP.empCheckedBy == "002989")
+                    {
+                        <img src="~/images/002989.png" style="width:100px;height:20px;" />
+                    }
+                    @*<img src="~/images/002429.png" style="width:100px;height:20px;" />
+                <img src="~/images/002989.png" style="width:100px;height:20px;" />*@
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-20">
+                    <span style="font-size:12px;padding:0.5px">APPROVED BY:</span>
+                </div>
+
+                <div class="col-50">
+                    <span style="font-size:12px;padding:0.5px">@Html.DisplayFor(model => model._ViewOperaterCP.ApproveBy)</span>
+                </div>
+                <div class="col-20 center">
+                    @if (@Model._ViewOperaterCP.empApproveBy == "009197")
+                    {
+                        <img src="~/images/009197.png" style="width:100px;height:20px;" />
+                    }
+                    else if (@Model._ViewOperaterCP.empApproveBy == "001578")
+                    {
+                        <img src="~/images/001578.png" style="width:160px;height:30px;" />
+                    }
+                    @*<img src="~/images/@(Model._ViewOperaterCP.empApproveBy + ".png")" style="width:100px;height:30px;" />*@
+                    @*<img src="~/images/009197.png" style="width:100px;height:20px;" />
+                <img src="~/images/001578.png" style="width:160px;height:30px;" />*@
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</body>
+

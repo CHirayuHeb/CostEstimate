@@ -61,7 +61,7 @@ namespace CostEstimate.Controllers.New
         public IActionResult Index(Class @class, string smDocumentNo, string smRevision)
         {
 
-
+            @class._ViewOperaterCP = new ViewOperaterCP();
             List<ViewmtMaster_Mold_Control> _ViewmtMaster_Mold_Control = _MOLD._ViewmtMaster_Mold_Control.OrderBy(x => x.mcLedger_Number).Distinct().ToList();
             SelectList formMaster_Mold_Control = new SelectList(_ViewmtMaster_Mold_Control.Select(s => s.mcLedger_Number).Distinct());
             ViewBag.vbformMaster_Mold_Control = formMaster_Mold_Control;
@@ -278,6 +278,7 @@ namespace CostEstimate.Controllers.New
             //Class @class ,
             string partialUrl = "";
             string v_status = "";
+
             int v_step = @classs._ViewceMastSubMakerRequest != null ? @classs._ViewceMastSubMakerRequest.smStep : 0;
             string v_issue = @classs._ViewceMastSubMakerRequest != null ? @classs._ViewceMastSubMakerRequest.smEmpCodeRequest : "";
             List<ViewceHistoryApproved> _listHistory = new List<ViewceHistoryApproved>();
@@ -292,6 +293,41 @@ namespace CostEstimate.Controllers.New
                         String htDocNo = @classs._ViewceMastSubMakerRequest.smDocumentNo.ToString(); //htCostPlanningNo
                         //_listHistory = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == htDocNo).OrderBy(x => x.htStep).ThenBy(x=>x.htDate).ThenBy(x=>x.htTime).ToList();
                         _listHistory = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == htDocNo).OrderBy(x => x.htDate).ThenBy(x => x.htTime).ThenBy(x => x.htStep).ToList();
+                        if (_listHistory.Count() > 0)
+                        {
+                            for (int j = 0; j < _listHistory.Count(); j++)
+                            {
+                                var v_htcc = _listHistory[j].htCC;
+                                string v_CCemail = "";
+                                if (v_htcc != null)
+                                {
+                                    ViewrpEmail fromEmailCC = new ViewrpEmail();
+                                    string[] splitCC = v_htcc.Split(',');
+                                    foreach (var i in splitCC)
+                                    {
+                                        if (i != " " & i != "")
+                                        {
+                                            var v_cc = "";
+                                            try
+                                            {
+                                                fromEmailCC = _IT.rpEmails.Where(w => w.emEmpcode == i.Trim()).FirstOrDefault();
+                                                v_CCemail += fromEmailCC.emName_M365.ToString() + ",";
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                v_cc = e.Message;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                _listHistory[j].htCC = v_CCemail;
+
+
+                            }
+
+                        }
+
 
                         return Json(new { status = "hasHistory", listHistory = _listHistory, partial = partialUrl });
                     }
@@ -316,7 +352,7 @@ namespace CostEstimate.Controllers.New
             @class._ViewceHistoryApproved = new ViewceHistoryApproved();
             var v_emailFrom = _IT.rpEmails.Where(x => x.emEmpcode == _UserId).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
 
-         
+
             //get emp operator
             var v_empstep = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step) != null ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step).Select(x => x.mfTo).FirstOrDefault() : "";
             if (v_empstep != null) //step 2-5
@@ -324,7 +360,7 @@ namespace CostEstimate.Controllers.New
                 var v_emailTo = _IT.rpEmails.Where(x => x.emEmpcode == v_empstep).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
                 @class._ViewceHistoryApproved.htTo = v_emailTo;
             }
-          
+
             //step 6 Waiting Apporve By DM For ST Department ==> issue
             if (s_step == 6)
             {
@@ -437,6 +473,13 @@ namespace CostEstimate.Controllers.New
                         i_Step = i_Step + 1;
                         config = "S";
 
+                        ViewrpEmail fromEmailTO = _IT.rpEmails.Where(w => w.emName_M365 == @class._ViewceHistoryApproved.htTo).FirstOrDefault();
+                        if (fromEmailTO == null)
+                        {
+                            config = "E";
+                            msg = "Please Check your Email to , Email incorrect !!!";
+                        }
+
                     }
                     else if (@class._ViewceHistoryApproved.htStatus == "Disapprove")
                     {
@@ -489,7 +532,7 @@ namespace CostEstimate.Controllers.New
                             if (v_chk == null || v_chk == "")
                             {
                                 config = "E";
-                               // msg = msg;
+                                // msg = msg;
                                 return Json(new { c1 = config, c2 = msg });
                             }
                         }
@@ -575,6 +618,7 @@ namespace CostEstimate.Controllers.New
             string v_msg = "";
             string v_status = "";
             string vCCemail = "";
+            string vEmpCodeCCemail = "";
             string Empcode_IssueBy = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
             string vRevision = @class._ViewceMastSubMakerRequest.smRevision != null && @class._ViewceMastSubMakerRequest.smRevision != "" ? @class._ViewceMastSubMakerRequest.smRevision : "00"; //String.Format("{0:D3}", RunDoc.Substring(11, 3));
 
@@ -590,13 +634,36 @@ namespace CostEstimate.Controllers.New
                     string _smStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == vstep && x.mfFlowNo == "1").Select(x => x.mfSubject).First();
                     vstep = vstep == 8 ? vstep = 0 : vstep;
 
+                    if (@class._ViewceHistoryApproved.htCC != null)
+                    {
+                        ViewrpEmail fromEmailCC = new ViewrpEmail();
+                        string[] splitCC = @class._ViewceHistoryApproved.htCC.Split(',');
+                        foreach (var i in splitCC)
+                        {
+                            if (i != " " & i != "")
+                            {
+                                var v_cc = "";
+                                try
+                                {
+                                    fromEmailCC = _IT.rpEmails.Where(w => w.emName_M365 == i).FirstOrDefault();
+                                    vEmpCodeCCemail += fromEmailCC.emEmpcode.ToString() + ",";
+                                }
+                                catch (Exception e)
+                                {
+                                    v_cc = e.Message;
+                                }
+                            }
+                        }
+                    }
+
+
                     ViewceHistoryApproved _ViewceHistoryApproved = new ViewceHistoryApproved();
                     _ViewceHistoryApproved.htDocNo = RunDoc;// getSrNo[0].ToString();
                     _ViewceHistoryApproved.htStep = vstep;
                     _ViewceHistoryApproved.htStatus = @class._ViewceHistoryApproved.htStatus;
                     _ViewceHistoryApproved.htFrom = @class._ViewceHistoryApproved.htFrom;
                     _ViewceHistoryApproved.htTo = @class._ViewceHistoryApproved.htTo;
-                    _ViewceHistoryApproved.htCC = @class._ViewceHistoryApproved.htCC;
+                    _ViewceHistoryApproved.htCC = vEmpCodeCCemail;//@class._ViewceHistoryApproved.htCC;
                     _ViewceHistoryApproved.htDate = DateTime.Now.ToString("yyyy/MM/dd");
                     _ViewceHistoryApproved.htTime = DateTime.Now.ToString("HH:mm:ss");
                     _ViewceHistoryApproved.htRemark = @class._ViewceHistoryApproved.htRemark;
@@ -615,7 +682,6 @@ namespace CostEstimate.Controllers.New
                     //email.From.Add(MailboxAddress.Parse(_ViewlrHistoryApprove.htFrom));
                     email.From.Add(FromMailFrom);
                     email.To.Add(FromMailTO);
-
 
                     if (@class._ViewceHistoryApproved.htCC != null)
                     {
@@ -821,6 +887,9 @@ namespace CostEstimate.Controllers.New
                         _ViewceMastSubMakerRequest.smStep = vstep; // public int 
                         _ViewceMastSubMakerRequest.smStatus = _smStatus;//@class._ViewceMastSubMakerRequest.smStatus; //public int
                         _ViewceMastSubMakerRequest.smTotalProCost = @class._ViewceMastSubMakerRequest.smTotalProCost; // public double 
+
+                       _ViewceMastSubMakerRequest.smTypeCavity = @class._ViewceMastSubMakerRequest.smTypeCavity; // public string 
+                        
                         _MK._ViewceMastSubMakerRequest.AddAsync(_ViewceMastSubMakerRequest);
 
 
@@ -907,6 +976,7 @@ namespace CostEstimate.Controllers.New
                             _ViewceMastSubMakerRequest.smStatus = _smStatus;//@class._ViewceMastSubMakerRequest.smStatus; //public int
                             _ViewceMastSubMakerRequest.smTotalProCost = @class._ViewceMastSubMakerRequest.smTotalProCost; // public double 
 
+                            _ViewceMastSubMakerRequest.smTypeCavity = @class._ViewceMastSubMakerRequest.smTypeCavity; // public string 
                             //_ViewceMastSubMakerRequest.smEmpCodeApprove = empApprove;
                             //_ViewceMastSubMakerRequest.smNameApprove = NickNameApprove;
                             //_ViewceMastSubMakerRequest.smStep = vstep;
@@ -1081,7 +1151,7 @@ namespace CostEstimate.Controllers.New
                 else
                 {
                     //CE-S-25-03-001 10,3
-                    i_rundoc =  _MK._ViewceRunDocument.Where(x => x.rmDocCode == vDocCode && x.rmDocSub == vDocSub && x.rmYear == vYY && x.rmMonth == vMM).OrderByDescending(x => x.rmRunNo).Select(x => x.rmRunNo).FirstOrDefault();
+                    i_rundoc = _MK._ViewceRunDocument.Where(x => x.rmDocCode == vDocCode && x.rmDocSub == vDocSub && x.rmYear == vYY && x.rmMonth == vMM).OrderByDescending(x => x.rmRunNo).Select(x => x.rmRunNo).FirstOrDefault();
                     v_msg = "New";
                     // i_rundoc = i_rundoc > 0 ? i_rundoc + 1 : 0;
                     if (i_rundoc > 0)
@@ -1224,7 +1294,84 @@ namespace CostEstimate.Controllers.New
 
 
 
+        [HttpPost]
+        public PartialViewResult PrintQUOTATION(string mpNo, Class @class)
+        {
+            try
+            {
+                @class._ViewceMastSubMakerRequest = new ViewceMastSubMakerRequest();
+                @class._ViewOperaterCP = new ViewOperaterCP();
+                @class._ViewceMastFlowApprove = new ViewceMastFlowApprove();
+                if (mpNo != null)
+                {
 
+                    string tbHistoryIssueName = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 4).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 4).Select(x => x.htFrom).FirstOrDefault();
+                    string tbHistoryIssueEMPCODE = tbHistoryIssueName == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistoryIssueName)).Select(x => x.emEmpcode).FirstOrDefault();
+
+                    string tbHistoryCheckedName = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 6).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 6).Select(x => x.htFrom).FirstOrDefault();
+                    string tbHistoryCheckedEMPCODE = tbHistoryCheckedName == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistoryCheckedName)).Select(x => x.emEmpcode).FirstOrDefault();
+
+
+                    string tbHistoryApproveByName = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 7).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 7).Select(x => x.htFrom).FirstOrDefault();
+                    string tbHistoryApproveByEMPCODE = tbHistoryApproveByName == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistoryApproveByName)).Select(x => x.emEmpcode).FirstOrDefault();
+
+
+
+                    //string tbHistoryIssue3 = _IT.rpEmails.Where(u => u.emName_M365.Contains(_MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 4).Select(x => x.htFrom).FirstOrDefault())).Select(x => x.emEmpcode).FirstOrDefault();
+                    //string tbHistoryIssue = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 4).Select(x => x.htFrom).FirstOrDefault() is null ? "" :
+                    //    _IT.rpEmails.Where(u => u.emEmail_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 4).Select(x => x.htFrom).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault();
+
+                    //string tbHistoryChecked = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 6).Select(x => x.htFrom).FirstOrDefault() is null ? "" :
+                    //  _IT.rpEmails.Where(u => u.emEmail_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 6).Select(x => x.htFrom).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault();
+
+                    //string tbHistoryApproveBy = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 7).Select(x => x.htFrom).FirstOrDefault() is null ? "" :
+                    // _IT.rpEmails.Where(u => u.emEmail_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 7).Select(x => x.htFrom).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault();
+
+
+                    //ViewAccEMPLOYEE _ViewAccEMPLOYEEIssue = new ViewAccEMPLOYEE();
+                    //ViewAccEMPLOYEE _ViewAccEMPLOYEEChecked = new ViewAccEMPLOYEE();
+                    //ViewAccEMPLOYEE _ViewAccEMPLOYEEApproveBy = new ViewAccEMPLOYEE();
+
+                    //_ViewAccEMPLOYEEIssue = _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryIssue).FirstOrDefault();
+                    //_ViewAccEMPLOYEEChecked = _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryChecked).FirstOrDefault();
+                    //_ViewAccEMPLOYEEApproveBy = _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryApproveBy).FirstOrDefault();
+
+
+                    //string tbFlowissue = _MK._ViewceMastFlowApprove.Where(y => y.mfStep == 2).Select(z => z.mfTo).FirstOrDefault() is null ? "" : _MK._ViewceMastFlowApprove.Where(y => y.mfStep == 2).Select(z => z.mfTo).FirstOrDefault();
+                    //string tbFlowCheck1 = _MK._ViewceMastFlowApprove.Where(y => y.mfStep == 3).Select(z => z.mfTo).FirstOrDefault() is null ? "" : _MK._ViewceMastFlowApprove.Where(y => y.mfStep == 3).Select(z => z.mfTo).FirstOrDefault();
+                    //string tbFlowCheck2 = _MK._ViewceMastFlowApprove.Where(y => y.mfStep == 4).Select(z => z.mfTo).FirstOrDefault() is null ? "" : _MK._ViewceMastFlowApprove.Where(y => y.mfStep == 4).Select(z => z.mfTo).FirstOrDefault();
+                    //string tbFlowApprove = _MK._ViewceMastFlowApprove.Where(y => y.mfStep == 5).Select(z => z.mfTo).FirstOrDefault() is null ? "" : _MK._ViewceMastFlowApprove.Where(y => y.mfStep == 5).Select(z => z.mfTo).FirstOrDefault();
+
+
+                    _HRMS.AccPOSMAST.Where(y => y.POS_CODE == _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryCheckedEMPCODE).Select(x => x.POS_CODE).FirstOrDefault()).Select(z => z.POS_NAME).FirstOrDefault();
+
+                    string vIssueBy = _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryIssueEMPCODE).Select(x => x.NICKNAME).FirstOrDefault() is null ? "" : _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryIssueEMPCODE).Select(x => x.NICKNAME).FirstOrDefault();
+                    string vCheckBy = _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryCheckedEMPCODE).Select(x => x.NICKNAME).FirstOrDefault() is null ? "" : _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryCheckedEMPCODE).Select(x => x.NICKNAME).FirstOrDefault() + " , "+ _HRMS.AccPOSMAST.Where(y => y.POS_CODE == _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryCheckedEMPCODE).Select(x => x.POS_CODE).FirstOrDefault()).Select(z => z.POS_NAME).FirstOrDefault();
+                    string vApproveBy = _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryApproveByEMPCODE).Select(x => x.NICKNAME).FirstOrDefault() is null ? "" : _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryApproveByEMPCODE).Select(x => x.NICKNAME).FirstOrDefault() + " , " + _HRMS.AccPOSMAST.Where(y => y.POS_CODE == _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryApproveByEMPCODE).Select(x => x.POS_CODE).FirstOrDefault()).Select(z => z.POS_NAME).FirstOrDefault();
+
+                    @class._ViewceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smDocumentNo == mpNo).FirstOrDefault();
+
+                    @class._ViewOperaterCP.IssueBy = vIssueBy;
+                    @class._ViewOperaterCP.CheckedBy = vCheckBy ;
+                    @class._ViewOperaterCP.ApproveBy = vApproveBy;
+
+                    @class._ViewOperaterCP.empIssueBy = tbHistoryIssueEMPCODE;
+                    @class._ViewOperaterCP.empCheckedBy = tbHistoryCheckedEMPCODE;
+                    @class._ViewOperaterCP.empApproveBy = tbHistoryApproveByEMPCODE;
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                string a = "";
+                a = ex.Message;
+            }
+            // @class._ListceCostPlanning = _ListViewceCostPlanning.;
+            return PartialView("_PartialDisplayQuotation", @class);
+
+        }
 
 
     }

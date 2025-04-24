@@ -174,7 +174,10 @@ function GoSideMenu(controller) {
     })
         .catch(function (err) {
             hideLoading();
-            alert('Failed to fetch page: ', err);
+            alert('GoSideMenu : Failed to fetch page: ', err);
+            //var url = '@Url.Action("Index", "Login")';
+            //window.location.href = url;
+
         });
 
 }
@@ -280,7 +283,7 @@ function PositionY(menu) {
             PY = "331px";
             opacity = "opacity-dot-3";
             break;
-            
+
     }
     var Selector = document.getElementById("selector");
     var bg = document.getElementsByClassName("banner").item(0);
@@ -339,7 +342,9 @@ function DisplayResult(url) {
     })
         .catch(function (err) {
             hideLoading();
-            alert('Failed to fetch page: ', err);
+            alert('DisplayResult : Failed to fetch page: ', err);
+            //var url = '@Url.Action("Index", "Login")';
+            //window.location.href = url;
         });
 }
 
@@ -387,7 +392,9 @@ function HomeSearch(url) {
     })
         .catch(function (err) {
             hideLoading();
-            alert('Failed to fetch page: ', err);
+            alert('HomeSearch: Failed to fetch page: ', err);
+            //var url = '@Url.Action("Index", "Login")';
+            //window.location.href = url;
         });
 }
 
@@ -512,7 +519,9 @@ function GoToOTChoice(action, target) {
         LoadScript("js\\" + "New\\EventOTType.js", "EventOTType");
     })
         .catch(function (err) {
-            alert('Failed to fetch page: ', err);
+            alert('GoToOTChoice: Failed to fetch page: ', err);
+            var url = '@Url.Action("Index", "Login")';
+            window.location.href = url;
         });
 }
 
@@ -818,14 +827,53 @@ function hideLoadingAndShowProcess() {
 
 function Menubar_sendmail(getID, action) {
     //const formdata = new FormData(document.forms.item(0)).serialize();
-
+    const radios = document.getElementsByName("_ViewceMastSubMakerRequest.smRemark");
+    const target = document.getElementById("radioGroupContainer");
+    let isChecked = false;
     let msg = "";
+
+
+    let table = document.getElementById('tbDetailSubMakerRequest');
+    let rows = table.getElementsByTagName('tr');
+
+    //if (rows.length > 3) { // Check if there is more than just the header row
+    //    console.log("The table has more than 0 rows.");
+    //} else {
+    //    console.log("The table does not have rows greater than 0.");
+    //}
+
+
+
     if (document.getElementById("i_New_OrderNo").value == "") {
         msg = "กรุณากรอกข้อมูล Order No !!!";
     }
     else if (document.getElementById("i_New_LotNo").value == "") {
         msg = "กรุณากรอกข้อมูล Lot No !!!";
     }
+    else if (document.getElementById("i_New_ModelName").value == "") {
+        msg = "กรุณากรอกข้อมูล Model Name !!!";
+    } else if (rows.length < 3) { // Check if there is more than just the header row
+        msg = "กรุณากรอกข้อมูล Model Name ให้ถูกต้อง !!!";
+        console.log("The table has more than 0 rows.");
+    }
+    else if (radios.length > 0) {
+
+        for (let i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                isChecked = true;
+                i = radios.length - 1;
+            }
+        }
+
+        if (!isChecked) {
+            msg = "กรุณาเลือก REMARK !!!";
+
+        }
+
+
+    }
+
+
 
     if (msg != "") {
         swal.fire({
@@ -833,7 +881,9 @@ function Menubar_sendmail(getID, action) {
             icon: 'warning',
             text: msg,
         })
-            .then((result) => { });
+            .then((result) => {
+
+            });
     }
     else {
 
@@ -1038,8 +1088,6 @@ function Menubar_saveDraft(action) {
 
 
 }
-
-
 function CheckDis(status) {
     $(document).ready(function () {
         var checkStatusDis = status;
@@ -1062,8 +1110,6 @@ function CheckDis(status) {
 
     });
 }
-
-
 function Menubar_save_sendMail(action) {
     console.log("Menubar_save_sendMail");
 
@@ -1071,21 +1117,15 @@ function Menubar_save_sendMail(action) {
     let formData = document.forms.namedItem("formData");
     let viewModel = new FormData(formData);
 
-    $.each(formData, function (index, input) {
-        viewModel.append(input.name, input.value);
+    //$.each(formData, function (index, input) {
+    //    viewModel.append(input.name, input.value);
+    //});
+
+    $.each(formData.elements, function (index, input) {
+        if (input.name) {
+            viewModel.append(input.name, input.value);
+        }
     });
-
-    //let totalSize = 0;
-    //for (let pair of viewModel.entries()) {
-    //    totalSize += pair[1].length;
-    //}
-
-    //console.log("Total data size: " + totalSize + " bytes");
-
-    //// เช็คว่าเกินขีดจำกัดไหม
-    //if (totalSize > 1000000) {  // 1MB limit, ปรับได้ตามต้องการ
-    //    alert("Data is too large to send!");
-    //}
 
 
     if (vmsg != "") {
@@ -1163,8 +1203,6 @@ function Menubar_save_sendMail(action) {
         });
     }
 }
-
-
 function Menubar_ExportExcel(action) {
     console.log("Menubar_ExportExcel");
     var vmsg = ""
@@ -1281,7 +1319,6 @@ function DeleteFileUser(id, vname, action) {
         }
     });
 }
-
 function DeleteMasterPlanning(DocNo, action) {
     //var getID = document.getElementById("i_New_DocumentNo").value; //txtMIssueID
 
@@ -1324,7 +1361,6 @@ function DeleteMasterPlanning(DocNo, action) {
         }
     });
 }
-
 function Menubar_AddCostMOdel(CostNo, Desc, action) {
     console.log("Menubar_AddCostMOdel");
     let mydata = $("#formRequestCost").serialize();
@@ -1352,7 +1388,6 @@ function Menubar_AddCostMOdel(CostNo, Desc, action) {
 
     $("#myModal3").modal("show");
 }
-
 function Menubar_AddMaster(action) {
     let formData = document.forms.namedItem("formMastCostModel");
     let viewModel = new FormData(formData);
@@ -1409,7 +1444,6 @@ function Menubar_AddMaster(action) {
         }
     });
 }
-
 function Menubar_AddCostPlanning(CostNo, Desc, action) {
     console.log("Menubar_AddCostPlanning");
     let mydata = $("#formRequestCost").serialize();
@@ -1444,10 +1478,8 @@ function Menubar_AddCostPlanning(CostNo, Desc, action) {
 
     $("#myModal4").modal("show");
 }
-
-
 function DeleteCostModel(DocNo, ModelName, action) {
- 
+
     Swal.fire({
         title: "Are you sure?",
         text: "Are you sure delete Model Name ?",
@@ -1460,7 +1492,7 @@ function DeleteCostModel(DocNo, ModelName, action) {
             $.ajax({
                 type: 'post',
                 url: action,
-                data: { DocNo: DocNo, ModelName: ModelName},
+                data: { DocNo: DocNo, ModelName: ModelName },
                 success: function (res) {
                     swal.fire({
                         title: 'แจ้งเตือน',
@@ -1484,8 +1516,6 @@ function DeleteCostModel(DocNo, ModelName, action) {
         }
     });
 }
-
-
 function Menubar_AddMasterCostPlanning(action) {
     let formData = document.forms.namedItem("formMastCostplanning");
     let viewModel = new FormData(formData);
@@ -1555,7 +1585,6 @@ function Menubar_AddMasterCostPlanning(action) {
         }
     });
 }
-
 function DeleteCost(DocNo, ModelName, action) {
     //var getID = document.getElementById("i_New_DocumentNo").value; //txtMIssueID
 
@@ -1598,6 +1627,64 @@ function DeleteCost(DocNo, ModelName, action) {
             return false;
         }
     });
+}
+
+
+//QUOTATION
+function Menubar_PrintQUOTATION(action, mpNo) {
+
+    console.log("Menubar_PrintQUOTATION");
+    $.ajax({
+        url: action,//'/New/SearchbyModelName', // URL ของ Controller
+        type: 'POST',
+        data: {
+            mpNo: mpNo
+        },
+        beforeSend: function () {
+           
+            console.log("Showing loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorQuotation").css("display", "block"); // แสดง Loader
+            $("#ResultQuotation").css("display", "none"); // ซ่อน Loader
+        },
+        success: function (response) {
+            //$("#ResultQuotation").html(response); // เอา HTML Partial View มาใส่ใน Div
+
+            $("#ResultQuotation").css("display", "block"); // แสดง Loader
+            $("#ResultQuotation").html(response); // เอา HTML Partial View มาใส่ใน Div
+        },
+        error: function () {
+            alert("Error!!");
+        },
+        complete: function () {
+            // ซ่อนรูปโหลดเมื่อ request เสร็จ
+            console.log("Hiding loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorQuotation").css("display", "none"); // ซ่อน Loader
+          
+        }
+    });
+    $("#myModalQUOTATION").modal("show");
+}
+function printQuotationA4(mpNo) {
+    var printContents = document.getElementById("ResultQuotation").innerHTML;
+    var originalContents = document.body.innerHTML;
+
+    var printWindow = window.open('', '', 'height=800,width=1000');
+    printWindow.document.write('<html><head><title>Quotation</title>');
+    printWindow.document.write('<style>@media print { body { font-family: Arial; size: A4; } }</style>');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write(printContents);
+    printWindow.document.write('</body></html>');
+
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+    printWindow.close();
+
+    let url = "New?smDocumentNo=" + mpNo;
+    //let url = "New?smLotNo=" + smLotNo + "&smOrderNo=" + smOrderNo + "&smRevision=" + smRevision;
+    GoSideMenu(url);
+
+    //$("#myModalQUOTATION").hide();
 }
 
 
@@ -1746,9 +1833,9 @@ function Menubar_AddMasterProcess(action) {
 
 
 //Master Model
-function Menubar_EditMasterModel(mmNo,mmmodelName, action) {
+function Menubar_EditMasterModel(mmNo, mmmodelName, action) {
     console.log("Menubar_AddMast Model");
-   // let mydata = $("#formRequestCost").serialize();
+    // let mydata = $("#formRequestCost").serialize();
     //'@Url.Action("SearchbyModelName", "New")',
     $.ajax({
         url: action,//'/New/SearchbyModelName', // URL ของ Controller

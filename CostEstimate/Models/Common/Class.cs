@@ -53,7 +53,9 @@ namespace CostEstimate.Models.Common
         public ViewceRunDocument _ViewceRunDocument { get; set; }
 
         public ViewcceRunCostpalnning _ViewcceRunCostpalnning { get; set; }
+        public ViewOperaterCP _ViewOperaterCP { get; set; }
 
+      
 
         //public GroupViewceCostPlanning _roupViewceCostPlanning { get; set; }
         public GroupViewceDetailSubMakerRequest _GroupViewceDetailSubMakerRequest { get; set; }

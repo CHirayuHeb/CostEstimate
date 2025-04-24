@@ -148,7 +148,7 @@ function GoEditForm(target, value) {
     })
         .catch(function (err) {
             hideLoading();
-            alert('Failed to fetch page: ', err);
+            alert('GoEditForm: Failed to fetch page: ', err);
         });
 }
 
@@ -219,7 +219,7 @@ function GoDraftForm(target, value) {
     })
         .catch(function (err) {
             hideLoading();
-            alert('Failed to fetch page: ', err);
+            alert('GoDraftForm: Failed to fetch page: ', err);
         });
 }
 
@@ -292,6 +292,6 @@ function GoViewOTDetail(target, value) {
     })
         .catch(function (err) {
             hideLoading();
-            alert('Failed to fetch page: ', err);
+            alert('GoViewOTDetail: Failed to fetch page: ', err);
         });
 }

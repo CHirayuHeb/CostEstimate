@@ -487,6 +487,11 @@ div.modal-backdrop.show {
     width: 30%;
     margin-top: 6px;
 }
+.col-100 {
+    float: left;
+    width: 100%;
+    margin-top: 6px;
+}
 
 .button {
     background-color: #208b3a; /* Green */
