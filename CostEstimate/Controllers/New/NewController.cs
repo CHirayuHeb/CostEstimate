@@ -66,6 +66,17 @@ namespace CostEstimate.Controllers.New
             SelectList formMaster_Mold_Control = new SelectList(_ViewmtMaster_Mold_Control.Select(s => s.mcLedger_Number).Distinct());
             ViewBag.vbformMaster_Mold_Control = formMaster_Mold_Control;
 
+
+
+            List<string> _listTypeofCavity = new List<string>{
+                                            "CAVITIES(R/L =1 Set) x 2MOLD",
+                                            "CAVITIES(R/L =1 Set)",
+                                            "CAVITIES",
+                                            "CAVITY"};
+            SelectList _TypeofCavity = new SelectList(_listTypeofCavity);
+            ViewBag.TypeofCavity = _TypeofCavity;
+
+
             @class._ListceMastFlowApprove = _MK._ViewceMastFlowApprove.ToList();
 
             try
@@ -166,7 +177,12 @@ namespace CostEstimate.Controllers.New
         public ActionResult SearchMold_Ledger_Number(string term)
         {
             {
-                return Json(_MOLD._ViewmtMaster_Mold_Control.Where(p => p.mcLedger_Number.Contains(term)).Select(p => p.mcLedger_Number + "|" + p.mcCUS + "|" + p.mcMoldname + "|" + (p.mcCavity != "" ? p.mcCavity : "0")).ToList());
+                //List<ViewLLLedger> __ViewLLLedger = new List<ViewLLLedger>();
+                //__ViewLLLedger = _MOLD._ViewLLLedger.Where(p => p.LGLegNo.Contains(term)).ToList();
+                //return Json(_MOLD._ViewLLLedger.Where(p => p.LGLegNo.Contains(term)).Select(p => p.LGLegNo + "" + p.LGTypeCode + "|" + p.LGCustomer + "|" + p.LGMoldName + "" + p.LGMoldNo + "|" + "0").ToList());
+
+                return Json(_MOLD._ViewLLLedger.Where(p => p.LGLegNo.Contains(term)).Select(p => p.LGLegNo + "" + p.LGTypeCode + "|" + p.LGCustomer + "|" + p.LGMoldNo + "/" + p.LGMoldName + "|" + "0").ToList());
+               // return Json(_MOLD._ViewmtMaster_Mold_Control.Where(p => p.mcLedger_Number.Contains(term)).Select(p => p.mcLedger_Number + "|" + p.mcCUS + "|" + p.mcMoldname + "|" + (p.mcCavity != "" ? p.mcCavity : "0")).ToList());
             }
         }
         public ActionResult SearchModelName(string term)
@@ -281,8 +297,9 @@ namespace CostEstimate.Controllers.New
 
             int v_step = @classs._ViewceMastSubMakerRequest != null ? @classs._ViewceMastSubMakerRequest.smStep : 0;
             string v_issue = @classs._ViewceMastSubMakerRequest != null ? @classs._ViewceMastSubMakerRequest.smEmpCodeRequest : "";
+            string v_DocNo = @classs._ViewceMastSubMakerRequest != null ? @classs._ViewceMastSubMakerRequest.smDocumentNo : "";
             List<ViewceHistoryApproved> _listHistory = new List<ViewceHistoryApproved>();
-            partialUrl = Url.Action("SendMail", "New", new { @class = @classs, s_step = v_step, s_issue = v_issue });
+            partialUrl = Url.Action("SendMail", "New", new { @class = @classs, s_step = v_step, s_issue = v_issue, mpNo = v_DocNo });
             try
             {
                 if (@classs._ViewceMastSubMakerRequest != null)
@@ -344,7 +361,7 @@ namespace CostEstimate.Controllers.New
         }
 
         //[HttpPost]
-        public ActionResult SendMail(Class @class, int s_step, string s_issue)
+        public ActionResult SendMail(Class @class, int s_step, string s_issue, string mpNo)
         {
             ViewBag.vDate = DateTime.Now.ToString("yyyy/MM/dd") + " " + DateTime.Now.ToString("HH:mm:ss");
             string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
@@ -364,8 +381,25 @@ namespace CostEstimate.Controllers.New
             //step 6 Waiting Apporve By DM For ST Department ==> issue
             if (s_step == 6)
             {
+                //var vdocNo = @class.
                 var v_emailTo = _IT.rpEmails.Where(x => x.emEmpcode == s_issue).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
                 @class._ViewceHistoryApproved.htTo = v_emailTo;
+
+
+                string tbHistory2 = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 2).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 2).Select(x => x.htFrom).FirstOrDefault();
+                string tbHistory2EMPCODE = tbHistory2 == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistory2)).Select(x => x.emEmpcode).FirstOrDefault();
+
+                string tbHistory3 = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 3).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 3).Select(x => x.htFrom).FirstOrDefault();
+                string tbHistory3EMPCODE = tbHistory3 == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistory3)).Select(x => x.emEmpcode).FirstOrDefault();
+
+
+                string tbHistory5 = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 5).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 5).Select(x => x.htFrom).FirstOrDefault();
+                string tbHistory5EMPCODE = tbHistory5 == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistory5)).Select(x => x.emEmpcode).FirstOrDefault();
+
+
+                @class._ViewceHistoryApproved.htCC = tbHistory2 + "," + tbHistory3 + "," + tbHistory5 + ",";
+
+
             }
 
 
@@ -888,8 +922,8 @@ namespace CostEstimate.Controllers.New
                         _ViewceMastSubMakerRequest.smStatus = _smStatus;//@class._ViewceMastSubMakerRequest.smStatus; //public int
                         _ViewceMastSubMakerRequest.smTotalProCost = @class._ViewceMastSubMakerRequest.smTotalProCost; // public double 
 
-                       _ViewceMastSubMakerRequest.smTypeCavity = @class._ViewceMastSubMakerRequest.smTypeCavity; // public string 
-                        
+                        _ViewceMastSubMakerRequest.smTypeCavity = @class._ViewceMastSubMakerRequest.smTypeCavity; // public string 
+
                         _MK._ViewceMastSubMakerRequest.AddAsync(_ViewceMastSubMakerRequest);
 
 
@@ -1308,6 +1342,10 @@ namespace CostEstimate.Controllers.New
                     string tbHistoryIssueName = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 4).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 4).Select(x => x.htFrom).FirstOrDefault();
                     string tbHistoryIssueEMPCODE = tbHistoryIssueName == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistoryIssueName)).Select(x => x.emEmpcode).FirstOrDefault();
 
+                    string tbHistoryCheckedGLName = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 5).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 5).Select(x => x.htFrom).FirstOrDefault();
+                    string tbHistoryCheckedGLEMPCODE = tbHistoryCheckedGLName == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistoryCheckedGLName)).Select(x => x.emEmpcode).FirstOrDefault();
+
+
                     string tbHistoryCheckedName = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 6).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 6).Select(x => x.htFrom).FirstOrDefault();
                     string tbHistoryCheckedEMPCODE = tbHistoryCheckedName == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistoryCheckedName)).Select(x => x.emEmpcode).FirstOrDefault();
 
@@ -1346,17 +1384,20 @@ namespace CostEstimate.Controllers.New
                     _HRMS.AccPOSMAST.Where(y => y.POS_CODE == _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryCheckedEMPCODE).Select(x => x.POS_CODE).FirstOrDefault()).Select(z => z.POS_NAME).FirstOrDefault();
 
                     string vIssueBy = _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryIssueEMPCODE).Select(x => x.NICKNAME).FirstOrDefault() is null ? "" : _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryIssueEMPCODE).Select(x => x.NICKNAME).FirstOrDefault();
-                    string vCheckBy = _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryCheckedEMPCODE).Select(x => x.NICKNAME).FirstOrDefault() is null ? "" : _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryCheckedEMPCODE).Select(x => x.NICKNAME).FirstOrDefault() + " , "+ _HRMS.AccPOSMAST.Where(y => y.POS_CODE == _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryCheckedEMPCODE).Select(x => x.POS_CODE).FirstOrDefault()).Select(z => z.POS_NAME).FirstOrDefault();
+                    string vCheckByTL = _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryCheckedGLEMPCODE).Select(x => x.NICKNAME).FirstOrDefault() is null ? "" : _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryCheckedGLEMPCODE).Select(x => x.NICKNAME).FirstOrDefault() + " , " + _HRMS.AccPOSMAST.Where(y => y.POS_CODE == _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryCheckedGLEMPCODE).Select(x => x.POS_CODE).FirstOrDefault()).Select(z => z.POS_NAME).FirstOrDefault();
+                    string vCheckByTM = _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryCheckedEMPCODE).Select(x => x.NICKNAME).FirstOrDefault() is null ? "" : _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryCheckedEMPCODE).Select(x => x.NICKNAME).FirstOrDefault() + " , " + _HRMS.AccPOSMAST.Where(y => y.POS_CODE == _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryCheckedEMPCODE).Select(x => x.POS_CODE).FirstOrDefault()).Select(z => z.POS_NAME).FirstOrDefault();
                     string vApproveBy = _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryApproveByEMPCODE).Select(x => x.NICKNAME).FirstOrDefault() is null ? "" : _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryApproveByEMPCODE).Select(x => x.NICKNAME).FirstOrDefault() + " , " + _HRMS.AccPOSMAST.Where(y => y.POS_CODE == _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryApproveByEMPCODE).Select(x => x.POS_CODE).FirstOrDefault()).Select(z => z.POS_NAME).FirstOrDefault();
 
                     @class._ViewceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smDocumentNo == mpNo).FirstOrDefault();
 
                     @class._ViewOperaterCP.IssueBy = vIssueBy;
-                    @class._ViewOperaterCP.CheckedBy = vCheckBy ;
+                    @class._ViewOperaterCP.CheckedByTL = vCheckByTL;
+                    @class._ViewOperaterCP.CheckedByTM = vCheckByTM;
                     @class._ViewOperaterCP.ApproveBy = vApproveBy;
 
                     @class._ViewOperaterCP.empIssueBy = tbHistoryIssueEMPCODE;
-                    @class._ViewOperaterCP.empCheckedBy = tbHistoryCheckedEMPCODE;
+                    @class._ViewOperaterCP.empCheckedByTL = tbHistoryCheckedGLEMPCODE;
+                    @class._ViewOperaterCP.empCheckedByTM = tbHistoryCheckedEMPCODE;
                     @class._ViewOperaterCP.empApproveBy = tbHistoryApproveByEMPCODE;
 
                 }
@@ -1370,6 +1411,7 @@ namespace CostEstimate.Controllers.New
             }
             // @class._ListceCostPlanning = _ListViewceCostPlanning.;
             return PartialView("_PartialDisplayQuotation", @class);
+            //return PartialView("_PartialDisplayQuotationTHSarabun", @class);
 
         }
 

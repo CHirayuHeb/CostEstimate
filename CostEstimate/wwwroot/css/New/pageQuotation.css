@@ -17,6 +17,21 @@
     font-family: KodchiangUPC Bold;
     /*font-family: Angsana New;*/
     font-weight: 600;
+    pointer-events:none;
+}
+
+.a4-pageTHsarabun {
+    width: 210mm;
+    height: 297mm;
+    padding: 5mm;
+    margin: 5px auto;
+    background: white;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    /*font-family: Arial, sans-serif;*/
+    font-family: "TH SarabunPSK", sans-serif;
+    /*font-family: Angsana New;*/
+    font-weight: 600;
 }
 
 @media print {
@@ -25,6 +40,11 @@
     }
 
     .a4-page {
+        margin: 0;
+        box-shadow: none;
+        page-break-after: always;
+    }
+    .a4-pageTHsarabun {
         margin: 0;
         box-shadow: none;
         page-break-after: always;
@@ -65,7 +85,7 @@
 }
 .font-Arial {
     font-family: Arial, sans-serif;
-    font-weight: 600;
+    /*font-weight: 600;*/
 }
 .font-KodchiangUPC {
     font-family: KodchiangUPC Bold;

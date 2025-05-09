@@ -21,4 +21,17 @@ namespace CostEstimate.Models.Table.MOLD
 
 
     }
+    [Table("LLLedger")]
+    public class ViewLLLedger
+    {
+        [Key]
+        public string LGLegNo { get; set; }
+        public string LGTypeCode { get; set; }
+        public string LGCustomer { get; set; }
+        public string LGMoldName { get; set; }
+        public string LGMoldNo { get; set; }
+
+
+
+    }
 }

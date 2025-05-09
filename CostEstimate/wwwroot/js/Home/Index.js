@@ -16,7 +16,8 @@
 
 
 $('input.datepicker').datepicker({
-    format: 'yyyy/mm/dd',
+    format: 'dd/mm/yyyy',
+   // format: 'yyyy/mm/dd',
     todayBtn: 'linked',
     todayHighlight: true,
     autoclose: true,
@@ -25,7 +26,8 @@ $('input.datepicker').datepicker({
 });
 
 $('input.Monthpicker').datepicker({
-    format: 'yyyy/mm',
+    //format: 'yyyy/mm',
+    format: 'mm/yyyy',
     todayBtn: 'linked',
     todayHighlight: true,
     autoclose: true,

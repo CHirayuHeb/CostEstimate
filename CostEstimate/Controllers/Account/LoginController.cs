@@ -35,6 +35,9 @@ namespace CostEstimate.Controllers.Account
         }
         public IActionResult Index(string DocumentNo)
         {
+            //string domain = Environment.UserDomainName;
+            //string user = Environment.UserName;
+            //Console.WriteLine("Full User: " + domain + "\\" + user);
             string remember = User.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value;
             Class @class = new Class();
             if (DocumentNo != null)

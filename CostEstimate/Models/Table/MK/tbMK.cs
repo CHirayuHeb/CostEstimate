@@ -29,7 +29,7 @@ namespace CostEstimate.Models.Table.MK
         public string smCustomerName { get; set; }
         public string smMoldName { get; set; }
         public string smModelName { get; set; }
-        public int smCavityNo { get; set; }
+        public string smCavityNo { get; set; }
         public string smFunction { get; set; }
         public string smDevelopmentStage { get; set; }
         public string smMoldNo { get; set; }
@@ -59,7 +59,7 @@ namespace CostEstimate.Models.Table.MK
         public double smTotalProCost { get; set; }
 
         public string smTypeCavity { get; set; }
-        
+
 
     }
 
@@ -225,12 +225,14 @@ namespace CostEstimate.Models.Table.MK
     }
     public class ViewSearchData
     {
-        public string v_DocumentNo{ get; set; }
-      
+        public string v_DocumentNo { get; set; }
+        public string v_OrderNo { get; set; }
+
         public string v_LotNo { get; set; }
         public string v_MoldNo { get; set; }
         public string v_CusName { get; set; }
         public string v_MoldName { get; set; }
+        public string v_MoldMass { get; set; }
         public string v_ModelName { get; set; }
         public string v_CavityNo { get; set; }
         public string v_Function { get; set; }
@@ -239,7 +241,14 @@ namespace CostEstimate.Models.Table.MK
         public string v_MaterialOutDateTo { get; set; }
         public string v_DaliverryDateFrom { get; set; }
         public string v_DaliverryDateTo { get; set; }
+
+        public string v_DateIssueFrom { get; set; }
+        public string v_DateIssueTo { get; set; }
+
         public string v_status { get; set; }
+
+        public string v_TypeofCavity { get; set; }
+        public string v_Revision { get; set; }
 
     }
 
@@ -273,11 +282,13 @@ namespace CostEstimate.Models.Table.MK
     public class ViewOperaterCP
     {
         public string IssueBy { get; set; }
-        public string CheckedBy { get; set; }
+        public string CheckedByTL { get; set; }
+        public string CheckedByTM { get; set; }
         public string ApproveBy { get; set; }
 
         public string empIssueBy { get; set; }
-        public string empCheckedBy { get; set; }
+        public string empCheckedByTL { get; set; }
+        public string empCheckedByTM { get; set; }
         public string empApproveBy { get; set; }
     }
 }

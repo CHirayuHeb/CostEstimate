@@ -175,6 +175,7 @@ function GoSideMenu(controller) {
         .catch(function (err) {
             hideLoading();
             alert('GoSideMenu : Failed to fetch page: ', err);
+            window.location.href = urlDefault + "\\Login\\Index\\";
             //var url = '@Url.Action("Index", "Login")';
             //window.location.href = url;
 
@@ -214,7 +215,6 @@ function PositionY(menu) {
             LoadScript("js/Home/Hour.js", "EventHomeHour");
             LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
             //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
-
             PY = "114px";
             opacity = "opacity-dot-3";
             break;
@@ -850,11 +850,46 @@ function Menubar_sendmail(getID, action) {
     else if (document.getElementById("i_New_LotNo").value == "") {
         msg = "กรุณากรอกข้อมูล Lot No !!!";
     }
+ 
+    else if (document.getElementById("i_New_CustomerName").value == "") {
+        msg = "กรุณากรอกข้อมูล CustomerName !!!";
+    }
+    else if (document.getElementById("i_New_MoldName").value == "") {
+        msg = "กรุณากรอกข้อมูล MoldName/Mold No !!!";
+    }
     else if (document.getElementById("i_New_ModelName").value == "") {
-        msg = "กรุณากรอกข้อมูล Model Name !!!";
-    } else if (rows.length < 3) { // Check if there is more than just the header row
+        msg = "กรุณากรอกข้อมูล ModelName !!!";
+    }
+    else if (rows.length < 3) { // Check if there is more than just the header row
         msg = "กรุณากรอกข้อมูล Model Name ให้ถูกต้อง !!!";
         console.log("The table has more than 0 rows.");
+    }
+    else if (document.getElementById("i_New_CavityNo").value == "") {
+        msg = "กรุณากรอกข้อมูล Cavity No !!!";
+    }
+    else if (document.getElementById("i_New_Function").value == "") {
+        msg = "กรุณากรอกข้อมูล Function !!!";
+    }
+    else if (document.getElementById("i_New_DevelopmentStage").value == "") {
+        msg = "กรุณากรอกข้อมูล Developmentn Stage !!!";
+    }
+    else if (document.getElementById("i_New_MoldNo").value == "") {
+        msg = "กรุณากรอกข้อมูล Mold Mass !!!";
+    }
+    else if (document.getElementById("i_New_TypeCavity").value == "") {
+        msg = "กรุณากรอกข้อมูล Type Cavity !!!";
+    }
+    else if (document.getElementById("i_New_MatOutDate").value == "") {
+        msg = "กรุณากรอกข้อมูล Mat Out Date !!!";
+    }
+    else if (document.getElementById("i_New_MatOutTime").value == "") {
+        msg = "กรุณากรอกข้อมูล Mat Out Time !!!";
+    }
+    else if (document.getElementById("i_New_DeliveryDate").value == "") {
+        msg = "กรุณากรอกข้อมูล Delivery Date !!!";
+    }
+    else if (document.getElementById("i_New_DeliveryTime").value == "") {
+        msg = "กรุณากรอกข้อมูล Delivery Time !!!";
     }
     else if (radios.length > 0) {
 
@@ -872,6 +907,17 @@ function Menubar_sendmail(getID, action) {
 
 
     }
+    else if (document.getElementById("i_New_Detail").value == "") {
+        msg = "กรุณากรอกข้อมูล Detail !!!";
+    }
+    else if (document.getElementById("i_New_Weight").value == "") {
+        msg = "กรุณากรอกข้อมูล Weight!!!";
+    }
+    else if (document.getElementById("i_New_Qty").value == "") {
+        msg = "กรุณากรอกข้อมูล Qty!!!";
+    }
+
+ 
 
 
 
@@ -997,6 +1043,7 @@ function Menubar_saveDraft(action) {
     else if (document.getElementById("i_New_LotNo").value == "") {
         vmsg = "กรุณากรอกข้อมูล Lot No !!!";
     }
+
 
     if (vmsg != "") {
         swal.fire({

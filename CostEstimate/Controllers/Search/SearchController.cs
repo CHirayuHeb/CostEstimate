@@ -47,10 +47,11 @@ namespace CostEstimate.Controllers.Search
         }
 
         [Authorize("Checked")]
-       //public IActionResult Index(Class @class, int? page)
-       public IActionResult Index(Class @class)
+        //public IActionResult Index(Class @class, int? page)
+        public IActionResult Index(Class @class)
         {
-            try {
+            try
+            {
 
                 //int pageSize = 10; // จำนวนรายการที่จะแสดงต่อหน้า
                 //int pageNumber = (page ?? 1); // หน้าเริ่มต้นคือหน้า 1 ถ้าไม่มีการระบุ
@@ -62,10 +63,13 @@ namespace CostEstimate.Controllers.Search
                 @class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.OrderByDescending(x => x.smIssueDate).ToList();
                 if (@class._ViewSearchData != null)
                 {
-
+                    if (@class._ViewSearchData.v_OrderNo != null && @class._ViewSearchData.v_OrderNo != "")
+                    {
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smOrderNo.ToUpper().Contains(@class._ViewSearchData.v_OrderNo.ToUpper())).ToList();
+                    }
                     if (@class._ViewSearchData.v_DocumentNo != null && @class._ViewSearchData.v_DocumentNo != "")
                     {
-                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smDocumentNo.Contains(@class._ViewSearchData.v_DocumentNo)).ToList();
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smDocumentNo.ToUpper().Contains(@class._ViewSearchData.v_DocumentNo.ToUpper())).ToList();
                     }
                     if (@class._ViewSearchData.v_status != null)
                     {
@@ -76,31 +80,39 @@ namespace CostEstimate.Controllers.Search
                     }
                     if (@class._ViewSearchData.v_LotNo != null && @class._ViewSearchData.v_LotNo != "")
                     {
-                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smLotNo.Contains(@class._ViewSearchData.v_LotNo)).ToList();
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smLotNo.ToUpper().Contains(@class._ViewSearchData.v_LotNo.ToUpper())).ToList();
                     }
                     if (@class._ViewSearchData.v_MoldNo != null && @class._ViewSearchData.v_MoldNo != "")
                     {
-                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smMoldNo.Contains(@class._ViewSearchData.v_MoldNo)).ToList();
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smMoldNo.ToUpper().Contains(@class._ViewSearchData.v_MoldNo.ToUpper())).ToList();
+                    }
+                    if (@class._ViewSearchData.v_MoldMass != null && @class._ViewSearchData.v_MoldMass != "")
+                    {
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smMoldNo.ToUpper().Contains(@class._ViewSearchData.v_MoldMass.ToUpper())).ToList();
                     }
                     if (@class._ViewSearchData.v_CusName != null && @class._ViewSearchData.v_CusName != "")
                     {
-                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smCustomerName.Contains(@class._ViewSearchData.v_CusName)).ToList();
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smCustomerName.ToUpper().Contains(@class._ViewSearchData.v_CusName.ToUpper())).ToList();
+                    }
+                    if (@class._ViewSearchData.v_MoldName != null && @class._ViewSearchData.v_MoldName != "")
+                    {
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smMoldName.ToUpper().Contains(@class._ViewSearchData.v_MoldName.ToUpper())).ToList();
                     }
                     if (@class._ViewSearchData.v_ModelName != null && @class._ViewSearchData.v_ModelName != "")
                     {
-                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smModelName.Contains(@class._ViewSearchData.v_ModelName)).ToList();
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smModelName.ToUpper().Contains(@class._ViewSearchData.v_ModelName.ToUpper())).ToList();
                     }
                     if (@class._ViewSearchData.v_CavityNo != null && @class._ViewSearchData.v_CavityNo != "")
                     {
-                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smCavityNo == int.Parse(@class._ViewSearchData.v_CavityNo)).ToList();
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smCavityNo.Contains(@class._ViewSearchData.v_CavityNo)).ToList();
                     }
                     if (@class._ViewSearchData.v_Function != null && @class._ViewSearchData.v_Function != "")
                     {
-                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smFunction.Contains(@class._ViewSearchData.v_Function)).ToList();
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smFunction.ToUpper().Contains(@class._ViewSearchData.v_Function.ToUpper())).ToList();
                     }
                     if (@class._ViewSearchData.v_DevelopmentStage != null && @class._ViewSearchData.v_DevelopmentStage != "")
                     {
-                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smDevelopmentStage.Contains(@class._ViewSearchData.v_DevelopmentStage)).ToList();
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smDevelopmentStage.ToUpper().Contains(@class._ViewSearchData.v_DevelopmentStage.ToUpper())).ToList();
                     }
 
                     //Material
@@ -123,30 +135,51 @@ namespace CostEstimate.Controllers.Search
                         @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smDeliveryDate) <= DateTime.Parse(@class._ViewSearchData.v_DaliverryDateTo)).ToList();
                     }
 
+                    //date issue
+                    //date resuest
+                    if (@class._ViewSearchData.v_DateIssueFrom != null && @class._ViewSearchData.v_DateIssueFrom != "")
+                    {
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smIssueDate) >= DateTime.Parse(@class._ViewSearchData.v_DateIssueFrom)).ToList();
+                    }
+                    if (@class._ViewSearchData.v_DateIssueTo != null && @class._ViewSearchData.v_DateIssueTo != "")
+                    {
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smIssueDate) <= DateTime.Parse(@class._ViewSearchData.v_DateIssueTo)).ToList();
+                    }
 
+                    if (@class._ViewSearchData.v_TypeofCavity != null && @class._ViewSearchData.v_TypeofCavity != "")
+                    {
+                        //@class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smTypeCavity.Contains(@class._ViewSearchData.v_TypeofCavity)).ToList();
+
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smTypeCavity != null && x.smTypeCavity.IndexOf(@class._ViewSearchData.v_TypeofCavity, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+                    }
+
+                    if (@class._ViewSearchData.v_Revision != null && @class._ViewSearchData.v_Revision != "")
+                    {
+                        @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smRevision.Contains(@class._ViewSearchData.v_Revision)).ToList();
+                    }
                 }
-               // ViewBag.Listcount = @class._ListceMastSubMakerRequest.Count();
-               // var pagedList = @class._ListceMastSubMakerRequest
-               //.Skip((pageNumber - 1) * pageSize) // ข้ามหน้าที่แล้ว
-               //.Take(pageSize) // เลือกข้อมูลในหน้า
-               //.ToList();
+                // ViewBag.Listcount = @class._ListceMastSubMakerRequest.Count();
+                // var pagedList = @class._ListceMastSubMakerRequest
+                //.Skip((pageNumber - 1) * pageSize) // ข้ามหน้าที่แล้ว
+                //.Take(pageSize) // เลือกข้อมูลในหน้า
+                //.ToList();
 
-               // // คำนวณจำนวนหน้าทั้งหมด
-               // ViewBag.CurrentPage = pageNumber;
-               // //ViewBag.TotalPages = Math.Ceiling((double)@class._ListceMastSubMakerRequest.Count() / pageSize);
-               // ViewBag.TotalPages = (int)Math.Ceiling((double)@class._ListceMastSubMakerRequest.Count() / pageSize);
-               // // คำนวณหน้าใกล้เคียงที่จะแสดง (เช่น 3 หน้า)
-               // int startPage = Math.Max(1, pageNumber - 1); // คำนวณหน้าเริ่มต้น (แสดงหน้า 1 ถึง 3)
-               // int endPage = Math.Min(ViewBag.TotalPages, pageNumber + 1); // คำนวณหน้าสิ้นสุด
+                // // คำนวณจำนวนหน้าทั้งหมด
+                // ViewBag.CurrentPage = pageNumber;
+                // //ViewBag.TotalPages = Math.Ceiling((double)@class._ListceMastSubMakerRequest.Count() / pageSize);
+                // ViewBag.TotalPages = (int)Math.Ceiling((double)@class._ListceMastSubMakerRequest.Count() / pageSize);
+                // // คำนวณหน้าใกล้เคียงที่จะแสดง (เช่น 3 หน้า)
+                // int startPage = Math.Max(1, pageNumber - 1); // คำนวณหน้าเริ่มต้น (แสดงหน้า 1 ถึง 3)
+                // int endPage = Math.Min(ViewBag.TotalPages, pageNumber + 1); // คำนวณหน้าสิ้นสุด
 
 
 
-               // ViewBag.StartPage = startPage;
-               // ViewBag.EndPage = endPage;
+                // ViewBag.StartPage = startPage;
+                // ViewBag.EndPage = endPage;
 
-               // @class._ListceMastSubMakerRequest = pagedList; // ส่งข้อมูลที่แบ่งหน้าแล้วไปยัง View
+                // @class._ListceMastSubMakerRequest = pagedList; // ส่งข้อมูลที่แบ่งหน้าแล้วไปยัง View
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 string a = ex.Message;
             }
@@ -187,7 +220,7 @@ namespace CostEstimate.Controllers.Search
                 }
                 if (@class._ViewSearchData.v_CavityNo != null && @class._ViewSearchData.v_CavityNo != "")
                 {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smCavityNo == int.Parse(@class._ViewSearchData.v_CavityNo)).ToList();
+                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smCavityNo.Contains(@class._ViewSearchData.v_CavityNo)).ToList();
                 }
                 if (@class._ViewSearchData.v_Function != null && @class._ViewSearchData.v_Function != "")
                 {
@@ -325,7 +358,7 @@ namespace CostEstimate.Controllers.Search
                 }
                 if (@class._ViewSearchData.v_CavityNo != null && @class._ViewSearchData.v_CavityNo != "")
                 {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smCavityNo == int.Parse(@class._ViewSearchData.v_CavityNo)).ToList();
+                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smCavityNo.Contains(@class._ViewSearchData.v_CavityNo)).ToList();
                 }
                 if (@class._ViewSearchData.v_Function != null && @class._ViewSearchData.v_Function != "")
                 {

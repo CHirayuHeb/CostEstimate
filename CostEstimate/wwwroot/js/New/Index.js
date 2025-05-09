@@ -57,11 +57,17 @@
 
 
 
-var today = new Date().toISOString().slice(0, 10).replace(/-/g, '/');
+//var today = new Date().toISOString().slice(0, 10).replace(/-/g, '/');
+
+var today = new Date();
+var formattedDate = today.getDate().toString().padStart(2, '0') + '/' +
+    (today.getMonth() + 1).toString().padStart(2, '0') + '/' +
+    today.getFullYear();
+
 console.log(today); // ผลลัพธ์: 2025/02/19
 
 if (document.getElementById("i_New_SDate").value == "") {
-    document.getElementById("i_New_SDate").value = today;
+    document.getElementById("i_New_SDate").value = formattedDate;
 }
 
 (function () {

@@ -12,5 +12,7 @@ namespace CostEstimate.Models.DBConnect
         public MOLD(DbContextOptions<MOLD> options) : base(options)
         { }
         public DbSet<ViewmtMaster_Mold_Control> _ViewmtMaster_Mold_Control { get; set; }
+
+        public DbSet<ViewLLLedger> _ViewLLLedger { get; set; }
     }
 }
