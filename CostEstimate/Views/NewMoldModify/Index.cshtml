@@ -1,6 +1,6 @@
 ﻿@model CostEstimate.Models.Common.Class;
 @{
-    ViewData["Title"] = "New | ThaiStanley";
+    ViewData["Title"] = "New Mold | ThaiStanley";
     Layout = "~/Views/Shared/_MenuBar.cshtml";
 }
 @{
@@ -18,6 +18,509 @@
 <div class="home-content">
     <div id="DisplayContent" class="content-box">
         <div style="" class="content-text">
+            <br />
+            <div class="row center" style="padding:5px;background-color:#cbeff7;margin-bottom:5px;border:0px solid black">
+                <div class="col-60 " style="text-align:left">
+                    <div class="grid-item fw-800  " style="text-align:left;font-size:24px;padding-top:8px"> <span style="color:#f0af81">MOLD MODIFY </span> REQUEST SHEET DETAIL.</div>
+
+                </div>
+                <div class="col-40 center" style="text-align:right;">
+                    @*display:none*@
+                    <button class="button btnBlue" style="margin-right:20px;width:auto; @(Model._ViewceMastSubMakerRequest.smStep > 2 ? "" : "display:none")"
+                            onclick="Menubar_PrintMoldQUOTATION('@Url.Action("PrintMoldQUOTATION","NewMoldModify")','@Model._ViewceMastSubMakerRequest.smDocumentNo')">
+                        <img src="~/images/printer.png" style="width:33px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                        REPORT
+                    </button>
+                    <button class="button" style="width:auto" onclick="Menubar_sendmail($('#i_New_OrderNo').val(),'@Url.Action("History","New")')">
+                        <img src="~/images/direct.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                        SEND
+                    </button>
+                    <button class="button btnGray" style="@(Model._ViewceMastSubMakerRequest.smStep == 7 ? "pointer-events: none;width:auto " : "width:auto")"
+                            onclick="Menubar_saveDraft('@Url.Action("SaveDraft","New")')">
+                        <img src="~/images/savedaft.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                        SAVE DAFT
+                    </button>
+
+                </div>
+            </div>
+            <form action="" id="formMoldRequest" name="formMoldData">
+                <div style="width:100%;">
+                    <div id="divSearchMain" style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:10px;border-radius:2px;">
+                        <div class="row center">
+                            <div class="col-5 " style="">
+                            </div>
+                            <div class="col-90 " style="">
+                                @await Html.PartialAsync("_PartialStepFlowMoldModify.cshtml", Model)
+                            </div>
+                            <div class="col-5 " style="">
+                            </div>
+
+                        </div>
+                        <div class="row center" style="@(Model._ViewceMastSubMakerRequest.smStep == 7
+                                                                            || (Model._ViewceMastSubMakerRequest.smStep == 0 && (Model._ViewceMastSubMakerRequest.smEmpCodeRequest != null && Model._ViewceMastSubMakerRequest.smEmpCodeRequest != "") && Model._ViewceMastSubMakerRequest.smEmpCodeRequest != _UserId )
+                                                                            || (Model._ViewceMastSubMakerRequest.smStep > 0 && (Model._ViewceMastSubMakerRequest.smEmpCodeApprove != null && Model._ViewceMastSubMakerRequest.smEmpCodeApprove != "") && Model._ViewceMastSubMakerRequest.smEmpCodeApprove != _UserId )
+                                                                            ? "pointer-events: none;" : "")">
+
+
+                            <div class="row center">
+                                <div class="col-5 " style="">
+                                </div>
+                                <div class="col-20 border1_5brown " style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Order No.</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smOrderNo" id="i_NewMold_OrderNo" readonly="@(@Model._ViewceMastSubMakerRequest !=null ? (@Model._ViewceMastSubMakerRequest.smOrderNo != null ? "readonly" : null) : null)">
+                                    @*<input type="text" class="form-control left text-gray" style=" @(@Model._ViewceMastSubMakerRequest.smOrderNo != null ? "pointer-events: none;width:100%;height:80%;font-size:12px" : "width:100%;height:80%;font-size:12px")" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smOrderNo" id="i_New_OrderNo">*@
+                                </div>
+                                <div class="col-20 border1_5brown" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">DocumentNo No.</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smDocumentNo" id="i_NewMold_DocumentNo" readonly>
+                                </div>
+                                <div class="col-5 " style="">
+                                </div>
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+                                </div>
+                                <div class="col-20 border1_5brown " style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Lot No.</div>
+                                </div>
+
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control" id="i_NewMold_LotNo" style="font-size:12px;width:100%;background-color:yellow" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smLotNo" readonly="@(Model._ViewceMastSubMakerRequest.smLotNo != null ? "readonly" : null)" />
+                                    @*<button class="button btnGray" style="width:auto" onclick="Menubar_SearchLedger($('#i_New_OrderNo').val(),'@Url.Action("SearchLedger","New")')">
+                    <img src="~/images/search.png" style="width:22px;height:22px;padding-right:0px;margin-right:3px;margin-top: 2px;margin-bottom: 2px;" />
+                    ค้นหา
+                </button>*@
+
+                                    @*@Html.DropDownListFor(m => m._ViewceDetailSubMakerRequest.dsLotNo, (SelectList)ViewBag.vbformMaster_Mold_Control, "กรุณาเลือก", new { @class = "form-control", id = "ipCodeDept", autocomplete = "off", @style = "width:100%;font-size:13px" })*@
+                                    @*<input type="text" class="form-control left" style="width:100%;height:80%" autocomplete="off">*@
+                                </div>
+                                <div class="col-20 border1_5brown" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Revision.</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:50%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewMold_Revision" asp-for="_ViewceMastSubMakerRequest.smRevision" readonly>
+                                </div>
+                                <div class="col-5 " style="">
+
+                                </div>
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5brown" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Customer Name</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smCustomerName" id="i_NewMold_CustomerName" readonly>
+                                </div>
+                                <div class="col-20 border1_5brown" style=" display: flex;align-items: center; ">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Mold Name / Mold No. </div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    @Html.TextAreaFor(model => model._ViewceMastSubMakerRequest.smMoldName, new { @class = "form-control left", rows = 2, @readonly = "readonly", @id = "i_NewMold_MoldName", @style = "width:100%;field-sizing: content;font-size:12px;background-color:lightgray;" })
+                                    @*@Html.TextAreaFor(model => model._ViewceMastSubMakerRequest.smMoldName, new { @class = "form-control left", rows = 2, @readonly = "readonly", @id = "i_New_MoldName", @style = "width:100%;field-sizing: content;font-size:12px;background-color:lightgray;" })*@
+                                    @*<input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smMoldName" id="i_New_MoldName" readonly>*@
+                                </div>
+                                <div class="col-5 " style="">
+
+                                </div>
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5brown" style=" display: flex;align-items: center; ">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Model Name</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewMold_ModelName" asp-for="_ViewceMastSubMakerRequest.smModelName">
+                                </div>
+                                <div class="col-20 border1_5brown" style=" display: flex;align-items: center; ">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Cavity No.</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:50%;height:80%;font-size:12px;text-align:left;background-color:yellow" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smCavityNo" id="i_NewMold_CavityNo">
+                                </div>
+                                <div class="col-5 " style="">
+
+                                </div>
+
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5brown" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Function</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewMold_Function" asp-for="_ViewceMastSubMakerRequest.smFunction">
+                                </div>
+                                <div class="col-20 border1_5brown" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Development Stage</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewMold_DevelopmentStage" asp-for="_ViewceMastSubMakerRequest.smDevelopmentStage">
+                                </div>
+                                <div class="col-5 " style="">
+
+                                </div>
+
+
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5brown" style=" display: flex;align-items: center; ">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Date Issue</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    @*<label></label>*@
+                                    <input type="text" id="i_NewMold_SDate" class="input-with-image form-control  text-black" style="width:100%;font-size:12px;text-align: center;background-color:lightgray" autocomplete="off" readonly asp-for="_ViewceMastSubMakerRequest.smIssueDate" value="@(Model._ViewceMastSubMakerRequest?.smIssueDate ?? DateTime.Now.ToString("dd/MM/yyyy"))" />
+                                    @*<input type="text" id="i_New_SDate" class="input-with-image form-control  text-black" style="width:100%;font-size:12px;text-align: center" autocomplete="off" readonly asp-for="_ViewceMastSubMakerRequest.smIssueDate"  value="@DateTime.Today.ToString("yyyy-MM-dd")">*@
+
+
+                                </div>
+
+                                <div class="col-20 border1_5brown" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Mold Mass.</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="input-with-image Monthpicker  form-control center" style="width:100%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewMold_MoldNo" asp-for="_ViewceMastSubMakerRequest.smMoldNo">
+                                    @*<input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" id="i_New_MoldNo" asp-for="_ViewceMastSubMakerRequest.smMoldNo">*@
+                                </div>
+                                <div class="col-5 " style="">
+
+                                </div>
+
+                            </div>
+
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5brown" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Type of Cavity</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    @*<input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_New_TypeCavity" asp-for="_ViewceMastSubMakerRequest.smTypeCavity">*@
+
+                                    @Html.DropDownListFor(m => m._ViewceMastSubMakerRequest.smTypeCavity, (SelectList)ViewBag.TypeofCavity, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_TypeCavity", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
+                                </div>
+
+                                <div class="col-20 " style=" display: flex;align-items: center;">
+                                   
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                               </div>
+                                <div class="col-5 " style="">
+
+                                </div>
+
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-90" style="">
+                                    <hr style="border:1px solid black" />
+                                </div>
+                                <div class="col-5" style="">
+
+                                </div>
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5brown" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Material Out / Date</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+
+                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewMold_MatOutDate" asp-for="_ViewceMastSubMakerRequest.smMatOutDate">
+
+                                </div>
+                                <div class="col-20 border1_5brown" style=" display: flex;align-items: center; ">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Time (ทุกครึ่งชั่วโมง)</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="input-with-timeimage form-control text-center timepicker" placeholder="HH:mm" pattern="(([01][0-9]|2[0-3]):[0-5][0-9])?" maxlength="5" data-format="HH:mm" asp-for="_ViewceMastSubMakerRequest.smMatOutTime" style="font-size:12px; width: 50%;background-color:yellow" autocomplete="off" id="i_NewMold_MatOutTime" />
+                                    @*<input type="text" class="input-with-image Timepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" id="i_New_MatOutTime" asp-for="_ViewceMastSubMakerRequest.smMatOutTime">*@
+                                </div>
+                                <div class="col-5 " style="">
+                                </div>
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+                                </div>
+                                <div class="col-20 border1_5brown" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Delivery/Date</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+
+                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewMold_DeliveryDate" asp-for="_ViewceMastSubMakerRequest.smDeliveryDate">
+
+                                </div>
+                                <div class="col-20 border1_5brown" style=" display: flex;align-items: center;;">
+
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Time (ทุกครึ่งชั่วโมง)</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    @*<div class="timepicker-content" data-view="hour"></div>*@
+                                    <input type="text" class="input-with-timeimage form-control text-center timepicker" placeholder="HH:mm" pattern="(([01][0-9]|2[0-3]):[0-5][0-9])?" maxlength="5" data-format="HH:mm" asp-for="_ViewceMastSubMakerRequest.smDeliveryTime" style="font-size:12px;width:50%;background-color:yellow" autocomplete="off" id="i_NewMold_DeliveryTime" />
+                                    @*<input type="text" class="input-with-image timepicker  form-control center" style="width:100%;font-size:10px" autocomplete="off" id="i_New_DeliveryTime" asp-for="_ViewceMastSubMakerRequest.smDeliveryTime">*@
+                                    @*<input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" id="i_New_DeliveryTime" asp-for="_ViewceMastSubMakerRequest.smDeliveryTime">*@
+                                </div>
+                                <div class="col-5 " style="">
+                                </div>
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-90" style="">
+                                    <hr style="border:1px solid black" />
+                                </div>
+                                <div class="col-5" style="">
+
+                                </div>
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+                                </div>
+                                <div class="col-20 border1_5brown " style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">EST</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smOrderNo" id="i_NewMold_OrderNo" readonly="@(@Model._ViewceMastSubMakerRequest !=null ? (@Model._ViewceMastSubMakerRequest.smOrderNo != null ? "readonly" : null) : null)">
+                                    @*<input type="text" class="form-control left text-gray" style=" @(@Model._ViewceMastSubMakerRequest.smOrderNo != null ? "pointer-events: none;width:100%;height:80%;font-size:12px" : "width:100%;height:80%;font-size:12px")" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smOrderNo" id="i_New_OrderNo">*@
+                                </div>
+                                <div class="col-20 border1_5brown" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">MK PRICE</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smOrderNo" id="i_NewMold_OrderNo" readonly="@(@Model._ViewceMastSubMakerRequest !=null ? (@Model._ViewceMastSubMakerRequest.smOrderNo != null ? "readonly" : null) : null)">
+                                </div>
+                                <div class="col-5 " style="">
+                                </div>
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+                                </div>
+                                <div class="col-20 border1_5brown " style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">RESULT</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smOrderNo" id="i_NewMold_OrderNo" readonly="@(@Model._ViewceMastSubMakerRequest !=null ? (@Model._ViewceMastSubMakerRequest.smOrderNo != null ? "readonly" : null) : null)">
+                                    @*<input type="text" class="form-control left text-gray" style=" @(@Model._ViewceMastSubMakerRequest.smOrderNo != null ? "pointer-events: none;width:100%;height:80%;font-size:12px" : "width:100%;height:80%;font-size:12px")" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smOrderNo" id="i_New_OrderNo">*@
+                                </div>
+                                <div class="col-20 border1_5brown" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">TYPE CLAIM MAKER</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    @Html.DropDownListFor(m => m._ViewceMastSubMakerRequest.smTypeCavity, (SelectList)ViewBag.TypeofMODIFICATION, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_TypeCavity", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
+
+                                </div>
+                                <div class="col-5 " style="">
+                                </div>
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+                                </div>
+                                <div class="col-20 border1_5brown " style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">LEAD TIME (DAY)</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="number" min="0" class="form-control left " style="width:40%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smOrderNo" id="i_NewMold_LeadTime" readonly="@(@Model._ViewceMastSubMakerRequest !=null ? (@Model._ViewceMastSubMakerRequest.smOrderNo != null ? "readonly" : null) : null)">
+                                    @*<input type="text" class="form-control left text-gray" style=" @(@Model._ViewceMastSubMakerRequest.smOrderNo != null ? "pointer-events: none;width:100%;height:80%;font-size:12px" : "width:100%;height:80%;font-size:12px")" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smOrderNo" id="i_New_OrderNo">*@
+                                </div>
+                                <div class="col-20 " style=" display: flex;align-items: center;">
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                </div>
+                                <div class="col-5 " style="">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
         </div>
     </div>
+    <!-- Modal QUOTATION  -->
+    <div class="modal modal-sxl fade" id="myModalMoldQUOTATION" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog" style="min-width: 900px; width: 900px;">
+            <div class="modal-content">
+                <div class="modal-body" id="myModalBodyDivMoldQUOTATION">
+                    <div class="modal-header" style="margin-top:1px">
+                        <h5 class="modal-title">
+                            <span style="font-weight: bold; font-size: 16px;"><img src="~/images/quotation.png" height="35px" width="35px" style="vertical-align:middle;margin-right:10px" /> Quotation Mold Modify </span>
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <br />
+                        <div id="loadingIndicatorMoldQuotation" style="display: block; position: absolute; left: 50%; transform: translate(-50%, -50%); z-index: 9999;margin:0px">
+                            @*<div class="loader"></div>*@
+                            <img src="~/images/wait1.gif" alt="Loading..." width="100px"><span style="font-weight:600">Loading...</span>
+                        </div>
+                   
+
+                        <div id="ResultMoldQuotation" style="display: none;">
+                          
+                            @await Html.PartialAsync("_PartialDisplayMoldQuotation", Model);
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="width: 100%;">
+                        <button class="btn btn-primary" onclick="printQuotationA4('@Model._ViewceMastSubMakerRequest.smDocumentNo','NewMoldModify?id=','MoldModify')" style="@(Model._ViewceMastSubMakerRequest.smStep ==7 ? "" : "display:none")">🖨 พิมพ์ A4</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
+<script type="text/javascript">
+        $(function () {
+            function split(val) {
+                return val.split(/,\s*/);
+            }
+            function extractLast(term) {
+                return split(term).pop();
+            }
+
+            $("#i_NewMold_LotNo")
+           //don't navigate away from the field on tab when selecting an item
+                 .on("keydown", function (event) {
+                     console.log("OK");
+              if (event.keyCode === $.ui.keyCode.TAB &&
+                  $(this).autocomplete("instance").menu.active) {
+                  console.log("OK1");
+                  event.preventDefault();
+              }
+          })
+            .autocomplete({
+                minLength: 1,
+                source: function (request, response) {
+                    $.getJSON('@Url.Action("SearchMold_Ledger_Number", "NewMoldModify")', {
+                        term: extractLast(request.term)
+                    }, response);
+                },
+                focus: function () {
+                     //prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    const LotNo = ui.item.value.split("|")[0];
+                    console.log("test LotNo" + LotNo);
+
+                    document.getElementById("i_NewMold_CustomerName").value = ui.item.value.split("|")[1];
+                    document.getElementById("i_NewMold_MoldName").value = ui.item.value.split("|")[2];
+                    document.getElementById("i_NewMold_CavityNo").value = ui.item.value.split("|")[3];
+
+                    //let email365 = myArray[0];
+                    console.log("test" + LotNo);
+
+                    var terms = split(this.value);
+                     //remove the current input
+                    terms.pop();
+                     //add the selected item
+
+                    //terms.push(ui.item.value);
+                    terms.push(LotNo);
+                     //add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join("");
+                    return false;
+                }
+                });
+
+
+            $("#i_New_ModelName")
+           //don't navigate away from the field on tab when selecting an item
+                 .on("keydown", function (event) {
+                     console.log("OK2");
+              if (event.keyCode === $.ui.keyCode.TAB &&
+                  $(this).autocomplete("instance").menu.active) {
+                  console.log("OK2");
+                  event.preventDefault();
+              }
+          })
+            .autocomplete({
+                minLength: 1,
+                source: function (request, response) {
+                    $.getJSON('@Url.Action("SearchModelName", "New")', {
+                        term: extractLast(request.term)
+                    }, response);
+                },
+                focus: function () {
+                     //prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    const email365 = ui.item.value;
+                    //let email365 = myArray[0];
+                    console.log("test" + email365);
+
+                    var terms = split(this.value);
+                     //remove the current input
+                    terms.pop();
+                     //add the selected item
+
+                    //terms.push(ui.item.value);
+                    terms.push(email365);
+                     //add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join("");
+
+                    let mydata = $("#formRequest").serialize();
+                    //'@Url.Action("SearchbyModelName", "New")',
+                    $.ajax({
+                        url:'@Url.Action("SearchbyModelName", "New")',//'/New/SearchbyModelName', // URL ของ Controller
+                        type: 'POST',
+                        data: {
+                            search: email365,
+                            class: mydata
+
+                        },
+                        beforeSend: function () {
+                            // Show Loading ก่อนส่งข้อมูล
+                            $("#loading").show();
+                        },
+                        success: function (response) {
+                            $("#ResultProcess").html(response); // เอา HTML Partial View มาใส่ใน Div
+
+                        },
+                        complete: function () {
+                            // ซ่อน Loading เมื่อทำงานเสร็จ
+                            $("#loading").hide();
+
+                        },
+                        error: function () {
+                            alert("Error!!");
+                        }
+                    });
+
+
+                    return false;
+                }
+                });
+    })
+
+
+
+
+
+
+
+</script>

@@ -1,0 +1,281 @@
+﻿@using System.Security.Claims;
+@model CostEstimate.Models.Common.Class
+@{
+    string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+@{
+    Layout = null;
+}
+@*New Request*@
+<div>
+
+    @*@Html.HiddenFor(m => m.htEmpCode, new { id = "docno" })
+        @Html.HiddenFor(m => m.htStep, new { id = "step" })
+        @Html.HiddenFor(m => m.htTo, new { id = "EmailTo" })*@
+
+    <div class="modal-header" style="margin-top:1px">
+        <h5 class="modal-title">
+            @*<input asp-for="htStep" type="text" class="
+                     " id="txtstep" style="display:none" />
+                <input asp-for="htDateIssue" type="text" class="form-control" id="txtstep" style="display:none" />*@
+            <span style="font-weight: bold; font-size: 16px;">
+                ส่งคำขออนุมัติเอกสาร​ -->
+            </span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="p-2-modify" style="width: 100%; border: 1px grey; padding-top: 3px;font-size:8px">
+
+        <div class="input-group ig-property">
+            <span class="input-group-text w-25" style="font-size: 13px;">From.</span>
+            @*<input type="text" class="form-control" id="txtFrom"  readonly />*@
+            <input type="text" class="form-control" id="txtFrom" asp-for="_ViewceHistoryApproved.htFrom" readonly style="font-size: 13px;" />
+        </div>
+        <div class="input-group ig-property">
+            <span class="input-group-text w-25" style="font-size: 13px;">
+                To
+                @*@if (@Model._ViewceMastSubMakerRequest.smStep == 0)
+                    {
+                        <span style="padding-left:5px">DM up.</span>
+                    }*@
+            </span>
+            <input type="text" class="form-control" id="searchInputTO" asp-for="_ViewceHistoryApproved.htTo" required style="font-size: 13px;" readonly="@(ViewBag.step == 6  ?  "readonly" : null)" />
+            @*<input type="text" class="form-control" id="searchInputTO" />*@
+
+        </div>
+        <div class="input-group ig-property">
+            <span class="input-group-text w-25" style="font-size: 13px;">CC.</span>
+            @*<input class="form-control" id="searchInputCC" />*@
+            <textarea class="form-control" id="searchInputCC" rows="4" cols="50" asp-for="_ViewceHistoryApproved.htCC" required style="font-size: 13px;"></textarea>
+        </div>
+
+        <div style="margin:5px">
+            <span style=" font-size: 13px;">วันที่ : @ViewBag.vDate</span>
+
+
+
+        </div>
+
+        <div class="d-flex justify-content-center" style="width: 100%; text-align: center; padding-top: 5px; padding-bottom: 5px;">
+            <div class="p-1-modify" style="width: 100%; border: 1px grey;   ">
+                <div class="form-check form-check-inline" style="@(ViewBag.step == 7 ? "display: none;" : "")">
+                    @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Approve", new { @class = "", id = "StatusApp", onclick = "CheckDis('Approve')", required = "required", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Approve</label><br />
+                </div>
+                <div class="form-check form-check-inline " style="@(ViewBag.step == 0 || (ViewBag.step <8 && ViewBag.step>3 ) ? "display: none;" : "")">
+                    @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Disapprove", new { @class = "", id = "StatusApp", onclick = "CheckDis('Disapprove')", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Disapprove</label><br />
+                </div>
+                @*<div class="form-check form-check-inline">
+                        @if (@ViewBag.vWststus == "Done" || @ViewBag.vWststus == "Cancel" || @ViewBag.vWststus == "Transfer")
+                        {
+                            @Html.RadioButtonFor(m => m._ViewsvsHistoryApproved.htStatus, "Approve", new { @class = "", id = "StatusApp", onclick = "CheckDis('Approve')", required = "required", @style = "height:20px;width:20px;display:none;" }) <label></label><br />
+                        }
+                        else
+                        {
+                            @Html.RadioButtonFor(m => m._ViewsvsHistoryApproved.htStatus, "Approve", new { @class = "", id = "StatusApp", onclick = "CheckDis('Approve')", required = "required", @style = "height:20px;width:20px;" }) <label>Approve</label><br />
+                        }
+
+
+                    </div>
+                    <div class="form-check form-check-inline">
+                        @if (Model._ViewsvsServiceRequest.srStep == 0 || @ViewBag.vWststus == "Done" || @ViewBag.vWststus == "Cancel" || @ViewBag.vWststus == "Transfer")
+                        {
+                            @Html.RadioButtonFor(m => m._ViewsvsHistoryApproved.htStatus, "Disapprove", new { @class = "", id = "StatusApp", onclick = "CheckDis('Disapprove')", @style = "height:20px;width:20px;;display:none;" }) <label></label><br />
+                        }
+                        else
+                        {
+                            @Html.RadioButtonFor(m => m._ViewsvsHistoryApproved.htStatus, "Disapprove", new { @class = "", id = "StatusApp", onclick = "CheckDis('Disapprove')", @style = "height:20px;width:20px;" }) <label>Disapprove</label><br />
+                        }
+
+                    </div>*@
+
+            </div>
+        </div>
+        <div class="input-group ig-property">
+            <span class="input-group-text w-25" style="font-size: 13px;">Remark</span>
+            @*<input asp-for="htCC" class="form-control" id="searchInputCC" />*@
+            @*<textarea class="form-control" id="Remark" rows="2" cols="50"></textarea>*@
+            <textarea class="form-control" id="Remark" rows="2" cols="50" asp-for="_ViewceHistoryApproved.htRemark" style="font-size: 13px;"></textarea>
+        </div>
+
+
+    </div>
+
+
+    <div class=" panel-group ir fadeInUp animated wowload animated" style=" animation-name: fadeInUp; margin-bottom: 5px;">
+        <div class="panel panel-default property">
+            <div class=" panel-heading panel-heading-custom property" tabindex="0">
+                <br />
+                <h4 class="panel-title faq-title-range collapsed" data-bs-toggle="collapse" data-bs-target="#History"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    <label style="font-size:15px;font-weight:800">
+                        History
+                    </label>
+                    <label class="lbV">
+                    </label>
+                </h4>
+            </div>
+            <div class="panel-collapse collapse" id="History" style="overflow-y: scroll; max-height: 200px;">
+                <div id="divHistory" class="panel-body">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-footer" style="width: 100%;">
+
+        @*@if (@Model._ViewsvsServiceRequest.srStep < 5)
+            {
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="sendmailsubmit('@Url.Action("SendMail_post", "RequestForm", new { vform = @ViewBag.vForm,vSR= @ViewBag.SRno})')">Send mail</button>
+
+            }*@
+
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="Menubar_save_sendMail('@Url.Action("SaveForm_SendMail", "New")')" style="@(@ViewBag.step == 7  ? "display:none" : "")">Send mail</button>
+        @*<button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="sendmailsubmit('@Url.Action("SendMail_post", "RequestForm", new { vform = @ViewBag.vForm,vSR= @ViewBag.SRno})')">Send mail</button>*@
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+    </div>
+
+
+
+</div>
+
+
+
+<script type="text/javascript">
+
+
+
+$(function () {
+            function split(val) {
+                return val.split(/,\s*/);
+            }
+            function extractLast(term) {
+                return split(term).pop();
+            }
+
+            $("#searchInputCC")
+          // don't navigate away from the field on tab when selecting an item
+          .on("keydown", function (event) {
+              if (event.keyCode === $.ui.keyCode.TAB &&
+                  $(this).autocomplete("instance").menu.active) {
+                  event.preventDefault();
+              }
+          })
+            .autocomplete({
+                minLength: 0,
+                source: function (request, response) {
+                    $.getJSON('@Url.Action("Search", "New")', {
+                        term: extractLast(request.term)
+                    }, response);
+                },
+                focus: function () {
+                    // prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    const email365 = ui.item.value.split("|")[1];
+                    //let email365 = myArray[0];
+                    console.log("test" + email365);
+
+                    var terms = split(this.value);
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+
+                    //terms.push(ui.item.value);
+                    terms.push(email365);
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join(",");
+                    return false;
+                }
+                });
+
+
+            $("#searchInputCCDept")
+          // don't navigate away from the field on tab when selecting an item
+          .on("keydown", function (event) {
+              if (event.keyCode === $.ui.keyCode.TAB &&
+                  $(this).autocomplete("instance").menu.active) {
+                  event.preventDefault();
+              }
+          })
+            .autocomplete({
+                minLength: 0,
+                source: function (request, response) {
+                    $.getJSON('@Url.Action("Search", "New")', {
+                        term: extractLast(request.term)
+                    }, response);
+                },
+                focus: function () {
+                    // prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    const email365 = ui.item.value.split("|")[1];
+                    //let email365 = myArray[0];
+                    console.log("test" + email365);
+
+                    var terms = split(this.value);
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+
+                    //terms.push(ui.item.value);
+                    terms.push(email365);
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join(",");
+                    return false;
+                }
+            });
+
+             $("#searchInputTO")
+          // don't navigate away from the field on tab when selecting an item
+                 .on("keydown", function (event) {
+                     console.log("OK");
+              if (event.keyCode === $.ui.keyCode.TAB &&
+                  $(this).autocomplete("instance").menu.active) {
+                  event.preventDefault();
+              }
+          })
+            .autocomplete({
+                minLength: 1,
+                source: function (request, response) {
+                    $.getJSON('@Url.Action("Search", "New")', {
+                        term: extractLast(request.term)
+                    }, response);
+                },
+                focus: function () {
+                    // prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    const email365 = ui.item.value.split("|")[1];
+                    //let email365 = myArray[0];
+                    console.log("test" + email365);
+
+                    var terms = split(this.value);
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+
+                    //terms.push(ui.item.value);
+                    terms.push(email365);
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join("");
+                    return false;
+                }
+            });
+    })
+
+</script>

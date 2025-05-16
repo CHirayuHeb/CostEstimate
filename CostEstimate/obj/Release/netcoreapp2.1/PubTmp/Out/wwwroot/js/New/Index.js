@@ -70,6 +70,11 @@ if (document.getElementById("i_New_SDate").value == "") {
     document.getElementById("i_New_SDate").value = formattedDate;
 }
 
+
+//if (document.getElementById("i_NewMold_SDate").value == "") {
+//    document.getElementById("i_NewMold_SDate").value = "2025/04/01";//formattedDate;
+//}
+
 (function () {
     if (window.localStorage) {
         if (!localStorage.getItem('firstLoad')) {

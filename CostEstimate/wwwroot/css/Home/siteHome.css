@@ -290,6 +290,12 @@ col-100 {
     border-radius: 2px;
     height: 30px;
 }
+.border1_5brown {
+    border: 0.5px solid azure;
+    border-radius: 2px;
+    height: 30px;
+    background: #f0c6a8;
+}
 
 .centerdiv {
     margin: auto;

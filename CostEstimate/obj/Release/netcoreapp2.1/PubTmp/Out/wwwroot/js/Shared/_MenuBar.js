@@ -218,6 +218,21 @@ function PositionY(menu) {
             PY = "114px";
             opacity = "opacity-dot-3";
             break;
+        case "NewMoldModify":
+            //LoadScript("js/New/Index.js", "NewItem");
+            //LoadScript("js/New/EventMore.js", "EventNewMore");
+            //LoadScript("js/Home/Index.js", "Home");
+            //LoadScript("js/New/Index.js", "New");
+            //LoadScript("js/Home/Hour.js", "EventHomeHour");
+            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
+            LoadScript("js/Home/Index.js", "Home");
+            LoadScript("js/New/Index.js", "New");
+            LoadScript("js/Home/Hour.js", "EventHomeHour");
+            LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
+            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
+            PY = "114px";
+            opacity = "opacity-dot-3";
+            break;
         case "PageNotFound":
             //LoadScript("js/New/Index.js", "NewItem");
             //LoadScript("js/New/EventMore.js", "EventNewMore");
@@ -850,7 +865,7 @@ function Menubar_sendmail(getID, action) {
     else if (document.getElementById("i_New_LotNo").value == "") {
         msg = "กรุณากรอกข้อมูล Lot No !!!";
     }
- 
+
     else if (document.getElementById("i_New_CustomerName").value == "") {
         msg = "กรุณากรอกข้อมูล CustomerName !!!";
     }
@@ -917,7 +932,7 @@ function Menubar_sendmail(getID, action) {
         msg = "กรุณากรอกข้อมูล Qty!!!";
     }
 
- 
+
 
 
 
@@ -1688,7 +1703,7 @@ function Menubar_PrintQUOTATION(action, mpNo) {
             mpNo: mpNo
         },
         beforeSend: function () {
-           
+
             console.log("Showing loader..."); // ตรวจสอบว่าทำงานจริง
             $("#loadingIndicatorQuotation").css("display", "block"); // แสดง Loader
             $("#ResultQuotation").css("display", "none"); // ซ่อน Loader
@@ -1706,13 +1721,23 @@ function Menubar_PrintQUOTATION(action, mpNo) {
             // ซ่อนรูปโหลดเมื่อ request เสร็จ
             console.log("Hiding loader..."); // ตรวจสอบว่าทำงานจริง
             $("#loadingIndicatorQuotation").css("display", "none"); // ซ่อน Loader
-          
+
         }
     });
     $("#myModalQUOTATION").modal("show");
 }
-function printQuotationA4(mpNo) {
-    var printContents = document.getElementById("ResultQuotation").innerHTML;
+function printQuotationA4(mpNo, action, type) {
+    var printContents;
+   // MoldModify
+    //SubMaker
+    if (type == "SubMaker") {
+        printContents = document.getElementById("ResultQuotation").innerHTML;
+    } else {
+        printContents = document.getElementById("ResultMoldQuotation").innerHTML;
+    }
+    //ResultMoldQuotation
+    //ResultQuotation
+    //printContents = document.getElementById("ResultQuotation").innerHTML;
     var originalContents = document.body.innerHTML;
 
     var printWindow = window.open('', '', 'height=800,width=1000');
@@ -1727,7 +1752,8 @@ function printQuotationA4(mpNo) {
     printWindow.print();
     printWindow.close();
 
-    let url = "New?smDocumentNo=" + mpNo;
+    let url = action + mpNo;
+    //let url = "New?smDocumentNo=" + mpNo;
     //let url = "New?smLotNo=" + smLotNo + "&smOrderNo=" + smOrderNo + "&smRevision=" + smRevision;
     GoSideMenu(url);
 
@@ -2023,12 +2049,37 @@ function Menubar_AddMasterModel(action) {
 }
 
 
-//main web
-//window.addEventListener("popstate", function (event) {
-//    var confirmation = confirm("Are you sure you want to leave this page?");
-//    if (!confirmation) {
-//        history.pushState(null, null, location.href);  // ป้องกันการย้อนกลับ
-//    }
-//});
+////////////////Mold Modify
+function Menubar_PrintMoldQUOTATION(action, mpNo) {
 
-//history.pushState(null, "", location.href);
+    console.log("myModalMoldQUOTATION");
+    $.ajax({
+        url: action,//'/New/SearchbyModelName', // URL ของ Controller
+        type: 'POST',
+        data: {
+            mpNo: mpNo
+        },
+        beforeSend: function () {
+
+            console.log("Showing loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorMoldQuotation").css("display", "block"); // แสดง Loader
+            $("#ResultMoldQuotation").css("display", "none"); // ซ่อน Loader
+        },
+        success: function (response) {
+            //$("#ResultQuotation").html(response); // เอา HTML Partial View มาใส่ใน Div
+
+            $("#ResultMoldQuotation").css("display", "block"); // แสดง Loader
+            $("#ResultMoldQuotation").html(response); // เอา HTML Partial View มาใส่ใน Div
+        },
+        error: function () {
+            alert("Error!!");
+        },
+        complete: function () {
+            // ซ่อนรูปโหลดเมื่อ request เสร็จ
+            console.log("Hiding loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorMoldQuotation").css("display", "none"); // ซ่อน Loader
+
+        }
+    });
+    $("#myModalMoldQUOTATION").modal("show");
+}

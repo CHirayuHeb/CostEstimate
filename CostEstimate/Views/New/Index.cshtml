@@ -191,7 +191,7 @@
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
                                     @*<label></label>*@
-                                    <input type="text" id="i_New_SDate" class="input-with-image form-control  text-black" style="width:100%;font-size:12px;text-align: center;background-color:lightgray" autocomplete="off" readonly asp-for="_ViewceMastSubMakerRequest.smIssueDate">
+                                    <input type="text" id="i_New_SDate" class="input-with-image form-control  text-black" style="width:100%;font-size:12px;text-align: center;background-color:lightgray" autocomplete="off" readonly value="@(Model._ViewceMastSubMakerRequest?.smIssueDate ?? DateTime.Now.ToString("dd/MM/yyyy"))" >
                                     @*<input type="text" id="i_New_SDate" class="input-with-image form-control  text-black" style="width:100%;font-size:12px;text-align: center" autocomplete="off" readonly asp-for="_ViewceMastSubMakerRequest.smIssueDate"  value="@DateTime.Today.ToString("yyyy-MM-dd")">*@
 
 
@@ -469,7 +469,7 @@
 
                     </div>
                     <div class="modal-footer" style="width: 100%;">
-                        <button class="btn btn-primary" onclick="printQuotationA4('@Model._ViewceMastSubMakerRequest.smDocumentNo')" style="@(Model._ViewceMastSubMakerRequest.smStep ==7 ? "" : "display:none")">🖨 พิมพ์ A4</button>
+                        <button class="btn btn-primary" onclick="printQuotationA4('@Model._ViewceMastSubMakerRequest.smDocumentNo','New?smDocumentNo=','SubMaker')" style="@(Model._ViewceMastSubMakerRequest.smStep ==7 ? "" : "display:none")">🖨 พิมพ์ A4</button>
                     </div>
                 </div>
             </div>
