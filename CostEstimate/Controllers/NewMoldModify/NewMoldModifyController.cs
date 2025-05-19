@@ -80,8 +80,11 @@ namespace CostEstimate.Controllers.NewMoldModify
 
                 @class._ViewOperaterCP = new ViewOperaterCP();
                 @class._ViewceMastSubMakerRequest = new ViewceMastSubMakerRequest();
-                @class._ViewceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smDocumentNo == "CE-S-25-05-008").FirstOrDefault();
                 @class._ListceMastFlowApprove = _MK._ViewceMastFlowApprove.ToList();
+
+
+                //@class._ViewceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smDocumentNo == "CE-S-25-05-008").FirstOrDefault();
+               
             }
             catch (Exception ex)
             {

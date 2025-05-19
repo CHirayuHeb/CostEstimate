@@ -26,10 +26,19 @@ var addModel = document.querySelector("button.model_add");
 var addMaster = document.querySelector("button.Master_add");
 
 
+//Mold Modify
+//var search = document.querySelector("button.searchMold");
+//var create = document.querySelector("button.create");
+//var myRequest = document.querySelector("button.my-request");
+//var approval = document.querySelector("button.approval");
+
+
+
+
 //a tag
 var ahome = document.querySelector("div.app a.home");
 var asearch = document.querySelector("div.app a.search-box");
-var acreate = document.querySelector("div.app a.create");
+var acreate = document.querySelector("div.app a.createMold");
 var amyRequest = document.querySelector("div.app a.my-request");
 var aapproval = document.querySelector("div.app a.approval");
 var aadministrator = document.querySelector("div.app a.administrator");
@@ -176,7 +185,7 @@ function GoSideMenu(controller) {
             hideLoading();
             alert('GoSideMenu : Failed to fetch page: ', err);
             window.location.href = urlDefault + "\\Login\\Index\\";
-            //var url = '@Url.Action("Index", "Login")';
+            var url = '@Url.Action("Index", "Login")';
             //window.location.href = url;
 
         });
@@ -203,8 +212,8 @@ function PositionY(menu) {
             //LoadScript("js/New/Index.js", "NewItem");
             //LoadScript("js/New/EventMore.js", "EventNewMore");
             LoadScript("js/Home/Index.js", "Home");
-
-            PY = "52px";
+            PY = "0px";
+            //PY = "52px";
             opacity = "opacity-dot-3";
             break;
         case "New":
@@ -215,7 +224,8 @@ function PositionY(menu) {
             LoadScript("js/Home/Hour.js", "EventHomeHour");
             LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
             //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
-            PY = "114px";
+            PY = "52px";
+            //PY = "114px";
             opacity = "opacity-dot-3";
             break;
         case "NewMoldModify":
@@ -223,7 +233,8 @@ function PositionY(menu) {
             LoadScript("js/New/Index.js", "New");
             LoadScript("js/Home/Hour.js", "EventHomeHour");
             LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
-            PY = "114px";
+            PY = "52px";
+            //PY = "114px";
             opacity = "opacity-dot-3";
             break;
         case "PageNotFound":
@@ -234,21 +245,24 @@ function PositionY(menu) {
             //LoadScript("js/Home/Hour.js", "EventHomeHour");
             //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
             //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
-
-            PY = "114px";
+            PY = "52px";
+            //PY = "114px";
+            //PY = "114px";
             opacity = "opacity-dot-3";
             break;
         case "MyRequest":
             //LoadScript("js/MyRequest/Index.js", "MyRequest");
             //LoadScript("js/New/EventMore.js", "EventMyRequestMore");
             LoadScript("js/Home/Index.js", "Home");
-            PY = "176px";
+            PY = "114px";
+            //PY = "176px";
             opacity = "opacity-dot-3";
             break;
         case "Approval":
             //LoadScript("js\\Approval\\Index.js", "Approval");
             //LoadScript("js\\New\\EventMore.js", "EventApprovalMore");
-            PY = "238px";
+            PY = "176px";
+           // PY = "238px";
             opacity = "opacity-dot-3";
             break;
         case "Administrator":
@@ -264,8 +278,8 @@ function PositionY(menu) {
             //LoadScript("js/Home/Hour.js", "EventHomeHour");
             //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
             //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
-
-            PY = "333px";
+            PY = "265px";
+            //PY = "333px";
             opacity = "opacity-dot-3";
             break;
         case "AddCost":
@@ -276,19 +290,21 @@ function PositionY(menu) {
             //LoadScript("js/Home/Hour.js", "EventHomeHour");
             //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
             //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
-
-            PY = "331px";
+            PY = "265px";
+           // PY = "331px";
             opacity = "opacity-dot-3";
             break;
         //addProcess
         case "AddProcess":
             LoadScript("js/Home/Index.js", "Home");
-            PY = "331px";
+            PY = "265px";
+           // PY = "331px";
             opacity = "opacity-dot-3";
             break;
         case "AddModel":
             LoadScript("js/Home/Index.js", "Home");
-            PY = "331px";
+            PY = "265px";
+           // PY = "331px";
             opacity = "opacity-dot-3";
             break;
 

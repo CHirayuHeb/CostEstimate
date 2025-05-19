@@ -1,0 +1,28 @@
+﻿@model CostEstimate.Models.Common.Class;
+@{
+    ViewData["Title"] = "Search | Thai Stanley";
+    Layout = "~/Views/Shared/_MenuBar.cshtml";
+}
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("searchMold"); } }</script>
+<div class="home-content">
+    <div id="DisplayContent" class="content-box">
+        <div class="row center">
+            <div class="col-70 ">
+            </div>
+            <div class="col-15" style="text-align:right">
+                <button class="button btnBrown " style="width:auto" onclick="GoSideMenuNewRequest('NewMoldModify')">
+                    <img src="~/images/tool.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;font-size:10px" />
+                    New Mold Modify
+                </button>
+            </div>
+            <div class="col-10" style="text-align:right">
+                <a asp-area="" asp-controller="Search" asp-action="btnExportExcel" style="margin-right:5px;font-size:10px;text-decoration:auto" class="button">
+                    <img src="~/images/excel.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />Search
+                </a>
+            </div>
+            <div class="col-5" style="text-align:right">
+            </div>
+        </div>
+    </div>
+</div>

@@ -71,11 +71,14 @@ namespace CostEstimate.Controllers.Account
                     {
                         if (@class.param != null)
                         {
+
                             return RedirectToAction("Index", "New", new { smDocumentNo = @class.param });
                         }
                         else
                         {
-                            return RedirectToAction("Index", "Home");
+
+                            return RedirectToAction("Index", "MainPage");
+                            // return RedirectToAction("Index", "Home");
                         }
 
 
@@ -243,7 +246,7 @@ namespace CostEstimate.Controllers.Account
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "MainPage");
                     }
 
 

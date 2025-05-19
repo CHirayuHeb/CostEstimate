@@ -24,6 +24,52 @@ body {
     font-family: LeelawaD;
 }
 
+.space-middle-main {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    font-size: 12px;
+    color: #323130;
+    line-height: 18px;
+    letter-spacing: .01em;
+    text-align: left;
+    font-weight: 400;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    top: 48px;
+}
+
+.space-middle-main {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    font-size: 12px;
+    color: #323130;
+    line-height: 18px;
+    letter-spacing: .01em;
+    text-align: left;
+    font-weight: 400;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    top: 48px;
+}
+
+    .space-middle-main .content-container {
+       
+        /*position: absolute;
+        left: 68px;
+        top: 0;
+        width: 100%;*/
+        max-width: calc(100vw - 68px);
+        height: 100%;
+        /*box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;*/
+        /*background-color: whitesmoke;*/
+    }
+
 .space-middle {
     position: absolute;
     left: 0;
@@ -52,11 +98,15 @@ body {
         background-color: whitesmoke;
     }
 
+
+
+
 .content-container .box {
     display: flex;
     flex-direction: column;
     z-index: 0;
     height: 100%;
+    
 }
 
     .content-container .box.box-scroller {
@@ -318,7 +368,12 @@ ul li div.menu-item {
 .nav-item button span.Master_add,
 .nav-item button span.process_add,
 .nav-item button span.model_add,
-.nav-item button span.administrator {
+.nav-item button span.administrator,
+.nav-item button span.MasterMold_add,
+.nav-item button span.searchMold,
+.nav-item button span.createMold,
+.nav-item button span.my-requestMold,
+.nav-item button span.approvalMold{
     display: flex;
     flex-direction: column;
     font-size: 12px;
@@ -487,6 +542,7 @@ div.modal-backdrop.show {
     width: 30%;
     margin-top: 6px;
 }
+
 .col-100 {
     float: left;
     width: 100%;
@@ -525,7 +581,7 @@ div.modal-backdrop.show {
 .btnGray {
     background-color: #e7e7e7;
     color: black;
-    font-weight:800;
+    font-weight: 800;
 }
 /* Gray */
 .btnBlack {
@@ -541,3 +597,43 @@ div.modal-backdrop.show {
     color: black;
     background-color: #fcec52;
 }
+.btnBrown {
+    background-color: #e88f4f;
+}
+
+
+
+
+.btnNone {
+    /*width: auto;*/
+    background-color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+    width: 100%;
+    margin-right: 5px;
+}
+
+    .btnNone:hover {
+        transform: scale(1.2);
+        border: 2px solid whitesmoke;
+        /*background-color: #d4d2d2;*/
+    }
+
+.btnNone-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+    /*.btnNone-content img {
+        width: 35px;
+        height: 26px;
+        margin-bottom: 4px;
+    }*/
+
+    .btnNone-content span {
+        font-size: 10px;
+    }

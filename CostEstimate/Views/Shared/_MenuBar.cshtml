@@ -1,4 +1,5 @@
 ﻿@using System.Security.Claims;
+@model CostEstimate.Models.Common.Class;
 @using CostEstimate.Models.Common;
 @{
     string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
@@ -70,7 +71,7 @@
                     <div class="nav-item">
                         <div class="program-box">
                             <div class="program-name">
-                                <span class="name" style="color:orangered;font-size:20px"><img src="~/images/site/dollar-coins.png" width="35px" height="30px" />  COST<span style="color:black"> ESTIMATE</span></span>
+                                <span class="name" style="color:orangered;font-size:20px"><img src="~/images/site/dollar-coins.png" width="35px" height="30px" />  COST<span style="color:black"> ESTIMATE : </span> <span style="color:orange">MOLD SUB MAKER</span></span>
                             </div>
                         </div>
                     </div>
@@ -148,11 +149,11 @@
             <div class="d-flex flex-column align-items-center align-items-sm-start text-white min-vh-100" style="width: 100%;">
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" style="width:100%; text-align:center;" id="menu">
                     <li class="nav-item text-gray wx-100">
-                        <div class="menu-item" tabindex="0">
-                            <button class="nav-link text-gray align-middle px-0 home">
-                                <span class="Home"><span class="material-icon-symbols-outlined fs-30">home</span>หน้าแรก</span>
-                            </button>
-                        </div>
+                        @*<div class="menu-item" tabindex="0">
+                                <button class="nav-link text-gray align-middle px-0 home">
+                                    <span class="Home"><span class="material-icon-symbols-outlined fs-30">home</span>หน้าแรก</span>
+                                </button>
+                            </div>*@
                         <div class="menu-item" tabindex="0">
                             <button class="nav-link text-gray align-middle px-0 search-box">
                                 <span class="search"><span class="material-icon-symbols-outlined fs-30">search</span>ค้นหา</span>
@@ -176,36 +177,36 @@
 
                         @if (_Permission.ToUpper() == GlobalVariable.perAdmin.ToUpper())
                         {
-                           <hr style="border:1px solid black;margin-left:5px;margin-right:5px" />
+                            <hr style="border:1px solid black;margin-left:5px;margin-right:5px" />
                             <div class="menu-item" tabindex="0">
                                 <button class="nav-link text-gray align-middle px-0 Master_add">
                                     <span class="Master_add"><span class="material-icon-symbols-outlined fs-30">credit_card_gear</span><span style="font-size:8px;font-weight:600">MASTER COST</span></span>
                                 </button>
                             </div>
                             @*<div class="menu-item" tabindex="0">
-                                <button class="nav-link text-gray align-middle px-0 add_card">
-                                    <span class="Master_add"><span class="material-icon-symbols-outlined fs-30">add_card</span><span style="font-size:8px;font-weight:600">COST PLANNING</span></span>
-                                </button>
-                            </div>
-
-                     
-                            <div class="menu-item" tabindex="0">
-                                <button class="nav-link text-gray align-middle px-0 Master_add" id="dropdownButton">
-                                    <span class="Master_add">
-                                        <span class="material-icon-symbols-outlined fs-30">library_books</span>
-                                        <span style="font-size:8px;font-weight:600">COST MODEL</span>
-                                    </span>
-                                </button>
-
-                                <div class="dropdown-menu" id="dropdownMenu" style="display: none; position: absolute; background-color: white; border: 1px solid #ccc; padding: 10px;margin-left: 50px;margin-top:-40px">
-                                    <button class="nav-link text-gray align-middle px-0 process_add dropdown-item">
-                                        <span class="process_add"><span class="material-icon-symbols-outlined fs-30">library_books</span><span style="font-size:8px;font-weight:600">COST PROCESS</span></span>
-                                    </button>
-                                    <button class="nav-link text-gray align-middle px-0 model_add dropdown-item">
-                                        <span class="model_add"><span class="material-icon-symbols-outlined fs-30">library_books</span><span style="font-size:8px;font-weight:600">COST PROCESS</span></span>
+                                    <button class="nav-link text-gray align-middle px-0 add_card">
+                                        <span class="Master_add"><span class="material-icon-symbols-outlined fs-30">add_card</span><span style="font-size:8px;font-weight:600">COST PLANNING</span></span>
                                     </button>
                                 </div>
-                            </div>*@
+
+
+                                <div class="menu-item" tabindex="0">
+                                    <button class="nav-link text-gray align-middle px-0 Master_add" id="dropdownButton">
+                                        <span class="Master_add">
+                                            <span class="material-icon-symbols-outlined fs-30">library_books</span>
+                                            <span style="font-size:8px;font-weight:600">COST MODEL</span>
+                                        </span>
+                                    </button>
+
+                                    <div class="dropdown-menu" id="dropdownMenu" style="display: none; position: absolute; background-color: white; border: 1px solid #ccc; padding: 10px;margin-left: 50px;margin-top:-40px">
+                                        <button class="nav-link text-gray align-middle px-0 process_add dropdown-item">
+                                            <span class="process_add"><span class="material-icon-symbols-outlined fs-30">library_books</span><span style="font-size:8px;font-weight:600">COST PROCESS</span></span>
+                                        </button>
+                                        <button class="nav-link text-gray align-middle px-0 model_add dropdown-item">
+                                            <span class="model_add"><span class="material-icon-symbols-outlined fs-30">library_books</span><span style="font-size:8px;font-weight:600">COST PROCESS</span></span>
+                                        </button>
+                                    </div>
+                                </div>*@
 
 
                         }
@@ -237,13 +238,14 @@
             <div class="modal-content">
                 <div class="modal-header" style="border: 0;">
                     <button class="btn modal-apps" type="button" style="padding: 0;" data-bs-dismiss="modal" id="appLuncherLabel"><span class="material-icon-symbols-outlined" style="font-size: 26px">apps</span></button>
+                    <span style="color:orange;font-weight:800;font-size: 14px;">MOLD SUB MAKER</span>
                     <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close"><span class="material-icons" style="color: gray;">arrow_back_ios</span></button>
                 </div>
                 <div class="modal-body">
                     <div class="body-content">
                         <div class="content">
                             <div class="fav-menu">
-                                <a>
+                                @*<a asp-controller="MainPage" asp-action="Index" style="margin-right:20px;font-size:10px;text-decoration:auto">
                                     <div class="fav-icon">
                                         <span style="font-size: 20px;" class="material-icon-symbols-outlined">menu</span>
                                     </div>
@@ -251,71 +253,26 @@
                                         <h6>เมนู</h6>
                                     </div>
                                 </a>
-                                <div class="fav-content">
+                                <div class="fav-content" style="background-color:whitesmoke;width:100%">
                                     <div class="app">
-                                        <a class="n-underline cs-pt home" style="color: dimgray;">
-                                            <div class="program-logo">
-                                                <span style="font-size: 24px;" class="text-gray material-icon-symbols-outlined fs-30">home</span>
+                                        <button class="buttonNone btnNone" style="width: auto;padding:3px ;margin-right:3px" onclick="GoSideMenuNewRequest('New')">
+                                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                                <img src="~/images/Masterprocess.png" style="width: 35px; height: 30px; margin-bottom: 4px;" />
+                                                <span style="font-size: 10px;font-weight:600">Sub Maker</span>
                                             </div>
-                                            <div class="program-name">
-                                                <span>หน้าแรก</span>
+                                        </button>
+
+                                        <button class="buttonNone btnNone" style="width: auto;padding:3px ;margin-right:3px" onclick="GoSideMenuNewRequest('NewMoldModify')">
+                                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                                <img src="~/images/process.png" style="width: 35px; height: 30px; margin-bottom: 4px;" />
+                                                <span style="font-size: 10px;font-weight:600">Mold Modify</span>
                                             </div>
-                                        </a>
+                                        </button>
+
                                     </div>
-                                    <div class="app">
-                                        <a class="n-underline cs-pt search-box" style="color: dimgray;">
-                                            <div class="program-logo">
-                                                <span style="font-size: 24px;" class="material-icon-symbols-outlined fs-30">search</span>
-                                            </div>
-                                            <div class="program-name">
-                                                <span>ค้นหา</span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="app">
-                                        <a class="n-underline cs-pt create" style="color: dimgray;">
-                                            <div class="program-logo">
-                                                <span style="font-size: 24px;" class="material-icon-symbols-outlined fs-30">add_circle</span>
-                                            </div>
-                                            <div class="program-name">
-                                                <span>สร้าง</span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="app">
-                                        <a class="n-underline cs-pt my-request" style="color: dimgray;">
-                                            <div class="program-logo">
-                                                <span style="font-size: 24px;" class="material-icon-symbols-outlined fs-30">send</span>
-                                            </div>
-                                            <div class="program-name">
-                                                <span>คำร้องของฉัน</span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="app">
-                                        <a class="n-underline cs-pt approval" style="color: dimgray;">
-                                            <div class="program-logo">
-                                                <span style="font-size: 24px;" class="material-icon-symbols-outlined fs-30">order_approve</span>
-                                            </div>
-                                            <div class="program-name">
-                                                <span>การอนุมัติ</span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    @*@if (_Permission.ToUpper() == GlobalVariable.perAdmin.ToUpper())
-                                        {
-                                            <div class="app">
-                                                <a class="n-underline cs-pt administrator" style="color: dimgray;">
-                                                    <div class="program-logo">
-                                                        <span style="font-size: 24px;" class="material-icon-symbols-outlined fs-30">settings_account_box</span>
-                                                    </div>
-                                                    <div class="program-name">
-                                                        <span>ผู้ดูแลระบบ</span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        }*@
-                                </div>
+
+                                </div>*@
+                                @await Html.PartialAsync("_PartialDisplayMenu.cshtml", Model)
                                 <div style="clear: both;"></div>
                             </div>
                             <div class="apps-menu">
@@ -331,7 +288,7 @@
                                                 <span style="font-size: 24px;" class="material-icons">home</span>
                                             </div>
                                             <div class="program-name">
-                                                <span>THSWEB</span>
+                                                <span style="font-weight:600">THSWEB</span>
                                             </div>
                                         </a>
                                     </div>

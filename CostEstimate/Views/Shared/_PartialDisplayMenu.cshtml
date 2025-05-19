@@ -1,0 +1,70 @@
+﻿@model CostEstimate.Models.Common.Class;
+@{
+    //string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+
+<a asp-controller="MainPage" asp-action="Index" style="margin-right:20px;font-size:10px;text-decoration:auto">
+    <div class="fav-icon">
+        <span style="font-size: 20px;" class="material-icon-symbols-outlined">menu</span>
+    </div>
+    <div class="fav-text">
+        <h6>เมนู</h6>
+    </div>
+</a>
+
+<div style="display: flex; align-items: center;margin-bottom:0px">
+    <img src="~/images/budget (1).png" style="width: 20px; height: 20px; margin-right: 8px;" />
+    <p style="margin: 5px;font-weight:600;font-size:12px">COST ESTIMATE</p>
+</div>
+<div class="fav-content" style="background-color:whitesmoke;width:100%">
+
+    <div class="app" style="min-height:5px">
+        @*<button class="buttonNone btnNone" style="width: auto;padding:3px ;margin-right:3px" onclick="GoSideMenuNewRequest('New')">
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <img src="~/images/Masterprocess.png" style="width: 35px; height: 30px; margin-bottom: 4px;" />
+                <span style="font-size: 10px;font-weight:600">Sub Maker</span>
+            </div>
+        </button>
+        *@
+        <button class="buttonNone btnNone" style="width: auto;padding:3px ;margin-right:3px;cursor:not-allowed" onclick="GoSideMenuNewRequest('NewMoldModify')" disabled>
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <img src="~/images/cost.png" style="width: 35px; height: 30px; margin-bottom: 4px;" />
+                <span style="font-size: 10px;font-weight:600">COST TEAM</span>
+            </div>
+        </button>
+
+    </div>
+
+</div>
+
+<div style="display: flex; align-items: center;margin-bottom:0px">
+    <img src="~/images/enviromentally-friendly.png" style="width: 20px; height: 20px; margin-right: 8px;" />
+    <p style="margin: 5px;font-weight:600;font-size:12px">MOLD REQUEST</p>
+</div>
+<div class="fav-content" style="background-color:whitesmoke;width:100%">
+
+    <div class="app">
+        <button class="buttonNone btnNone" style="width: auto;padding:3px ;margin-right:3px" onclick="GoSideMenuNewRequest('New')">
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <img src="~/images/molding-machine.png" style="width: 35px; height: 30px; margin-bottom: 4px;" />
+                <span style="font-size: 10px;font-weight:600">Sub Maker</span>
+            </div>
+        </button>
+
+        <button class="buttonNone btnNone" style="width: auto;padding:3px ;margin-right:3px" onclick="GoSideMenuNewRequest('NewMoldModify')">
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <img src="~/images/process.png" style="width: 35px; height: 30px; margin-bottom: 4px;" />
+                <span style="font-size: 10px;font-weight:600">Mold Modify</span>
+            </div>
+        </button>
+
+    </div>
+
+</div>
+
