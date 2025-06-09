@@ -1,0 +1,357 @@
+﻿@using System.Security.Claims;
+@model CostEstimate.Models.Common.Class;
+@using CostEstimate.Models.Common;
+@*@model IEnumerable<IGrouping<string, CostEstimate.Models.Table.MK.ViewceMastProcess>>*@
+@{
+    string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+    string _admin = GlobalVariable.perAdmin.ToUpper();
+
+}
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+
+<div class="row center">
+    <div class="col-5 " style="">
+
+    </div>
+    <div class="col-90 " style="border:1.5px solid gray;">
+        <div class="row">
+            <div class="col-20 " style="">
+                <div class="grid-item fw-800 center" style="text-align:left;text-decoration: underline;font-size:13px">Materail Detail.</div>
+            </div>
+            <div class="col-80" style="text-align:right">
+                <input type='button' class='button btnOrange' value='➕' style="width:auto;height:30px;vertical-align: sub;" onclick="btnaddMaterail()">
+            </div>
+
+        </div>
+        <div class="row center" style="">
+            <div class="col-15 " style="margin-bottom:0px">
+
+            </div>
+            <div class="col-70" style=" display: flex;align-items: center;">
+                <table class="tbbrown" id="tbDetailMoldMatDetail" style="margin-bottom:20px">
+                    <tr>
+                        <th style="width:5%">
+                            No
+                        </th>
+                        <th style="display:none">
+                            CE
+                        </th>
+                        <th style="display:none">
+                            ItemNo
+                        </th>
+                        <th style="width:30%">
+                            ITEM NAME
+                        </th>
+                        <th style="width:20%">
+                            PCS.
+                        </th>
+                        <th style="width:20%">
+                            AMOUNT (BAHT).
+                        </th>
+                        <th style="width:5%">
+                            DEL
+                        </th>
+                    </tr>
+
+                    <tbody id="tableBody">
+                        @for (int k = 0; k < Model._ListViewceItemModifyRequest.Count(); k++)
+                        {
+                            <tr>
+                                <td>
+                                    @(k + 1)
+                                </td>
+                                <!-- ซ่อน CE No -->
+                                <td style="display:none">
+                                    <input type="text" class="imCENo form-control " style="width:100%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListViewceItemModifyRequest[k].imCENo" asp-for="_ListViewceItemModifyRequest[k].imCENo">
+                                </td>
+                                <!-- ซ่อน Item No -->
+                                <td style="display:none">
+                                    <input type="text" class="imItemNo form-control " style="width:100%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListViewceItemModifyRequest[k].imItemNo" asp-for="_ListViewceItemModifyRequest[k].imItemNo">
+                                </td>
+                                <!-- แสดงชื่อสินค้า -->
+                                <td>
+                                    <input type="text" class="imItemName form-control " style="width:100%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListViewceItemModifyRequest[k].imItemName" asp-for="_ListViewceItemModifyRequest[k].imItemName">
+                                </td>
+                                <!-- แสดงจำนวนชิ้น -->
+                                <td>
+                                    <input type="number" class="imPCS form-control " style="width:100%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListViewceItemModifyRequest[k].imPCS" asp-for="_ListViewceItemModifyRequest[k].imPCS">
+                                </td>
+                                <!-- แสดงจำนวนเงิน -->
+                                <td>
+                                    <input type="number" class="imAmount form-control " style="width:100%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListViewceItemModifyRequest[k].imAmount" asp-for="_ListViewceItemModifyRequest[k].imAmount">
+                                </td>
+                                <!-- ปุ่มลบแถว -->
+                                <td align='Center'>
+                                    <input type='button' class='RemoveRow' value='&#x274C'>
+                                </td>
+                            </tr>
+                        }
+                        @*<tr>
+                                <td style="display:none">
+                                    <input type="text" class="imCENo form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceItemModifyRequest.imCENo">
+                                </td>
+                                <td style="display:none">
+                                    <input type="text" class="imItemNo form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceItemModifyRequest.imItemNo" value="1">
+                                </td>
+                                <td>
+                                    <input type="text" class="imItemName form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceItemModifyRequest.imItemName" value="2">
+                                </td>
+                                <td>
+                                    <input type="text" class="imPCS form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" value="3">
+                                </td>
+                                <td>
+                                    <input type="number" class="imAmount form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" value=0>
+                                </td>
+                                <td align='Center'><input type='button' class='RemoveRow' value='&#x274C'></td>
+                            </tr>*@
+
+                        @*<tr>
+                                <td style="display:none">
+                                    <input type="text" class="imCENo form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceItemModifyRequest.imCENo" value="0">
+                                </td>
+                                <td style="display:none">
+                                    <input type="text" class="imItemNo form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceItemModifyRequest.imItemNo" value="0">
+                                </td>
+                                <td>
+                                    <input type="text" class="imItemName form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceItemModifyRequest.imItemName" value="0">
+                                </td>
+                                <td>
+                                    <input type="text" class="imPCS form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceItemModifyRequest.imPCS" value="0">
+                                </td>
+                                <td>
+                                    <input type="text" class="imAmount form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceItemModifyRequest.imAmount" value="0">
+                                </td>
+                                <td align='Center'><input type='button' class='RemoveRow' value='&#x274C'></td>
+                            </tr>*@
+
+
+
+
+                        <!-- แถวข้อมูลจะเพิ่มตรงนี้ -->
+                        @*@for (int i = 0; i < @Model._ListViewceItemModifyRequest.Count(); i++)
+                            {
+                                <tr>
+                                    <td>
+                                        <input type="text" class="imCENo form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ListViewceItemModifyRequest[i].imCENo">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="imItemNo form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ListViewceItemModifyRequest[i].imItemNo">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="imItemName form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ListViewceItemModifyRequest[i].imItemName">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="imPCS form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ListViewceItemModifyRequest[i].imPCS">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="imAmount form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ListViewceItemModifyRequest[i].imAmount">
+                                    </td>
+                                    <td align='Center'><input type='button' class='RemoveRow' value='&#x274C'></td>
+                                </tr>
+                            }*@
+
+
+
+                    </tbody>
+                    <tr>
+
+                        <td style="display:none"></td>
+                        <td style="display:none"></td>
+                        <td colspan="3">
+                            TOOL
+                        </td>
+
+                        <td>
+                            <input type="text" class=" form-control center" style="width:100%;font-size:12px;background-color:#b1fab1" autocomplete="off" id="i_NewMold_MTTool" asp-for="_ViewceMastModifyRequest.mfMtTool" readonly>
+
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="display:none"></td>
+                        <td style="display:none"></td>
+                        <td colspan="3">
+                            TOTAL MT
+                        </td>
+
+                        <td>
+                            <input type="text" class=" form-control center" style="width:100%;font-size:12px;background-color:#b1fab1" autocomplete="off" id="i_NewMold_MTTotal" asp-for="_ViewceMastModifyRequest.mfTotalMt" readonly>
+
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+
+            </div>
+            <div class="col-15 " style="">
+
+            </div>
+        </div>
+
+    </div>
+    <div class="col-5 " style="">
+
+    </div>
+</div>
+
+@*<div>
+        <table id="my-table">
+            <thead>
+                <tr>
+                    <th>imCENo</th>
+                    <th>imItemNo</th>
+                    <th>imItemName</th>
+                    <th>imPCS</th>
+                    <th>imAmount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in @Model._ListViewceItemModifyRequest)
+                {
+                    <tr>
+                        <td><input bind="item.imCENo" /></td>
+                        <td><input bind="item.imItemNo" type="number" /></td>
+                        <td><input bind="item.imItemName" /></td>
+                        <td><input bind="item.imPCS" type="number" /></td>
+                        <td><input bind="item.imAmount" type="number" /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <input type='button' class='button btnOrange' value='➕' style="width:auto;height:30px;vertical-align: sub;" onclick="addRowTb()">
+
+    </div>*@
+
+
+
+<script type="text/javascript">
+    // Model หลัก
+    function btnaddMaterail() {
+        var htmls = "";
+        var rowCount = document.getElementById('tableBody').rows.length;
+
+        var rowi = rowCount + 1;
+
+        htmls += "<tr>";
+        htmls += " <td>" + rowi + "</td>";
+        htmls += " <td style='display:none'><input type='text' class='imCENo form-control center' style='width:100%;height:90%;font-size:10px' name='_ListViewceItemModifyRequest[" + rowi + "].imCENo' ></td>";
+        htmls += " <td style='display:none'><input type='text' class='imItemNo form-control center' style='width:100%;height:90%;font-size:10px' name='_ListViewceItemModifyRequest[" + rowi + "].imItemNo' ></td>";
+        htmls += " <td ><input type='text' class='imItemName form-control ' style='width:100%;height:90%;font-size:10px;background-color: yellow;' name='_ListViewceItemModifyRequest[" + rowi + "].imItemName'></td>";
+        htmls += " <td><input type='number' class='imPCS form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color: yellow;' value ='0'  name='_ListViewceItemModifyRequest[" + rowi + "].imPCS'></td>";
+        htmls += " <td><input type='number' class='imAmount form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color: yellow;' value ='0' name='_ListViewceItemModifyRequest[" + rowi + "].imAmount'></td>";
+        htmls += "<td align='Center'><input type='button' class='RemoveRow' value='&#x274C'></td>";
+        htmls += "</tr>";
+
+
+
+        //htmls += "<tr>";
+        //htmls += " <td style='display:none'><input type='text' class='imCENo form-control center' style='width:100%;height:90%;font-size:10px'  ></td>";
+        //htmls += " <td style='display:none'><input type='text' class='imItemNo form-control center' style='width:100%;height:90%;font-size:10px'></td>";
+        //htmls += " <td ><input type='text' class='imItemName form-control' style='width:100%;height:90%;font-size:10px;background-color: yellow;' ></td>";
+        //htmls += " <td><input type='number' class='imPCS form-control' min='0' style='width:100%;height:90%;font-size:10px;background-color: yellow;' value ='0'></td>";
+        //htmls += " <td><input type='number' class='imAmount form-control' min='0' style='width:100%;height:90%;font-size:10px;background-color: yellow;' value ='0'></td>";
+        //htmls += "<td align='Center'><input type='button' class='RemoveRow' value='&#x274C'></td>";
+        //htmls += "</tr>";
+        //$("#tbDetailMoldMatDetail").append(htmls);
+        document.getElementById("tableBody").insertAdjacentHTML('beforeend', htmls);
+    }
+    $('table').on('click', '.RemoveRow', function () {
+        $(this).closest('tr').remove();
+        sumTOTALMT();
+    });
+
+
+
+
+    $(document).on("keyup change", ".imAmount", function () {
+        sumTOTALMT();
+    });
+
+
+    //Materail Detail.
+    function sumMTTool() {
+        let el = document.querySelector('[id="dsWT_Auto NC."]');
+        if (el) {
+            let rawValue = el.value || el.innerText;
+            let numValue = parseFloat(rawValue);
+            console.log("document.querySelector NC" + numValue);
+            if (!isNaN(numValue)) {
+                $("#i_NewMold_MTTool").val((numValue.toFixed(2)) * 100);
+                console.log("✅ ค่าที่คำนวณได้:", numValue.toFixed(2) * 100);
+            } else {
+                console.warn("⚠️ ค่าไม่ใช่ตัวเลข:", rawValue);
+                $("#i_NewMold_MTTool").val(""); // เคลียร์ค่า
+            }
+        } else {
+            console.error("❌ ไม่พบ element ที่ id = dsWT_Auto NC.");
+        }
+    }
+
+    function sumTOTALMT() {
+        const rows = document.querySelectorAll('#tbDetailMoldMatDetail #tableBody tr');
+        let sum = 0;
+
+        if (rows.length > 0) {
+            rows.forEach(row => {
+                const input = row.querySelector('.imAmount');
+                if (input) {
+                    sum += parseFloat(input.value) || 0;
+                }
+            });
+        }
+
+        console.log('Total:', sum);
+        const mtToolValue = parseFloat($("#i_NewMold_MTTool").val()) || 0;
+        const total = mtToolValue + sum;
+
+        $("#i_NewMold_MTTotal").val(total.toFixed(2));
+
+        $("#i_NewMoldMaterail_cost").val(total.toFixed(2));
+
+        return sum;
+    }
+
+
+    //Materail Detail.
+    sumMTTool();
+    sumTOTALMT();
+
+
+    //let modelList = [];
+    //function addRowTb() {
+    //    modelList.push({ name: "", qty: 0 });
+    //    renderTable();
+    //}
+
+    //function renderTable() {
+    //    let tbody = document.querySelector("#my-table tbody");
+    //    tbody.innerHTML = "";
+
+    //    modelList.forEach((item, index) => {
+    //        let row = `<tr>
+    //        <td><input value="${item.name}" onchange="updateName(${index}, this.value)" /></td>
+    //        <td><input type="number" value="${item.qty}" onchange="updateQty(${index}, this.value)" /></td>
+    //    </tr>`;
+    //        tbody.innerHTML += row;
+    //    });
+    //}
+
+    //function updateName(index, value) {
+    //    modelList[index].name = value;
+    //}
+
+    //function updateQty(index, value) {
+    //    modelList[index].qty = parseInt(value);
+    //}
+
+
+
+
+
+
+</script>

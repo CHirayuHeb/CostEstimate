@@ -51,6 +51,16 @@ $('.timepicker').change(function () {
     console.log("OK1111111");
 })
 
+$('input.MMYYpicker').datepicker({
+    //format: 'yyyy/mm',
+    format: 'mm/yy',
+    todayBtn: 'linked',
+    todayHighlight: true,
+    autoclose: true,
+    orientation: "auto"
+
+});
+
 
 
 //$('.timepicker').timepicker({

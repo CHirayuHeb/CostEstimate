@@ -1,0 +1,191 @@
+﻿@model CostEstimate.Models.Common.Class;
+@{
+    //string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+@*summary*@
+<div class="row center">
+    <div class="col-5 " style="">
+
+    </div>
+    <div class="col-90 " style="border:1.5px solid gray;padding:10px">
+        <div class="row center">
+            <div class="col-5 " style="">
+                <div class="grid-item fw-800 center" style="text-align:left;text-decoration: underline;font-size:13px">Summary</div>
+            </div>
+            <div class="col-90 " style="">
+            </div>
+            <div class="col-5 " style="">
+            </div>
+        </div>
+        <div class="row center" style="">
+            <div class="col-5 " style="margin-bottom:0px">
+            </div>
+            <div class="col-90" style=" display: flex;align-items: center;">
+                <table class="tbbrown">
+                    <tr>
+                        <th colspan="4">SUMMARY</th>
+
+                    </tr>
+                    <tr>
+                        <td style="width:30%">LABOUR. COST</td>
+                        <td style="width:40%">
+                            DP. COST
+                        </td>
+                        <td colspan="2" style="width:30%">ME. COST</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="number" asp-for="_ViewceMastModifyRequest.mfLabourCost" class="form-control " style="width:100%;font-size:12px;text-align:right;background-color:#b1fab1;border:0px solid white" autocomplete="off" readonly id="i_NewMoldLaborCost">
+
+                        </td>
+                        <td>
+                            <input type="number" asp-for="_ViewceMastModifyRequest.mfDPCost" class="form-control " style="width:100%;font-size:12px;text-align:right;background-color:#b1fab1;border:0px solid white" autocomplete="off" readonly id="i_NewMoldDPCost">
+
+                        </td>
+                        <td colspan="2">
+                            <input type="number" asp-for="_ViewceMastModifyRequest.mfMECost" class="form-control " style="width:100%;font-size:12px;text-align:right;background-color:#b1fab1;border:0px solid white" autocomplete="off" readonly id="i_NewMoldMECost">
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:left">
+                            C = COST UNTIL SH (A x COEFFICIENT)+MAT.
+                        </td>
+                        <td colspan="2">MATERIAL COST</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <div class="col-50" style="display: flex; justify-content: center; align-items: center;">
+                                    <span style="font-size:10px">
+                                        ( A + B + C ) x
+                                    </span>
+                                </div>
+                                <div class="col-40">
+                                    <input type="number" class="form-control" asp-for="_ViewceMastModifyRequest.mfRateCostUntilSH"
+                                           style="width:100%; font-size:12px; text-align:right; background-color:#b1fab1; border:0px solid white;"
+                                           autocomplete="off" readonly id="i_NewMoldRateUnit">
+                                </div>
+                                <div class="col-10" style="display: flex; justify-content: center; align-items:center;">
+                                    <span style="font-size:10px">
+                                        =
+                                    </span>
+                                </div>
+                            </div>
+
+                        </td>
+                        <td>
+                            <input type="number"  asp-for="_ViewceMastModifyRequest.mfCostUntilSH" class="form-control " style="width:100%;font-size:12px;text-align:right;background-color:#b1fab1;border:0px solid white" autocomplete="off" readonly id="i_NewMoldUntilSHcost">
+
+                        </td>
+                        <td>
+                            <input type="number"  asp-for="_ViewceMastModifyRequest.mfMatCost" class="form-control " style="width:100%;font-size:12px;text-align:right;background-color:#b1fab1;border:0px solid white" autocomplete="off" readonly id="i_NewMoldMaterail_cost">
+
+                        </td>
+                        <td>
+                            BAHT
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            FOCAST ACTUAL 2024
+                        </td>
+                        <td>
+                            TOTAL ESTIMATE COST
+                        </td>
+                        <td>
+                            <input type="number"  asp-for="_ViewceMastModifyRequest.mfTotalESTCost" class="form-control " style="width:100%;font-size:12px;text-align:right;background-color:#b1fab1;border:0px solid white" id="i_NewMoldTotalEstimate_cost" autocomplete="off" readonly>
+
+                        </td>
+                        <td>
+                            BAHT
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2">
+                            ESTIMATE COST
+                        </td>
+                        <td style="text-align: -webkit-right;">
+                            <input type="number" asp-for="_ViewceMastModifyRequest.mfRoundupotalESTCost" class="form-control " style="width:100%;font-size:12px;text-align:right;background-color:#b1fab1;border:0px solid white" autocomplete="off" readonly id="i_NewMoldEstimate_cost">
+                        </td>
+                        <td>
+                            BAHT
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+
+            <div class="col-5 " style="">
+            </div>
+        </div>
+
+    </div>
+    <div class="col-5 " style="">
+
+    </div>
+</div>
+
+<script>
+    function FuntionTotalProCost() {
+       // console.log("FuntionTotalProCost===================> ");
+
+        //add for sumary
+        const selectedValue = $("#i_NewMold_Type").val();
+        if (selectedValue && selectedValue.toLowerCase().includes("claim")) {
+            //- แต่ถ้าเลือกงาน CLAIM MAKER
+            //ใช้คูณ 1.00
+            $("#i_NewMoldRateUnit").val("1.0");
+        } else {
+
+            const input = document.querySelector('#tbDetailMoldProcessDetail input.WT_Man.W\\.');
+            const value = input ? input.value : null;
+           // console.log("#tbDetailMoldProcessDetail tr.GM\\. input#WT_Man\\ W\\. : == " + value);
+
+            if (value > 0) {
+                $("#i_NewMoldRateUnit").val("1.15");
+            }
+            else {
+                $("#i_NewMoldRateUnit").val("1.10");
+            }
+
+            //สำหรับงานที่ถูกเลือกเป็น MODIFICATION
+            //    - ถ้ามีการใส่ชั่วโมงงานที่ช่อง W จะใช้ตัวคูณที่ 1.15
+            //    - ถ้าไม่มีชั่วโมงงานที่ช่อง W จะใช้ตัวคูณ 1.10
+
+        }
+
+
+
+        $("#i_NewMoldLaborCost").val(parseFloat($("#i_MoldTotalPocessLabour_Cost").val()).toFixed(2));
+        $("#i_NewMoldDPCost").val(parseFloat($("#i_MoldTotalPocessDP_Cost").val()).toFixed(2));
+        $("#i_NewMoldMECost").val(parseFloat($("#i_MoldTotalPocessME_Cost").val()).toFixed(2));
+
+
+        //+ parseFloat($("#i_NewMoldMaterail_cost").val()).toFixed(2)    i_NewMoldTotalEstimate_cost
+        $("#i_NewMoldUntilSHcost").val((parseFloat($("#i_MoldTotalPocessTotalCost").val()).toFixed(2) * parseFloat($("#i_NewMoldRateUnit").val()).toFixed(2)).toFixed(2));
+
+        const untilSH = parseFloat($("#i_NewMoldUntilSHcost").val()) || 0;
+        const material = parseFloat($("#i_NewMoldMaterail_cost").val()) || 0;
+        const totalEstimate = (untilSH + material).toFixed(2);
+        $("#i_NewMoldTotalEstimate_cost").val(totalEstimate);
+
+
+        const result = roundup(parseFloat($("#i_NewMoldTotalEstimate_cost").val()).toFixed(2), -3);
+        $("#i_NewMoldEstimate_cost").val(result);
+
+    }
+
+    FuntionTotalProCost();
+</script>
+

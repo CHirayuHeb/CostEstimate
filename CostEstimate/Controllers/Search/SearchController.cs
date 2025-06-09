@@ -19,9 +19,11 @@ using CostEstimate.Models.Table.MK;
 using OfficeOpenXml;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Globalization;
 
 
 using PagedList;
+using System.Globalization;
 
 namespace CostEstimate.Controllers.Search
 {
@@ -60,7 +62,11 @@ namespace CostEstimate.Controllers.Search
                 SelectList formStatus = new SelectList(_ViewceMastFlowApprove.Select(s => s.mfSubject).Distinct());
                 ViewBag.vbformStatus = formStatus;
 
-                @class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.OrderByDescending(x => x.smIssueDate).ToList();
+                @class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.OrderByDescending(x =>  x.smDocumentNo).ToList();
+
+    //            @class._ListceMastSubMakerRequest =  _MK._ViewceMastSubMakerRequest
+    //.OrderByDescending(x => DateTime.ParseExact(x.smIssueDate, "dd/MM/yyyy", CultureInfo.InvariantCulture))
+    //.ToList();
                 if (@class._ViewSearchData != null)
                 {
                     if (@class._ViewSearchData.v_OrderNo != null && @class._ViewSearchData.v_OrderNo != "")

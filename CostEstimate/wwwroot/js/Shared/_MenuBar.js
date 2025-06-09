@@ -185,7 +185,7 @@ function GoSideMenu(controller) {
             hideLoading();
             alert('GoSideMenu : Failed to fetch page: ', err);
             window.location.href = urlDefault + "\\Login\\Index\\";
-            var url = '@Url.Action("Index", "Login")';
+            //var url = '@Url.Action("Index", "Login")';
             //window.location.href = url;
 
         });
@@ -194,7 +194,7 @@ function GoSideMenu(controller) {
 
 
 function PositionY(menu) {
-    if (menu.search("New") > -1) {
+    if (menu.search("New") > -1 && menu.search("NewMoldModify") == -1) {
         menu = "New";
     }
     let PY = 0;
@@ -229,8 +229,11 @@ function PositionY(menu) {
             opacity = "opacity-dot-3";
             break;
         case "NewMoldModify":
+            //console.log("New:NewMoldModify");
             LoadScript("js/Home/Index.js", "Home");
-            LoadScript("js/New/Index.js", "New");
+           // LoadScript("js/New/Index.js", "New");
+           //LoadScript("js/New/IndexMold.js", "New");
+            LoadScript("js/New/IndexMold.js", "New");
             LoadScript("js/Home/Hour.js", "EventHomeHour");
             LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
             PY = "52px";
@@ -262,7 +265,7 @@ function PositionY(menu) {
             //LoadScript("js\\Approval\\Index.js", "Approval");
             //LoadScript("js\\New\\EventMore.js", "EventApprovalMore");
             PY = "176px";
-           // PY = "238px";
+            // PY = "238px";
             opacity = "opacity-dot-3";
             break;
         case "Administrator":
@@ -291,20 +294,20 @@ function PositionY(menu) {
             //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
             //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
             PY = "265px";
-           // PY = "331px";
+            // PY = "331px";
             opacity = "opacity-dot-3";
             break;
         //addProcess
         case "AddProcess":
             LoadScript("js/Home/Index.js", "Home");
             PY = "265px";
-           // PY = "331px";
+            // PY = "331px";
             opacity = "opacity-dot-3";
             break;
         case "AddModel":
             LoadScript("js/Home/Index.js", "Home");
             PY = "265px";
-           // PY = "331px";
+            // PY = "331px";
             opacity = "opacity-dot-3";
             break;
 
@@ -1737,7 +1740,7 @@ function Menubar_PrintQUOTATION(action, mpNo) {
 }
 function printQuotationA4(mpNo, action, type) {
     var printContents;
-   // MoldModify
+    // MoldModify
     //SubMaker
     if (type == "SubMaker") {
         printContents = document.getElementById("ResultQuotation").innerHTML;

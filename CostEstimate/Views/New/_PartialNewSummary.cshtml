@@ -86,9 +86,138 @@
 
 </div>
 
-<script>
-    document.getElementById("i_New_OrderMatl").addEventListener("change", FuntionTotalProCost);
+<script type="text/javascript">
+
+    function calTotalProcessWT() {
+        let sum = 0;
+        let TotalsumMan = 0;
+        let TotalsumAuto = 0;
+        let TotalsumLabour_Rate = 0;
+        let TotalsumDP_Rate = 0;
+        let TotalsumME_Rate = 0;
+        let TotalsumLabour_Cost = 0;
+        let TotalsumDP_Cost = 0;
+        let TotalsumME_Cost = 0;
+        let TotalsumTotalCost = 0;
+
+        // วน Loop ทุก Textbox ที่มี class .amount
+        $(".WT_Man").each(function () {
+            let value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
+            //sum += value; // บวกค่า
+            TotalsumMan += value;
+        });
+
+        $(".WT_Auto").each(function () {
+            let value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
+            // sum += value; // บวกค่า
+            TotalsumAuto += value;
+        });
+
+        $(".Labour_Rate").each(function () {
+            let value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
+            TotalsumLabour_Rate += value; // บวกค่า
+        });
+        $(".DP_Rate").each(function () {
+            let value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
+            TotalsumDP_Rate += value; // บวกค่า
+        });
+        $(".ME_Rate").each(function () {
+            let value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
+            TotalsumME_Rate += value; // บวกค่า
+        });
+        $(".Labour_Cost").each(function () {
+            let value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
+            TotalsumLabour_Cost += value; // บวกค่า
+        });
+        $(".DP_Cost").each(function () {
+            let value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
+            TotalsumDP_Cost += value; // บวกค่า
+        });
+        $(".ME_Cost").each(function () {
+            let value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
+            TotalsumME_Cost += value; // บวกค่า
+        });
+
+
+        //$("#i_TotalPocessMan").val("111");
+
+
+        //$("#i_TotalPocessMan").val(TotalsumMan.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        //$("#i_TotalPocessAuto").val(TotalsumAuto.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        //$("#i_TotalPocessLabour_Rate").val(TotalsumLabour_Rate.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        //$("#i_TotalPocessDP_Rate").val(TotalsumDP_Rate.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        //$("#i_TotalPocessME_Rate").val(TotalsumME_Rate.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        //$("#i_TotalPocessLabour_Cost").val(TotalsumLabour_Cost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        //$("#i_TotalPocessDP_Cost").val(TotalsumDP_Cost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        //$("#i_TotalPocessME_Cost").val(TotalsumME_Cost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+
+        // $("#i_TotalPocessTotalCost").val(TotalsumTotalCost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+
+
+
+
+
+    }
+    function calcRow(row) {
+        // console.log('Class of this row in calcRow:', row.attr('class'));
+
+        let WT_Man = parseFloat(row.find(".WT_Man").val()) || 0;
+        let Labour_Rate = parseFloat(row.find(".Labour_Rate").val()) || 0;
+
+        let WT_Auto = parseFloat(row.find(".WT_Auto").val()) || 0;
+        let DP_Rate = parseFloat(row.find(".DP_Rate").val()) || 0;
+
+        let ME_Rate = parseFloat(row.find(".ME_Rate").val()) || 0;
+
+        let Labour_Cost = WT_Man * Labour_Rate / 1000;
+
+
+        //CAD-M. (MAN)
+        //Group  NC. WT_Auto * ME_Rate / 1000; ยกเว้น CAD-M.
+        let DP_Cost;
+        let ME_Cost;
+        if ((row.attr('class') || '').toLowerCase().includes('nc.')) {
+            DP_Cost = WT_Auto * DP_Rate / 1000;
+            ME_Cost = WT_Auto * ME_Rate / 1000;
+
+        }
+        else {
+            DP_Cost = WT_Man * DP_Rate / 1000;
+            ME_Cost = WT_Man * ME_Rate / 1000;
+
+            //DP_Cost = WT_Auto * DP_Rate / 1000;
+            //ME_Cost = WT_Man * ME_Rate / 1000;
+        }
+
+
+
+
+
+        let total = Labour_Cost + DP_Cost + ME_Cost;
+
+
+        row.find(".Labour_Cost").val(Labour_Cost.toFixed(2)); // Set Total
+        row.find(".DP_Cost").val(DP_Cost.toFixed(2)); // Set Total
+        row.find(".ME_Cost").val(ME_Cost.toFixed(2)); // Set Total
+
+
+        row.find(".totalCost").val(total.toFixed(2)); // Set Total
+
+        // row.find(".total").val(total.toFixed(2)); // Set Total
+    }
+    // Function คำนวณรวมทุกแถว
+    function calcAll() {
+        let sum = 0;
+        //$("#tbDetailSubMakerRequest tbody tr").each(function () {
+        $("#tbDetailSubMakerRequest tr").each(function () {
+            calcRow($(this)); // เรียก Function คำนวณแถว
+            sum += parseFloat($(this).find(".totalCost").val()) || 0;
+        });
+
+        $("#i_New_ProcessCost").val(sum.toFixed(2)); // Set ค่า Sum Total
+    }
     function FuntionTotalProCost() {
+
         let TotalProcessWT = document.getElementById("i_New_TotalProcessWT") ? parseFloat(document.getElementById("i_New_TotalProcessWT").value) || 0 : 0;//N15
 
         let ProcessCost = document.getElementById("i_New_ProcessCost") ? parseFloat(document.getElementById("i_New_ProcessCost").value) || 0 : 0; //16
@@ -97,9 +226,11 @@
         let New_RoundUp = document.getElementById("i_New_RoundUp") ? parseFloat(document.getElementById("i_New_RoundUp").value) || 0 : 0;//19
 
         let i_New_TotalCost = parseFloat(ProcessCost + New_OrderMatl).toFixed(2);
+        //let roundedUp = Math.ceil(parseFloat(ProcessCost + New_OrderMatl).toFixed(2));
+        //console.log("roundedUp " + roundedUp + "i_New_TotalCost : " + i_New_TotalCost); // 13
         let i_New_RoundUp = Math.ceil(parseFloat(ProcessCost + New_OrderMatl).toFixed(2));
-        //let i_New_RoundUp = parseFloat(TotalCost).toFixed(2);
-        let i_New_TotalProCost = parseFloat(TotalProcessWT + ProcessCost + New_OrderMatl + TotalCost + New_RoundUp).toFixed(2);
+        //let i_New_TotalProCost = parseFloat(TotalProcessWT + ProcessCost + New_OrderMatl + TotalCost + New_RoundUp).toFixed(2);
+        //console.log("roundedUp " + i_New_RoundUp);
         let TotalsumMAN = 0;
         let TotalsumTOTAL = 0;
         $('input.dsWT_Auto').each(function () {
@@ -129,9 +260,483 @@
         $("#i_New_TotalCost").val(i_New_TotalCost); // Set ค่า Sum Total
         $("#i_New_RoundUp").val(i_New_RoundUp); // Set ค่า Sum Total
         $("#i_New_TotalProCost").val(i_New_RoundUp);  // Set ค่า Sum Total
-        // i_New_RoundUp
+
+
+        //if ((row.attr('class') || '').toLowerCase().includes('nc.')) {
 
     }
+    function sumValuesByGroupdsWT_Man() {
+        var groupSumsWT_Man = {};  // Object to store sums for each group
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".WT_Man").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsWT_Man[groupClass]) {
+                    groupSumsWT_Man[groupClass] = 0;
+                }
+                groupSumsWT_Man[groupClass] += rowWT_Man;
+            }
+        });
+
+        $.each(groupSumsWT_Man, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            //console.log('group' + group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            //console.log('WT_Man <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsWT_Man" + "." + str).each(function () {
+                // parseFloat(total).toFixed(2);
+                $(this).val(parseFloat(total).toFixed(2));
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+
+    }
+    function sumValuesByGroupdsWT_Auto() {
+        var groupSumsWT_Man = {};  // Object to store sums for each group
+        var groupSumsWT_Auto = {};
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".WT_Auto").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsWT_Auto[groupClass]) {
+                    groupSumsWT_Auto[groupClass] = 0;
+                }
+                groupSumsWT_Auto[groupClass] += rowWT_Man;
+            }
+        });
+        $.each(groupSumsWT_Auto, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            //console.log('group' + group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            // console.log('dsWT_Auto <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsWT_Auto" + "." + str).each(function () {
+                // $(this).val(total);
+                $(this).val(parseFloat(total).toFixed(2));
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+
+
+    }
+    function sumValuesByGroupdsLabour_Rate() {
+        var groupSumsWT_Man = {};  // Object to store sums for each group
+        var groupSumsWT_Auto = {};
+        var groupSumsLabour_Rate = {};
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".Labour_Rate").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsLabour_Rate[groupClass]) {
+                    groupSumsLabour_Rate[groupClass] = 0;
+                }
+                groupSumsLabour_Rate[groupClass] += rowWT_Man;
+            }
+        });
+        $.each(groupSumsLabour_Rate, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            // console.log('group' + group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            //console.log('dsLabour_Rate <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsLabour_Rate" + "." + str).each(function () {
+                // $(this).val(total);
+                $(this).val(parseFloat(total).toFixed(2));
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+
+
+    }
+    function sumValuesByGroupdsDP_Rate() {
+
+        var groupSumsLabour_Rate = {};
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".DP_Rate").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsLabour_Rate[groupClass]) {
+                    groupSumsLabour_Rate[groupClass] = 0;
+                }
+                groupSumsLabour_Rate[groupClass] += rowWT_Man;
+            }
+        });
+        $.each(groupSumsLabour_Rate, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            // console.log('group' + group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            //console.log('dsDP_Rate <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsDP_Rate" + "." + str).each(function () {
+                //$(this).val(total);
+                $(this).val(parseFloat(total).toFixed(2));
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+
+
+    }
+    function sumValuesByGroupdsME_Rate() {
+        var groupSumsLabour_Rate = {};
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".ME_Rate").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsLabour_Rate[groupClass]) {
+                    groupSumsLabour_Rate[groupClass] = 0;
+                }
+                groupSumsLabour_Rate[groupClass] += rowWT_Man;
+            }
+        });
+        $.each(groupSumsLabour_Rate, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            // console.log('group' + group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            // console.log('dsME_Rate <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsME_Rate" + "." + str).each(function () {
+                // $(this).val(total);
+                $(this).val(parseFloat(total).toFixed(2));
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+
+
+    }
+    function sumValuesByGroupdsLabour_Cost() {
+        var groupSumsLabour_Rate = {};
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".Labour_Cost").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsLabour_Rate[groupClass]) {
+                    groupSumsLabour_Rate[groupClass] = 0;
+                }
+                groupSumsLabour_Rate[groupClass] += rowWT_Man;
+            }
+        });
+        $.each(groupSumsLabour_Rate, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            //console.log('group' + group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            // console.log('dsLabour_Cost <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsLabour_Cost" + "." + str).each(function () {
+                // $(this).val(total);
+                $(this).val(parseFloat(total).toFixed(2));
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+
+
+    }
+    function sumValuesByGroupdsDP_Cost() {
+        var groupSumsLabour_Rate = {};
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".DP_Cost").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsLabour_Rate[groupClass]) {
+                    groupSumsLabour_Rate[groupClass] = 0;
+                }
+                groupSumsLabour_Rate[groupClass] += rowWT_Man;
+            }
+        });
+        $.each(groupSumsLabour_Rate, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            //console.log('group' + group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            //console.log('dsDP_Cost <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsDP_Cost" + "." + str).each(function () {
+                // $(this).val(total);
+                $(this).val(parseFloat(total).toFixed(2));
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+
+
+    }
+    function sumValuesByGroupdsME_Cost() {
+        var groupSumsLabour_Rate = {};
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".ME_Cost").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsLabour_Rate[groupClass]) {
+                    groupSumsLabour_Rate[groupClass] = 0;
+                }
+                groupSumsLabour_Rate[groupClass] += rowWT_Man;
+            }
+        });
+        $.each(groupSumsLabour_Rate, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            // console.log('group' + group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            //console.log('dsME_Cost <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsME_Cost" + "." + str).each(function () {
+                // $(this).val(total);
+                $(this).val(parseFloat(total).toFixed(2));
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+
+
+    }
+    function sumValuesByGroupdsTotalCost() {
+        var groupSumsLabour_Rate = {};
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".totalCost").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsLabour_Rate[groupClass]) {
+                    groupSumsLabour_Rate[groupClass] = 0;
+                }
+                groupSumsLabour_Rate[groupClass] += rowWT_Man;
+            }
+        });
+        $.each(groupSumsLabour_Rate, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            // console.log('group' + group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            //console.log('dsME_Cost <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsTotalCost" + "." + str).each(function () {
+                // $(this).val(total);
+                $(this).val(parseFloat(total).toFixed(2));
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+
+
+    }
+
+    function sumtotalProcess() {
+        let TotalsumTotalCost = 0;
+        $("#tbDetailSubMakerRequest tr").each(function () {
+            let sum = parseFloat($(this).find(".dsTotalCost").val()) || 0;
+            TotalsumTotalCost += sum;
+            // calcRow($(this)); // เรียก Function คำนวณแถว
+            // sum += parseFloat($(this).find(".dsTotalCost").val()) || 0;
+        });
+
+        let TotalsumWT_Man = 0;
+        let TotalsumWT_Auto = 0;
+        let TotalsumWdsLabour_Rate = 0;
+        let TotalsumWdsLabour_Cost = 0;
+        let TotalsumWdsDP_Rate = 0;
+        let TotalsumWdsDP_Cost = 0;
+        let TotalsumWdsME_Rate = 0;
+        let TotalsumWdsME_Cost = 0;
+
+        $("#tbDetailSubMakerRequest tr").each(function () {
+            let sum = parseFloat($(this).find(".dsWT_Man").val()) || 0;
+            let sum1 = parseFloat($(this).find(".dsWT_Auto").val()) || 0;
+            let sum2 = parseFloat($(this).find(".dsLabour_Rate").val()) || 0;
+            let sum3 = parseFloat($(this).find(".dsLabour_Cost").val()) || 0;
+            let sum4 = parseFloat($(this).find(".dsDP_Rate").val()) || 0;
+            let sum5 = parseFloat($(this).find(".dsDP_Cost").val()) || 0;
+            let sum6 = parseFloat($(this).find(".dsME_Rate").val()) || 0;
+            let sum7 = parseFloat($(this).find(".dsME_Cost").val()) || 0;
+
+            TotalsumWT_Man += sum;
+            TotalsumWT_Auto += sum1;
+            TotalsumWdsLabour_Rate += sum2;
+            TotalsumWdsLabour_Cost += sum3;
+            TotalsumWdsDP_Rate += sum4;
+            TotalsumWdsDP_Cost += sum5;
+            TotalsumWdsME_Rate += sum6;
+            TotalsumWdsME_Cost += sum7;
+        });
+        $("#i_TotalPocessMan").val(TotalsumWT_Man.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        $("#i_TotalPocessAuto").val(TotalsumWT_Auto.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        $("#i_TotalPocessLabour_Rate").val(TotalsumWdsLabour_Rate.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        $("#i_TotalPocessLabour_Cost").val(TotalsumWdsLabour_Cost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        $("#i_TotalPocessDP_Rate").val(TotalsumWdsDP_Rate.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        $("#i_TotalPocessDP_Cost").val(TotalsumWdsDP_Cost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        $("#i_TotalPocessME_Rate").val(TotalsumWdsME_Rate.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        $("#i_TotalPocessME_Cost").val(TotalsumWdsME_Cost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+
+
+
+
+        $("#i_TotalPocessTotalCost").val(TotalsumTotalCost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+
+    }
+
+    $(document).on("keyup change", ".WT_Man, .WT_Auto", function () {
+
+        sumValuesByGroupdsWT_Man();
+        sumValuesByGroupdsWT_Auto();
+        sumValuesByGroupdsLabour_Rate();
+        sumValuesByGroupdsDP_Rate();
+        sumValuesByGroupdsME_Rate();
+        sumValuesByGroupdsLabour_Cost();
+        sumValuesByGroupdsDP_Cost();
+        sumValuesByGroupdsME_Cost();
+        sumValuesByGroupdsTotalCost();
+        sumtotalProcess();
+
+        //calTotalProcessWT();
+        calcAll();
+        FuntionTotalProCost();
+
+        ////reload ?
+        //sumValuesByGroupdsWT_Man();
+        //sumValuesByGroupdsWT_Auto();
+        //sumValuesByGroupdsLabour_Rate();
+        //sumValuesByGroupdsDP_Rate();
+        //sumValuesByGroupdsME_Rate();
+        //sumValuesByGroupdsLabour_Cost();
+        //sumValuesByGroupdsDP_Cost();
+        //sumValuesByGroupdsME_Cost();
+        //sumValuesByGroupdsTotalCost();
+        //sumtotalProcess();
+
+        //calTotalProcessWT();
+        //calcAll();
+        //FuntionTotalProCost();
+    });
+
+
+
+
+    $("#tbDetailSubMakerRequest input").attr("class", function (i, c) {
+        return c ? c.replace(/\bvalid\b/g, "").trim() : "";
+    });
+
+
+
+
+    sumValuesByGroupdsWT_Man();
+    sumValuesByGroupdsWT_Auto();
+    sumValuesByGroupdsLabour_Rate();
+    sumValuesByGroupdsDP_Rate();
+    sumValuesByGroupdsME_Rate();
+    sumValuesByGroupdsLabour_Cost();
+    sumValuesByGroupdsDP_Cost();
+    sumValuesByGroupdsME_Cost();
+    sumValuesByGroupdsTotalCost();
+
+    calTotalProcessWT();
+    calcAll();
+    FuntionTotalProCost();
+
+    //why reload again ? anwser: i don t know but can work.....
+    sumValuesByGroupdsWT_Man();
+    sumValuesByGroupdsWT_Auto();
+    sumValuesByGroupdsLabour_Rate();
+    sumValuesByGroupdsDP_Rate();
+    sumValuesByGroupdsME_Rate();
+    sumValuesByGroupdsLabour_Cost();
+    sumValuesByGroupdsDP_Cost();
+    sumValuesByGroupdsME_Cost();
+    sumValuesByGroupdsTotalCost();
+    sumtotalProcess();
+
+    calTotalProcessWT();
+    calcAll();
     FuntionTotalProCost();
 
 </script>

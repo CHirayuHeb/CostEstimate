@@ -76,7 +76,6 @@
                         {
                             @for (int i = 0; i < group.DetailSubMakerRequest.Count(); i++)
                             {
-
                                 <tr class="@group.GroupName.Trim()">
                                     <td style="text-align:left;">
                                         <span style="font-size:10px">@group.DetailSubMakerRequest[i].dsProcessName</span>
@@ -234,16 +233,16 @@
         //$("#i_TotalPocessMan").val("111");
 
 
-        //$("#i_TotalPocessMan").val(TotalsumMan.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
-        //$("#i_TotalPocessAuto").val(TotalsumAuto.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
-        //$("#i_TotalPocessLabour_Rate").val(TotalsumLabour_Rate.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
-        //$("#i_TotalPocessDP_Rate").val(TotalsumDP_Rate.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
-        //$("#i_TotalPocessME_Rate").val(TotalsumME_Rate.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
-        //$("#i_TotalPocessLabour_Cost").val(TotalsumLabour_Cost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
-        //$("#i_TotalPocessDP_Cost").val(TotalsumDP_Cost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
-        //$("#i_TotalPocessME_Cost").val(TotalsumME_Cost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        $("#i_TotalPocessMan").val(TotalsumMan.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        $("#i_TotalPocessAuto").val(TotalsumAuto.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        $("#i_TotalPocessLabour_Rate").val(TotalsumLabour_Rate.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        $("#i_TotalPocessDP_Rate").val(TotalsumDP_Rate.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        $("#i_TotalPocessME_Rate").val(TotalsumME_Rate.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        $("#i_TotalPocessLabour_Cost").val(TotalsumLabour_Cost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        $("#i_TotalPocessDP_Cost").val(TotalsumDP_Cost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+        $("#i_TotalPocessME_Cost").val(TotalsumME_Cost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
 
-        // $("#i_TotalPocessTotalCost").val(TotalsumTotalCost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
+         $("#i_TotalPocessTotalCost").val(TotalsumTotalCost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
 
 
 
@@ -798,9 +797,7 @@
         return c ? c.replace(/\bvalid\b/g, "").trim() : "";
     });
 
-
-
-
+    
     sumValuesByGroupdsWT_Man();
     sumValuesByGroupdsWT_Auto();
     sumValuesByGroupdsLabour_Rate();
@@ -810,8 +807,9 @@
     sumValuesByGroupdsDP_Cost();
     sumValuesByGroupdsME_Cost();
     sumValuesByGroupdsTotalCost();
+    
 
-    calTotalProcessWT();
+
     calcAll();
     FuntionTotalProCost();
 
@@ -830,5 +828,8 @@
     calTotalProcessWT();
     calcAll();
     FuntionTotalProCost();
+
+
+ 
 
 </script>

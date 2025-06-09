@@ -1,0 +1,56 @@
+﻿@model CostEstimate.Models.Common.Class;
+@using CostEstimate.Models.Common;
+@{
+    ViewData["Title"] = "Page not found | Thai Stanley";
+    Layout = "~/Views/Shared/_MenuBar_mold.cshtml";
+}
+@{
+    string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+    string _admin = GlobalVariable.perAdmin.ToUpper();
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link href="~/css/AddCost/addCost.css" rel="stylesheet" />
+    <link href="~/css/Home/siteHome.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Page not found</title>
+</head>
+<body>
+    <br />
+
+    <div class="row" style="margin-left:10%">
+        <div class="col-10">
+
+        </div>
+        <div class="col-80">
+
+            @*<div onclick="window.open('newurl.html','mywindow');" style="cursor: pointer;">&nbsp;</div>*@
+            <div style="text-align:center; margin:0 auto;  padding: 10px;">
+                <div class="container">
+                    <h1 class="error-code">404</h1>
+                    <p class="error-message">Oops! Page not found.</p>
+                    @*<a href="/" class="home-link">Go back to Home</a>*@
+                    <br />
+                    <br />
+                    <a asp-controller="MainPage" asp-action="Index" style="margin-right:20px;font-size:15px;text-decoration:auto;margin-top:50px">
+                        >> Go back to Menu
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-10">
+
+        </div>
+    </div>
+
+
+</body>
+</html>

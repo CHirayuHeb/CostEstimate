@@ -139,7 +139,7 @@ WriteAttributeValue("", 269, Model.image, 269, 12, false);
             WriteLiteral("                    ");
             EndContext();
             BeginContext(1134, 65, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "57c461da12054366b978f3ebdeb197d4", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "d5a8d0c327ed4b89aa2553e68b53b8e4", async() => {
                 BeginContext(1186, 4, false);
 #line 24 "C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\Views\Shared\OTViewDetail\_CateWorker.cshtml"
                                                                   Write(item);
@@ -186,7 +186,7 @@ WriteAttributeValue("", 269, Model.image, 269, 12, false);
             WriteLiteral("                    ");
             EndContext();
             BeginContext(1281, 56, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "a4e40dc55a6240ccbe83aa2a6b0fb91e", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "57b0fd1d7cc04301ae5f09ef9ae45c88", async() => {
                 BeginContext(1324, 4, false);
 #line 28 "C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\Views\Shared\OTViewDetail\_CateWorker.cshtml"
                                                          Write(item);

@@ -38,6 +38,10 @@ namespace CostEstimate.Models.DBConnect
             {
                 entity.HasKey(k => new { k.rmRunNo, k.rmDocCode, k.rmDocSub, k.rmYear, k.rmMonth });
             });
+            modelBuilder.Entity<ViewceItemModifyRequest>(entity =>
+            {
+                entity.HasKey(k => new { k.imCENo, k.imItemNo});
+            });
         }
 
         public DbSet<ViewLoginPgm> _ViewLoginPgm { get; set; }
@@ -51,6 +55,11 @@ namespace CostEstimate.Models.DBConnect
         public DbSet<ViewceHistoryApproved> _ViewceHistoryApproved { get; set; }
         public DbSet<ViewceRunDocument> _ViewceRunDocument { get; set; }
         public DbSet<ViewcceRunCostpalnning> _ViewcceRunCostpalnning { get; set; }
+
+
+        //Mold Modify
+        public DbSet<ViewceMastModifyRequest> _ViewceMastModifyRequest { get; set; }
+        public DbSet<ViewceItemModifyRequest> _ViewceItemModifyRequest { get; set; }
 
 
 

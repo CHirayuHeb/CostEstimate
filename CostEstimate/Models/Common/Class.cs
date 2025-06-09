@@ -16,6 +16,7 @@ namespace CostEstimate.Models.Common
         public ViewLogin _ViewLogin { get; set; }
         public Error _Error { get; set; }
         public string param { get; set; }
+        public string paramtype { get; set; }
 
         public string paramCostNo { get; set; }
         public string paramCostDes { get; set; }
@@ -55,7 +56,7 @@ namespace CostEstimate.Models.Common
         public ViewcceRunCostpalnning _ViewcceRunCostpalnning { get; set; }
         public ViewOperaterCP _ViewOperaterCP { get; set; }
 
-      
+
 
         //public GroupViewceCostPlanning _roupViewceCostPlanning { get; set; }
         public GroupViewceDetailSubMakerRequest _GroupViewceDetailSubMakerRequest { get; set; }
@@ -64,7 +65,7 @@ namespace CostEstimate.Models.Common
         //add cost
         public GroupViewCostPlanning _GroupViewCostPlanning { get; set; }
         public List<GroupViewCostPlanning> _ListGroupViewCostPlanning { get; set; }
-        
+
         //public List<GroupViewceCostPlanning> _ListGroupViewceCostPlanning { get; set; }
 
 
@@ -79,6 +80,20 @@ namespace CostEstimate.Models.Common
         public ViewAttachment Attachment { get; set; }
         public List<ViewAttachment> _listAttachment { get; set; }
 
+        public List<ViewLLLedger> _listViewLLLedger { get; set; }
+
+
+
+
+        //Mold modify
+
+        public List<ViewceMastModifyRequest> _ListViewceMastModifyRequest { get; set; }
+        public ViewceMastModifyRequest _ViewceMastModifyRequest { get; set; }
+
+        public List<ViewceItemModifyRequest> _ListViewceItemModifyRequest { get; set; }
+        public ViewceItemModifyRequest _ViewceItemModifyRequest { get; set; }
+
+        
     }
 
     public class OTTimeStart

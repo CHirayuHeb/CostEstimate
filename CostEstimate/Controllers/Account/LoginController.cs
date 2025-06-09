@@ -33,7 +33,7 @@ namespace CostEstimate.Controllers.Account
             _Cache = cacheController;
             _MK = MK;
         }
-        public IActionResult Index(string DocumentNo)
+        public IActionResult Index(string DocumentNo,string DocType)
         {
             //string domain = Environment.UserDomainName;
             //string user = Environment.UserName;
@@ -42,6 +42,8 @@ namespace CostEstimate.Controllers.Account
             Class @class = new Class();
             if (DocumentNo != null)
                 @class.param = DocumentNo;
+            if (DocType != null)
+                @class.paramtype = DocType;
 
             if (remember != null)
             {
@@ -53,42 +55,64 @@ namespace CostEstimate.Controllers.Account
         [HttpPost]
         public async Task<IActionResult> Autherize(Class @class)
         {
-            ViewLogin login = new ViewLogin();
-            string sUsername = @class._ViewLoginPgm.UserId.Trim();
-            string sPassword = @class._ViewLoginPgm.Password.Trim();
-
-            ViewAccEMPLOYEE accData = new ViewAccEMPLOYEE();
-
-            //ViewLoginPgm _ViewLoginPgm = new ViewLoginPgm();
-            ViewLoginPgm _ViewLoginPgm = _MK._ViewLoginPgm.FirstOrDefault(x => x.UserId == sUsername && x.Password == sPassword && x.Program == "CostEstimateRequest");
-            if (_ViewLoginPgm != null)
+            try
             {
-                accData = _HRMS.AccEMPLOYEE.FirstOrDefault(x => x.EMP_CODE == _ViewLoginPgm.Empcode);
-                if (accData != null)
-                {
-                    string[] stat = await Task.Run(() => SetClaim(accData, _ViewLoginPgm.Permission, sUsername, sPassword));
-                    if (stat[0] == "Ok")
-                    {
-                        if (@class.param != null)
-                        {
+                ViewLogin login = new ViewLogin();
+                string sUsername = @class._ViewLoginPgm.UserId.Trim();
+                string sPassword = @class._ViewLoginPgm.Password.Trim();
 
-                            return RedirectToAction("Index", "New", new { smDocumentNo = @class.param });
+                ViewAccEMPLOYEE accData = new ViewAccEMPLOYEE();
+
+                //ViewLoginPgm _ViewLoginPgm = new ViewLoginPgm();
+                ViewLoginPgm _ViewLoginPgm = _MK._ViewLoginPgm.FirstOrDefault(x => x.UserId == sUsername && x.Password == sPassword && x.Program == "CostEstimateRequest");
+                if (_ViewLoginPgm != null)
+                {
+                    accData = _HRMS.AccEMPLOYEE.FirstOrDefault(x => x.EMP_CODE == _ViewLoginPgm.Empcode);
+                    if (accData != null)
+                    {
+                        string[] stat = await Task.Run(() => SetClaim(accData, _ViewLoginPgm.Permission, sUsername, sPassword));
+                        if (stat[0] == "Ok")
+                        {
+                            if (@class.param != null)
+                            {
+                                if (@class.paramtype == "MoldModify")
+                                {
+                                    return RedirectToAction("Index", "NewMoldModify", new { id = @class.param });
+                                }
+                                else if (@class.paramtype == "SubMarker")
+                                {
+                                    return RedirectToAction("Index", "New", new { smDocumentNo = @class.param });
+                                }
+                                else // other
+                                {
+                                    return RedirectToAction("Index", "New", new { smDocumentNo = @class.param });
+                                }
+
+                                //return RedirectToAction("Index", "New", new { smDocumentNo = @class.param });
+                            }
+                            else
+                            {
+
+                                return RedirectToAction("Index", "MainPage");
+                                // return RedirectToAction("Index", "Home");
+                            }
+
+
                         }
                         else
                         {
-
-                            return RedirectToAction("Index", "MainPage");
-                            // return RedirectToAction("Index", "Home");
+                            @class._Error = new Error();
+                            @class._Error.validation = stat[1];
+                            return View("Index", @class);
                         }
-
-
                     }
                     else
                     {
                         @class._Error = new Error();
-                        @class._Error.validation = stat[1];
+                        @class._Error.validation = "Username or Password invalid Or Username  must have Email M365";
                         return View("Index", @class);
                     }
+
                 }
                 else
                 {
@@ -96,14 +120,14 @@ namespace CostEstimate.Controllers.Account
                     @class._Error.validation = "Username or Password invalid Or Username  must have Email M365";
                     return View("Index", @class);
                 }
-
             }
-            else
+            catch (Exception ex)
             {
                 @class._Error = new Error();
-                @class._Error.validation = "Username or Password invalid Or Username  must have Email M365";
+                @class._Error.validation = ex.Message;
                 return View("Index", @class);
             }
+          
 
         }
 
@@ -171,8 +195,21 @@ namespace CostEstimate.Controllers.Account
                     , principal, new AuthenticationProperties()
                     {
                         IsPersistent = true,
+                        AllowRefresh = true, // ✅ อนุญาตให้ session ถูกยืดอายุ
                         ExpiresUtc = DateTime.UtcNow.AddMinutes(30)
                     }); //true is remember login
+
+    //            await HttpContext.SignInAsync(
+    //CookieAuthenticationDefaults.AuthenticationScheme,
+    //new ClaimsPrincipal(identity),
+    //new AuthenticationProperties
+    //{
+    //    IsPersistent = true,
+    //    AllowRefresh = true, // ✅ อนุญาตให้ session ถูกยืดอายุ
+    //    ExpiresUtc = DateTime.UtcNow.AddMinutes(30)
+    //});
+
+
 
                 string[] stat = { "Ok" };
                 return stat;
@@ -242,7 +279,20 @@ namespace CostEstimate.Controllers.Account
                 {
                     if (@class.param != null)
                     {
-                        return RedirectToAction("Index", "New", new { smDocumentNo = @class.param });
+                        if (@class.paramtype == "MoldModify")
+                        {
+                            return RedirectToAction("Index", "NewMoldModify", new { id = @class.param });
+                        }
+                        else if (@class.paramtype == "SubMarker")
+                        {
+                            return RedirectToAction("Index", "New", new { smDocumentNo = @class.param });
+                        }
+                        else // other
+                        {
+                            return RedirectToAction("Index", "New", new { smDocumentNo = @class.param });
+                        }
+
+                        // return RedirectToAction("Index", "New", new { smDocumentNo = @class.param });
                     }
                     else
                     {

@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using CostEstimate.Models.Common;
 using CostEstimate.Models.DBConnect;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace CostEstimate
 {
@@ -30,6 +31,13 @@ namespace CostEstimate
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<FormOptions>(options =>
+            {
+                options.ValueLengthLimit = int.MaxValue;
+                options.MultipartBodyLengthLimit = long.MaxValue;  // สำหรับไฟล์
+                options.MemoryBufferThreshold = int.MaxValue;
+            });
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -55,12 +63,14 @@ namespace CostEstimate
                 .AddCookie(x =>
                 {
                     x.Cookie.Name = "Remember";
-                    x.ExpireTimeSpan = TimeSpan.FromDays(1);
+                    x.ExpireTimeSpan = TimeSpan.FromMinutes(15); // อายุของ session
+                    //x.ExpireTimeSpan = TimeSpan.FromDays(1);
                     x.LoginPath = "/Login/Index"; //path login
                     x.LogoutPath = "/Login/Logout"; //path loout
                     x.AccessDeniedPath = "/ErrorCase/Index";
                     x.ReturnUrlParameter = "returnurl";
                     x.Cookie.IsEssential = true;
+                    x.SlidingExpiration = true; // ✅ เปิดให้ session ต่ออายุถ้ามีการใช้งาน
                 });
 
             services.AddAuthorization(x =>

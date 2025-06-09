@@ -8,56 +8,57 @@
     <div></div>
     @using (Html.BeginForm("Autherize", "Login", FormMethod.Post))
     {
-        <div class="login-container">
-            <div><input type="hidden" asp-for="param"></div>
-            <div class="login-content">
-                <div class="logo">
-                    <div class="sub-logo">
-                        <h1 class="lettleSpace-5" style="font-size:45px"><span style="color:orangered">COST </span> <span style="color:darkolivegreen">ESTIMATE REQUEST</span></h1>
-                        <div class="title">
-                            <h5 style="color:darkblue">Welcome To Cost Estimate Request</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="account-info" style="">
-                    <div class="sub-accountinfo">
-                        <div class="input-boxset">
-                            กรอก ชื่อผู้ใช้งาน และ รหัสผ่านของท่านเพื่อเข้าใช้งาน
-                        </div>
-                        <div class="input-boxset">
-                            @Html.ValidationMessageFor(model => model._Error.validation)
-                            <label class="status-invalid" style="font-size:14px">@Html.DisplayFor(model => model._Error.validation)</label>
-                        </div>
-
-                        <div class="input-boxset username">
-                            <div class="input-container">
-                                <input asp-for="_ViewLoginPgm.UserId" type="text" class="form-control password" placeholder="User Name" required autocomplete="off" style="font-size:13px" value="" />
-                            </div>
-                        </div>
-                        <div class="input-boxset password">
-                            <div class="input-container">
-                                <input asp-for="_ViewLoginPgm.Password" type="password" class="form-control password" placeholder="Password" required autocomplete="off" style="font-size:13px" value="" />
-                            </div>
-                        </div>
-                        @*<div class="btn-container">
-                                <input type="submit" class="btn btn-login" value="LOGIN" />
-                            </div>*@
-                        <div class="btn-container">
-                            <input type="submit" class="btn btn-login" value="LOGIN" />
-                        </div>
-                        @*<div class="forgotten-password">
-                                <a href="#">Forgotten password?</a>
-                            </div>*@
-                        @*<hr />
-                            <div class="btn-container">
-                                <input type="submit" class="btn btn-success create-newaccount" value="Create New Acount" />
-                            </div>*@
+    <div class="login-container">
+        <div><input type="hidden" asp-for="param"></div>
+        <div><input type="hidden" asp-for="paramtype"></div>
+        <div class="login-content">
+            <div class="logo">
+                <div class="sub-logo">
+                    <h1 class="lettleSpace-5" style="font-size:45px"><span style="color:orangered">COST </span> <span style="color:darkolivegreen">ESTIMATE REQUEST</span></h1>
+                    <div class="title">
+                        <h5 style="color:darkblue">Welcome To Cost Estimate Request</h5>
                     </div>
                 </div>
             </div>
+            <div class="account-info" style="">
+                <div class="sub-accountinfo">
+                    <div class="input-boxset">
+                        กรอก ชื่อผู้ใช้งาน และ รหัสผ่านของท่านเพื่อเข้าใช้งาน
+                    </div>
+                    <div class="input-boxset">
+                        @Html.ValidationMessageFor(model => model._Error.validation)
+                        <label class="status-invalid" style="font-size:14px">@Html.DisplayFor(model => model._Error.validation)</label>
+                    </div>
+
+                    <div class="input-boxset username">
+                        <div class="input-container">
+                            <input asp-for="_ViewLoginPgm.UserId" type="text" class="form-control password" placeholder="User Name" required autocomplete="off" style="font-size:13px" value="" />
+                        </div>
+                    </div>
+                    <div class="input-boxset password">
+                        <div class="input-container">
+                            <input asp-for="_ViewLoginPgm.Password" type="password" class="form-control password" placeholder="Password" required autocomplete="off" style="font-size:13px" value="" />
+                        </div>
+                    </div>
+                    @*<div class="btn-container">
+                        <input type="submit" class="btn btn-login" value="LOGIN" />
+                    </div>*@
+                    <div class="btn-container">
+                        <input type="submit" class="btn btn-login" value="LOGIN" />
+                    </div>
+                    @*<div class="forgotten-password">
+                        <a href="#">Forgotten password?</a>
+                    </div>*@
+                    @*<hr />
+                    <div class="btn-container">
+                        <input type="submit" class="btn btn-success create-newaccount" value="Create New Acount" />
+                    </div>*@
+                </div>
+            </div>
         </div>
+    </div>
     }
 </div>
 <footer style="width: 100%; margin-top: auto; position: relative; bottom: 0; font-size: x-small;">
-    <p style="font-weight:800">&copy; Thai Stanley 2024 - CostEstimate V 2.0 Last update 15/05/2025 12:00 : Add Mold Modify </p>
+    <p style="font-weight:800">&copy; Thai Stanley 2024 - CostEstimate V 2.0 Last update 07/06/2025 11:05 : Add Mold Modify </p>
 </footer>

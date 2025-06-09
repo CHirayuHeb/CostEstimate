@@ -3,15 +3,14 @@
     <div class="grid-item fw-800 center " style="text-align:left;font-size:15px">Approve and Check step </div>
 
     <br />
-
-    <div>
+    <div style="display: flex; justify-content: center;">
         <ul class="progressbar ">
-            @if (@Model._ListceMastFlowApprove != null && @Model._ViewceMastSubMakerRequest != null)
+            @if (@Model._ListceMastFlowApprove != null && @Model._ViewceMastModifyRequest != null)
             {
                 @for (int i = 0; i < Model._ListceMastFlowApprove.Count - 1; i++)
                 {
-                    <li class="@(@Model._ViewceMastSubMakerRequest.smStep >= i ? "active" : "")">
-                        <span style="@(i==@Model._ViewceMastSubMakerRequest.smStep ? "font-size:12px;color:#e0772d;font-weight: 600":"font-size:11px;color:black;")" class="step-title">@Model._ListceMastFlowApprove[i].mfSubject</span>
+                    <li class="@(@Model._ViewceMastModifyRequest.mfStep >= i ? "active" : "")">
+                        <span style="@(i==@Model._ViewceMastModifyRequest.mfStep ? "font-size:12px;color:#e0772d;font-weight: 600":"font-size:11px;color:black;")" class="step-title">@Model._ListceMastFlowApprove[i].mfSubject</span>
 
                         @*<span style="@(@Model._ViewceMastSubMakerRequest.smStep == 7 && i==7 ? "font-size:11px;color:green;font-weight: 600":"font-size:10px;color:black;")" class="step-title">@Model._ListceMastFlowApprove[i].mfSubject</span>*@
 
@@ -20,14 +19,30 @@
                 }
             }
         </ul>
-    </div>
-    <hr />
-</div>
 
+
+    </div>
+
+
+    @*<hr />*@
+</div>
+@*<div style="display: flex; justify-content: center;">
+    <ul class="progressbar ">
+        @if (@Model._ListceMastFlowApprove != null && @Model._ViewceMastSubMakerRequest != null)
+        {
+            @for (int i = 0; i < Model._ListceMastFlowApprove.Count - 1; i++)
+            {
+                <li class="@(@Model._ViewceMastSubMakerRequest.smStep >= i ? "active" : "")">
+                    <span style="@(i==@Model._ViewceMastSubMakerRequest.smStep ? "font-size:12px;color:#e0772d;font-weight: 600":"font-size:11px;color:black;")" class="step-title">@Model._ListceMastFlowApprove[i].mfSubject</span>
+
+               </li>
+            }
+        }
+    </ul>
+</div>*@
 
 
 <style>
-
 
     .container {
         width: 100%;
@@ -42,10 +57,17 @@
     }
 
     .progressbar {
-        margin: 0;
+        /*margin: 0;
         padding-left: 5%;
         counter-reset: step;
-        clear: both;
+        clear: both;*/
+        display: flex;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        counter-reset: step;
+        width: auto; /* ✅ หรือระบุ max-width ถ้าอยากควบคุม */
+        padding-left: 10%;
     }
 
         .progressbar li {

@@ -72,12 +72,15 @@ namespace CostEstimate.Controllers.New
                                             "CAVITIES(R/L =1 Set) x 2MOLD",
                                             "CAVITIES(R/L =1 Set)",
                                             "CAVITIES",
+                                            "CAVITIES x 2 MOLD",
+                                            "CAVITY x 2 MOLD",
                                             "CAVITY"};
             SelectList _TypeofCavity = new SelectList(_listTypeofCavity);
             ViewBag.TypeofCavity = _TypeofCavity;
 
 
-            @class._ListceMastFlowApprove = _MK._ViewceMastFlowApprove.ToList();
+           // @class._ListceMastFlowApprove = _MK._ViewceMastFlowApprove.ToList();
+            @class._ListceMastFlowApprove = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "1").ToList();
 
             try
             {
@@ -88,9 +91,14 @@ namespace CostEstimate.Controllers.New
                 {
                     //@class._ViewceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smLotNo == smLotNo && x.smOrderNo == smOrderNo && x.smRevision == smRevision).FirstOrDefault();
                     @class._ViewceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smDocumentNo == smDocumentNo).FirstOrDefault();
+                    //if (@class._ViewceMastSubMakerRequest == null)
+                    //{
+                    //    return RedirectToAction("Index", "PageNotFound");
+                    //    // return View(@class);
+                    //}
                     if (@class._ViewceMastSubMakerRequest == null)
                     {
-                        return RedirectToAction("Index", "PageNotFound");
+                        return RedirectToAction("Index", "ErrorPage");
                         // return View(@class);
                     }
 
@@ -121,7 +129,6 @@ namespace CostEstimate.Controllers.New
                     }
                     else
                     {
-
                         @class._listAttachment = _IT.Attachment.Where(x => x.fnNo == smDocumentNo).ToList();
                     }
 
@@ -182,7 +189,7 @@ namespace CostEstimate.Controllers.New
                 //return Json(_MOLD._ViewLLLedger.Where(p => p.LGLegNo.Contains(term)).Select(p => p.LGLegNo + "" + p.LGTypeCode + "|" + p.LGCustomer + "|" + p.LGMoldName + "" + p.LGMoldNo + "|" + "0").ToList());
 
                 return Json(_MOLD._ViewLLLedger.Where(p => p.LGLegNo.Contains(term)).Select(p => p.LGLegNo + "" + p.LGTypeCode + "|" + p.LGCustomer + "|" + p.LGMoldNo + "/" + p.LGMoldName + "|" + "0").ToList());
-               // return Json(_MOLD._ViewmtMaster_Mold_Control.Where(p => p.mcLedger_Number.Contains(term)).Select(p => p.mcLedger_Number + "|" + p.mcCUS + "|" + p.mcMoldname + "|" + (p.mcCavity != "" ? p.mcCavity : "0")).ToList());
+                // return Json(_MOLD._ViewmtMaster_Mold_Control.Where(p => p.mcLedger_Number.Contains(term)).Select(p => p.mcLedger_Number + "|" + p.mcCUS + "|" + p.mcMoldname + "|" + (p.mcCavity != "" ? p.mcCavity : "0")).ToList());
             }
         }
         public ActionResult SearchModelName(string term)
@@ -371,7 +378,7 @@ namespace CostEstimate.Controllers.New
 
 
             //get emp operator
-            var v_empstep = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step) != null ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step).Select(x => x.mfTo).FirstOrDefault() : "";
+            var v_empstep = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "1") != null ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo=="1").Select(x => x.mfTo).FirstOrDefault() : "";
             if (v_empstep != null) //step 2-5
             {
                 var v_emailTo = _IT.rpEmails.Where(x => x.emEmpcode == v_empstep).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
@@ -712,7 +719,7 @@ namespace CostEstimate.Controllers.New
 
                     MailboxAddress FromMailFrom = new MailboxAddress(fromEmailFrom.emName_M365, fromEmailFrom.emEmail_M365);
                     MailboxAddress FromMailTO = new MailboxAddress(fromEmailTO.emName_M365, fromEmailTO.emEmail_M365);
-                    email.Subject = "CostEstimate Request==> " + _smStatus; /*( " + _ViewlrBuiltDrawing.bdDocumentType + " ) " + _ViewlrHistoryApprove.htStatus*/;
+                    email.Subject = "CostEstimate Sub Maker Request==> " + _smStatus; /*( " + _ViewlrBuiltDrawing.bdDocumentType + " ) " + _ViewlrHistoryApprove.htStatus*/;
                     //email.From.Add(MailboxAddress.Parse(_ViewlrHistoryApprove.htFrom));
                     email.From.Add(FromMailFrom);
                     email.To.Add(FromMailTO);
@@ -740,13 +747,13 @@ namespace CostEstimate.Controllers.New
                             }
                         }
                     }
-                    var varifyUrl = "http://thsweb/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc;// + getSrNo[0].ToString();
+                    var varifyUrl = "http://thsweb/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=SubMarker";// + getSrNo[0].ToString();
                     var bodyBuilder = new BodyBuilder();
                     //var image = bodyBuilder.LinkedResources.Add(@"E:\01_My Document\02_Project\_2023\1. PartTransferUnbalance\PartTransferUnbalance\wwwroot\images\btn\OK.png");
                     string vIssue = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
                     string vIssueName = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Actor)?.Value;
                     string EmailBody = $"<div>" +
-                        $"<B>Cost Estimate </B> <br>" +
+                        $"<B>Cost Estimate : Sub Maker </B> <br>" +
                         $"<B>Document No : </B> " + RunDoc + "<br>" +  //v_EmpCodeRequest
                         $"<B>Order No : </B> " + @class._ViewceMastSubMakerRequest.smOrderNo + "<br>" +
                         $"<B>Lot No : </B> " + @class._ViewceMastSubMakerRequest.smLotNo + "<br>" +

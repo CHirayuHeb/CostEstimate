@@ -373,7 +373,8 @@ ul li div.menu-item {
 .nav-item button span.searchMold,
 .nav-item button span.createMold,
 .nav-item button span.my-requestMold,
-.nav-item button span.approvalMold{
+.nav-item button span.approvalMold,
+.nav-item button span.Master_addMold {
     display: flex;
     flex-direction: column;
     font-size: 12px;
@@ -599,6 +600,8 @@ div.modal-backdrop.show {
 }
 .btnBrown {
     background-color: #e88f4f;
+   
+    font-weight: 600;
 }
 
 
@@ -614,6 +617,7 @@ div.modal-backdrop.show {
     cursor: pointer;
     width: 100%;
     margin-right: 5px;
+    
 }
 
     .btnNone:hover {

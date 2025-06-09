@@ -291,4 +291,68 @@ namespace CostEstimate.Models.Table.MK
         public string empCheckedByTM { get; set; }
         public string empApproveBy { get; set; }
     }
+
+
+
+    //Modify table
+    [Table("ceMastModifyRequest")]
+    public class ViewceMastModifyRequest
+    {
+        [Key]
+        public string mfCENo { get; set; }
+        public string mfRevision { get; set; }
+        public string mfRefNo { get; set; }
+        public string mfLotNo { get; set; }
+
+        public string mfIssueRate { get; set; }
+        public string mfCostRate { get; set; }
+        public string mfCostType { get; set; }
+        public string mfType { get; set; }
+        public double mfESTCost { get; set; }
+        public double mfResultCost { get; set; }
+        public double mfMKPrice { get; set; }
+        public string mfCustomerName { get; set; }
+        public string mfMoldNoOrMoldName { get; set; }
+        public string mfFunction { get; set; }
+        public string mfModelName { get; set; }
+        public string mfMoldMass { get; set; }
+        public int mfCavityNo { get; set; }
+        public string mfTypeCavity { get; set; }
+        public int mfLeadTime { get; set; }
+        public double mfLabourCost { get; set; }
+        public double mfDPCost { get; set; }
+        public double mfMECost { get; set; }
+        public double mfCostUntilSH { get; set; }
+        public double mfMatCost { get; set; }
+        public double mfRateCostUntilSH { get; set; }
+        public double mfTotalESTCost { get; set; }
+        public double mfRoundupotalESTCost { get; set; }
+        public string mfDetail { get; set; }
+        public string mfProcess { get; set; }
+        public string mfIssueDate { get; set; }
+        public string mfIssueDept { get; set; }
+        public string mfEmpCodeRequest { get; set; }
+        public string mfNameRequest { get; set; }
+        public string mfEmpCodeApprove { get; set; }
+        public string mfNameApprove { get; set; }
+        public int mfFlowNo { get; set; }
+        public int mfStep { get; set; }
+        public string mfStatus { get; set; }
+
+        public double mfMtTool { get; set; }
+        public double mfTotalMt { get; set; }
+        
+
+
+    }
+    [Table("ceItemModifyRequest")]
+    public class ViewceItemModifyRequest
+    {
+        [Key]
+        public string imCENo { get; set; }
+        public int imItemNo { get; set; }
+        public string imItemName { get; set; }
+        public double imPCS { get; set; }
+        public double imAmount { get; set; }
+    }
 }

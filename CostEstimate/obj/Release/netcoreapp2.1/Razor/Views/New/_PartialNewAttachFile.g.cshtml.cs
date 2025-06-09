@@ -62,7 +62,7 @@ using CostEstimate;
 #line default
 #line hidden
             BeginContext(642, 56, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "641917ccbf674df8a6fb5e8c80b4d5f1", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "c8b9973c432f432b8a89dd8f2be13a0b", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -108,7 +108,7 @@ WriteAttributeValue(" ", 1272, Model._ViewceMastSubMakerRequest.smStep == 7
             WriteLiteral(">\r\n                <button type=\"button\" class=\"button notification\" style=\"width:auto; height:28px;background-color:#7286D3\" data-bs-dismiss=\"modal\" id=\"btnfile\">\r\n                    ");
             EndContext();
             BeginContext(2241, 99, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "3c80099bf1a04bd8b7c3017e56974cf8", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "5847bfef51b548b1879b5e197c296177", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();

@@ -132,12 +132,13 @@
     <div class="modal-footer" style="width: 100%;">
 
         @*@if (@Model._ViewsvsServiceRequest.srStep < 5)
-            {
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="sendmailsubmit('@Url.Action("SendMail_post", "RequestForm", new { vform = @ViewBag.vForm,vSR= @ViewBag.SRno})')">Send mail</button>
+        {
+            <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="sendmailsubmit('@Url.Action("SendMail_post", "RequestForm", new { vform = @ViewBag.vForm,vSR= @ViewBag.SRno})')">Send mail</button>
 
-            }*@
+        }*@
 
-        <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="Menubar_save_sendMail('@Url.Action("SaveForm_SendMail", "New")')" style="@(@ViewBag.step == 7  ? "display:none" : "")">Send mail</button>
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="Menubar_save_sendMailData('@Url.Action("chkSaveData", "NewMoldModify")','@Url.Action("SaveCeDetailSub", "NewMoldModify")')" style="@(@ViewBag.step == 6  ? "display:none" : "")">Send mail</button>
+        @*<button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="Menubar_save_sendMailBG('@Url.Action("SaveForm_SendMail", "NewMoldModify")')" style="@(@ViewBag.step == 6  ? "display:none" : "")">Send mail</button>*@
         @*<button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="sendmailsubmit('@Url.Action("SendMail_post", "RequestForm", new { vform = @ViewBag.vForm,vSR= @ViewBag.SRno})')">Send mail</button>*@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 
