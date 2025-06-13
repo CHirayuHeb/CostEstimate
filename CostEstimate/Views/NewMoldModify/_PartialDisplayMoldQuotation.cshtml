@@ -222,9 +222,21 @@
                 <div class="col-5 ">
                 </div>
                 <div class="col-90" style="padding-left:30px">
-                    <span style="font-size:12px;padding:0.5px;"> MODIFY (REQUEST BY : @Html.DisplayFor(model => model._ViewceMastModifyRequest.mfIssueDept) )  </span>
+                    @*<span style="font-size:12px;padding:0.5px;"> @Html.DisplayFor(model => model._ViewceMastModifyRequest.mfDetail) (REQUEST BY : @Html.DisplayFor(model => model._ViewceMastModifyRequest.mfIssueDept)) .  </span>*@
 
                     @*@Html.TextAreaFor(model => model._ViewceMastModifyRequest.mfDetail, new { @class = "font-Arial", rows = 8, @readonly = "readonly", @style = "border: none; resize: none; background: transparent; width: 100%;font-size:12px;margin-left:20px;field-sizing: content;" })*@
+                    @{
+                        var combinedText = Model._ViewceMastModifyRequest.mfDetail + "  (REQUEST BY: " + Model._ViewceMastModifyRequest.mfIssueDept + ").";
+                    }
+
+                    @Html.TextArea("combinedText", combinedText, new {
+                        @class = "font-Arial",
+                        rows = 8,
+                        @readonly = "readonly",
+                        style = "border: none; resize: none; background: transparent; width: 100%; font-size:12px; margin-left:20px; field-sizing: content;"
+                    })
+
+
                 </div>
                 <div class="col-5">
                 </div>

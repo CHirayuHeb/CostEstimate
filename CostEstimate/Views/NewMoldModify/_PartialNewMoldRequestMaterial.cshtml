@@ -3,6 +3,7 @@
 @using CostEstimate.Models.Common;
 @*@model IEnumerable<IGrouping<string, CostEstimate.Models.Table.MK.ViewceMastProcess>>*@
 @{
+    string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
     string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
     string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
     string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
@@ -15,83 +16,92 @@
 <link href="~/css/Home/siteHome.css" rel="stylesheet" />
 
 <div class="row center">
-    <div class="col-5 " style="">
-
-    </div>
-    <div class="col-90 " style="border:1.5px solid gray;">
-        <div class="row">
-            <div class="col-20 " style="">
-                <div class="grid-item fw-800 center" style="text-align:left;text-decoration: underline;font-size:13px">Materail Detail.</div>
+  
+    <div class="col-100 " style="border:1.5px solid gray;">
+        <div class="row center">
+            <div class="col-40 " style="">
+                <div class="grid-item fw-800 center" style="text-align:left;text-decoration: underline;font-size:13px;cursor:pointer" onclick="toggleDivMat()">Materail Detail. <span style="color:Highlight">(คลิกเพื่อแสดง/ซ่อน)</span></div>
             </div>
-            <div class="col-80" style="text-align:right">
-                <input type='button' class='button btnOrange' value='➕' style="width:auto;height:30px;vertical-align: sub;" onclick="btnaddMaterail()">
+            <div class="col-60" style="text-align:right">
+
             </div>
 
         </div>
-        <div class="row center" style="">
-            <div class="col-15 " style="margin-bottom:0px">
 
+        <div class="row center" id="DetailMoldMat" style="@(Model._ViewceMastModifyRequest.mfStep == 6
+                                                                            || (Model._ViewceMastModifyRequest.mfStep == 0 && (Model._ViewceMastModifyRequest.mfEmpCodeRequest != null && Model._ViewceMastModifyRequest.mfEmpCodeRequest != "") && Model._ViewceMastModifyRequest.mfEmpCodeRequest != _UserId )
+                                                                            || (Model._ViewceMastModifyRequest.mfStep > 0 && (Model._ViewceMastModifyRequest.mfEmpCodeApprove != null && Model._ViewceMastModifyRequest.mfEmpCodeApprove != "") && Model._ViewceMastModifyRequest.mfEmpCodeApprove != _UserId )
+                                                                            ? "pointer-events: none;" : "")">
+            <div class="row">
+                <div class="col-40" style="margin-bottom:0px">
+
+                </div>
+                <div class="col-60" style="text-align:right">
+                    <input type='button' class='button btnOrange' value='➕' style="width:auto;height:30px;vertical-align: sub;" onclick="btnaddMaterail()">
+
+                </div>
             </div>
-            <div class="col-70" style=" display: flex;align-items: center;">
-                <table class="tbbrown" id="tbDetailMoldMatDetail" style="margin-bottom:20px">
-                    <tr>
-                        <th style="width:5%">
-                            No
-                        </th>
-                        <th style="display:none">
-                            CE
-                        </th>
-                        <th style="display:none">
-                            ItemNo
-                        </th>
-                        <th style="width:30%">
-                            ITEM NAME
-                        </th>
-                        <th style="width:20%">
-                            PCS.
-                        </th>
-                        <th style="width:20%">
-                            AMOUNT (BAHT).
-                        </th>
-                        <th style="width:5%">
-                            DEL
-                        </th>
-                    </tr>
+            <div class="row center">
+                <div class="col-100" style=" display: flex;align-items: center;margin-bottom:20px">
+                    <table class="tbbrown" id="tbDetailMoldMatDetail" style="margin-bottom:20px">
+                        <tr>
+                            <th style="width:5%">
+                                No
+                            </th>
+                            <th style="display:none">
+                                CE
+                            </th>
+                            <th style="display:none">
+                                ItemNo
+                            </th>
+                            <th style="width:30%">
+                                ITEM NAME
+                            </th>
+                            <th style="width:20%">
+                                PCS.
+                            </th>
+                            <th style="width:20%">
+                                AMOUNT (BAHT).
+                            </th>
+                            <th style="width:5%">
+                                DEL
+                            </th>
+                        </tr>
 
-                    <tbody id="tableBody">
-                        @for (int k = 0; k < Model._ListViewceItemModifyRequest.Count(); k++)
-                        {
-                            <tr>
-                                <td>
-                                    @(k + 1)
-                                </td>
-                                <!-- ซ่อน CE No -->
-                                <td style="display:none">
-                                    <input type="text" class="imCENo form-control " style="width:100%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListViewceItemModifyRequest[k].imCENo" asp-for="_ListViewceItemModifyRequest[k].imCENo">
-                                </td>
-                                <!-- ซ่อน Item No -->
-                                <td style="display:none">
-                                    <input type="text" class="imItemNo form-control " style="width:100%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListViewceItemModifyRequest[k].imItemNo" asp-for="_ListViewceItemModifyRequest[k].imItemNo">
-                                </td>
-                                <!-- แสดงชื่อสินค้า -->
-                                <td>
-                                    <input type="text" class="imItemName form-control " style="width:100%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListViewceItemModifyRequest[k].imItemName" asp-for="_ListViewceItemModifyRequest[k].imItemName">
-                                </td>
-                                <!-- แสดงจำนวนชิ้น -->
-                                <td>
-                                    <input type="number" class="imPCS form-control " style="width:100%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListViewceItemModifyRequest[k].imPCS" asp-for="_ListViewceItemModifyRequest[k].imPCS">
-                                </td>
-                                <!-- แสดงจำนวนเงิน -->
-                                <td>
-                                    <input type="number" class="imAmount form-control " style="width:100%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListViewceItemModifyRequest[k].imAmount" asp-for="_ListViewceItemModifyRequest[k].imAmount">
-                                </td>
-                                <!-- ปุ่มลบแถว -->
-                                <td align='Center'>
-                                    <input type='button' class='RemoveRow' value='&#x274C'>
-                                </td>
-                            </tr>
-                        }
-                        @*<tr>
+                        <tbody id="tableBody">
+                            @for (int k = 0; k < Model._ListViewceItemModifyRequest.Count(); k++)
+                            {
+                                <tr>
+                                    <td>
+                                        @(k + 1)
+                                    </td>
+                                    <!-- ซ่อน CE No -->
+                                    <td style="display:none">
+                                        <input type="text" class="imCENo form-control " style="width:100%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListViewceItemModifyRequest[k].imCENo" asp-for="_ListViewceItemModifyRequest[k].imCENo">
+                                    </td>
+                                    <!-- ซ่อน Item No -->
+                                    <td style="display:none">
+                                        <input type="text" class="imItemNo form-control " style="width:100%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListViewceItemModifyRequest[k].imItemNo" asp-for="_ListViewceItemModifyRequest[k].imItemNo">
+                                    </td>
+                                    <!-- แสดงชื่อสินค้า -->
+                                    <td>
+                                        <input type="text" class="imItemName form-control " style="width:100%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListViewceItemModifyRequest[k].imItemName" asp-for="_ListViewceItemModifyRequest[k].imItemName">
+                                    </td>
+                                    <!-- แสดงจำนวนชิ้น -->
+                                    <td>
+                                        <input type="number" class="imPCS form-control " style="width:100%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListViewceItemModifyRequest[k].imPCS" asp-for="_ListViewceItemModifyRequest[k].imPCS">
+                                    </td>
+                                    <!-- แสดงจำนวนเงิน -->
+                                    <td>
+                                        <input type="number" class="imAmount form-control " style="width:100%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListViewceItemModifyRequest[k].imAmount" asp-for="_ListViewceItemModifyRequest[k].imAmount">
+                                    </td>
+                                    <!-- ปุ่มลบแถว -->
+                                    <td align='Center'>
+                                        <input type='button' class='RemoveRow' value='&#x274C'>
+                                    </td>
+                                </tr>
+                            }
+                            @*<tr>
                                 <td style="display:none">
                                     <input type="text" class="imCENo form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceItemModifyRequest.imCENo">
                                 </td>
@@ -110,7 +120,7 @@
                                 <td align='Center'><input type='button' class='RemoveRow' value='&#x274C'></td>
                             </tr>*@
 
-                        @*<tr>
+                            @*<tr>
                                 <td style="display:none">
                                     <input type="text" class="imCENo form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceItemModifyRequest.imCENo" value="0">
                                 </td>
@@ -132,8 +142,8 @@
 
 
 
-                        <!-- แถวข้อมูลจะเพิ่มตรงนี้ -->
-                        @*@for (int i = 0; i < @Model._ListViewceItemModifyRequest.Count(); i++)
+                            <!-- แถวข้อมูลจะเพิ่มตรงนี้ -->
+                            @*@for (int i = 0; i < @Model._ListViewceItemModifyRequest.Count(); i++)
                             {
                                 <tr>
                                     <td>
@@ -157,46 +167,44 @@
 
 
 
-                    </tbody>
-                    <tr>
+                        </tbody>
+                        <tr>
 
-                        <td style="display:none"></td>
-                        <td style="display:none"></td>
-                        <td colspan="3">
-                            TOOL
-                        </td>
+                            <td style="display:none"></td>
+                            <td style="display:none"></td>
+                            <td colspan="3">
+                                TOOL
+                            </td>
 
-                        <td>
-                            <input type="text" class=" form-control center" style="width:100%;font-size:12px;background-color:#b1fab1" autocomplete="off" id="i_NewMold_MTTool" asp-for="_ViewceMastModifyRequest.mfMtTool" readonly>
+                            <td>
+                                <input type="text" class=" form-control center" style="width:100%;font-size:12px;background-color:#b1fab1" autocomplete="off" id="i_NewMold_MTTool" asp-for="_ViewceMastModifyRequest.mfMtTool" readonly>
 
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td style="display:none"></td>
-                        <td style="display:none"></td>
-                        <td colspan="3">
-                            TOTAL MT
-                        </td>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td style="display:none"></td>
+                            <td style="display:none"></td>
+                            <td colspan="3">
+                                TOTAL MT
+                            </td>
 
-                        <td>
-                            <input type="text" class=" form-control center" style="width:100%;font-size:12px;background-color:#b1fab1" autocomplete="off" id="i_NewMold_MTTotal" asp-for="_ViewceMastModifyRequest.mfTotalMt" readonly>
+                            <td>
+                                <input type="text" class=" form-control center" style="width:100%;font-size:12px;background-color:#b1fab1" autocomplete="off" id="i_NewMold_MTTotal" asp-for="_ViewceMastModifyRequest.mfTotalMt" readonly>
 
-                        </td>
-                        <td></td>
-                    </tr>
-                </table>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+
+                </div>
 
             </div>
-            <div class="col-15 " style="">
 
-            </div>
         </div>
-
+        <br />
     </div>
-    <div class="col-5 " style="">
-
-    </div>
+ 
 </div>
 
 @*<div>
@@ -230,6 +238,17 @@
 
 
 <script type="text/javascript">
+    function toggleDivMat() {
+        const div = document.getElementById("DetailMoldMat");
+        if (div.style.display === "none" || div.style.display === "") {
+            div.style.display = "block";
+        } else {
+            div.style.display = "none";
+        }
+    }
+
+
+
     // Model หลัก
     function btnaddMaterail() {
         var htmls = "";
@@ -275,21 +294,64 @@
 
     //Materail Detail.
     function sumMTTool() {
-        let el = document.querySelector('[id="dsWT_Auto NC."]');
-        if (el) {
-            let rawValue = el.value || el.innerText;
-            let numValue = parseFloat(rawValue);
-            console.log("document.querySelector NC" + numValue);
-            if (!isNaN(numValue)) {
-                $("#i_NewMold_MTTool").val((numValue.toFixed(2)) * 100);
-                console.log("✅ ค่าที่คำนวณได้:", numValue.toFixed(2) * 100);
-            } else {
-                console.warn("⚠️ ค่าไม่ใช่ตัวเลข:", rawValue);
-                $("#i_NewMold_MTTool").val(""); // เคลียร์ค่า
-            }
-        } else {
-            console.error("❌ ไม่พบ element ที่ id = dsWT_Auto NC.");
-        }
+        //let el = document.querySelector('[id="dsWT_Auto NC."]');
+        //if (el) {
+        //    let rawValue = el.value || el.innerText;
+        //    let numValue = parseFloat(rawValue);
+        //    console.log("document.querySelector NC" + numValue);
+        //    if (!isNaN(numValue)) {
+        //        $("#i_NewMold_MTTool").val((numValue.toFixed(2)) * 100);
+        //        console.log("✅ ค่าที่คำนวณได้:", numValue.toFixed(2) * 100);
+        //    } else {
+        //        console.warn("⚠️ ค่าไม่ใช่ตัวเลข:", rawValue);
+        //        $("#i_NewMold_MTTool").val(""); // เคลียร์ค่า
+        //    }
+        //} else {
+        //    console.error("❌ ไม่พบ element ที่ id = dsWT_Auto NC.");
+        //}
+
+
+        const iEdmCA1 = document.querySelectorAll('#tbDetailMoldProcessDetail input.WT_Auto');
+        const iEdmCA2 = Array.from(iEdmCA1).find(el =>
+            el.classList.contains('EDM(CA).') ||
+            (el.classList.contains('EDM') && el.classList.contains('(CA).'))
+        );
+        let vEdmCA = iEdmCA2 ? parseFloat(iEdmCA2.value).toFixed(2) : 0;
+
+        const iWE1 = document.querySelectorAll('#tbDetailMoldProcessDetail input.WT_Auto');
+        const iWE2 = Array.from(iWE1).find(el =>
+            el.classList.contains('W-E.') || el.classList.contains('W-E .') ||
+            (el.classList.contains('W-') && el.classList.contains('-E.'))
+        );
+        let vEdmCO = iWE2 ? parseFloat(iWE2.value).toFixed(2) : 0;
+
+
+        const iEdmCO1 = document.querySelectorAll('#tbDetailMoldProcessDetail input.WT_Auto');
+        const iEdmCO2 = Array.from(iEdmCO1).find(el =>
+            el.classList.contains('EDM(CO).') ||
+            (el.classList.contains('EDM') && el.classList.contains('(CO).'))
+        );
+        let vWE = iEdmCO2 ? parseFloat(iEdmCO2.value).toFixed(2) : 0;
+
+        let sumF18_F20 = parseFloat(vEdmCA) + parseFloat(vEdmCO) + parseFloat(vWE);
+
+
+        let sumWT_Man_NC = document.querySelector('[id="dsWT_Man NC."]') ? document.querySelector('[id="dsWT_Man NC."]').value : 0;
+        let sumWT_Auto_NC = document.querySelector('[id="dsWT_Auto NC."]') ? document.querySelector('[id="dsWT_Auto NC."]').value : 0;
+        let sumWT_auto_Man = parseFloat(sumWT_Man_NC) + parseFloat(sumWT_Auto_NC);
+
+        console.log("sumWT_Man_NC" + sumWT_Man_NC);
+        console.log("sumWT_Auto_NC" + sumWT_Auto_NC);
+        console.log("vEdmCA" + vEdmCA);
+        console.log("vEdmCO" + vEdmCO);
+        console.log("vWE" + vWE);
+        console.log("sumF18_F20 " + sumF18_F20);
+
+        const sumTool = parseFloat((sumWT_auto_Man - parseFloat(sumWT_Man_NC) - parseFloat(sumF18_F20)) * 100).toFixed(2);
+        console.log("sum Tool :  " + sumTool);
+        $("#i_NewMold_MTTool").val(sumTool); // เคลียร์ค่า
+
+
     }
 
     function sumTOTALMT() {

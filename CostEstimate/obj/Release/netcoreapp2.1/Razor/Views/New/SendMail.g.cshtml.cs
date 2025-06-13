@@ -102,7 +102,7 @@ using System.Security.Claims;
             WriteLiteral("            ");
             EndContext();
             BeginContext(1740, 129, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "132b6fca64cf4cd0a6e88fe4e65e51fa", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "9deac550f287445cbc9bbdb37f680177", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.TagHelpers.InputTagHelper>();
@@ -136,7 +136,7 @@ __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.For = ModelExpressionProvid
             WriteLiteral("            </span>\r\n            ");
             EndContext();
             BeginContext(2251, 187, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "ca6a056571714952b281fb3a13a85cef", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "ba5eaa64e85a405ab91dbd8b28841d80", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.TagHelpers.InputTagHelper>();
@@ -180,7 +180,7 @@ AddHtmlAttributeValue("", 2392, ViewBag.step == 6  ?  "readonly" : null, 2392, 4
             WriteLiteral("            ");
             EndContext();
             BeginContext(2748, 152, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("textarea", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "1e28c52c2df04babab3243cfe42700df", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("textarea", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "31e408997a9247888c82f514be29ab8a", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_TagHelpers_TextAreaTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.TagHelpers.TextAreaTagHelper>();
@@ -275,7 +275,7 @@ WriteAttributeValue("", 3748, ViewBag.step == 0 || (ViewBag.step <8 && ViewBag.s
             WriteLiteral("            ");
             EndContext();
             BeginContext(6276, 140, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("textarea", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "a331164dd1c4449297d2108e0e1a90dd", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("textarea", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "be727b70bfe9487bac011b84ed0c5692", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_TagHelpers_TextAreaTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.TagHelpers.TextAreaTagHelper>();

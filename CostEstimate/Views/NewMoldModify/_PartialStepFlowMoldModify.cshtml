@@ -10,7 +10,7 @@
                 @for (int i = 0; i < Model._ListceMastFlowApprove.Count - 1; i++)
                 {
                     <li class="@(@Model._ViewceMastModifyRequest.mfStep >= i ? "active" : "")">
-                        <span style="@(i==@Model._ViewceMastModifyRequest.mfStep ? "font-size:12px;color:#e0772d;font-weight: 600":"font-size:11px;color:black;")" class="step-title">@Model._ListceMastFlowApprove[i].mfSubject</span>
+                        <span style="@(i==@Model._ViewceMastModifyRequest.mfStep ? "font-size:12.5px;color:#e0772d;font-weight: 600":"font-size:11px;color:black;")" class="step-title">@Model._ListceMastFlowApprove[i].mfSubject</span>
 
                         @*<span style="@(@Model._ViewceMastSubMakerRequest.smStep == 7 && i==7 ? "font-size:11px;color:green;font-weight: 600":"font-size:10px;color:black;")" class="step-title">@Model._ListceMastFlowApprove[i].mfSubject</span>*@
 
@@ -19,8 +19,6 @@
                 }
             }
         </ul>
-
-
     </div>
 
 

@@ -256,10 +256,11 @@ function PositionY(menu) {
             //PY = "52px";
             opacity = "opacity-dot-3";
             break;
-        case "searchMold":
+        case "SearchMold":
             //LoadScript("js/New/Index.js", "NewItem");
             //LoadScript("js/New/EventMore.js", "EventNewMore");
             LoadScript("js/Home/Index.js", "Home");
+
             PY = "0px";
             //PY = "52px";
             opacity = "opacity-dot-3";
@@ -338,13 +339,7 @@ function PositionY(menu) {
             opacity = "opacity-dot-3";
             break;
         case "AddCost":
-            //LoadScript("js/New/Index.js", "NewItem");
-            //LoadScript("js/New/EventMore.js", "EventNewMore");
             LoadScript("js/Home/Index.js", "Home");
-            //LoadScript("js/New/Index.js", "New");
-            //LoadScript("js/Home/Hour.js", "EventHomeHour");
-            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
-            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
             PY = "265px";
             // PY = "331px";
             opacity = "opacity-dot-3";
@@ -357,6 +352,13 @@ function PositionY(menu) {
             opacity = "opacity-dot-3";
             break;
         case "AddModel":
+            LoadScript("js/Home/Index.js", "Home");
+            PY = "265px";
+            // PY = "331px";
+            opacity = "opacity-dot-3";
+            break;
+        //Modify
+        case "AddMCost":
             LoadScript("js/Home/Index.js", "Home");
             PY = "265px";
             // PY = "331px";
@@ -3399,6 +3401,7 @@ function Menubar_save_sendMailBG(action) {
 
 }
 function serializeFormData(formData) {
+
     const params = new URLSearchParams();
 
     for (let [key, value] of formData.entries()) {
@@ -3407,4 +3410,8 @@ function serializeFormData(formData) {
     }
 
     return params.toString(); // เหมือน $(form).serialize()
+}
+function Menubar_AddMCostChRate(A,b,c) {
+    console.log("eeeeeeeeeeeeee");
+    $("#myModalMChRate").modal("show");
 }

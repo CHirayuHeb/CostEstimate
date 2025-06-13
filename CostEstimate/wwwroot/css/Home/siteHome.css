@@ -495,11 +495,11 @@ col-100 {
 }
 
     .tbbrown td, .tbbrown th {
-        border: 0.5px solid #D2B48C;
-        padding-left: 8px;
-        padding-right: 8px;
-        padding-top: 4px;
-        padding-bottom: 4px;
+        border: 0.5px solid #D2B48C; /*    #D2B48C  #FFEBCD*/
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-top: 3px;
+        padding-bottom: 3px;
         /*padding: 8px;*/
     }
 
@@ -512,10 +512,10 @@ col-100 {
     }
 
     .tbbrown th {
-        padding-top: 8px;
-        padding-bottom: 8px;
+        /*padding-top: 8px;
+        padding-bottom: 8px;*/
         text-align: left;
-        background-color: #edd3ab;
+        background-color: #FFEBCD;
         color: black;
         /*vertical-align: baseline;*/
         text-align: center;

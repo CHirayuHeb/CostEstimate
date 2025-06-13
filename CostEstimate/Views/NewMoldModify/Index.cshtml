@@ -20,8 +20,9 @@
 <div class="home-content">
     <div id="DisplayContent" class="content-box">
         <div style="" class="content-text">
+            @*<div style="" class="content-text">*@
             <br />
-            <div class="row center" style="padding:5px;background-color:#f0c6a8;margin-bottom:5px;border:0px solid #f5b88c;margin:5px">
+            <div class="row center" style="padding:5px;background-color:#fadfb6;margin-bottom:5px;border:0px solid #f5b88c;margin:5px">
                 <div class="col-60 " style="text-align:left">
                     <div class="grid-item fw-800  " style="text-align:left;font-size:24px;padding-top:8px"> <span style="color:#e88f4f">MOLD MODIFY </span> REQUEST SHEET DETAIL.</div>
 
@@ -348,20 +349,40 @@
                         </div>
                     </form>
                     <br />
+                    @*<div class="row">
+                            <div class="col-70">
+                                <form id="formMoldRequest2" name="formMoldData2">
+                                    <div id="ResultMoldProcess" class="row center" style="@(Model._ViewceMastModifyRequest.mfStep == 6
+                                                                                || (Model._ViewceMastModifyRequest.mfStep == 0 && (Model._ViewceMastModifyRequest.mfEmpCodeRequest != null && Model._ViewceMastModifyRequest.mfEmpCodeRequest != "") && Model._ViewceMastModifyRequest.mfEmpCodeRequest != _UserId )
+                                                                                || (Model._ViewceMastModifyRequest.mfStep > 0 && (Model._ViewceMastModifyRequest.mfEmpCodeApprove != null && Model._ViewceMastModifyRequest.mfEmpCodeApprove != "") && Model._ViewceMastModifyRequest.mfEmpCodeApprove != _UserId )
+                                                                                ? "pointer-events: none;" : "")">
+                                        @await Html.PartialAsync("_PartialNewMoldRequestProcess", Model)
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-30">
+                                @await Html.PartialAsync("_PartialNewMoldRequestMaterial", Model)
+                            </div>
+                        </div>*@
+
+                    @*@await Html.PartialAsync("_PartialNewMoldDetail_Mat", Model)*@
+
                     <form id="formMoldRequest2" name="formMoldData2">
-                        <div id="ResultMoldProcess" class="row center" style="@(Model._ViewceMastModifyRequest.mfStep == 6
-                                                                            || (Model._ViewceMastModifyRequest.mfStep == 0 && (Model._ViewceMastModifyRequest.mfEmpCodeRequest != null && Model._ViewceMastModifyRequest.mfEmpCodeRequest != "") && Model._ViewceMastModifyRequest.mfEmpCodeRequest != _UserId )
-                                                                            || (Model._ViewceMastModifyRequest.mfStep > 0 && (Model._ViewceMastModifyRequest.mfEmpCodeApprove != null && Model._ViewceMastModifyRequest.mfEmpCodeApprove != "") && Model._ViewceMastModifyRequest.mfEmpCodeApprove != _UserId )
-                                                                            ? "pointer-events: none;" : "")">
+                        @*<div id="ResultMoldProcess" class="row center" style="@(Model._ViewceMastModifyRequest.mfStep == 6
+                            || (Model._ViewceMastModifyRequest.mfStep == 0 && (Model._ViewceMastModifyRequest.mfEmpCodeRequest != null && Model._ViewceMastModifyRequest.mfEmpCodeRequest != "") && Model._ViewceMastModifyRequest.mfEmpCodeRequest != _UserId )
+                            || (Model._ViewceMastModifyRequest.mfStep > 0 && (Model._ViewceMastModifyRequest.mfEmpCodeApprove != null && Model._ViewceMastModifyRequest.mfEmpCodeApprove != "") && Model._ViewceMastModifyRequest.mfEmpCodeApprove != _UserId )
+                            ? "pointer-events: none;" : "")">*@
+                        <div id="ResultMoldProcess" class="row center">
                             @await Html.PartialAsync("_PartialNewMoldRequestProcess", Model)
                         </div>
                     </form>
                     @*form2*@
                     <form action="" id="formMoldRequest3" name="formMoldData3">
-                        <div id="ResultMoldMaterial" class="row center" style="@(Model._ViewceMastModifyRequest.mfStep == 6
-                                                                            || (Model._ViewceMastModifyRequest.mfStep == 0 && (Model._ViewceMastModifyRequest.mfEmpCodeRequest != null && Model._ViewceMastModifyRequest.mfEmpCodeRequest != "") && Model._ViewceMastModifyRequest.mfEmpCodeRequest != _UserId )
-                                                                            || (Model._ViewceMastModifyRequest.mfStep > 0 && (Model._ViewceMastModifyRequest.mfEmpCodeApprove != null && Model._ViewceMastModifyRequest.mfEmpCodeApprove != "") && Model._ViewceMastModifyRequest.mfEmpCodeApprove != _UserId )
-                                                                            ? "pointer-events: none;" : "")">
+                        @*<div id="ResultMoldMaterial" class="row center" style="@(Model._ViewceMastModifyRequest.mfStep == 6
+                            || (Model._ViewceMastModifyRequest.mfStep == 0 && (Model._ViewceMastModifyRequest.mfEmpCodeRequest != null && Model._ViewceMastModifyRequest.mfEmpCodeRequest != "") && Model._ViewceMastModifyRequest.mfEmpCodeRequest != _UserId )
+                            || (Model._ViewceMastModifyRequest.mfStep > 0 && (Model._ViewceMastModifyRequest.mfEmpCodeApprove != null && Model._ViewceMastModifyRequest.mfEmpCodeApprove != "") && Model._ViewceMastModifyRequest.mfEmpCodeApprove != _UserId )
+                            ? "pointer-events: none;" : "")">*@
+                        <div id="ResultMoldMaterial" class="row center">
                             @await Html.PartialAsync("_PartialNewMoldRequestMaterial", Model)
                         </div>
 
@@ -403,16 +424,6 @@
 
 
 
-
-            @*</form>*@
-            @*<form action="" id="formMoldRequestMat" name="formMoldDataMat">
-                    <div id="ResultMoldMaterial" class="row center" style="@(Model._ViewceMastModifyRequest.mfStep == 6
-                                                                                || (Model._ViewceMastModifyRequest.mfStep == 0 && (Model._ViewceMastModifyRequest.mfEmpCodeRequest != null && Model._ViewceMastModifyRequest.mfEmpCodeRequest != "") && Model._ViewceMastModifyRequest.mfEmpCodeRequest != _UserId )
-                                                                                || (Model._ViewceMastModifyRequest.mfStep > 0 && (Model._ViewceMastModifyRequest.mfEmpCodeApprove != null && Model._ViewceMastModifyRequest.mfEmpCodeApprove != "") && Model._ViewceMastModifyRequest.mfEmpCodeApprove != _UserId )
-                                                                                ? "pointer-events: none;" : "")">
-                        @await Html.PartialAsync("_PartialNewMoldRequestMaterial", Model)
-                    </div>
-                </form>*@
 
         </div>
     </div>
@@ -493,7 +504,6 @@
                                                     <td>
 
                                                         <a href="@Url.Action("openFile", "New", new { pathFile = @item.fnFilename })" class="btn-image" target="_blank" style="padding-left:5px;text-decoration:auto;">
-
                                                             @item.fnFilename
                                                         </a>
                                                     </td>

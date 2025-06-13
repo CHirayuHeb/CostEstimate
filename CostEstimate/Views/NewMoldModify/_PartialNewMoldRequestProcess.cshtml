@@ -3,6 +3,7 @@
 @using CostEstimate.Models.Common;
 @*@model IEnumerable<IGrouping<string, CostEstimate.Models.Table.MK.ViewceMastProcess>>*@
 @{
+    string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
     string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
     string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
     string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
@@ -14,24 +15,23 @@
 }
 <link href="~/css/Home/siteHome.css" rel="stylesheet" />
 
-<div class="row center">
-    <div class="col-5 " style="">
-
-    </div>
-    <div class="col-90 " style="border:1.5px solid gray;">
+<div class="row center" style="margin-bottom:5px">
+    <div class="col-100 " style="border:1.5px solid gray;">
         <div class="row center">
-            <div class="col-20 " style="">
-                <div class="grid-item fw-800 center" style="text-align:left;text-decoration: underline;font-size:13px">Process Detail.</div>
+            <div class="col-40 " style="">
+                <div class="grid-item fw-800 center" style="text-align:left;text-decoration: underline;font-size:13px;cursor:pointer" onclick="toggleDivProcess()">Process Detail. <span style="color:Highlight">(คลิกเพื่อแสดง/ซ่อน)</span></div>
             </div>
-            <div class="col-80 " style="">
+            <div class="col-60 " style="">
             </div>
 
         </div>
-        <div class="row center" style="">
-            <div class="col-5 " style="margin-bottom:0px">
-            </div>.
-            <div class="col-90" style=" display: flex;align-items: center;">
-                <table class="tbbrown" id="tbDetailMoldProcessDetail">
+        <br />
+        <div class="row center" id="DetailMoldProcessDetail" style="@(Model._ViewceMastModifyRequest.mfStep == 6
+                                                                            || (Model._ViewceMastModifyRequest.mfStep == 0 && (Model._ViewceMastModifyRequest.mfEmpCodeRequest != null && Model._ViewceMastModifyRequest.mfEmpCodeRequest != "") && Model._ViewceMastModifyRequest.mfEmpCodeRequest != _UserId )
+                                                                            || (Model._ViewceMastModifyRequest.mfStep > 0 && (Model._ViewceMastModifyRequest.mfEmpCodeApprove != null && Model._ViewceMastModifyRequest.mfEmpCodeApprove != "") && Model._ViewceMastModifyRequest.mfEmpCodeApprove != _UserId )
+                                                                            ? "pointer-events: none;" : "")">
+            <div class="col-100" style=" display: flex;align-items: center;">
+                <table class="tbbrown" id="tbDetailMoldProcessDetail" >
                     <tr>
                         <th rowspan="2" style="@(_Permission.ToUpper() !=_admin ? "text-align:center;width: 60% " : "text-align:center;width: 8% ")">
                             METHOD
@@ -102,7 +102,7 @@
                                     </td>
                                     <td style="">
                                         <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsEnable_WTAuto" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@group.DetailSubMakerRequest[i].dsEnable_WTAuto" type="text" />
-                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsWT_Auto" class="form-control center WT_Auto " autocomplete="off" style="@(@group.DetailSubMakerRequest[i].dsEnable_WTAuto == false ? "width:100%;height:80%;font-size:10px;background-color:darkgrey" : "width:100%;height:80%;font-size:10px;background-color:yellow")" value="@group.DetailSubMakerRequest[i].dsWT_Auto" type="number" readonly="@(@group.DetailSubMakerRequest[i].dsEnable_WTAuto == false ? "readonly" : null)" min="0" />
+                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsWT_Auto" class="form-control center WT_Auto @group.DetailSubMakerRequest[i].dsProcessName" autocomplete="off" style="@(@group.DetailSubMakerRequest[i].dsEnable_WTAuto == false ? "width:100%;height:80%;font-size:10px;background-color:darkgrey" : "width:100%;height:80%;font-size:10px;background-color:yellow")" value="@group.DetailSubMakerRequest[i].dsWT_Auto" type="number" readonly="@(@group.DetailSubMakerRequest[i].dsEnable_WTAuto == false ? "readonly" : null)" min="0" />
                                     </td>
                                     <td style="@(_Permission.ToUpper() !=_admin ? "display: none;text-align:center;" : "text-align:center;")">
                                         <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsLabour_Rate" class="form-control center Labour_Rate" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsLabour_Rate" type="number" min="0" readonly />
@@ -172,22 +172,24 @@
 
                     }
                 </table>
-
-
-            </div>
-
-            <div class="col-5 " style="">
             </div>
         </div>
-
-    </div>
-    <div class="col-5 " style="">
-
     </div>
 </div>
 
 
 <script type="text/javascript">
+    function toggleDivProcess() {
+        const div = document.getElementById("DetailMoldProcessDetail");
+        if (div.style.display === "none" || div.style.display === "") {
+            div.style.display = "block";
+        } else {
+            div.style.display = "none";
+        }
+    }
+
+
+
 
     function calTotalProcessWT() {
         //console.log("calTotalProcessWT===>");
@@ -276,7 +278,7 @@
 
     }
     function calcRow(row) {
-       // console.log("calcRow===> ");
+        // console.log("calcRow===> ");
 
         let WT_Man = parseFloat(row.find(".WT_Man").val()) || 0;
         let Labour_Rate = parseFloat(row.find(".Labour_Rate").val()) || 0;
@@ -324,7 +326,7 @@
     }
     // Function คำนวณรวมทุกแถว
     function calcAll() {
-       // console.log("calcAll===> ");
+        // console.log("calcAll===> ");
         let sum = 0;
         //$("#tbDetailSubMakerRequest tbody tr").each(function () {
         $("#tbDetailMoldProcessDetail tr").each(function () {
@@ -336,7 +338,7 @@
 
     }
     function FuntionTotalProCost() {
-       // console.log("FuntionTotalProCost===================> ");
+        // console.log("FuntionTotalProCost===================> ");
 
         //add for sumary
         const selectedValue = $("#i_NewMold_Type").val();
@@ -791,21 +793,64 @@
 
     //Materail Detail.
     function sumMTTool() {
-        let el = document.querySelector('[id="dsWT_Auto NC."]');
-        if (el) {
-            let rawValue = el.value || el.innerText;
-            let numValue = parseFloat(rawValue);
-            console.log("document.querySelector NC" + numValue);
-            if (!isNaN(numValue)) {
-                $("#i_NewMold_MTTool").val((numValue.toFixed(2)) * 100);
-                console.log("✅ ค่าที่คำนวณได้:", numValue.toFixed(2) * 100);
-            } else {
-                console.warn("⚠️ ค่าไม่ใช่ตัวเลข:", rawValue);
-                $("#i_NewMold_MTTool").val(""); // เคลียร์ค่า
-            }
-        } else {
-            console.error("❌ ไม่พบ element ที่ id = dsWT_Auto NC.");
-        }
+        //let el = document.querySelector('[id="dsWT_Auto NC."]');
+        //if (el) {
+        //    let rawValue = el.value || el.innerText;
+        //    let numValue = parseFloat(rawValue);
+        //    console.log("document.querySelector NC" + numValue);
+        //    if (!isNaN(numValue)) {
+        //        $("#i_NewMold_MTTool").val((numValue.toFixed(2)) * 100);
+        //        console.log("✅ ค่าที่คำนวณได้:", numValue.toFixed(2) * 100);
+        //    } else {
+        //        console.warn("⚠️ ค่าไม่ใช่ตัวเลข:", rawValue);
+        //        $("#i_NewMold_MTTool").val(""); // เคลียร์ค่า
+        //    }
+        //} else {
+        //    console.error("❌ ไม่พบ element ที่ id = dsWT_Auto NC.");
+        //}
+
+
+        ///////////////
+        const iEdmCA1 = document.querySelectorAll('#tbDetailMoldProcessDetail input.WT_Auto');
+        const iEdmCA2 = Array.from(iEdmCA1).find(el =>
+            el.classList.contains('EDM(CA).') ||
+            (el.classList.contains('EDM') && el.classList.contains('(CA).'))
+        );
+        let vEdmCA = iEdmCA2 ? parseFloat(iEdmCA2.value).toFixed(2) : 0;
+
+        const iWE1 = document.querySelectorAll('#tbDetailMoldProcessDetail input.WT_Auto');
+        const iWE2 = Array.from(iWE1).find(el =>
+            el.classList.contains('W-E.') || el.classList.contains('W-E .') ||
+            (el.classList.contains('W-') && el.classList.contains('-E.'))
+        );
+        let vEdmCO = iWE2 ? parseFloat(iWE2.value).toFixed(2) : 0;
+
+
+        const iEdmCO1 = document.querySelectorAll('#tbDetailMoldProcessDetail input.WT_Auto');
+        const iEdmCO2 = Array.from(iEdmCO1).find(el =>
+            el.classList.contains('EDM(CO).') ||
+            (el.classList.contains('EDM') && el.classList.contains('(CO).'))
+        );
+        let vWE = iEdmCO2 ? parseFloat(iEdmCO2.value).toFixed(2) : 0;
+
+        let sumF18_F20 = parseFloat(vEdmCA) + parseFloat(vEdmCO) + parseFloat(vWE);
+
+
+        let sumWT_Man_NC = document.querySelector('[id="dsWT_Man NC."]') ? document.querySelector('[id="dsWT_Man NC."]').value : 0;
+        let sumWT_Auto_NC = document.querySelector('[id="dsWT_Auto NC."]') ? document.querySelector('[id="dsWT_Auto NC."]').value : 0;
+        let sumWT_auto_Man = parseFloat(sumWT_Man_NC) + parseFloat(sumWT_Auto_NC);
+
+        console.log("sumWT_Man_NC" + sumWT_Man_NC);
+        console.log("sumWT_Auto_NC" + sumWT_Auto_NC);
+        console.log("vEdmCA" + vEdmCA);
+        console.log("vEdmCO" + vEdmCO);
+        console.log("vWE" + vWE);
+        console.log("sumF18_F20 " + sumF18_F20);
+
+        const sumTool = parseFloat((sumWT_auto_Man - parseFloat(sumWT_Man_NC) - parseFloat(sumF18_F20)) * 100).toFixed(2);
+        console.log("sum Tool :  " + sumTool);
+        $("#i_NewMold_MTTool").val(sumTool); // เคลียร์ค่า
+
     }
 
     function sumTOTALMT() {
@@ -828,7 +873,7 @@
         $("#i_NewMold_MTTotal").val(total.toFixed(2));
 
         $("#i_NewMoldMaterail_cost").val(total.toFixed(2));
-        
+
         return sum;
     }
 
@@ -882,7 +927,7 @@
 
         await FuntionTotalProCost();
 
-      
+
 
 
     }

@@ -81,12 +81,12 @@ using CostEstimate.Models.Common;
             WriteLiteral("<!DOCTYPE html>\r\n\r\n<html>\r\n");
             EndContext();
             BeginContext(792, 235, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "fe13906fbf4143bab0a12f519234f8da", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "83b34d5b977941f7a21f5d274f087bc4", async() => {
                 BeginContext(798, 6, true);
                 WriteLiteral("\r\n    ");
                 EndContext();
                 BeginContext(804, 58, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "d31dc9583d04437f8cf8feb04001d98a", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "a6d7fedb8bd44667a5f31cf53a04d17c", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -105,7 +105,7 @@ using CostEstimate.Models.Common;
                 WriteLiteral("\r\n    ");
                 EndContext();
                 BeginContext(868, 56, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "467649399373424796711b4053c07385", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "6498dd8af9d343f1a8a4166696ac0ac9", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -139,7 +139,7 @@ using CostEstimate.Models.Common;
             WriteLiteral("\r\n");
             EndContext();
             BeginContext(1029, 997, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4a9dbaa640b54492bed0fe94be58f288", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4ecfeae9264b4adb8ed1e06cb894e7d9", async() => {
                 BeginContext(1035, 143, true);
                 WriteLiteral("\r\n    <br />\r\n\r\n    <div class=\"row\" style=\"margin-left:10%\">\r\n        <div class=\"col-10\">\r\n\r\n        </div>\r\n        <div class=\"col-80\">\r\n\r\n");
                 EndContext();
@@ -150,7 +150,7 @@ using CostEstimate.Models.Common;
                 WriteLiteral("                    <br />\r\n                    <br />\r\n                    ");
                 EndContext();
                 BeginContext(1681, 196, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "fcd3af8b84b540ec8577589f39f8760a", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "50f45eeffe26473d996cf82b0c680d7e", async() => {
                     BeginContext(1807, 66, true);
                     WriteLiteral("\r\n                        >> Go back to Menu\r\n                    ");
                     EndContext();
