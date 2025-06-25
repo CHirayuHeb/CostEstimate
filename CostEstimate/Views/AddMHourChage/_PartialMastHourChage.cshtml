@@ -1,0 +1,48 @@
+﻿@model CostEstimate.Models.Common.Class;
+@{
+    //string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<div class="row center">
+    <form action="" id="formMastMHourChage" name="formMastMHourChage">
+
+        <div class="row center">
+            <div class="col-100 ">
+                <table class="tbbrown" id="tbMastMHourChage">
+                    <tr style="display:none">
+                        <th style="text-align:left;" width="50%">Doc No</th>
+                        <td style="text-align:center;font-size:9px"> <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewceMastHourChage.mhId" id="txtMHourChangeMhId" ></td>
+                    </tr>
+                    <tr>
+                        <th style="text-align:left;" width="40%">Group Main</th>
+                        <td style="text-align:center;font-size:9px"> <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewceMastHourChage.mhGroupMain" id="txtMHourChangeMhGroupMain" ></td>
+                    </tr>
+                    <tr>
+                        <th style="text-align:left;" width="40%">Group Sub</th>
+                        <td style="text-align:center;font-size:9px"> <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewceMastHourChage.mhGroupSub" id="txtMHourChangeMhGroupSub" ></td>
+                    </tr>
+                    <tr>
+                        <th style="text-align:left;" width="40%">Process Name</th>
+                        <td style="text-align:center;font-size:9px"> <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewceMastHourChage.mhProcessName" id="txtMHourChangeMhProcessName" ></td>
+                    </tr>
+                
+                </table>
+                <br />
+                <div class="modal-footer">
+                    <br />
+                    <button type="button" class="btn btn-primary" onclick="Menubar_AddMHourChage('@Url.Action("AddMastHourChage","AddMHourChage")')">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+</div>

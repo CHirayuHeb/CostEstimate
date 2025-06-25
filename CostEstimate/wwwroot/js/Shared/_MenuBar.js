@@ -231,8 +231,8 @@ function PositionY(menu) {
         case "NewMoldModify":
             //console.log("New:NewMoldModify");
             LoadScript("js/Home/Index.js", "Home");
-           // LoadScript("js/New/Index.js", "New");
-           //LoadScript("js/New/IndexMold.js", "New");
+            // LoadScript("js/New/Index.js", "New");
+            //LoadScript("js/New/IndexMold.js", "New");
             LoadScript("js/New/IndexMold.js", "New");
             LoadScript("js/Home/Hour.js", "EventHomeHour");
             LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");

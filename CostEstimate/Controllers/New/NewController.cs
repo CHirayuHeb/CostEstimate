@@ -208,14 +208,14 @@ namespace CostEstimate.Controllers.New
             {
 
                 List<ViewceMastProcess> _ListceMastProcess = new List<ViewceMastProcess>();
-                string v_CostPlanningNo = _MK._ViewceMastCostModel.Where(x => x.mcModelName == search).OrderByDescending(x => x.mcCostPlanningNo).Select(x => x.mcCostPlanningNo).First();
+                string v_CostPlanningNo = _MK._ViewceMastCostModel.Where(x => x.mcModelName == search ).OrderByDescending(x => x.mcCostPlanningNo).Select(x => x.mcCostPlanningNo).First();
 
                 List<ViewceCostPlanning> _ViewceCostPlanning = new List<ViewceCostPlanning>();
                 var v_ListceCostPlanning = _MK._ViewceCostPlanning.Where(x => x.cpCostPlanningNo == v_CostPlanningNo).ToList();
 
 
-                _ListceMastProcess = _MK._ViewceMastProcess.ToList();
-                @class._ListceMastProcess = _MK._ViewceMastProcess.ToList();
+                _ListceMastProcess = _MK._ViewceMastProcess.Where(x=>x.mpType == "subMaker").ToList();
+                @class._ListceMastProcess = _MK._ViewceMastProcess.Where(x=>x.mpType== "subMaker").ToList();
 
                 List<ViewceDetailSubMakerRequest> _ListceDetailSubMakerRequest = new List<ViewceDetailSubMakerRequest>();
                 for (int i = 0; i < v_ListceCostPlanning.Count(); i++)

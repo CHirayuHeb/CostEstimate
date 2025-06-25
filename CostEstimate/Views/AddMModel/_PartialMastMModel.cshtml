@@ -1,0 +1,40 @@
+﻿@model CostEstimate.Models.Common.Class;
+@{
+    //string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<div class="row center">
+    <form action="" id="formMastMoldModel" name="formMastMoldModel">
+        <div class="row center">
+            <div class="col-100 ">
+                <table class="tbbrown" id="tbMastMoldModel">
+                    <tr>
+                        <th style="text-align:left;" width="50%">Doc No</th>
+                        <td style="text-align:center;font-size:9px">
+                            <span style="font-size:12px"> @Html.DisplayFor(model => model._ViewceMastModel.mmNo) </span>
+                            <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px;display:none" autocomplete="off" asp-for="_ViewceMastModel.mmNo" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="text-align:left;" width="40%">MODEL NAME</th>
+                        <td style="text-align:center;font-size:9px"> <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewceMastModel.mmModelName"></td>
+                    </tr>
+                </table>
+                <br />
+                <div class="modal-footer">
+                    <br />
+                    <button type="button" class="btn btn-primary" onclick="Menubar_AddMasterMoldModel('@Url.Action("AddMasterModel","AddMModel")')">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+</div>

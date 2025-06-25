@@ -226,7 +226,7 @@
 
                     @*@Html.TextAreaFor(model => model._ViewceMastModifyRequest.mfDetail, new { @class = "font-Arial", rows = 8, @readonly = "readonly", @style = "border: none; resize: none; background: transparent; width: 100%;font-size:12px;margin-left:20px;field-sizing: content;" })*@
                     @{
-                        var combinedText = Model._ViewceMastModifyRequest.mfDetail + "  (REQUEST BY: " + Model._ViewceMastModifyRequest.mfIssueDept + ").";
+                        var combinedText = Model._ViewceMastModifyRequest.mfDetail + " \n (REQUEST BY: " + Model._ViewceMastModifyRequest.mfIssueDept + ").";
                     }
 
                     @Html.TextArea("combinedText", combinedText, new {

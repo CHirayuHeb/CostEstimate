@@ -121,6 +121,8 @@ namespace CostEstimate.Models.Table.MK
         public bool mpEnable_WTAuto { get; set; }
         public string mpIssueBy { get; set; }
         public string mpUpdateBy { get; set; }
+        public string mpType { get; set; } //subMaker,MoldModify
+
 
     }
     [Table("ceCostPlanning")]
@@ -171,6 +173,7 @@ namespace CostEstimate.Models.Table.MK
         public string mmModelName { get; set; }
         public string mcIssueBy { get; set; }
         public string mcUpdateBy { get; set; }
+        public string mmType { get; set; } //subMaker,MoldModify
     }
 
     [Table("ceMastFlowApprove")]
@@ -341,7 +344,7 @@ namespace CostEstimate.Models.Table.MK
 
         public double mfMtTool { get; set; }
         public double mfTotalMt { get; set; }
-        
+
 
 
     }
@@ -355,4 +358,181 @@ namespace CostEstimate.Models.Table.MK
         public double imPCS { get; set; }
         public double imAmount { get; set; }
     }
+
+
+
+
+    [Table("ceHourChangeCategory")]
+    public class ViewceHourChangeCategory
+    {
+        [Key]
+        public int hcId { get; set; }
+        public string hcYear { get; set; }
+        public int hcRev { get; set; } //vision
+        public string hcGroupMain { get; set; }
+        public string hcGroupSub { get; set; }
+        public string hcProcessName { get; set; }
+        public string hcIssue { get; set; }
+        
+    }
+
+    public class GroupViewceHourChangeCategory
+    {
+        public string GroupName { get; set; }
+        public List<ViewceHourChangeCategory> ceHourChangeCategory { get; set; }
+    }
+
+    public class GroupViewceHourChangeEntry
+    {
+        public string GroupName { get; set; }
+        public List<ViewceHourChangeEntry> ceHourChangeEntry { get; set; }
+    }
+
+
+    public class GroupedResult
+    {
+        public string HcGroupMain { get; set; }
+        public List<ProcessResult> Processes { get; set; }
+    }
+
+    public class ProcessResult
+    {
+        public string HcGroupMain { get; set; }
+        public string HcProcessName { get; set; }
+        public string HcType { get; set; }
+        public List<ViewceHourChangeEntry> SubItems { get; set; }
+    }
+
+    public class ProcessResultType
+    {
+        public string HcProcessName { get; set; }
+        public string HcType { get; set; }
+        public List<ViewceHourChangeEntry> SubItems { get; set; }
+    }
+
+
+    public class GroupedResult1
+    {
+        public string HcGroupMain { get; set; }
+        public List<ProcessResult1> Processes { get; set; }
+    }
+
+    public class ProcessResult1
+    {
+        public string HcProcessName { get; set; }
+
+        // Structure: Type ("PLAN", "RESULTS/FORECAST") => Month => Amount
+        public Dictionary<string, Dictionary<string, decimal>> MonthlyData { get; set; }
+    }
+
+    public class ViewceHourChangeEntryMonth
+    {
+        [Key]
+        //public int heId { get; set; }
+        public string heYear { get; set; }
+        public string heMonth { get; set; }
+        public string heProcessName { get; set; }
+        public string heType { get; set; }
+        public double valueAmount1 { get; set; }
+        public double valueAmount2 { get; set; }
+        public double valueAmount3 { get; set; }
+        public double valueAmount4 { get; set; }
+        public double valueAmount5 { get; set; }
+        public double valueAmount6 { get; set; }
+        public double valueAmount7 { get; set; }
+        public double valueAmount8 { get; set; }
+        public double valueAmount9 { get; set; }
+        public double valueAmount10 { get; set; }
+        public double valueAmount11 { get; set; }
+        public double valueAmount12 { get; set; }
+
+    }
+
+
+    public class GroupMain
+    {
+        public string HcGroupMain { get; set; }
+        public List<ProcessResult> Processes { get; set; }
+    }
+
+    public class GroupSub
+    {
+        public string HcProcessName { get; set; }
+        public string HcType { get; set; }
+        public List<GroupSubMonth> SubMont { get; set; }
+    }
+    public class GroupSubMonth
+    {
+        public string HcProcessName { get; set; }
+        public string HcType { get; set; }
+        public List<ViewceHourChangeEntry> ceHourChangeEntry { get; set; }
+    }
+
+    [Table("ceHourChangeEntry")]
+    public class ViewceHourChangeEntry
+    {
+        [Key]
+        public int heId { get; set; }
+        public string heYear { get; set; }
+        public int heRev { get; set; }
+        public string heMonth { get; set; }
+        public string heGroupMain { get; set; }
+        public string heProcessName { get; set; }
+        public string heType { get; set; }
+        public double heAmount { get; set; }
+    }
+
+    public class MonthData
+    {
+        public string HeMonth { get; set; }
+        public double HeAmount { get; set; }
+    }
+
+
+
+    public class GroupMainData
+    {
+        public string HcGroupMain { get; set; }
+        public List<GroupedData> Processes { get; set; }
+    }
+
+    public class GroupedData
+    {
+        public string HcGroupMain { get; set; }
+        public string HeProcessName { get; set; }
+        public string HeType { get; set; }
+        public List<MonthData> Months { get; set; }
+    }
+
+    public class MlistMonth
+    {
+        public string Month { get; set; }
+
+    }
+    public class typeDetail
+    {
+        public string type { get; set; }
+
+    }
+
+    public class YeartHourChange
+    {
+        public string year { get; set; }
+        public int Rev { get; set; }
+        public string issueDate { get; set; }
+
+    }
+
+    [Table("ceMastHourChage")]
+    public class ViewceMastHourChage
+    {
+        [Key]
+        public int mhId { get; set; }
+        public string mhGroupMain { get; set; }
+        public string mhGroupSub { get; set; }
+        public string mhProcessName { get; set; }
+
+    }
+
+
 }

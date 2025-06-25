@@ -267,7 +267,7 @@ namespace CostEstimate.Controllers.AddCost
                 @class.paramCostNo = DocNo;
                 @class.paramCostDes = Desc;
                 List<ViewceMastProcess> _ListceMastProcess = new List<ViewceMastProcess>();
-                _ListceMastProcess = _MK._ViewceMastProcess.ToList();
+                _ListceMastProcess = _MK._ViewceMastProcess.Where(x=>x.mpType == "subMaker").ToList();
                 @class._ListceCostPlanning = new List<ViewceCostPlanning>();
 
                 if (DocNo != null)

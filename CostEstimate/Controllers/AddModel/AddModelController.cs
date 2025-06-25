@@ -43,7 +43,7 @@ namespace CostEstimate.Controllers.AddModel
         public IActionResult Index(Class @class)
         {
             @class._ListceMastModel = new List<ViewceMastModel>();
-            @class._ListceMastModel = _MK._ViewceMastModel.OrderBy(z => z.mmModelName.Trim()).ToList();
+            @class._ListceMastModel = _MK._ViewceMastModel.Where(x=>x.mmType == "subMaker").OrderBy(z => z.mmModelName.Trim()).ToList();
             return View(@class);
         }
 
@@ -55,7 +55,7 @@ namespace CostEstimate.Controllers.AddModel
                 @class._ViewceMastProcess = new ViewceMastProcess();
                 if (mmNo > 0 && ModelName != null)
                 {
-                    @class._ViewceMastModel = _MK._ViewceMastModel.Where(x => x.mmNo == mmNo && x.mmModelName == ModelName).FirstOrDefault();
+                    @class._ViewceMastModel = _MK._ViewceMastModel.Where(x => x.mmNo == mmNo && x.mmModelName == ModelName&& x.mmType == "subMaker").FirstOrDefault();
 
 
                 }
@@ -75,7 +75,7 @@ namespace CostEstimate.Controllers.AddModel
             try
             {
                 //cerunCostPalnning
-                ViewceMastModel vRun = _MK._ViewceMastModel.Where(x => x.mmNo == mmNo && x.mmModelName == ModelName).FirstOrDefault();
+                ViewceMastModel vRun = _MK._ViewceMastModel.Where(x => x.mmNo == mmNo && x.mmModelName == ModelName && x.mmType == "subMaker").FirstOrDefault();
                 if (vRun != null)
                 {
                     _MK._ViewceMastModel.Remove(vRun);
@@ -114,6 +114,7 @@ namespace CostEstimate.Controllers.AddModel
                         if (_ViewceMastModel != null)
                         {
                             _ViewceMastModel.mmModelName = @class._ViewceMastModel.mmModelName;
+                            _ViewceMastModel.mmType = "subMaker";
                             _ViewceMastModel.mcUpdateBy = IssueBy;
                             _MK._ViewceMastModel.Update(_ViewceMastModel);
                         }
@@ -123,6 +124,7 @@ namespace CostEstimate.Controllers.AddModel
                         ViewceMastModel _ViewceMastModel = new ViewceMastModel();
                        // _ViewceMastModel.mpProcessName = @class._ViewceMastProcess.mpProcessName;
                         _ViewceMastModel.mmModelName = @class._ViewceMastModel.mmModelName;
+                        _ViewceMastModel.mmType = "subMaker";
                         _ViewceMastModel.mcIssueBy = IssueBy;
                         _ViewceMastModel.mcUpdateBy = IssueBy;
                         _MK._ViewceMastModel.Add(_ViewceMastModel);

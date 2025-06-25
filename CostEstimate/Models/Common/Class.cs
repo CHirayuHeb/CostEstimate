@@ -21,6 +21,8 @@ namespace CostEstimate.Models.Common
         public string paramCostNo { get; set; }
         public string paramCostDes { get; set; }
 
+        public string paramDateIssue { get; set; }
+
         //MK
         public ViewGroupbyceMastCostModel _ViewGroupbyceMastCostModel { get; set; }
         public List<ViewGroupbyceMastCostModel> _ListViewGroupbyceMastCostModel { get; set; }
@@ -93,8 +95,78 @@ namespace CostEstimate.Models.Common
         public List<ViewceItemModifyRequest> _ListViewceItemModifyRequest { get; set; }
         public ViewceItemModifyRequest _ViewceItemModifyRequest { get; set; }
 
+        //admin mold
+        public List<ViewceHourChangeCategory> _ListViewceHourChangeCategory { get; set; }
+        public ViewceHourChangeCategory _ViewceHourChangeCategory { get; set; }
+        public List<ViewceHourChangeEntry> _ListViewceHourChangeEntry { get; set; }
+        public ViewceHourChangeEntry _ViewceHourChangeEntry { get; set; }
+
+        public GroupViewceHourChangeCategory _GroupViewceHourChangeCategory { get; set; }
+        public List<GroupViewceHourChangeCategory> _ListGroupViewceHourChangeCategory { get; set; }
+
+
+        public GroupViewceHourChangeEntry GroupViewceHourChangeEntry { get; set; }
+        public List<GroupViewceHourChangeEntry> _ListGroupViewceHourChangeEntry { get; set; }
+
+        public GroupedResult _GroupedResult { get; set; }
+        public List<GroupedResult> _ListGroupedResult { get; set; }
+     
+
+        public ProcessResult _ProcessResult { get; set; }
+        public List<ProcessResult> _ListProcessResult { get; set; }
+
+
+        //<summary>
+        public GroupedResult1 _GroupedResult1 { get; set; }
+        public List<GroupedResult1> _ListGroupedResult1 { get; set; }
+
+        public ProcessResult1 _ProcessResult1 { get; set; }
+        public List<ProcessResult1> _ListProcessResult1 { get; set; }
+
+
+        public ViewceHourChangeEntryMonth _ViewceHourChangeEntryMonth { get; set; }
+        public List<ViewceHourChangeEntryMonth> _ListViewceHourChangeEntryMonth { get; set; }
+
+
+
+        public GroupMain GroupMain { get; set; }
+        public List<GroupMain> _ListGroupMain { get; set; }
+
+        public GroupSub GroupSub { get; set; }
+        public List<GroupSub> _ListGroupSub { get; set; }
+
+        public GroupSubMonth GroupSubMonth { get; set; }
+        public List<GroupSubMonth> _ListGroupSubMonth { get; set; }
+
+        public ViewceMastHourChage _ViewceMastHourChage { get; set; }
+        public List<ViewceMastHourChage> _ListViewceMastHourChage { get; set; }
         
+
+
+
+        //for entry month
+        public GroupMainData GroupMainData { get; set; }
+        public List<GroupMainData> _ListGroupMainData { get; set; }
+
+        public GroupedData GroupedData { get; set; }
+        public List<GroupedData> _ListGroupedData { get; set; }
+
+        public MonthData MonthData { get; set; }
+        public List<MonthData> _ListMonthData { get; set; }
+
+        public MonthData MlistMonth { get; set; }
+        public List<MlistMonth> _ListMlistMonth { get; set; }
+
+        public typeDetail typeDetail { get; set; }
+        public List<typeDetail> _ListtypeDetail { get; set; }
+
+        public YeartHourChange YeartHourChange { get; set; }
+        public List<YeartHourChange> _ListYeartHourChange { get; set; }
+
     }
+
+
+
 
     public class OTTimeStart
     {

@@ -40,7 +40,7 @@ namespace CostEstimate.Models.DBConnect
             });
             modelBuilder.Entity<ViewceItemModifyRequest>(entity =>
             {
-                entity.HasKey(k => new { k.imCENo, k.imItemNo});
+                entity.HasKey(k => new { k.imCENo, k.imItemNo });
             });
         }
 
@@ -62,6 +62,17 @@ namespace CostEstimate.Models.DBConnect
         public DbSet<ViewceItemModifyRequest> _ViewceItemModifyRequest { get; set; }
 
 
+        //admin mold
+        public DbSet<ViewceHourChangeCategory> _ViewceHourChangeCategory { get; set; }
+        public DbSet<ViewceHourChangeEntry> _ViewceHourChangeEntry { get; set; }
+
+
+        public DbSet<ViewceHourChangeEntryMonth> _ViewceHourChangeEntryMonth { get; set; }
+        public DbSet<ViewceMastHourChage> _ViewceMastHourChage { get; set; }
+        
+
+        //public DbSet<GroupedResult> _GroupedResult { get; set; }
+        //public DbSet<ProcessResult> _ProcessResult { get; set; }
 
     }
 }

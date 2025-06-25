@@ -14,24 +14,21 @@
 
 }
 <link href="~/css/Home/siteHome.css" rel="stylesheet" />
-
 <div class="row center" style="margin-bottom:5px">
     <div class="col-100 " style="border:1.5px solid gray;">
         <div class="row center">
             <div class="col-40 " style="">
-                <div class="grid-item fw-800 center" style="text-align:left;text-decoration: underline;font-size:13px;cursor:pointer" onclick="toggleDivProcess()">Process Detail. <span style="color:Highlight">(คลิกเพื่อแสดง/ซ่อน)</span></div>
+                <div class="grid-item fw-800 center" style="text-align:left;text-decoration: underline;font-size:13px;cursor:pointer">Process Detail.</div>
             </div>
             <div class="col-60 " style="">
             </div>
 
         </div>
         <br />
-        <div class="row center" id="DetailMoldProcessDetail" style="@(Model._ViewceMastModifyRequest.mfStep == 6
-                                                                            || (Model._ViewceMastModifyRequest.mfStep == 0 && (Model._ViewceMastModifyRequest.mfEmpCodeRequest != null && Model._ViewceMastModifyRequest.mfEmpCodeRequest != "") && Model._ViewceMastModifyRequest.mfEmpCodeRequest != _UserId )
-                                                                            || (Model._ViewceMastModifyRequest.mfStep > 0 && (Model._ViewceMastModifyRequest.mfEmpCodeApprove != null && Model._ViewceMastModifyRequest.mfEmpCodeApprove != "") && Model._ViewceMastModifyRequest.mfEmpCodeApprove != _UserId )
-                                                                            ? "pointer-events: none;" : "")">
+        <div id="divmfCostType" data-test="@ViewBag.mfCostType" style=""></div> @*//เอาไว้ยัดค่า*@
+        <div class="row center">
             <div class="col-100" style=" display: flex;align-items: center;">
-                <table class="tbbrown" id="tbDetailMoldProcessDetail" >
+                <table class="tbbrown" id="tbDetailMoldProcessDetail" style="margin-bottom:10px">
                     <tr>
                         <th rowspan="2" style="@(_Permission.ToUpper() !=_admin ? "text-align:center;width: 60% " : "text-align:center;width: 8% ")">
                             METHOD
@@ -108,7 +105,7 @@
                                         <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsLabour_Rate" class="form-control center Labour_Rate" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsLabour_Rate" type="number" min="0" readonly />
                                     </td>
                                     <td style="@(_Permission.ToUpper() !=_admin ? "display: none;text-align:center;" : "text-align:center;")">
-                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsLabour_Cost" class="form-control center Labour_Cost" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsLabour_Cost" type="number" min="0" readonly />
+                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsLabour_Cost" class="form-control center Labour_Cost @group.DetailSubMakerRequest[i].dsProcessName" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsLabour_Cost" type="number" min="0" readonly />
                                     </td>
 
                                     <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:center;" : "text-align:center;")">
@@ -116,13 +113,13 @@
                                     </td>
                                     <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:center;" : "text-align:center;")">
 
-                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsDP_Cost" class="form-control center DP_Cost" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsDP_Cost" type="number" min="0" readonly />
+                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsDP_Cost" class="form-control center DP_Cost @group.DetailSubMakerRequest[i].dsProcessName" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsDP_Cost" type="number" min="0" readonly />
                                     </td>
                                     <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:center;" : "text-align:center;")">
                                         <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsME_Rate" class="form-control center ME_Rate" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsME_Rate" type="number" min="0" readonly />
                                     </td>
                                     <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:center;" : "text-align:center;")">
-                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsME_Cost" class="form-control center ME_Cost" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsME_Cost" type="number" min="0" readonly />
+                                        <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsME_Cost" class="form-control center ME_Cost @group.DetailSubMakerRequest[i].dsProcessName" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsME_Cost" type="number" min="0" readonly />
                                     </td>
                                     <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:center;" : "text-align:center;")">
                                         <input asp-for="_ListceDetailSubMakerRequest[RowCount].dsTotalCost" class="form-control center totalCost" autocomplete="off" style="width:100%;height:80%;font-size:10px" value="@group.DetailSubMakerRequest[i].dsTotalCost" type="number" min="0" readonly />
@@ -169,15 +166,23 @@
 
 
                         </tr>
+                        <tr style="background-color:lightgrey">
+                            <td style="text-align:left;" colspan="2">
+                                @*<span style="font-weight:600;font-size:12px">Total Working Time.</span>*@
+                                <div class="grid-item fw-800 center " style="text-align:left;font-size:11px">Total Working Time.</div>
+
+                            </td>
+                            <td style="text-align:left" colspan="2"><input class="form-control center " id="i_MoldTotalWorkingTime" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly value="0" /></td>
+                            <td style="text-align:left;" colspan="6"></td>
+                        </tr>
 
                     }
                 </table>
             </div>
+
         </div>
     </div>
 </div>
-
-
 <script type="text/javascript">
     function toggleDivProcess() {
         const div = document.getElementById("DetailMoldProcessDetail");
@@ -276,6 +281,34 @@
         $("#i_NewMoldEstimate_cost").val(result);
 
 
+        //total working time process
+      
+
+
+  //total working time process
+        const el1 = document.getElementById('dsWT_Man DESIGN');
+        const input1 = parseFloat(el1 ? el1.value : 0) || 0;
+        const el2 = document.getElementById('dsWT_Auto NC.');
+        const input2 = parseFloat(el2 ? el2.value : 0) || 0;
+        const el3 = document.getElementById('dsWT_Man GM.');
+        const input3 = parseFloat(el3 ? el3.value : 0) || 0;
+        const el4 = document.getElementById('dsWT_Man HW.');
+        const input4 = parseFloat(el4 ? el4.value : 0) || 0;
+
+
+
+        //const input1 = parseFloat(document.getElementById('dsWT_Man DESIGN').value || 0);
+        //const input2 = parseFloat(document.getElementById('dsWT_Auto NC.').value || 0);
+        //const input3 = parseFloat(document.getElementById('dsWT_Man GM.').value || 0);
+        //const input4 = parseFloat(document.getElementById('dsWT_Man HW.').value || 0);
+
+        // รวมค่า
+        const total = input1 + input2 + input3 + input4;
+
+        // ใส่ค่ารวมลงใน element ที่มี id = "i_MoldTotalWorkingTime"
+        document.getElementById('i_MoldTotalWorkingTime').value = total;
+
+
     }
     function calcRow(row) {
         // console.log("calcRow===> ");
@@ -288,21 +321,26 @@
 
         let ME_Rate = parseFloat(row.find(".ME_Rate").val()) || 0;
 
-        let Labour_Cost = WT_Man * Labour_Rate / 1000;
-
+        let Labour_Cost = WT_Man * Labour_Rate;
+        //let Labour_Cost = WT_Man * Labour_Rate / 1000;
 
         //CAD-M. (MAN)
         //Group  NC. WT_Auto * ME_Rate / 1000; ยกเว้น CAD-M.
         let DP_Cost;
         let ME_Cost;
         if ((row.attr('class') || '').toLowerCase().includes('nc.')) {
-            DP_Cost = WT_Auto * DP_Rate / 1000;
-            ME_Cost = WT_Auto * ME_Rate / 1000;
+            //DP_Cost = WT_Auto * DP_Rate / 1000;
+            //ME_Cost = WT_Auto * ME_Rate / 1000;
+
+            DP_Cost = WT_Auto * DP_Rate;
+            ME_Cost = WT_Auto * ME_Rate;
 
         }
         else {
-            DP_Cost = WT_Man * DP_Rate / 1000;
-            ME_Cost = WT_Man * ME_Rate / 1000;
+            //DP_Cost = WT_Man * DP_Rate / 1000;
+            //ME_Cost = WT_Man * ME_Rate / 1000;
+            DP_Cost = WT_Man * DP_Rate;
+            ME_Cost = WT_Man * ME_Rate;
 
             //DP_Cost = WT_Auto * DP_Rate / 1000;
             //ME_Cost = WT_Man * ME_Rate / 1000;
@@ -366,10 +404,26 @@
         }
 
 
+        const dpInput = document.querySelector('#tbDetailMoldProcessDetail input.DP_Cost.CAD-M\\.');
+        const meInput = document.querySelector('#tbDetailMoldProcessDetail input.ME_Cost.CAD-M\\.');
+        const labourInput = document.querySelector('#tbDetailMoldProcessDetail input.Labour_Cost.CAD-M\\.');
+
+        const vdpInput = dpInput ? dpInput.value : null;
+        const vmeInput = meInput ? meInput.value : null;
+        const vlabourInput = labourInput ? labourInput.value : null;
+        console.log("vdpInput" + vdpInput);
+        console.log("vmeInput" + vmeInput);
+        console.log("vlabourInput" + vlabourInput);
+
 
         $("#i_NewMoldLaborCost").val(parseFloat($("#i_MoldTotalPocessLabour_Cost").val()).toFixed(2));
         $("#i_NewMoldDPCost").val(parseFloat($("#i_MoldTotalPocessDP_Cost").val()).toFixed(2));
         $("#i_NewMoldMECost").val(parseFloat($("#i_MoldTotalPocessME_Cost").val()).toFixed(2));
+
+
+        //$("#i_NewMoldLaborCost").val((parseFloat($("#i_MoldTotalPocessLabour_Cost").val())).toFixed(2) - (parseFloat(vlabourInput)).toFixed(2));
+        //$("#i_NewMoldDPCost").val(parseFloat($("#i_MoldTotalPocessDP_Cost").val()).toFixed(2) - (parseFloat(vdpInput)).toFixed(2));
+        //$("#i_NewMoldMECost").val(parseFloat($("#i_MoldTotalPocessME_Cost").val()).toFixed(2) - (parseFloat(vmeInput)).toFixed(2));
 
 
         //+ parseFloat($("#i_NewMoldMaterail_cost").val()).toFixed(2)    i_NewMoldTotalEstimate_cost
@@ -787,6 +841,28 @@
         $("#i_MoldTotalPocessTotalCost").val(TotalsumTotalCost.toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
 
 
+
+        const el1 = document.getElementById('dsWT_Man DESIGN');
+        const input1 = parseFloat(el1 ? el1.value : 0) || 0;
+        const el2 = document.getElementById('dsWT_Auto NC.');
+        const input2 = parseFloat(el2 ? el2.value : 0) || 0;
+        const el3 = document.getElementById('dsWT_Man GM.');
+        const input3 = parseFloat(el3 ? el3.value : 0) || 0;
+        const el4 = document.getElementById('dsWT_Man HW.');
+        const input4 = parseFloat(el4 ? el4.value : 0) || 0;
+
+
+
+        //const input1 = parseFloat(document.getElementById('dsWT_Man DESIGN').value || 0);
+        //const input2 = parseFloat(document.getElementById('dsWT_Auto NC.').value || 0);
+        //const input3 = parseFloat(document.getElementById('dsWT_Man GM.').value || 0);
+        //const input4 = parseFloat(document.getElementById('dsWT_Man HW.').value || 0);
+
+        // รวมค่า
+        const total = input1 + input2 + input3 + input4;
+
+        // ใส่ค่ารวมลงใน element ที่มี id = "i_MoldTotalWorkingTime"
+        document.getElementById('i_MoldTotalWorkingTime').value = total;
 
 
     }

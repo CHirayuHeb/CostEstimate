@@ -294,7 +294,7 @@ col-100 {
     border: 0px solid #D2B48C;
     border-radius: 2px;
     height: 30px;
-    background: #FFEBCD;
+    background: #f7be68;
 }
 
 .centerdiv {
@@ -515,7 +515,7 @@ col-100 {
         /*padding-top: 8px;
         padding-bottom: 8px;*/
         text-align: left;
-        background-color: #FFEBCD;
+        background-color: #f7be68; /*#FFEBCD;*/
         color: black;
         /*vertical-align: baseline;*/
         text-align: center;

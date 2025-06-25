@@ -18,7 +18,6 @@
 <link href="~/css/Home/siteHome.css" rel="stylesheet" />
 @*after document ready*@
 <script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("MyRequestMold"); } }</script>
-
 <div class="home-content">
     <div id="DisplayContent" class="content-box">
         @using (Html.BeginForm("Index", "MyRequestMold", FormMethod.Post, new { enctype = "multipart/form-data", id = "formMyReqMold" }))

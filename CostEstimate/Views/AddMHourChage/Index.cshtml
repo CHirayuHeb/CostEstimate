@@ -1,0 +1,126 @@
+﻿@model CostEstimate.Models.Common.Class;
+@{
+    ViewData["Title"] = "Add Master Hour Change | ThaiStanley";
+    Layout = "~/Views/Shared/_MenuBar_mold.cshtml";
+}
+@{
+    string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("AddMHourChage"); } }</script>
+<div class="home-content">
+    <div id="DisplayContent" class="content-box">
+        <div style="" class="content-text">
+            <br />
+            <div class="row center" style="padding:5px;background-color:#fadfb6;margin-bottom:5px;border:0px solid black">
+                <div class="col-60 " style="text-align:left">
+                    <div class="grid-item fw-800  " style="text-align:left;font-size:24px;padding-top:8px"><span style="color:#e88f4f">MASTER CHARGE RATE​</span><span style="color:black"> REQUEST SHEET</span> <img src="~/images/money.png" height="35px" width="35px" style="vertical-align:middle" /></div>
+
+                </div>
+                <div class="col-40 center" style="text-align:right">
+                    <button class="button " style="width:auto" onclick="Menubar_EditMHourChage('','@Url.Action("SearchMastHourChage","AddMHourChage")')">
+                        <img src="~/images/addcost.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                        ADD
+                    </button>
+
+
+                </div>
+            </div>
+            <div style="width:100%;">
+                <div style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:10px;border-radius:2px;">
+                    @*summary*@
+                    <div style="margin-bottom:5px;font-weight:600;font-size:14px">
+                        <span>จำนวน @Model._ListViewceMastHourChage.Count()  แถว</span>
+                    </div>
+                    <div class="row center" style="">
+
+                        <div class="col-100" style=" display: flex;align-items: center;">
+
+                            <table class="tbbrown">
+                                <tr>
+                                    <th style="text-align:center" width="5%">NO</th>
+                                    <th style="text-align:center">Group Main</th>
+                                    <th style="text-align:center">Group Sub</th>
+                                    <th style="text-align:center">Process Name</th>
+                                    <th style="text-align:center" width="10%">แก้ไข</th>
+                                    <th style="text-align:center" width="10%">ลบ</th>
+                                </tr>
+                                @if (Model._ListViewceMastHourChage != null)
+                                {
+                                    var row = 0;
+                                    @foreach (var item in @Model._ListViewceMastHourChage)
+                                    {
+                                        <tr>
+                                            <td style="text-align:right">@(row += 1)</td>
+                                            <td>
+                                                @item.mhGroupMain
+                                            </td>
+                                            <td>
+                                                @item.mhGroupSub
+                                            </td>
+                                            <td>
+                                                @item.mhProcessName
+                                            </td>
+                                            <td>
+                                                @*&#128221; &#128203;*@
+                                                <input type="button" style="font-size:15px" value="&#128196;" onclick="Menubar_EditMHourChage('@item.mhId','@Url.Action("SearchMastHourChage","AddMHourChage")')">
+
+                                            </td>
+                                            <td>
+                                                <input type="button" style="font-size:15px" value="&#x274c;" onclick="Menubar_DeleteMHourChage('@item.mhId','@Url.Action("DeleteMastHourChage","AddMHourChage")')">
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+
+
+
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Add Master Cost planning -->
+            <div class="modal modal-md fade" id="myModalMHourChage" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content ">
+                        <div class="modal-body" id="myModalBodyDivMHourChage">
+                            <div class="modal-header" style="margin-top:1px">
+                                <h5 class="modal-title">
+                                    <span style="font-weight: bold; font-size: 16px;"><img src="~/images/rate.png" height="35px" width="35px" style="vertical-align:middle" /> MASTER  PROCESS</span>
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <br />
+                                <div id="loadingIndicatorMHourChage" style="display: block; position: absolute; left: 50%; transform: translate(-50%, -50%); z-index: 9999;margin:0px">
+                                    @*<div class="loader"></div>*@
+                                    <img src="~/images/wait1.gif" alt="Loading..." width="100px"><span style="font-weight:600">Loading...</span>
+                                </div>
+                                <div id="ResultMastMHourChage" style="display: none;">
+                                    @await Html.PartialAsync("_PartialMastHourChage", Model)
+                                </div>
+
+                            </div>
+                            <!-- Modal Footer -->
+                            @*<div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                        </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

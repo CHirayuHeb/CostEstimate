@@ -10,463 +10,203 @@
 }
 
 <link href="~/css/Home/siteHome.css" rel="stylesheet" />
-<div class="row center">
-    <div class="text-left">
-        <span style="font-weight:600;font-size:18px">HOUR CHANGE ( 2025) #PLAN</span>
+<form id="formMoldMastChargeRate" name="formMoldMastChargeRate"></form>
+<div class="row center" style="margin-top:1px">
+    <div class="text-left" style="margin-top: 10px;">
+        @*<span style="font-weight:600;font-size:18px">
+            HOUR CHANGE
+        
+            <input type="text" class=" form-control" style="width:10%;font-size:10px;background-color:greenyellow;" autocomplete="off" asp-for="paramCostNo">
+
+            #PLAN
+        </span>*@
+        <span style="font-weight:600;font-size:18px; display: inline-flex; align-items: center; gap: 5px;">
+            HOUR CHANGE
+            (@Html.DisplayFor(model => model.paramCostNo))
+
+            <input type="text" class="form-control"
+                   style="width: 100px; font-size: 12px; background-color: lightgray;display:none"
+                   autocomplete="off" asp-for="paramCostNo" readonly >
+            #PLAN
+        </span>
+        @*(@Html.DisplayFor(model => model.paramCostNo))*@
     </div>
     <br />
     <div class="text-left">
+       
+        @if (@Model._ListGroupViewceHourChangeCategory != null)
+        {
+            <input type="hidden" id="modelListListMonth" value='@Html.Raw(Json.Serialize(Model._ListMlistMonth))' />
+            @foreach (var group in @Model._ListGroupViewceHourChangeCategory)
+            {
+                <span style="font-size:12px ;font-weight:600">@group.GroupName.Trim()</span>
 
-        <span style="font-weight:600;font-size:12px">1. LABOUR</span>
-        <table class="tbbrown">
-            <tr>
-                <th colspan="3">
-                    DETAIL
-                </th>
-                <th>
-                    4
-                </th>
-                <th>
-                    5
-                </th>
-                <th>
-                    6
-                </th>
-                <th>
-                    7
-                </th>
-                <th>
-                    8
-                </th>
-                <th>
-                    9
-                </th>
-                <th>
-                    10
-                </th>
-                <th>
-                    11
-                </th>
-                <th>
-                    12
-                </th>
-                <th>
-                    1
-                </th>
-                <th>
-                    2
-                </th>
-                <th>
-                    3
-                </th>
-            </tr>
-            <tr>
-                <td>
-                    1
-                </td>
-                <td style="width:100px">
-                    Indirect
-                </td>
-                <td style="width:100px">PLAN</td>
-                <td>
-                    4
-                </td>
-                <td>
-                    5
-                </td>
-                <td>
-                    6
-                </td>
-                <td>
-                    7
-                </td>
-                <td>
-                    8
-                </td>
-                <td>
-                    9
-                </td>
-                <td>
-                    10
-                </td>
-                <td>
-                    11
-                </td>
-                <td>
-                    12
-                </td>
-                <td>
-                    1
-                </td>
-                <td>
-                    2
-                </td>
-                <td>
-                    3
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td>RESULTS/FORECAST</td>
-                <td>
-                    4
-                </td>
-                <td>
-                    5
-                </td>
-                <td>
-                    6
-                </td>
-                <td>
-                    7
-                </td>
-                <td>
-                    8
-                </td>
-                <td>
-                    9
-                </td>
-                <td>
-                    10
-                </td>
-                <td>
-                    11
-                </td>
-                <td>
-                    12
-                </td>
-                <td>
-                    1
-                </td>
-                <td>
-                    2
-                </td>
-                <td>
-                    3
-                </td>
-            </tr>
+                <table border="1" class="tbbrown">
+                    <thead>
+                        <tr>
+                            <th colspan="3">
+                                DETAIL
+                            </th>
+                            <th>
+                                4
+                            </th>
+                            <th>
+                                5
+                            </th>
+                            <th>
+                                6
+                            </th>
+                            <th>
+                                7
+                            </th>
+                            <th>
+                                8
+                            </th>
+                            <th>
+                                9
+                            </th>
+                            <th>
+                                10
+                            </th>
+                            <th>
+                                11
+                            </th>
+                            <th>
+                                12
+                            </th>
+                            <th>
+                                1
+                            </th>
+                            <th>
+                                2
+                            </th>
+                            <th>
+                                3
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBodyHourChange @group.GroupName.Trim()">
 
-            <tr>
-                <td>
-                    2
-                </td>
-                <td style="width:100px">
-                    Direct-DG
-                </td>
-                <td style="width:100px">PLAN</td>
-                <td>
-                    4
-                </td>
-                <td>
-                    5
-                </td>
-                <td>
-                    6
-                </td>
-                <td>
-                    7
-                </td>
-                <td>
-                    8
-                </td>
-                <td>
-                    9
-                </td>
-                <td>
-                    10
-                </td>
-                <td>
-                    11
-                </td>
-                <td>
-                    12
-                </td>
-                <td>
-                    1
-                </td>
-                <td>
-                    2
-                </td>
-                <td>
-                    3
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td>RESULTS/FORECAST</td>
-                <td>
-                    4
-                </td>
-                <td>
-                    5
-                </td>
-                <td>
-                    6
-                </td>
-                <td>
-                    7
-                </td>
-                <td>
-                    8
-                </td>
-                <td>
-                    9
-                </td>
-                <td>
-                    10
-                </td>
-                <td>
-                    11
-                </td>
-                <td>
-                    12
-                </td>
-                <td>
-                    1
-                </td>
-                <td>
-                    2
-                </td>
-                <td>
-                    3
-                </td>
-            </tr>
+                        @for (int i = 0; i < group.ceHourChangeCategory.Count(); i++)
+                        {
+                            <tr>
+                                <td rowspan="3">
+                                    <span style="font-size:8px">@group.ceHourChangeCategory[i].hcGroupSub</span>
+                                </td>
+                                <td rowspan="3">
+                                    <span style="font-size:10px">@group.ceHourChangeCategory[i].hcProcessName</span>
+                                </td>
+                                <td>
+                                    <span style="font-size:8px">PLAN</span>
+                                    <input type="text" class="HcProcessName form-control " style="width:100%;font-size:10px;background-color:yellow;display:none" autocomplete="off" value="@group.ceHourChangeCategory[i].hcProcessName">
+                                    <input type="text" class="HeType form-control" style="width:100%;font-size:10px;background-color:greenyellow;display:none" autocomplete="off" value="PLAN">
+                                    <input type="text" class="HcGroupMain form-control" style="width:100%;font-size:10px;background-color:yellow;display:none" autocomplete="off" value="@group.ceHourChangeCategory[i].hcGroupMain">
+                                    <input type="text" class="HcGroupSub form-control" style="width:100%;font-size:10px;background-color:yellow;display:none" autocomplete="off" value="@group.ceHourChangeCategory[i].hcGroupSub">
+                                    <input type="text" class="HcYear form-control" style="width:100%;font-size:10px;background-color:yellow;display:none" autocomplete="off" value="@group.ceHourChangeCategory[i].hcYear">
+                                    <input type="text" class="HcIssue form-control" style="width:100%;font-size:10px;background-color:yellow;display:none" autocomplete="off" value="@group.ceHourChangeCategory[i].hcIssue">
+                                    <input type="text" class="HcRev form-control" style="width:100%;font-size:10px;background-color:yellow;display:none" autocomplete="off" value="@group.ceHourChangeCategory[i].hcRev">
+                                </td>
+                                @{
+                                    var selectedGroupPlan = Model._ListGroupedData
+                                      .FirstOrDefault(g => g.HeProcessName == @group.ceHourChangeCategory[i].hcProcessName && g.HcGroupMain == @group.ceHourChangeCategory[i].hcGroupMain && g.HeType == "PLAN");
+                                }
+                                @foreach (var item in Model._ListMlistMonth)
+                                {
+                                    var selectedMonth = @selectedGroupPlan?.Months.FirstOrDefault(m => m.HeMonth == item.Month)?.HeAmount ?? 0;
+                                    var sMonth = item.Month;
+                                    <td>
+                                        <input type="number" class="HeAmount form-control @item.Month" style="width:100%;font-size:10px;background-color:greenyellow" autocomplete="off" value="@selectedMonth" data-month="@sMonth">
+                                        <input type="text" class="HeMonth form-control" style="width:100%;font-size:10px;background-color:greenyellow;display:none" autocomplete="off" value="@sMonth" data-month="@sMonth">
+                                    </td>
+                                }
 
-            <tr>
-                <td>
-                    3
-                </td>
-                <td style="width:100px">
-                    Direct-PG
-                </td>
-                <td style="width:100px">PLAN</td>
-                <td>
-                    4
-                </td>
-                <td>
-                    5
-                </td>
-                <td>
-                    6
-                </td>
-                <td>
-                    7
-                </td>
-                <td>
-                    8
-                </td>
-                <td>
-                    9
-                </td>
-                <td>
-                    10
-                </td>
-                <td>
-                    11
-                </td>
-                <td>
-                    12
-                </td>
-                <td>
-                    1
-                </td>
-                <td>
-                    2
-                </td>
-                <td>
-                    3
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td>RESULTS/FORECAST</td>
-                <td>
-                    4
-                </td>
-                <td>
-                    5
-                </td>
-                <td>
-                    6
-                </td>
-                <td>
-                    7
-                </td>
-                <td>
-                    8
-                </td>
-                <td>
-                    9
-                </td>
-                <td>
-                    10
-                </td>
-                <td>
-                    11
-                </td>
-                <td>
-                    12
-                </td>
-                <td>
-                    1
-                </td>
-                <td>
-                    2
-                </td>
-                <td>
-                    3
-                </td>
-            </tr>
 
-        </table>
-        <br />
-        <span style="font-weight:600;font-size:12px">2. DEPRECIATION</span>
-        <table class="tbbrown">
-            <tr>
-                <th>
-                    DETAIL
-                </th>
-                <th>
-                    4
-                </th>
-                <th>
-                    5
-                </th>
-                <th>
-                    6
+                            </tr>
+                            <tr>
+                                @*<td>
+                                   <span style="font-size:8px">@group.ceHourChangeCategory[i].hcGroupSub</span>
+                                </td>*@
+                                @*<td>
+                                  <span style="font-size:10px">@group.ceHourChangeCategory[i].hcProcessName</span>
+                                </td>*@
 
-                </th>
-                <th>
-                    7
-                </th>
-                <th>
-                    8
-                </th>
-                <th>
-                    9
-                </th>
-                <th>
-                    10
-                </th>
-                <th>
-                    11
-                </th>
-                <th>
-                    12
-                </th>
-                <th>
-                    1
-                </th>
-                <th>
-                    2
-                </th>
-                <th>
-                    3
-                </th>
-            </tr>
+                                <td>
+                                    <span style="font-size:8px">RESULTS</span>
+                                    <input type="text" class="HcProcessName form-control " style="width:100%;font-size:10px;background-color:yellow;display:none" autocomplete="off" value="@group.ceHourChangeCategory[i].hcProcessName">
+                                    <input type="text" class="HcGroupMain form-control" style="width:100%;font-size:10px;background-color:yellow;display:none" autocomplete="off" value="@group.ceHourChangeCategory[i].hcGroupMain">
+                                    <input type="text" class="HcGroupSub form-control" style="width:100%;font-size:10px;background-color:yellow;display:none" autocomplete="off" value="@group.ceHourChangeCategory[i].hcGroupSub">
+                                    <input type="text" class="HcYear form-control" style="width:100%;font-size:10px;background-color:yellow;display:none" autocomplete="off" value="@group.ceHourChangeCategory[i].hcYear">
+                                    <input type="text" class="HeType form-control" style="width:100%;font-size:10px;background-color:greenyellow;display:none" autocomplete="off" value="RESULTS">
+                                    <input type="text" class="HcIssue form-control" style="width:100%;font-size:10px;background-color:yellow;display:none" autocomplete="off" value="@group.ceHourChangeCategory[i].hcIssue">
+                                    <input type="text" class="HcRev form-control" style="width:100%;font-size:10px;background-color:yellow;display:none" autocomplete="off" value="@group.ceHourChangeCategory[i].hcRev">
+                                </td>
+                                @{
+                                    var selectedGroupRESULTS = Model._ListGroupedData
+                                      .FirstOrDefault(g => g.HeProcessName == @group.ceHourChangeCategory[i].hcProcessName && g.HcGroupMain == @group.ceHourChangeCategory[i].hcGroupMain && g.HeType == "RESULTS");
+                                }
+                                @foreach (var item in Model._ListMlistMonth)
+                                {
+                                    var selectedMonth = selectedGroupRESULTS?.Months.FirstOrDefault(m => m.HeMonth == item.Month)?.HeAmount ?? 0;
+                                    var sMonth = item.Month;
+                                    <td>
+                                        <input type="number" class="HeAmount form-control @item.Month" style="width:100%;font-size:10px;background-color:greenyellow" autocomplete="off" value="@selectedMonth" data-month="@sMonth">
+                                        <input type="text" class="HeMonth form-control" style="width:100%;font-size:10px;background-color:greenyellow;display:none" autocomplete="off" value="@sMonth" data-month="@sMonth">
+                                    </td>
+                                }
 
-        </table>
-        <br />
-        <span style="font-weight:600;font-size:12px">3. MANUFACTURING  EXPENSES</span>
-        <table class="tbbrown">
-            <tr>
-                <th>
-                    DETAIL
-                </th>
-                <th>
-                    4
-                </th>
-                <th>
-                    5
-                </th>
-                <th>
-                    6
+                            </tr>
+                            <tr>
+                                @*<td>
+                                   <span style="font-size:8px">@group.ceHourChangeCategory[i].hcGroupSub</span>
+                                </td>*@
+                                @*<td>
+                                    <span style="font-size:10px">@group.ceHourChangeCategory[i].hcProcessName</span>
 
-                </th>
-                <th>
-                    7
-                </th>
-                <th>
-                    8
-                </th>
-                <th>
-                    9
-                </th>
-                <th>
-                    10
-                </th>
-                <th>
-                    11
-                </th>
-                <th>
-                    12
-                </th>
-                <th>
-                    1
-                </th>
-                <th>
-                    2
-                </th>
-                <th>
-                    3
-                </th>
-            </tr>
+                                </td>*@
+                                <td>
+                                    <span style="font-size:8px"> FORECAST</span>
 
-        </table>
-        <br />
-        <span style="font-weight:600;font-size:12px">4. CLASSIFICATION of EACH JOB</span>
-        <table class="tbbrown">
-            <tr>
-                <th>
-                    DETAIL
-                </th>
-                <th>
-                    4
-                </th>
-                <th>
-                    5
-                </th>
-                <th>
-                    6
+                                    <input type="text" class="HeType form-control" style="width:100%;font-size:10px;background-color:greenyellow;display:none" autocomplete="off" value="FORECAST">
+                                    <input type="text" class="HcProcessName form-control " style="width:100%;font-size:10px;background-color:yellow;display:none" autocomplete="off" value="@group.ceHourChangeCategory[i].hcProcessName">
+                                    <input type="text" class="HcGroupMain form-control" style="width:100%;font-size:10px;background-color:yellow;display:none" autocomplete="off" value="@group.ceHourChangeCategory[i].hcGroupMain">
+                                    <input type="text" class="HcGroupSub form-control" style="width:100%;font-size:10px;background-color:yellow;display:none" autocomplete="off" value="@group.ceHourChangeCategory[i].hcGroupSub">
+                                    <input type="text" class="HcYear form-control" style="width:100%;font-size:10px;background-color:yellow;display:none" autocomplete="off" value="@group.ceHourChangeCategory[i].hcYear">
+                                    <input type="text" class="HcIssue form-control" style="width:100%;font-size:10px;background-color:yellow;display:none" autocomplete="off" value="@group.ceHourChangeCategory[i].hcIssue">
+                                    <input type="text" class="HcRev form-control" style="width:100%;font-size:10px;background-color:yellow;display:none" autocomplete="off" value="@group.ceHourChangeCategory[i].hcRev">
+                                </td>
+                                @{
+                                    var selectedGroupFORECAST = Model._ListGroupedData
+                                      .FirstOrDefault(g => g.HeProcessName == @group.ceHourChangeCategory[i].hcProcessName && g.HcGroupMain == @group.ceHourChangeCategory[i].hcGroupMain && g.HeType == "FORECAST");
+                                }
+                                @foreach (var item in Model._ListMlistMonth)
+                                {
+                                    var selectedMonth = selectedGroupFORECAST?.Months.FirstOrDefault(m => m.HeMonth == item.Month)?.HeAmount ?? 0;
+                                    var sMonth = item.Month;
+                                    <td>
+                                        <input type="number" class="HeAmount form-control @item.Month" style="width:100%;font-size:10px;background-color:greenyellow" autocomplete="off" value="@selectedMonth" data-month="@sMonth">
+                                        <input type="text" class="HeMonth form-control" style="width:100%;font-size:10px;background-color:greenyellow;display:none" autocomplete="off" value="@sMonth" data-month="@sMonth">
+                                    </td>
+                                }
 
-                </th>
-                <th>
-                    7
-                </th>
-                <th>
-                    8
-                </th>
-                <th>
-                    9
-                </th>
-                <th>
-                    10
-                </th>
-                <th>
-                    11
-                </th>
-                <th>
-                    12
-                </th>
-                <th>
-                    1
-                </th>
-                <th>
-                    2
-                </th>
-                <th>
-                    3
-                </th>
-            </tr>
 
-        </table>
+                            </tr>
+                        }
+
+
+
+                    </tbody>
+                </table>
+                <br />
+            }
+
+        }
+
+
+
     </div>
     <div class="modal-footer">
         <br />
-        <button type="button" class="btn btn-primary" onclick="Menubar_AddMasterCostPlanning('@Url.Action("AddMasterCostPlanning","AddCost")')">Save</button>
+        <button type="button" class="btn btn-primary" onclick="Menubar_AddMCostChRateAdd('@Url.Action("SaveMasterCostChRate","AddMCost")')">Save</button>
         @*<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>*@
 
     </div>

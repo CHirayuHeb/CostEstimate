@@ -24,7 +24,7 @@
             <br />
             <div class="row center" style="padding:5px;background-color:#fadfb6;margin-bottom:5px;border:0px solid #f5b88c;margin:5px">
                 <div class="col-60 " style="text-align:left">
-                    <div class="grid-item fw-800  " style="text-align:left;font-size:24px;padding-top:8px"> <span style="color:#e88f4f">MOLD MODIFY </span> REQUEST SHEET DETAIL.</div>
+                    <div class="grid-item fw-800  " style="text-align:left;font-size:24px;padding-top:8px"> <span style="color:#f7be68">MOLD MODIFY </span> REQUEST SHEET DETAIL.</div>
 
                 </div>
                 <div class="col-40 center" style="text-align:right;">
@@ -75,7 +75,7 @@
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Reference No.</div>
                                 </div>
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" asp-for="_ViewceMastModifyRequest.mfRefNo" id="i_NewMold_ReferenceNo" readonly="@(@Model._ViewceMastModifyRequest !=null ? (@Model._ViewceMastModifyRequest.mfRefNo != null ? "readonly" : null) : null)">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" asp-for="_ViewceMastModifyRequest.mfRefNo" id="i_NewMold_ReferenceNo" readonly="@(@Model._ViewceMastModifyRequest !=null ? (@Model._ViewceMastModifyRequest.mfRefNo != null ? "readonly" : null) : null)" maxlength="20">
                                     @*<input type="text" class="form-control left text-gray" style=" @(@Model._ViewceMastSubMakerRequest.smOrderNo != null ? "pointer-events: none;width:100%;height:80%;font-size:12px" : "width:100%;height:80%;font-size:12px")" autocomplete="off" asp-for="
                                         .smOrderNo" id="i_New_OrderNo">*@
                                 </div>
@@ -96,7 +96,7 @@
                                 </div>
 
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control" id="i_NewMold_LotNo" style="font-size:12px;width:100%;background-color:yellow" autocomplete="off" asp-for="_ViewceMastModifyRequest.mfLotNo" readonly="@(Model._ViewceMastModifyRequest.mfLotNo != null ? "readonly" : null)" />
+                                    <input type="text" class="form-control" id="i_NewMold_LotNo" style="font-size:12px;width:100%;background-color:yellow" autocomplete="off" asp-for="_ViewceMastModifyRequest.mfLotNo" readonly="@(Model._ViewceMastModifyRequest.mfLotNo != null ? "readonly" : null)"  maxlength="20"/>
                                 </div>
                                 <div class="col-20 border1_5brown" style=" display: flex;align-items: center;">
                                     <div class="grid-item fw-800 center" style="text-align:left;">Revision.</div>
@@ -293,10 +293,10 @@
                                 <div class="col-5 " style="">
                                 </div>
                                 <div class="col-20 border1_5brown " style=" display: flex;align-items: center;">
-                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Issue Rate</div>
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Charge Rate version</div>
                                 </div>
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" asp-for="_ViewceMastModifyRequest.mfIssueRate" id="i_NewMold_IssueRate">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMastModifyRequest.mfIssueRate" id="i_NewMold_IssueRate" readonly>
                                     @*<input type="text" class="form-control left text-gray" style=" @(@Model._ViewceMastSubMakerRequest.smOrderNo != null ? "pointer-events: none;width:100%;height:80%;font-size:12px" : "width:100%;height:80%;font-size:12px")" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smOrderNo" id="i_New_OrderNo">*@
                                 </div>
                                 <div class="col-20 " style=" display: flex;align-items: center;">
@@ -314,7 +314,10 @@
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Cost Rate</div>
                                 </div>
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="input-with-image MMYYpicker  form-control center" style="width:100%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewMold_CostRate" asp-for="_ViewceMastModifyRequest.mfCostRate">
+                                    @*<input type="text" class="input-with-image MMYYpicker  form-control center" style="width:100%;font-size:12px;background-color:yellow" id="i_NewMold_CostRate" asp-for="_ViewceMastModifyRequest.mfCostRate" onchange="FCallProcessDetail()">*@
+
+                                    @Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfCostRate, new SelectList(Model._ListMlistMonth, "Month", "Month"),"กรุณาเลือก",new { @class = "form-control",id = "i_NewMold_CostRate", autocomplete = "off",style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
+
                                 </div>
                                 <div class="col-20" style=" display: flex;align-items: center;">
                                     <input type="text" class=" form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewMold_CostRateType" asp-for="_ViewceMastModifyRequest.mfCostType">
@@ -335,6 +338,8 @@
                                 </div>
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
                                     @Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfType, (SelectList)ViewBag.TypeofMODIFICATION, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_Type", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
+
+
                                 </div>
                                 <div class="col-20 " style=" display: flex;align-items: center;">
                                     <input type="text" class=" form-control center" style="width:100%;font-size:12px;background-color:lightgray;display:none" autocomplete="off" id="i_NewMold_mfProcess" asp-for="_ViewceMastModifyRequest.mfProcess">
@@ -347,6 +352,9 @@
                             </div>
 
                         </div>
+                        @*<div id="ResultMoldProcess" class="row center">
+                                @await Html.PartialAsync("_PartialNewMoldRequestProcess", Model)
+                            </div>*@
                     </form>
                     <br />
                     @*<div class="row">
@@ -368,14 +376,17 @@
                     @*@await Html.PartialAsync("_PartialNewMoldDetail_Mat", Model)*@
 
                     <form id="formMoldRequest2" name="formMoldData2">
-                        @*<div id="ResultMoldProcess" class="row center" style="@(Model._ViewceMastModifyRequest.mfStep == 6
-                            || (Model._ViewceMastModifyRequest.mfStep == 0 && (Model._ViewceMastModifyRequest.mfEmpCodeRequest != null && Model._ViewceMastModifyRequest.mfEmpCodeRequest != "") && Model._ViewceMastModifyRequest.mfEmpCodeRequest != _UserId )
-                            || (Model._ViewceMastModifyRequest.mfStep > 0 && (Model._ViewceMastModifyRequest.mfEmpCodeApprove != null && Model._ViewceMastModifyRequest.mfEmpCodeApprove != "") && Model._ViewceMastModifyRequest.mfEmpCodeApprove != _UserId )
-                            ? "pointer-events: none;" : "")">*@
-                        <div id="ResultMoldProcess" class="row center">
+                        <div id="ResultMoldProcess" class="row center" style="@(Model._ViewceMastModifyRequest.mfStep == 6
+                                                                            || (Model._ViewceMastModifyRequest.mfStep == 0 && (Model._ViewceMastModifyRequest.mfEmpCodeRequest != null && Model._ViewceMastModifyRequest.mfEmpCodeRequest != "") && Model._ViewceMastModifyRequest.mfEmpCodeRequest != _UserId )
+                                                                            || (Model._ViewceMastModifyRequest.mfStep > 0 && (Model._ViewceMastModifyRequest.mfEmpCodeApprove != null && Model._ViewceMastModifyRequest.mfEmpCodeApprove != "") && Model._ViewceMastModifyRequest.mfEmpCodeApprove != _UserId )
+                                                                            ? "pointer-events: none;" : "")">
                             @await Html.PartialAsync("_PartialNewMoldRequestProcess", Model)
                         </div>
                     </form>
+                    @*<div id="ResultMoldProcess" class="row center">
+                            @await Html.PartialAsync("_PartialNewMoldRequestProcess", Model)
+                        </div>*@
+
                     @*form2*@
                     <form action="" id="formMoldRequest3" name="formMoldData3">
                         @*<div id="ResultMoldMaterial" class="row center" style="@(Model._ViewceMastModifyRequest.mfStep == 6
@@ -403,6 +414,10 @@
                         <div class="row center">
                             @await Html.PartialAsync("_PartialNewMoldAttachFile", Model)
                         </div>
+
+                        @*<div id="ResultMoldProcess" class="row center">
+                                @await Html.PartialAsync("_PartialNewMoldRequestProcess", Model)
+                            </div>*@
 
                         <!-- Modal send mail -->
                         <div class="modal modal-lg fade" id="myModalSendMold" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -654,7 +669,7 @@
                     terms.push("");
                     this.value = terms.join("");
 
-                    let mydata = $("#formRequest").serialize();
+                    @*let mydata = $("#formRequest").serialize();
                     //'@Url.Action("SearchbyModelName", "NewMoldModify")',
                     $.ajax({
                         url:'@Url.Action("SearchbyModelName", "NewMoldModify")',//'/New/SearchbyModelName', // URL ของ Controller
@@ -669,7 +684,8 @@
                             $("#loading").show();
                         },
                         success: function (response) {
-                            $("#ResultMoldProcess").html(response); // เอา HTML Partial View มาใส่ใน Div
+                            //console.log("wwwwwwwww");
+                          $("#ResultMoldProcess").html(response); // เอา HTML Partial View มาใส่ใน Div
 
                         },
                         complete: function () {
@@ -680,7 +696,7 @@
                         error: function () {
                             alert("Error!!");
                         }
-                    });
+                    });*@
 
 
                     return false;
@@ -688,8 +704,50 @@
                 });
     })
 
+    $(document).ready(function () {
+        $('#i_NewMold_CostRate').on('change', function () {
+            FCallProcessDetail();
+        });
+    });
 
 
+    function FCallProcessDetail() {
+        let mydata = $("#formMoldRequest2").serialize();
+        let vCostIssueRate = document.getElementById("i_NewMold_IssueRate").value;
+        let vCostRate = document.getElementById("i_NewMold_CostRate").value;
+          $.ajax({
+              url:'@Url.Action("SearchbyModelName", "NewMoldModify")',//'/New/SearchbyModelName', // URL ของ Controller
+              type: 'POST',
+              data: {
+                  search: vCostRate,
+                  issueRate: vCostIssueRate,
+                  class: mydata
+
+              },
+              beforeSend: function () {
+                  // Show Loading ก่อนส่งข้อมูล
+                  document.getElementById("i_NewMold_ReferenceNo").focus();
+                  $("#loading").show();
+              },
+              success: function (response) {
+                  $("#ResultMoldProcess").html(response); // เอา HTML Partial View มาใส่ใน Div
+                  //var vmfCostType = $("#ResultMoldProcess").find("#divmfCostType").data("test");
+                  //console.log("vmfCostType" + vmfCostType); // จะได้ "test"
+
+                  var vmfCostType = $("#ResultMoldProcess").find("#divmfCostType").data("test");
+                  document.getElementById("i_NewMold_CostRateType").value = vmfCostType;
+                  console.log(" vmfCostType" + vmfCostType); // จะได้ "test"
+
+                  document.getElementById("i_NewMold_Type").focus();
+
+              },
+              complete: function () {
+                  // ซ่อน Loading เมื่อทำงานเสร็จ
+                  $("#loading").hide();
+
+              }
+           });
+    }
 
 
 

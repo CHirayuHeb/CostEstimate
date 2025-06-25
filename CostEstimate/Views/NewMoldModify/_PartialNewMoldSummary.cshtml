@@ -166,10 +166,27 @@
         }
 
 
+        const dpInput = document.querySelector('#tbDetailMoldProcessDetail input.DP_Cost.CAD-M\\.');
+        const meInput = document.querySelector('#tbDetailMoldProcessDetail input.ME_Cost.CAD-M\\.');
+        const labourInput = document.querySelector('#tbDetailMoldProcessDetail input.Labour_Cost.CAD-M\\.');
+
+        const vdpInput = dpInput ? dpInput.value : null;
+        const vmeInput = meInput ? meInput.value : null;
+        const vlabourInput = labourInput ? labourInput.value : null;
+        console.log("vdpInput" + vdpInput);
+        console.log("vmeInput" + vmeInput);
+        console.log("vlabourInput" + vlabourInput);
+
 
         $("#i_NewMoldLaborCost").val(parseFloat($("#i_MoldTotalPocessLabour_Cost").val()).toFixed(2));
         $("#i_NewMoldDPCost").val(parseFloat($("#i_MoldTotalPocessDP_Cost").val()).toFixed(2));
         $("#i_NewMoldMECost").val(parseFloat($("#i_MoldTotalPocessME_Cost").val()).toFixed(2));
+
+
+        //$("#i_NewMoldLaborCost").val((parseFloat($("#i_MoldTotalPocessLabour_Cost").val())).toFixed(2) - (parseFloat(vlabourInput)).toFixed(2));
+        //$("#i_NewMoldDPCost").val(parseFloat($("#i_MoldTotalPocessDP_Cost").val()).toFixed(2) - (parseFloat(vdpInput)).toFixed(2));
+        //$("#i_NewMoldMECost").val(parseFloat($("#i_MoldTotalPocessME_Cost").val()).toFixed(2) - (parseFloat(vmeInput)).toFixed(2));
+
 
 
         //+ parseFloat($("#i_NewMoldMaterail_cost").val()).toFixed(2)    i_NewMoldTotalEstimate_cost
@@ -183,6 +200,19 @@
 
         const result = roundup(parseFloat($("#i_NewMoldTotalEstimate_cost").val()).toFixed(2), -3);
         $("#i_NewMoldEstimate_cost").val(result);
+
+        ////total working time process
+        //const input1 = parseFloat(document.querySelector('.dsWT_Man.DESIGN') ?.value || 0);
+        //const input2 = parseFloat(document.querySelector('.dsWT_Auto\\ NC\\.') ?.value || 0);
+        //const input3 = parseFloat(document.querySelector('.dsWT_Man\\ GM\\.') ?.value || 0);
+        //const input4 = parseFloat(document.querySelector('.dsWT_Man\\ HW\\.') ?.value || 0);
+
+        //// รวมค่า
+        //const total = input1 + input2 + input3 + input4;
+
+        //// ใส่ค่ารวมลงใน element ที่มี id = "i_MoldTotalWorkingTime"
+        //document.getElementById('i_MoldTotalWorkingTime').value = total;
+
 
     }
 

@@ -1,6 +1,6 @@
 ﻿@model CostEstimate.Models.Common.Class;
 @{
-    ViewData["Title"] = "Add Cost | ThaiStanley";
+    ViewData["Title"] = "Add Mold Cost | ThaiStanley";
     Layout = "~/Views/Shared/_MenuBar_mold.cshtml";
 }
 @{
@@ -23,35 +23,122 @@
                     <div class="grid-item fw-800  " style="text-align:left;font-size:24px;padding-top:8px"><span style="color:#e88f4f">CHARGE RATE​</span><span style="color:black"> REQUEST SHEET</span> <img src="~/images/interest-rate.png" height="35px" width="35px" style="vertical-align:middle" /></div>
 
                 </div>
-                <div class="col-40 center" style="text-align:right">
-                    <button class="button " style="width:auto" onclick="Menubar_AddMCostChRate('','','@Url.Action("SearchMastCostPlanning","AddCost")')">
-                        <img src="~/images/addcost.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                        ADD
-                    </button>
+                @*<div class="col-40 right" style="text-align:right">
 
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <input type="text" class="form-control"
+                               style="width: 100px; font-size: 10px; background-color: greenyellow;"
+                               autocomplete="off" />
 
+                        <button class="button" style="width: auto; display: flex; align-items: center; padding: 2px 8px;"
+                                onclick="Menubar_AddMCostChRate('','@Url.Action("SearchMastCostHourChange","AddMCost")')">
+                            <img src="~/images/addcost.png" style="width: 30px; height: 24px; margin-right: 5px;" />
+                            ADD
+                        </button>
+                    </div>
+
+                </div>*@
+                <div class="col-40 right" style="text-align:right">
+                    <div style="display: flex; justify-content: flex-end; align-items: center; gap: 8px;">
+                        <span style="font-weight:600">กรอกปีที่ต้องการ เช่น (2025)</span>
+                        <input type="number" class="form-control"
+                               style="width: 100px; font-size: 12px; background-color: lightyellow;"
+                               autocomplete="off" id="txtMoldAddYear" />
+                        <button class="button" style="width: auto; display: flex; align-items: center; padding: 2px 8px;"
+                                onclick="Menubar_AddMCostChRate('','@Url.Action("SearchMastCostHourChange","AddMCost")','0','Add')">
+                            <img src="~/images/addcost.png" style="width: 30px; height: 24px; margin-right: 5px;" />
+                            ADD
+                        </button>
+                    </div>
                 </div>
             </div>
+            <div style="width:100%;">
+                <div style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:10px;border-radius:2px;">
+                    @*summary*@
+                    <div style="margin-bottom:5px;font-weight:600;font-size:14px">
+                        <span>จำนวน @Model._ListYeartHourChange.Count()  แถว</span>
+                    </div>
+                    <div class="row center" style="">
+
+                        <div class="col-100" style=" display: flex;align-items: center;">
+
+                            <table class="tbbrown">
+                                <tr>
+                                    <th style="text-align:center" width="5%">NO</th>
+                                    <th style="text-align:center">HOUR CHANGE</th>
+                                    <th style="text-align:center">Version</th>
+                                    <th style="text-align:center">Issue Date</th>
+                                    <th style="text-align:center" width="10%">แก้ไข</th>
+                                    <th style="text-align:center" width="10%">ลบ</th>
+                                </tr>
+                                @if (Model._ListYeartHourChange != null)
+                                {
+                                    var row = 0;
+                                    @foreach (var item in @Model._ListYeartHourChange)
+                                    {
+                                <tr>
+                                    <td style="text-align:right">@(row += 1)</td>
+                                    <td>
+                                        HOUR CHANGE (@item.year)
+                                    </td>
+                                    <td>
+                                        @item.Rev
+                                    </td>
+                                    <td>
+                                        @item.issueDate
+                                    </td>
+                                    <td>
+                                        @*&#128221; &#128203;*@
+                                        <input type="button" style="font-size:15px" value="&#128196;" onclick="Menubar_AddMCostChRate('@item.year','@Url.Action("SearchMastCostHourChange","AddMCost")','@item.Rev','Edit')">
+
+                                    </td>
+                                    <td>
+                                        <input type="button" style="font-size:15px" value="&#x274c;" onclick="Menubar_DeleteMasterChRate('@item.year','@Url.Action("DeleteMasterCostChRate","AddMCost")','@item.Rev')">
+                                    </td>
+                                </tr>
+                                    }
+
+                                }
+
+
+
+
+                            </table>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
 
             <!-- Modal Add Master Cost planning -->
             <div class="modal modal-xl fade" id="myModalMChRate" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content ">
-                        <div class="modal-body" id="myModalBodyDivMChRate">
-                            <div class="modal-header" style="margin-top:1px">
+                        <div class="modal-body" id="myModalBodyDivMChRate" style="padding:0px">
+                            <div class="modal-header" style="margin-top:1px;">
                                 <h5 class="modal-title">
                                     <span style="font-weight: bold; font-size: 16px;"><img src="~/images/interest-rate.png" height="35px" width="35px" style="vertical-align:middle" /> Charge Rate</span>
                                 </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body" style="padding:0px">
+                                <div id="loadingIndicatorMold" style="display: block; position: absolute; left: 50%; transform: translate(-50%, -50%); z-index: 9999;margin:0px">
 
-                                @*<div id="loadingIndicator" style="display: block; position: absolute; left: 50%; transform: translate(-50%, -50%); z-index: 9999;margin:0px">
+                                    <img src="~/images/wait1.gif" alt="Loading..." width="100px"><span style="font-weight:600">Loading...</span>
+                                </div>
+                                <div id="ResultMastChargeRate" style="display: none;">
 
-                                        <img src="~/images/wait1.gif" alt="Loading..." width="100px"><span style="font-weight:600">Loading...</span>
-                                    </div>*@
-                                <div id="ResultMastChargeRate">
                                     @await Html.PartialAsync("_PartialMastChargeRate", Model)
+
+
+
                                 </div>
 
                             </div>

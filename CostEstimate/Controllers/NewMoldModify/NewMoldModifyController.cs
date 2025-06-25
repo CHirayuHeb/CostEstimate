@@ -101,6 +101,8 @@ namespace CostEstimate.Controllers.NewMoldModify
                 //@class._ListViewceItemModifyRequest = _MK._ViewceItemModifyRequest.ToList();
 
                 @class._ListceMastSubMakerRequest = new List<ViewceMastSubMakerRequest>();
+
+
                 //ViewBag.ModifyRequest =  _MK._ViewceItemModifyRequest.ToList();
                 //id = "CE-M-25-06-001";
                 if (id != null)
@@ -113,11 +115,33 @@ namespace CostEstimate.Controllers.NewMoldModify
                         // return RedirectToAction("Index", "ErrorPageMold");
                         // return View(@class);
                     }
+                    //@class._ViewceMastModifyRequest.mfIssueRate = _MK._ViewceHourChangeCategory.Where(x => x.hcIssue == @class._ViewceMastModifyRequest.mfIssueRate).OrderByDescending(x => x.hcYear).ThenByDescending(x => x.hcRev).Select(x => x.hcIssue)
+                    //                                                .FirstOrDefault() is null ?
+                    //                                                  _MK._ViewceHourChangeCategory.OrderByDescending(x => x.hcYear).ThenByDescending(x => x.hcRev).Select(x => x.hcYear + ":" + x.hcRev).FirstOrDefault()
+                    //                                                : _MK._ViewceHourChangeCategory.Where(x => x.hcIssue == @class._ViewceMastModifyRequest.mfIssueRate).OrderByDescending(x => x.hcYear).Select(x => x.hcYear + ":" + x.hcRev).FirstOrDefault();
+                    //string DocYear = _MK._ViewceHourChangeCategory.Where(x => x.hcIssue == @class._ViewceMastModifyRequest.mfIssueRate)
+                    //                                                .OrderByDescending(x => x.hcYear).Select(x => x.hcYear.Substring(2, 2))
+                    //                                                .FirstOrDefault() is null ?
+                    //                                                                     _MK._ViewceHourChangeCategory.OrderByDescending(x => x.hcYear).ThenByDescending(x => x.hcRev).Select(x => x.hcYear.Substring(2, 2)).FirstOrDefault()
+                    //                                                                    : _MK._ViewceHourChangeCategory.Where(x => x.hcIssue == @class._ViewceMastModifyRequest.mfIssueRate).OrderByDescending(x => x.hcYear).ThenByDescending(x => x.hcRev).Select(x => x.hcYear.Substring(2, 2)).FirstOrDefault();
+                    //@class._ListMlistMonth = FunListMonth(DocYear).Select(m => new MlistMonth { Month = m }).ToList();
+
+                    @class._ViewceMastModifyRequest.mfIssueRate = !string.IsNullOrEmpty(@class._ViewceMastModifyRequest.mfIssueRate) ? @class._ViewceMastModifyRequest.mfIssueRate :
+                                                                 _MK._ViewceHourChangeCategory.OrderByDescending(x => x.hcYear).ThenByDescending(x => x.hcRev).Select(x => x.hcYear + "#" + x.hcRev).FirstOrDefault();
+
+
+                    string DocYear = @class._ViewceMastModifyRequest.mfIssueRate.Split(':')[0].Substring(2, 2); //@class._ViewceMastModifyRequest.mfIssueRate;
+                    @class._ListMlistMonth = FunListMonth(DocYear).Select(m => new MlistMonth { Month = m }).ToList();
+
+
+
 
                     @class._ListceDetailSubMakerRequest = _MK._ViewceDetailSubMakerRequest.Where(x => x.dsDocumentNo == id).ToList();
                     @class._ListViewceItemModifyRequest = _MK._ViewceItemModifyRequest.Where(x => x.imCENo == id).ToList();
                     if (mfRevision != null)
                     {
+
+
                         @class._ViewceMastModifyRequest.mfCENo = "";
                         @class._ViewceMastModifyRequest.mfRevision = String.Format("{0:D2}", int.Parse(@class._ViewceMastModifyRequest.mfRevision) + 1);
                         @class._ViewceMastModifyRequest.mfEmpCodeRequest = "";
@@ -154,6 +178,17 @@ namespace CostEstimate.Controllers.NewMoldModify
                         DetailSubMakerRequest = g.ToList()
                     }).ToList();
                 }
+                else
+                {
+                    //DocYear = DocYear == null ? DateTime.Now.ToString("yyyy") : DocYear;
+                    @class._ViewceMastModifyRequest.mfIssueRate = _MK._ViewceHourChangeCategory.OrderByDescending(x => x.hcYear).ThenByDescending(x => x.hcRev).Select(x => x.hcYear + "#" + x.hcRev).FirstOrDefault();
+                    string DocYear = _MK._ViewceHourChangeCategory.OrderByDescending(x => x.hcYear).ThenByDescending(x => x.hcRev).Select(x => x.hcYear.Substring(2, 2)).FirstOrDefault() is null ? DateTime.Now.ToString("yyyy") : _MK._ViewceHourChangeCategory.OrderByDescending(x => x.hcYear).ThenByDescending(x => x.hcRev).Select(x => x.hcYear.Substring(2, 2)).FirstOrDefault();
+                    @class._ListMlistMonth = FunListMonth(DocYear).Select(m => new MlistMonth { Month = m }).ToList();
+
+
+
+
+                }
 
 
             }
@@ -164,6 +199,32 @@ namespace CostEstimate.Controllers.NewMoldModify
 
             return View(@class);
         }
+
+        public List<string> FunListMonth(string docYear1)
+        {
+            string docYear2 = (int.Parse(docYear1) + 1).ToString();
+            List<string> _listMonth = new List<string>
+                                    {
+                                        "04/" + docYear1,
+                                        "05/" + docYear1,
+                                        "06/" + docYear1,
+                                        "07/" + docYear1,
+                                        "08/" + docYear1,
+                                        "09/" + docYear1,
+                                        "10/" + docYear1,
+                                        "11/" + docYear1,
+                                        "12/" + docYear1,
+                                        "01/" + docYear2,
+                                        "02/" + docYear2,
+                                        "03/" + docYear2
+                                    };
+
+            // set to ViewBag if needed
+            //ViewBag.listofMonth = new SelectList(_listMonth);
+
+            return _listMonth;
+        }
+
 
 
         [HttpPost]
@@ -286,33 +347,196 @@ _MOLD._ViewLLLedger
         public ActionResult SearchModelName(string term)
         {
             {
-                string a = _MK._ViewceMastCostModel.Where(p => p.mcModelName.Contains(term)).Select(p => p.mcModelName).First();
-                return Json(_MK._ViewceMastCostModel.Where(p => p.mcModelName.Contains(term)).Select(p => p.mcModelName).Distinct().ToList());
+                // string a = _MK._ViewceMastModel.Where(p => p.mmModelName.Contains(term)).Where(x => x.mmType == "MoldModify").Select(p => p.mmModelName).First();
+
+                //string a = _MK._ViewceMastCostModel.Where(p => p.mcModelName.Contains(term)).Select(p => p.mcModelName).First();
+                //return Json(_MK._ViewceMastCostModel.Where(p => p.mcModelName.Contains(term)).Select(p => p.mcModelName).Distinct().ToList());
+                return Json(_MK._ViewceMastModel.Where(p => p.mmModelName.Contains(term)).Where(x => x.mmType == "MoldModify").Select(p => p.mmModelName).Distinct().ToList());
             }
         }
-        public PartialViewResult SearchbyModelName(string search, Class @class)
+        public PartialViewResult SearchbyModelName(string search, string issueRate, Class @class)
         {
+
             string msg = "";
+            string mfCostType = "";
+            int mfissueRate = issueRate != null ? int.Parse(issueRate.Split('#')[1]) : 0;
             try
             {
+                var typeOrder = new List<string> { "RESULTS", "FORECAST", "PLAN" };
+
+                mfCostType = _MK._ViewceHourChangeEntry.Where(x => x.heAmount != 0 && x.heMonth == search && x.heRev == mfissueRate && x.heProcessName.Contains("Indirect") && typeOrder.Contains(x.heType))
+                                                    .OrderBy(x => typeOrder.IndexOf(x.heType))
+                                                    .Select(x => x.heType).ToList().Count() == 0 ? "" : _MK._ViewceHourChangeEntry.Where(x => x.heAmount != 0 && x.heMonth == search && x.heRev == mfissueRate && x.heProcessName.Contains("Indirect") && typeOrder.Contains(x.heType))
+                                                    .OrderBy(x => typeOrder.IndexOf(x.heType))
+                                                    .Select(x => x.heType).First();
+
+
+
+
+                // LABOUR = DESIGN =  Indirect +  Direct-DG ยกเว้น 3-D 
+                double vLABOURIndirect = _MK._ViewceHourChangeEntry.Where(x => x.heAmount != 0 && x.heMonth == search && x.heRev == mfissueRate && x.heProcessName.Contains("Indirect") && typeOrder.Contains(x.heType))
+                                                    .OrderBy(x => typeOrder.IndexOf(x.heType))
+                                                    .Select(x => x.heAmount).ToList().Count() == 0 ? 0 : _MK._ViewceHourChangeEntry.Where(x => x.heAmount != 0 && x.heMonth == search && x.heRev == mfissueRate && x.heProcessName.Contains("Indirect") && typeOrder.Contains(x.heType))
+                                                    .OrderBy(x => typeOrder.IndexOf(x.heType))
+                                                    .Select(x => x.heAmount).First();
+                double vLABOURDirectDG = _MK._ViewceHourChangeEntry.Where(x => x.heAmount != 0 && x.heMonth == search && x.heRev == mfissueRate && (x.heProcessName.ToLower().Contains("direct") && x.heProcessName.Contains("DG")) && typeOrder.Contains(x.heType))
+                                               .OrderBy(x => typeOrder.IndexOf(x.heType))
+                                               .Select(x => x.heAmount).ToList().Count() == 0 ? 0 : _MK._ViewceHourChangeEntry.Where(x => x.heAmount != 0 && x.heMonth == search && x.heRev == mfissueRate && (x.heProcessName.ToLower().Contains("direct") && x.heProcessName.Contains("DG")) && typeOrder.Contains(x.heType))
+                                               .OrderBy(x => typeOrder.IndexOf(x.heType))
+                                               .Select(x => x.heAmount).First();
+                double vLABOURDirectPG = _MK._ViewceHourChangeEntry.Where(x => x.heAmount != 0 && x.heMonth == search && x.heRev == mfissueRate && (x.heProcessName.ToLower().Contains("Direct") && x.heProcessName.Contains("PG")) && typeOrder.Contains(x.heType))
+                                          .OrderBy(x => typeOrder.IndexOf(x.heType))
+                                          .Select(x => x.heAmount).ToList().Count() == 0 ? 0 : _MK._ViewceHourChangeEntry.Where(x => x.heAmount != 0 && x.heMonth == search && x.heRev == mfissueRate && (x.heProcessName.ToLower().Contains("Direct") && x.heProcessName.Contains("PG")) && typeOrder.Contains(x.heType))
+                                                                                       .OrderBy(x => typeOrder.IndexOf(x.heType)).Select(x => x.heAmount).First();
+
+                //Result  Forcast plan
+                // ! LABOUR = DESIGN =  Indirect +   Direct-PG
+                double vDESIGN = vLABOURIndirect + vLABOURDirectDG;
+                double vNotDESIGN = vLABOURIndirect + vLABOURDirectPG;
+
+                //DEPRECIATION (DP)
+                //GM.
+                double vDGM = _MK._ViewceHourChangeEntry.Where(x => x.heAmount != 0 && x.heMonth == search && x.heRev == mfissueRate && x.heProcessName.ToLower().Contains("GM") && typeOrder.Contains(x.heType))
+                                      .OrderBy(x => typeOrder.IndexOf(x.heType))
+                                      .Select(x => x.heAmount).ToList().Count() == 0 ? 0 : _MK._ViewceHourChangeEntry.Where(x => x.heAmount != 0 && x.heMonth == search && x.heRev == mfissueRate && x.heProcessName.ToLower().Contains("GM") && typeOrder.Contains(x.heType))
+                                                                                   .OrderBy(x => typeOrder.IndexOf(x.heType)).Select(x => x.heAmount).First();
+
+
+                double vDPOther = _MK._ViewceHourChangeEntry.Where(x => x.heAmount != 0 && x.heMonth == search && x.heRev == mfissueRate && x.heProcessName.ToLower().Contains("Other") && typeOrder.Contains(x.heType))
+                                       .OrderBy(x => typeOrder.IndexOf(x.heType))
+                                       .Select(x => x.heAmount).ToList().Count() == 0 ? 0 : _MK._ViewceHourChangeEntry.Where(x => x.heAmount != 0 && x.heMonth == search && x.heRev == mfissueRate && x.heProcessName.ToLower().Contains("Other") && typeOrder.Contains(x.heType))
+                                                                                    .OrderBy(x => typeOrder.IndexOf(x.heType)).Select(x => x.heAmount).First();
+
+                //MANUFACTURING  EXPENSES(ME)
+                double vME = _MK._ViewceHourChangeEntry.Where(x => x.heAmount != 0 && x.heMonth == search && x.heRev == mfissueRate && x.heProcessName.ToLower().Contains("M.E") && typeOrder.Contains(x.heType))
+                                     .OrderBy(x => typeOrder.IndexOf(x.heType))
+                                     .Select(x => x.heAmount).ToList().Count() == 0 ? 0 : _MK._ViewceHourChangeEntry.Where(x => x.heAmount != 0 && x.heMonth == search && x.heRev == mfissueRate && x.heProcessName.ToLower().Contains("M.E") && typeOrder.Contains(x.heType))
+                                                                                  .OrderBy(x => typeOrder.IndexOf(x.heType)).Select(x => x.heAmount).First();
+
+
+
+
 
                 List<ViewceMastProcess> _ListceMastProcess = new List<ViewceMastProcess>();
-                string v_CostPlanningNo = _MK._ViewceMastCostModel.Where(x => x.mcModelName == search).OrderByDescending(x => x.mcCostPlanningNo).Select(x => x.mcCostPlanningNo).First();
+                //string v_CostPlanningNo = _MK._ViewceMastCostModel.Where(x => x.mcModelName == search).OrderByDescending(x => x.mcCostPlanningNo).Select(x => x.mcCostPlanningNo).First();
 
-                List<ViewceCostPlanning> _ViewceCostPlanning = new List<ViewceCostPlanning>();
-                var v_ListceCostPlanning = _MK._ViewceCostPlanning.Where(x => x.cpCostPlanningNo == v_CostPlanningNo).ToList();
+                //List<ViewceCostPlanning> _ViewceCostPlanning = new List<ViewceCostPlanning>();
+                // var v_ListceCostPlanning = _MK._ViewceCostPlanning.Where(x => x.cpCostPlanningNo == v_CostPlanningNo).ToList();
 
 
-                _ListceMastProcess = _MK._ViewceMastProcess.ToList();
-                @class._ListceMastProcess = _MK._ViewceMastProcess.ToList();
+                _ListceMastProcess = _MK._ViewceMastProcess.Where(x => x.mpType == "MoldModify").ToList();
+                @class._ListceMastProcess = _MK._ViewceMastProcess.Where(x => x.mpType == "MoldModify").ToList();
 
                 List<ViewceDetailSubMakerRequest> _ListceDetailSubMakerRequest = new List<ViewceDetailSubMakerRequest>();
-                for (int i = 0; i < v_ListceCostPlanning.Count(); i++)
+                for (int i = 0; i < _ListceMastProcess.Count(); i++)
                 {
                     try
                     {
+                        //case  WEDM ,NCG ,NCGR
 
 
+                        double vdsDP_Rate = 0;
+                        if (_ListceMastProcess[i].mpGroupName.ToUpper().Trim().Contains("HW"))
+                        {
+                            vdsDP_Rate = vDPOther;
+                        }
+                        else if (_ListceMastProcess[i].mpGroupName.ToUpper().Trim().Contains("GM"))
+                        {
+                            vdsDP_Rate = vDGM + vDPOther;
+                        }
+                        else if ((
+                                 _MK._ViewceHourChangeEntry
+                                     .Where(
+                                         x => x.heAmount != 0
+                                              && x.heMonth == search
+                                              && x.heRev == mfissueRate
+                                              && x.heGroupMain.ToLower().Contains("DEPRECIATION")
+                                              && x.heProcessName.ToLower().Contains(_ListceMastProcess[i].mpProcessName)
+                                              && typeOrder.Contains(x.heType)
+                                     )
+                                     .OrderBy(x => typeOrder.IndexOf(x.heType))  // จัดลำดับตาม order ที่กำหนด
+                                     .Select(x => x.heAmount)
+                                     .ToList()
+                                     .Count()  // นับจำนวนรายการ
+                             ) > 0)
+                        //_MK._ViewceHourChangeEntry.Where(x => x.heAmount != 0 && x.heMonth == search && x.heProcessName.ToLower().Contains(_ListceMastProcess[i].mpProcessName) && typeOrder.Contains(x.heType))
+                        //                                                        .OrderBy(x => typeOrder.IndexOf(x.heType)).Select(x => x.heAmount).First() != 0)
+
+
+                        {
+                            //NC GR.
+                            if (_ListceMastProcess[i].mpProcessName.Contains("NC GR."))
+                            {
+                                vdsDP_Rate = _MK._ViewceHourChangeEntry.Where(x => x.heMonth == search && x.heRev == mfissueRate && x.heProcessName.ToLower().Contains(_ListceMastProcess[i].mpProcessName) && x.heGroupMain.ToLower().Contains("DEPRECIATION") && x.heType == mfCostType)
+                                                                                   .Select(x => x.heAmount).First();
+
+                            }
+                            else
+                            {
+                                vdsDP_Rate = _MK._ViewceHourChangeEntry.Where(x => x.heAmount != 0 && x.heMonth == search && x.heRev == mfissueRate && x.heProcessName.ToLower().Contains(_ListceMastProcess[i].mpProcessName) && x.heGroupMain.ToLower().Contains("DEPRECIATION") && typeOrder.Contains(x.heType))
+                                                                                   .OrderBy(x => typeOrder.IndexOf(x.heType)).Select(x => x.heAmount).First();
+
+                            }
+
+                            vdsDP_Rate = vdsDP_Rate + vDPOther;
+                        }
+                        else
+                        {
+                            vdsDP_Rate = 1;
+                            //vdsDP_Rate = vdsDP_Rate + vDPOther;
+                            string input = _ListceMastProcess[i].mpProcessName.Contains("W-E") ? "WEDM" : _ListceMastProcess[i].mpProcessName;
+                            string firstPart = input;
+                            if (input.Contains("-"))
+                            {
+                                // แทนที่ "-" ด้วย " " แล้วแยก
+                                string replaced = input.Replace("-", " ");
+                                string[] parts = replaced.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                                firstPart = parts.Length > 0 ? parts[0] : "";
+                            }
+                            else
+                            {
+                                // ถ้าไม่มี "-" ก็แยกจากช่องว่างปกติ
+                                string[] parts = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                                firstPart = parts.Length > 0 ? parts[0] : "";
+                            }
+                            //string textToSplit = input.Contains("-") ? input.Replace("-", " ") : input;
+                            //string firstPart = textToSplit.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault() ?? "";
+
+                            //NCG ,WEDM
+                            if (firstPart.Contains("NCG") || firstPart.Contains("WEDM"))
+                            {
+                                vdsDP_Rate = _MK._ViewceHourChangeEntry.Where(x => x.heMonth == search && x.heRev == mfissueRate && x.heProcessName.ToLower() == firstPart && x.heGroupMain.Contains("DEPRECIATION") && x.heType == mfCostType).Select(x => x.heAmount).ToList().Count() == 0 ? 0 : _MK._ViewceHourChangeEntry.Where(x => x.heMonth == search && x.heRev == mfissueRate && x.heProcessName.ToLower() == firstPart && x.heGroupMain.Contains("DEPRECIATION") && x.heType == mfCostType).Select(x => x.heAmount).First();
+                            }
+                            else
+                            {
+                                vdsDP_Rate = _MK._ViewceHourChangeEntry.Where(x => x.heAmount != 0 && x.heMonth == search && x.heRev == mfissueRate && x.heProcessName.ToLower() == firstPart && x.heGroupMain.Contains("DEPRECIATION") && typeOrder.Contains(x.heType))
+                                  .OrderBy(x => typeOrder.IndexOf(x.heType))
+                                  .Select(x => x.heAmount).ToList().Count() == 0 ? 0 : _MK._ViewceHourChangeEntry.Where(x => x.heAmount != 0 && x.heMonth == search && x.heRev == mfissueRate && x.heProcessName.ToLower() == firstPart && x.heGroupMain.Contains("DEPRECIATION") && typeOrder.Contains(x.heType))
+                                                                               .OrderBy(x => typeOrder.IndexOf(x.heType)).Select(x => x.heAmount).First();
+
+                            }
+
+
+
+                            vdsDP_Rate = vdsDP_Rate + vDPOther;
+
+                        }
+
+                        //vdsDP_Rate = vdsDP_Rate + vDPOther;
+
+
+
+                        //check case   _ListceMastProcess[i].mpProcessName = master
+
+
+
+
+                        //check case ตัดช่องว่าง
+
+
+                        //if _ListceMastProcess[i].mpGroupName.Trim() = "DESIGN" && _ListceMastProcess[i].mpProcessName.Trim() !="3-D"
+                        //vLABOURIndirect + vLABOURDirectPG
+                        //else  vLABOURIndirect + vLABOURDirectDG
                         _ListceDetailSubMakerRequest.Add(new ViewceDetailSubMakerRequest
                         {
                             dsDocumentNo = "",
@@ -320,22 +544,28 @@ _MOLD._ViewLLLedger
                             dsLotNo = "",
                             dsOrderNo = "",
                             dsRevision = "",
-                            dsGroupName = v_ListceCostPlanning[i].cpGroupName.Trim(),
-                            dsProcessName = v_ListceCostPlanning[i].cpProcessName,
+                            dsGroupName = _ListceMastProcess[i].mpGroupName.Trim(),
+                            dsProcessName = _ListceMastProcess[i].mpProcessName.Trim(),
 
                             dsWT_Man = 0,
                             dsWT_Auto = 0,
 
-                            dsEnable_WTAuto = _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTAuto).First(),  //true,
-                            dsEnable_WTMan = _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTMan).First(),
+                            dsEnable_WTAuto = _ListceMastProcess[i].mpEnable_WTAuto,//_ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTAuto).First(),  //true,
+                            dsEnable_WTMan = _ListceMastProcess[i].mpEnable_WTMan,//_ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTMan).First(),
 
-                            dsLabour_Rate = v_ListceCostPlanning[i].cpLabour_Rate,
+
+
+
+
+                            dsLabour_Rate = _ListceMastProcess[i].mpGroupName.ToUpper().Trim().Contains("DESIGN") && !_ListceMastProcess[i].mpProcessName.Trim().Contains("3-D") ? vDESIGN : vNotDESIGN,//v_ListceCostPlanning[i].cpLabour_Rate,
                             dsLabour_Cost = 0,
 
-                            dsDP_Rate = v_ListceCostPlanning[i].cpDP_Rate,
+                            //dsDP_Rate = vDPOther +
+
+                            dsDP_Rate = vdsDP_Rate,
                             dsDP_Cost = 0,
 
-                            dsME_Rate = v_ListceCostPlanning[i].cpME_Rate,
+                            dsME_Rate = vME,//v_ListceCostPlanning[i].cpME_Rate,
                             dsME_Cost = 0,
 
                             dsTotalCost = 0,
@@ -348,6 +578,9 @@ _MOLD._ViewLLLedger
                         msg = ex.Message;
                     }
                 }
+
+
+
                 //@class._ListceDetailSubMakerRequest = new List<ViewceDetailSubMakerRequest>();
                 @class._ListGroupViewceDetailSubMakerRequest = new List<GroupViewceDetailSubMakerRequest>();
                 @class._ListGroupViewceDetailSubMakerRequest = _ListceDetailSubMakerRequest.GroupBy(p => p.dsGroupName).Select(g => new GroupViewceDetailSubMakerRequest
@@ -370,8 +603,8 @@ _MOLD._ViewLLLedger
                 msg = ex.Message;
             }
 
-
-
+            //ViewBag.mfCostType = mfCostType;
+            ViewBag.mfCostType = mfCostType;
             return PartialView("_PartialNewMoldRequestProcess", @class);
         }
         [HttpPost]
@@ -392,7 +625,7 @@ _MOLD._ViewLLLedger
                     {
                         // htCostPlanningNo
                         String htDocNo = @classs._ViewceMastModifyRequest.mfCENo.ToString(); //htCostPlanningNo
-                        //_listHistory = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == htDocNo).OrderBy(x => x.htStep).ThenBy(x=>x.htDate).ThenBy(x=>x.htTime).ToList();
+                                                                                             //_listHistory = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == htDocNo).OrderBy(x => x.htStep).ThenBy(x=>x.htDate).ThenBy(x=>x.htTime).ToList();
                         _listHistory = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == htDocNo).OrderBy(x => x.htDate).ThenBy(x => x.htTime).ThenBy(x => x.htStep).ToList();
                         if (_listHistory.Count() > 0)
                         {
@@ -483,7 +716,7 @@ _MOLD._ViewLLLedger
                 string tbHistory5EMPCODE = tbHistory5 == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistory5)).Select(x => x.emEmpcode).FirstOrDefault();
 
 
-               // @class._ViewceHistoryApproved.htCC = tbHistory2 + "," + tbHistory3 + "," + tbHistory5 + ",";
+                // @class._ViewceHistoryApproved.htCC = tbHistory2 + "," + tbHistory3 + "," + tbHistory5 + ",";
                 @class._ViewceHistoryApproved.htCC = tbHistory3 + "," + tbHistory5 + ",";
 
             }
@@ -808,6 +1041,10 @@ _MOLD._ViewLLLedger
             string v_EmpCodeRequest = @class._ViewceMastModifyRequest.mfEmpCodeRequest == null || @class._ViewceMastModifyRequest.mfEmpCodeRequest == ""
                                                                                 ? Empcode_IssueBy + " : " + _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == Empcode_IssueBy).Select(x => x.NICKNAME).First()
                                                                                 : @class._ViewceMastModifyRequest.mfEmpCodeRequest + " : " + @class._ViewceMastModifyRequest.mfNameRequest;
+
+
+
+
             using (var dbContextTransaction = _MK.Database.BeginTransaction())
             {
                 try
@@ -837,20 +1074,22 @@ _MOLD._ViewLLLedger
                         }
                     }
 
+                    //ViewceHistoryApproved _ViewceHistoryApproved = new ViewceHistoryApproved();
+                    //_ViewceHistoryApproved.htDocNo = RunDoc;// getSrNo[0].ToString();
+                    //_ViewceHistoryApproved.htStep = vstep;
+                    //_ViewceHistoryApproved.htStatus = @class._ViewceHistoryApproved.htStatus;
+                    //_ViewceHistoryApproved.htFrom = @class._ViewceHistoryApproved.htFrom;
+                    //_ViewceHistoryApproved.htTo = @class._ViewceHistoryApproved.htTo;
+                    //_ViewceHistoryApproved.htCC = vEmpCodeCCemail;//@class._ViewceHistoryApproved.htCC;
+                    //_ViewceHistoryApproved.htDate = DateTime.Now.ToString("yyyy/MM/dd");
+                    //_ViewceHistoryApproved.htTime = DateTime.Now.ToString("HH:mm:ss");
+                    //_ViewceHistoryApproved.htRemark = @class._ViewceHistoryApproved.htRemark;
+                    //_MK._ViewceHistoryApproved.AddAsync(_ViewceHistoryApproved);
 
-                    ViewceHistoryApproved _ViewceHistoryApproved = new ViewceHistoryApproved();
-                    _ViewceHistoryApproved.htDocNo = RunDoc;// getSrNo[0].ToString();
-                    _ViewceHistoryApproved.htStep = vstep;
-                    _ViewceHistoryApproved.htStatus = @class._ViewceHistoryApproved.htStatus;
-                    _ViewceHistoryApproved.htFrom = @class._ViewceHistoryApproved.htFrom;
-                    _ViewceHistoryApproved.htTo = @class._ViewceHistoryApproved.htTo;
-                    _ViewceHistoryApproved.htCC = vEmpCodeCCemail;//@class._ViewceHistoryApproved.htCC;
-                    _ViewceHistoryApproved.htDate = DateTime.Now.ToString("yyyy/MM/dd");
-                    _ViewceHistoryApproved.htTime = DateTime.Now.ToString("HH:mm:ss");
-                    _ViewceHistoryApproved.htRemark = @class._ViewceHistoryApproved.htRemark;
-                    _MK._ViewceHistoryApproved.AddAsync(_ViewceHistoryApproved);
+                    //_MK.SaveChanges();
 
-                    _MK.SaveChanges();
+
+
                     dbContextTransaction.Commit();
 
                     var email = new MimeMessage();
@@ -1040,7 +1279,7 @@ _MOLD._ViewLLLedger
                                     dsLabour_Cost = Math.Round(@class._ListceDetailSubMakerRequest[i].dsWT_Man * @class._ListceDetailSubMakerRequest[i].dsLabour_Rate / 1000, 2),//   @class._ListceDetailSubMakerRequest[i].dsLabour_Cost,
                                     dsDP_Rate = @class._ListceDetailSubMakerRequest[i].dsDP_Rate,
                                     dsDP_Cost = Math.Round(@class._ListceDetailSubMakerRequest[i].dsWT_Man * @class._ListceDetailSubMakerRequest[i].dsDP_Rate / 1000, 2),// @class._ListceDetailSubMakerRequest[i].dsDP_Cost,
-                                    //_ViewceDetailSubMakerRequest.dsDP_Cost = @class._ListceDetailSubMakerRequest[i].dsDP_Cost;
+                                                                                                                                                                         //_ViewceDetailSubMakerRequest.dsDP_Cost = @class._ListceDetailSubMakerRequest[i].dsDP_Cost;
                                     dsME_Rate = @class._ListceDetailSubMakerRequest[i].dsME_Rate,
                                     dsME_Cost = Math.Round(@class._ListceDetailSubMakerRequest[i].dsWT_Man * @class._ListceDetailSubMakerRequest[i].dsME_Rate / 1000, 2),// @class._ListceDetailSubMakerRequest[i].dsME_Cost,
                                 };
@@ -1343,6 +1582,8 @@ _MOLD._ViewLLLedger
             {
 
 
+
+
                 chkPermis = chkPermission(@class);
                 if (chkPermis[0] == "P")
                 {
@@ -1496,6 +1737,8 @@ _MOLD._ViewLLLedger
             string[] sRunDoc;
             try
             {
+
+
                 chkPermis = chkPermission(@class);
                 if (chkPermis[0] == "P")
                 {
@@ -1596,6 +1839,50 @@ _MOLD._ViewLLLedger
                         @class._ListViewceItemModifyRequest = JsonConvert.DeserializeObject<List<ViewceItemModifyRequest>>(_ceItemModifyRequest);
                     }
 
+                    //test send mail
+                    string vEmpCodeCCemail = "";
+                    int vstep = i_Step;
+                    string _smStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == vstep && x.mfFlowNo == "2").Select(x => x.mfSubject).First();
+                    vstep = vstep == 8 ? vstep = 0 : vstep;
+
+                    if (@class._ViewceHistoryApproved.htCC != null)
+                    {
+                        ViewrpEmail fromEmailCC = new ViewrpEmail();
+                        string[] splitCC = @class._ViewceHistoryApproved.htCC.Split(',');
+                        foreach (var i in splitCC)
+                        {
+                            if (i != " " & i != "")
+                            {
+                                var v_cc = "";
+                                try
+                                {
+                                    fromEmailCC = _IT.rpEmails.Where(w => w.emName_M365 == i).FirstOrDefault();
+                                    vEmpCodeCCemail += fromEmailCC.emEmpcode.ToString() + ",";
+                                }
+                                catch (Exception e)
+                                {
+                                    v_cc = e.Message;
+                                }
+                            }
+                        }
+                    }
+
+                    ViewceHistoryApproved _ViewceHistoryApproved = new ViewceHistoryApproved();
+                    _ViewceHistoryApproved.htDocNo = vRunDoc[1];// getSrNo[0].ToString();
+                    _ViewceHistoryApproved.htStep = vstep;
+                    _ViewceHistoryApproved.htStatus = @class._ViewceHistoryApproved.htStatus;
+                    _ViewceHistoryApproved.htFrom = @class._ViewceHistoryApproved.htFrom;
+                    _ViewceHistoryApproved.htTo = @class._ViewceHistoryApproved.htTo;
+                    _ViewceHistoryApproved.htCC = vEmpCodeCCemail;//@class._ViewceHistoryApproved.htCC;
+                    _ViewceHistoryApproved.htDate = DateTime.Now.ToString("yyyy/MM/dd");
+                    _ViewceHistoryApproved.htTime = DateTime.Now.ToString("HH:mm:ss");
+                    _ViewceHistoryApproved.htRemark = @class._ViewceHistoryApproved.htRemark;
+                    _MK._ViewceHistoryApproved.AddAsync(_ViewceHistoryApproved);
+
+                    _MK.SaveChanges();
+
+
+
                     chkSave = SaveData(@class, i_Step, vRunDoc[0], vRunDoc[1], files);
                     if (chkSave[0] == "E")
                     {
@@ -1608,6 +1895,49 @@ _MOLD._ViewLLLedger
                         config = chkSave[0];
                         msg = chkSave[1];
                     }
+
+                    //test send mail
+                    //string vEmpCodeCCemail = "";
+                    //int vstep = i_Step;
+                    //string _smStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == vstep && x.mfFlowNo == "2").Select(x => x.mfSubject).First();
+                    //vstep = vstep == 8 ? vstep = 0 : vstep;
+
+                    ////if (@class._ViewceHistoryApproved.htCC != null)
+                    ////{
+                    ////    ViewrpEmail fromEmailCC = new ViewrpEmail();
+                    ////    string[] splitCC = @class._ViewceHistoryApproved.htCC.Split(',');
+                    ////    foreach (var i in splitCC)
+                    ////    {
+                    ////        if (i != " " & i != "")
+                    ////        {
+                    ////            var v_cc = "";
+                    ////            try
+                    ////            {
+                    ////                fromEmailCC = _IT.rpEmails.Where(w => w.emName_M365 == i).FirstOrDefault();
+                    ////                vEmpCodeCCemail += fromEmailCC.emEmpcode.ToString() + ",";
+                    ////            }
+                    ////            catch (Exception e)
+                    ////            {
+                    ////                v_cc = e.Message;
+                    ////            }
+                    ////        }
+                    ////    }
+                    ////}
+
+                    //ViewceHistoryApproved _ViewceHistoryApproved = new ViewceHistoryApproved();
+                    //_ViewceHistoryApproved.htDocNo = vRunDoc[1];// getSrNo[0].ToString();
+                    //_ViewceHistoryApproved.htStep = 0;
+                    //_ViewceHistoryApproved.htStatus = @class._ViewceHistoryApproved.htStatus;
+                    //_ViewceHistoryApproved.htFrom = @class._ViewceHistoryApproved.htFrom;
+                    //_ViewceHistoryApproved.htTo = @class._ViewceHistoryApproved.htTo;
+                    //_ViewceHistoryApproved.htCC = "011998";//vEmpCodeCCemail;//@class._ViewceHistoryApproved.htCC;
+                    //_ViewceHistoryApproved.htDate = DateTime.Now.ToString("yyyy/MM/dd");
+                    //_ViewceHistoryApproved.htTime = DateTime.Now.ToString("HH:mm:ss");
+                    //_ViewceHistoryApproved.htRemark = "111111111111111111111111111111";
+                    //_MK._ViewceHistoryApproved.AddAsync(_ViewceHistoryApproved);
+
+                    //_MK.SaveChanges();
+
 
 
 
@@ -1624,6 +1954,23 @@ _MOLD._ViewLLLedger
                         config = chkSaveHistory[0];
                         msg = chkSaveHistory[1];
                     }
+
+
+                    ////ViewceHistoryApproved _ViewceHistoryApproved = new ViewceHistoryApproved();
+                    //_ViewceHistoryApproved.htDocNo = "222222";// getSrNo[0].ToString();
+                    //_ViewceHistoryApproved.htStep = 0;
+                    //_ViewceHistoryApproved.htStatus = "test";
+                    //_ViewceHistoryApproved.htFrom = "test";
+                    //_ViewceHistoryApproved.htTo = "test";
+                    //_ViewceHistoryApproved.htCC = "015142";//@class._ViewceHistoryApproved.htCC;
+                    //_ViewceHistoryApproved.htDate = DateTime.Now.ToString("yyyy/MM/dd");
+                    //_ViewceHistoryApproved.htTime = DateTime.Now.ToString("HH:mm:ss");
+                    //_ViewceHistoryApproved.htRemark = "test";
+                    //_MK._ViewceHistoryApproved.AddAsync(_ViewceHistoryApproved);
+                    //_MK.SaveChanges();
+
+
+
 
                     string vlotNo = @class._ViewceMastModifyRequest.mfLotNo;
                     string vRefNo = @class._ViewceMastModifyRequest.mfRefNo;
@@ -1915,6 +2262,70 @@ _MOLD._ViewLLLedger
                     }
 
 
+
+                    //test send mail 
+                    //string vEmpCodeCCemail = "";
+                    ////string _smStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == vstep && x.mfFlowNo == "2").Select(x => x.mfSubject).First();
+                    //vstep = vstep == 8 ? vstep = 0 : vstep;
+
+                    //if (@class._ViewceHistoryApproved.htCC != null)
+                    //{
+                    //    ViewrpEmail fromEmailCC = new ViewrpEmail();
+                    //    string[] splitCC = @class._ViewceHistoryApproved.htCC.Split(',');
+                    //    foreach (var i in splitCC)
+                    //    {
+                    //        if (i != " " & i != "")
+                    //        {
+                    //            var v_cc = "";
+                    //            try
+                    //            {
+                    //                fromEmailCC = _IT.rpEmails.Where(w => w.emName_M365 == i).FirstOrDefault();
+                    //                vEmpCodeCCemail += fromEmailCC.emEmpcode.ToString() + ",";
+                    //            }
+                    //            catch (Exception e)
+                    //            {
+                    //                v_cc = e.Message;
+                    //            }
+                    //        }
+                    //    }
+                    //}
+
+                    //ViewceHistoryApproved _ViewceHistoryApproved = new ViewceHistoryApproved();
+                    //_ViewceHistoryApproved.htDocNo = RunDoc;// getSrNo[0].ToString();
+                    //_ViewceHistoryApproved.htStep = vstep;
+                    //_ViewceHistoryApproved.htStatus = @class._ViewceHistoryApproved.htStatus;
+                    //_ViewceHistoryApproved.htFrom = @class._ViewceHistoryApproved.htFrom;
+                    //_ViewceHistoryApproved.htTo = @class._ViewceHistoryApproved.htTo;
+                    //_ViewceHistoryApproved.htCC = vEmpCodeCCemail;//@class._ViewceHistoryApproved.htCC;
+                    //_ViewceHistoryApproved.htDate = DateTime.Now.ToString("yyyy/MM/dd");
+                    //_ViewceHistoryApproved.htTime = DateTime.Now.ToString("HH:mm:ss");
+                    //_ViewceHistoryApproved.htRemark = "111111111111111111111111111111";
+                    //_MK._ViewceHistoryApproved.AddAsync(_ViewceHistoryApproved);
+
+                    //_MK.SaveChanges();
+
+                    //var _vViewceHistoryApproved = new ViewceHistoryApproved()
+                    //{
+                    //    htDocNo = RunDoc,
+                    //    htStep = vstep,
+                    //    htStatus = @class._ViewceHistoryApproved.htStatus,
+                    //    htFrom = @class._ViewceHistoryApproved.htFrom,
+                    //    htTo = @class._ViewceHistoryApproved.htTo,
+                    //    htCC = vEmpCodeCCemail,
+                    //    htDate = DateTime.Now.ToString("yyyy/MM/dd"),
+                    //    htTime = DateTime.Now.ToString("HH:mm:ss"),
+                    //    htRemark = "222222222222",
+
+                    //};
+                    //_MK._ViewceHistoryApproved.AddAsync(_vViewceHistoryApproved);
+
+
+
+
+
+
+
+
                     //v_status = "S";
                     //v_msg = "Save file & send Mail Already";
 
@@ -1973,14 +2384,14 @@ _MOLD._ViewLLLedger
                                 dsWT_Man = @class._ListceDetailSubMakerRequest[i].dsWT_Man,
                                 dsWT_Auto = @class._ListceDetailSubMakerRequest[i].dsWT_Auto,
                                 dsLabour_Rate = @class._ListceDetailSubMakerRequest[i].dsLabour_Rate,
-                                dsLabour_Cost = Math.Round(@class._ListceDetailSubMakerRequest[i].dsWT_Man * @class._ListceDetailSubMakerRequest[i].dsLabour_Rate / 1000, 2),//   @class._ListceDetailSubMakerRequest[i].dsLabour_Cost,
+                                dsLabour_Cost = Math.Round(@class._ListceDetailSubMakerRequest[i].dsWT_Man * @class._ListceDetailSubMakerRequest[i].dsLabour_Rate, 2),//Math.Round(@class._ListceDetailSubMakerRequest[i].dsWT_Man * @class._ListceDetailSubMakerRequest[i].dsLabour_Rate / 1000, 2),//   @class._ListceDetailSubMakerRequest[i].dsLabour_Cost,
                                 dsDP_Rate = @class._ListceDetailSubMakerRequest[i].dsDP_Rate,
-                                dsDP_Cost = Math.Round(@class._ListceDetailSubMakerRequest[i].dsWT_Man * @class._ListceDetailSubMakerRequest[i].dsDP_Rate / 1000, 2),// @class._ListceDetailSubMakerRequest[i].dsDP_Cost,
+                                dsDP_Cost = Math.Round(@class._ListceDetailSubMakerRequest[i].dsWT_Man * @class._ListceDetailSubMakerRequest[i].dsDP_Rate, 2), //  Math.Round(@class._ListceDetailSubMakerRequest[i].dsWT_Man * @class._ListceDetailSubMakerRequest[i].dsDP_Rate / 1000, 2),// @class._ListceDetailSubMakerRequest[i].dsDP_Cost,
                                 dsEnable_WTAuto = @class._ListceDetailSubMakerRequest[i].dsEnable_WTAuto,
                                 dsEnable_WTMan = @class._ListceDetailSubMakerRequest[i].dsEnable_WTMan,
                                 //_ViewceDetailSubMakerRequest.dsDP_Cost = @class._ListceDetailSubMakerRequest[i].dsDP_Cost;
                                 dsME_Rate = @class._ListceDetailSubMakerRequest[i].dsME_Rate,
-                                dsME_Cost = Math.Round(@class._ListceDetailSubMakerRequest[i].dsWT_Man * @class._ListceDetailSubMakerRequest[i].dsME_Rate / 1000, 2),// @class._ListceDetailSubMakerRequest[i].dsME_Cost,
+                                dsME_Cost = Math.Round(@class._ListceDetailSubMakerRequest[i].dsWT_Man * @class._ListceDetailSubMakerRequest[i].dsME_Rate, 2)//Math.Round(@class._ListceDetailSubMakerRequest[i].dsWT_Man * @class._ListceDetailSubMakerRequest[i].dsME_Rate / 1000, 2),// @class._ListceDetailSubMakerRequest[i].dsME_Cost,
                             };
                             _MK._ViewceDetailSubMakerRequest.AddAsync(_ViewceDetailSubMakerRequest);
                         }

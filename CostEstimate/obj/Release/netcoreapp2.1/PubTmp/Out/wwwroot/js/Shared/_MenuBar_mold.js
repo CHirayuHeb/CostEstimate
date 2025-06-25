@@ -256,10 +256,11 @@ function PositionY(menu) {
             //PY = "52px";
             opacity = "opacity-dot-3";
             break;
-        case "searchMold":
+        case "SearchMold":
             //LoadScript("js/New/Index.js", "NewItem");
             //LoadScript("js/New/EventMore.js", "EventNewMore");
             LoadScript("js/Home/Index.js", "Home");
+
             PY = "0px";
             //PY = "52px";
             opacity = "opacity-dot-3";
@@ -358,6 +359,24 @@ function PositionY(menu) {
             break;
         //Modify
         case "AddMCost":
+            LoadScript("js/Home/Index.js", "Home");
+            PY = "265px";
+            // PY = "331px";
+            opacity = "opacity-dot-3";
+            break;
+        case "AddMModel":
+            LoadScript("js/Home/Index.js", "Home");
+            PY = "265px";
+            // PY = "331px";
+            opacity = "opacity-dot-3";
+            break;
+        case "AddMProcess":
+            LoadScript("js/Home/Index.js", "Home");
+            PY = "265px";
+            // PY = "331px";
+            opacity = "opacity-dot-3";
+            break;
+        case "AddMHourChage":
             LoadScript("js/Home/Index.js", "Home");
             PY = "265px";
             // PY = "331px";
@@ -3410,7 +3429,744 @@ function serializeFormData(formData) {
 
     return params.toString(); // เหมือน $(form).serialize()
 }
-function Menubar_AddMCostChRate(A,b,c) {
-    console.log("eeeeeeeeeeeeee");
-    $("#myModalMChRate").modal("show");
+
+//mold hourchange
+function Menubar_AddMCostChRate(DocYear, action,Rev, type) {
+    console.log("Menubar_AddCostPlanning");
+    let mydata = "";// $("#formRequestCost").serialize();
+    let vmsg = "";
+
+
+    if (document.getElementById("txtMoldAddYear").value == "" && type == "Add") {
+        vmsg = "Please enter the year. !!!";
+        document.getElementById("txtMoldAddYear").focus();
+    }
+    else if (type == "Add") {
+        if (document.getElementById("txtMoldAddYear").value.length != 4) {
+            vmsg = "Please enter a 4-digit year. !!!";
+            document.getElementById("txtMoldAddYear").focus();
+        }
+        else {
+            DocYear = document.getElementById("txtMoldAddYear").value;
+        }
+    }
+    if (vmsg != "") {
+        swal.fire({
+            title: 'แจ้งเตือน',
+            icon: 'warning',
+            text: vmsg,
+
+        })
+            .then((result) => {
+            });
+    }
+    else {
+        $.ajax({
+            url: action,//'/New/SearchbyModelName', // URL ของ Controller
+            type: 'POST',
+            data: {
+                DocYear: DocYear,
+                DocRev: Rev,
+                DocType: type
+                // ,class: mydata
+
+            },
+            beforeSend: function () {
+                console.log("Showing loader..."); // ตรวจสอบว่าทำงานจริง
+                $("#loadingIndicatorMold").css("display", "block"); // แสดง Loader
+                $("#ResultMastChargeRate").css("display", "none"); // ซ่อน Loader
+            },
+            success: function (response) {
+                $("#ResultMastChargeRate").css("display", "block"); // แสดง Loader
+                $("#ResultMastChargeRate").html(response); // เอา HTML Partial View มาใส่ใน Div
+            },
+            error: function () {
+                alert("Error!!");
+            },
+            complete: function () {
+                // ซ่อนรูปโหลดเมื่อ request เสร็จ
+                console.log("Hiding loader..."); // ตรวจสอบว่าทำงานจริง
+                $("#loadingIndicatorMold").css("display", "none"); // ซ่อน Loader
+            }
+        });
+        $("#myModalMChRate").modal("show");
+    }
+
+
+
+    //'@Url.Action("SearchbyModelName", "New")',
+
+}
+function Menubar_AddMCostChRateAdd(action) {
+    console.log("Menubar_AddMCostChRateAdd");
+    const form1 = document.forms.namedItem("formMoldMastChargeRate"); // form header
+    let viewModel1 = new FormData(form1);  // form header
+    $.each(form1, function (index, input) {
+        viewModel1.append(input.name, input.value);
+    });
+
+    const allTbodyElements = document.querySelectorAll('tbody');
+
+    // 2. กรองเฉพาะที่ id มีคำว่า "tableBodyHourChange"
+    const matchingTbodyList = Array.from(allTbodyElements).filter(tbody =>
+        tbody.id.includes('tableBodyHourChange')
+    );
+
+    // 3. วนลูปแต่ละ tbody แล้ว log แถวข้างใน
+    _listViewceHourChangeCategory = [];
+    _listViewceHourChangeEntry = [];
+
+    const jsonStr = document.getElementById("modelListListMonth").value;
+    const modelList = JSON.parse(jsonStr);
+    console.log("modelList" + modelList);
+    //for (let b = 0; b < modelList.length; b++) {
+    //    console.log("modelList " + modelList[i].month);
+    //}
+    //modelList.forEach((item, index) => {
+    //    console.log(`month: ${item.month}`);
+    //    //row.querySelector("${item.month}").value.trim(),
+    //});
+
+
+    for (let i = 0; i < matchingTbodyList.length; i++) {
+        const id = matchingTbodyList[i].id;
+        //const rows = document.querySelectorAll("#id tr"); //table id material body
+        const rows = document.querySelectorAll(`#${CSS.escape(id)} tr`);
+
+        rows.forEach((row, index) => {
+            //HeAmount form-control 04/2025
+
+            modelList.forEach((item, index) => {
+                let vmonth = item.month;
+                //let safeClass = vmonth.replace("/", "-");
+                _listViewceHourChangeEntry.push({
+                    heId: parseInt(index + 1),  // parseInt(row.querySelector(".HcGroupSub").value.trim()), //,//row.querySelector(".imCENo").value.trim() || (index + 1).toString(),
+                    heYear: row.querySelector(".HcYear").value.trim(),
+                    heRev: row.querySelector(".HcRev").value.trim(),
+                    heMonth: row.querySelector(`.HeMonth[data-month="${vmonth}"]`).value.trim(),//    //row.querySelector(".HeMonth ").value.trim(),//,
+                    heGroupMain: row.querySelector(".HcGroupMain").value.trim(),
+                    heProcessName: row.querySelector(".HcProcessName").value.trim(),
+                    heType: row.querySelector(".HeType").value.trim(),
+                    heAmount: row.querySelector(`.HeAmount[data-month="${vmonth}"]`).value.trim()    //parseFloat(row.querySelector(".HeAmount").value)
+                });
+
+            });
+
+
+
+            //_listViewceHourChangeEntry.push({
+            //    heId: parseInt(index + 1),  // parseInt(row.querySelector(".HcGroupSub").value.trim()), //,//row.querySelector(".imCENo").value.trim() || (index + 1).toString(),
+            //    heYear: row.querySelector(".HcYear").value.trim(),
+            //    heMonth: row.querySelector(".HeMonth").value.trim(),//,
+            //    heProcessName: row.querySelector(".HcProcessName").value.trim(),
+            //    heType: row.querySelector(".HeType").value.trim(),
+            //    heAmount: parseFloat(row.querySelector(".HeAmount").value)
+            //});
+
+
+            _listViewceHourChangeCategory.push({
+                hcId: parseInt(index + 1),
+                hcYear: row.querySelector(".HcYear").value.trim(),
+                hcRev: row.querySelector(".HcRev").value.trim(),
+                hcGroupMain: row.querySelector(".HcGroupMain").value.trim(),
+                hcGroupSub: row.querySelector(".HcGroupSub").value.trim(),
+                hcProcessName: row.querySelector(".HcProcessName").value.trim(),
+                hcIssue: row.querySelector(".HcIssue").value.trim(),
+            });
+
+        });
+
+
+
+
+    }
+    const uniqueMap = new Map();
+
+    _listViewceHourChangeCategory.forEach(item => {
+        const key = `${item.hcYear}|${item.hcGroupMain}|${item.hcProcessName}`;
+        if (!uniqueMap.has(key)) {
+            uniqueMap.set(key, item);
+        }
+    });
+    const distinctList = Array.from(uniqueMap.values());
+
+
+
+    viewModel1.append("_ceHourChangeCategory", JSON.stringify(distinctList));
+    viewModel1.append("_ceHourChangeEntry", JSON.stringify(_listViewceHourChangeEntry));
+
+    // console.log("_ceHourChangeEntry");
+
+    $.ajax({
+        type: "POST",
+        url: action, //action,
+        data: viewModel1,
+        processData: false,
+        contentType: false,
+        beforeSend: function () {
+            swal.fire({
+                html: '<h5>Loading...</h5>',
+                showConfirmButton: false,
+                onRender: function () {
+                    // there will only ever be one sweet alert open.
+                    //$('.swal2-content').prepend(sweet_loader);
+                }
+            });
+        },
+        success: async function (config) {
+            if (config.c1 == "S") {
+                Swal.fire({
+                    icon: 'SUCCESS',
+                    title: 'success',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        // $("#myModalMChRate").modal("hide");
+                        GoSideMenu("AddMCost");
+                    });
+            }
+            else if (config.c1 == "E") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        $("#myModalMChRate").modal("show");
+                    });
+            }
+            else if (config.c1 == "P") {
+                await $("#myModalMChRate").modal("hide");
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'warning',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        //$("#myModal1").modal("show");
+                    });
+
+            }
+
+        }
+        //,
+        //error: function (xhr, status, err) {
+        //    Swal.close(); // <<== ให้ปิด Loading ตอน error
+        //    Swal.fire({
+        //        icon: "error",
+        //        title: "error",
+        //        text: "An error occurred while saving. Please try again.",
+        //    });
+
+        //}
+    });
+
+
+
+}
+function Menubar_DeleteMasterChRate(DocNo, action, DocRev) {
+    //var getID = document.getElementById("i_New_DocumentNo").value; //txtMIssueID
+
+
+    //action, vForm, vTeam, vSubject, vSrNo
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure delete Master Planning ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { vYear: DocNo,vRev: DocRev},
+                success: function (res) {
+                    swal.fire({
+                        title: 'แจ้งเตือน',
+                        icon: res.res,
+                        text: res.res,
+                    })
+                        .then((result) => {
+                            //$("#myModal3").modal("hide");
+                            GoSideMenu("AddMCost");
+                            // GoNewRequest(getID)
+                            //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                        });
+
+
+
+                }
+            });
+        } else {
+            //console.log('Cancel');
+            return false;
+        }
+    });
+}
+
+//Mold Model
+function Menubar_EditMasterMoldModel(mmNo, mmmodelName, action) {
+    console.log("Menubar_AddMast Mold Model");
+    // let mydata = $("#formRequestCost").serialize();
+    //'@Url.Action("SearchbyModelName", "New")',
+    $.ajax({
+        url: action,//'/New/SearchbyModelName', // URL ของ Controller
+        type: 'POST',
+        data: {
+            mmNo: mmNo,
+            ModelName: mmmodelName,
+        },
+        beforeSend: function () {
+            console.log("Showing loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorMoldModel").css("display", "block"); // แสดง Loader
+            $("#ResultMastMoldModel").css("display", "none"); // ซ่อน Loader
+        },
+        success: function (response) {
+            $("#ResultMastMoldModel").css("display", "block"); // แสดง Loader
+            $("#ResultMastMoldModel").html(response); // เอา HTML Partial View มาใส่ใน Div
+        },
+        error: function () {
+            alert("Error!!");
+        },
+        complete: function () {
+            // ซ่อนรูปโหลดเมื่อ request เสร็จ
+            console.log("Hiding loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorMoldModel").css("display", "none"); // ซ่อน Loader
+        }
+    });
+
+    $("#myModalMModel").modal("show");
+}
+function Menubar_DeleteMasterMoldModel(mmNo, ModelName, action) {
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure delete Master Mold Model ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { mmNo: mmNo, ModelName: ModelName },
+                success: function (res) {
+                    swal.fire({
+                        title: 'แจ้งเตือน',
+                        icon: res.res,
+                        text: res.res,
+                    })
+                        .then((result) => {
+                            // $("#myModal3").modal("hide");
+                            GoSideMenu("AddMModel");
+                            // GoNewRequest(getID)
+                            //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                        });
+
+
+
+                }
+            });
+        } else {
+            //console.log('Cancel');
+            return false;
+        }
+    });
+}
+function Menubar_AddMasterMoldModel(action) {
+    let formData = document.forms.namedItem("formMastMoldModel");
+    let viewModel = new FormData(formData);
+
+    $.each(formData, function (index, input) {
+        viewModel.append(input.name, input.value);
+    });
+
+    $.ajax({
+        type: "POST",
+        url: action,
+        data: viewModel,
+        processData: false,
+        contentType: false,
+        beforeSend: function () {
+            swal.fire({
+                html: '<h5>Loading...</h5>',
+                showConfirmButton: false,
+                onRender: function () {
+                    // there will only ever be one sweet alert open.
+                    //$('.swal2-content').prepend(sweet_loader);
+                }
+            });
+        },
+        success: async function (config) {
+            // alert(config.c1);
+            if (config.c1 == "S") {
+                // $("#loaderDiv").hide();
+                await $("#myModalMModel").modal("hide");
+                swal.fire({
+                    title: 'SUCCESS',
+                    icon: 'success',
+                    text: config.c2,
+                }).then((result) => {
+                    //if (result.isConfirmed) {
+                    //    console.log("config.c3" + config.c3);
+                    GoSideMenu("AddMModel");
+                    //}
+                });
+            }
+            else if (config.c1 == "E") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        $("#myModalMModel").modal("show");
+                    });
+
+            }
+            else if (config.c1 == "N") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                Swal.fire({
+                    icon: 'แจ้งเตือน',
+                    title: 'warning',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        $("#myModalMModel").modal("show");
+                    });
+
+            }
+        }
+    });
+}
+
+//Process
+
+//Process
+function Menubar_EditMasterMProcess(mpNo, action) {
+    console.log("Menubar  MProces");
+    let mydata = $("#formMastMProcess").serialize();
+    //'@Url.Action("SearchbyModelName", "New")',
+    $.ajax({
+        url: action,//'/New/SearchbyModelName', // URL ของ Controller
+        type: 'POST',
+        data: {
+            mpNo: mpNo
+        },
+        beforeSend: function () {
+            console.log("Showing loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorMProcess").css("display", "block"); // แสดง Loader
+            $("#ResultMastProcess").css("display", "none"); // ซ่อน Loader
+        },
+        success: function (response) {
+            $("#ResultMastMProcess").css("display", "block"); // แสดง Loader
+            $("#ResultMastMProcess").html(response); // เอา HTML Partial View มาใส่ใน Div
+        },
+        error: function () {
+            alert("Error!!");
+        },
+        complete: function () {
+            // ซ่อนรูปโหลดเมื่อ request เสร็จ
+            console.log("Hiding loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorMProcess").css("display", "none"); // ซ่อน Loader
+        }
+    });
+
+    $("#myModalMProcess").modal("show");
+}
+function Menubar_DeleteMasterMProcess(processGroup, processName, action) {
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure delete Master Mold Process ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { processGroup: processGroup, processName: processName },
+                success: function (res) {
+                    swal.fire({
+                        title: 'แจ้งเตือน',
+                        icon: res.res,
+                        text: res.res,
+                    })
+                        .then((result) => {
+                            // $("#myModal3").modal("hide");
+                            GoSideMenu("AddMProcess");
+                            // GoNewRequest(getID)
+                            //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                        });
+
+
+
+                }
+            });
+        } else {
+            //console.log('Cancel');
+            return false;
+        }
+    });
+}
+function Menubar_AddMasterMProcess(action) {
+    let formData = document.forms.namedItem("formMastMoldProcess");
+    let viewModel = new FormData(formData);
+
+    $.each(formData, function (index, input) {
+        viewModel.append(input.name, input.value);
+    });
+
+    $.ajax({
+        type: "POST",
+        url: action,
+        data: viewModel,
+        processData: false,
+        contentType: false,
+        beforeSend: function () {
+            swal.fire({
+                html: '<h5>Loading...</h5>',
+                showConfirmButton: false,
+                onRender: function () {
+                    // there will only ever be one sweet alert open.
+                    //$('.swal2-content').prepend(sweet_loader);
+                }
+            });
+        },
+        success: async function (config) {
+            // alert(config.c1);
+            if (config.c1 == "S") {
+                // $("#loaderDiv").hide();
+                await $("#myModalMProcess").modal("hide");
+                swal.fire({
+                    title: 'SUCCESS',
+                    icon: 'success',
+                    text: config.c2,
+                }).then((result) => {
+                    //if (result.isConfirmed) {
+                    //    console.log("config.c3" + config.c3);
+                    GoSideMenu("AddMProcess");
+                    //}
+                });
+            }
+            else if (config.c1 == "E") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        $("#myModalMProcess").modal("show");
+                    });
+
+            }
+            else if (config.c1 == "N") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                Swal.fire({
+                    icon: 'แจ้งเตือน',
+                    title: 'warning',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        $("#myModalMProcess").modal("show");
+                    });
+
+            }
+        }
+    });
+}
+
+//hourchange
+function Menubar_EditMHourChage(mpNo, action) {
+    console.log("Menubar_MHourChage");
+    let mydata = "";// $("#formRequestCost").serialize();
+    //'@Url.Action("SearchbyModelName", "New")',
+    $.ajax({
+        url: action,//'/New/SearchbyModelName', // URL ของ Controller
+        type: 'POST',
+        data: {
+            mpNo: mpNo
+            // ,class: mydata
+
+        },
+        beforeSend: function () {
+            console.log("Showing loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorMHourChage").css("display", "block"); // แสดง Loader
+            $("#ResultMastMHourChage").css("display", "none"); // ซ่อน Loader
+        },
+        success: function (response) {
+            $("#ResultMastMHourChage").css("display", "block"); // แสดง Loader
+            $("#ResultMastMHourChage").html(response); // เอา HTML Partial View มาใส่ใน Div
+        },
+        error: function () {
+            alert("Error!!");
+        },
+        complete: function () {
+            // ซ่อนรูปโหลดเมื่อ request เสร็จ
+            console.log("Hiding loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorMHourChage").css("display", "none"); // ซ่อน Loader
+        }
+    });
+
+    // $("#myModal4").modal("show");
+
+
+
+
+    $("#myModalMHourChage").modal("show");
+}
+function Menubar_AddMHourChage(action) {
+    let vmsg = "";
+    let formData = document.forms.namedItem("formMastMHourChage");
+    let viewModel = new FormData(formData);
+    if (document.getElementById("txtMHourChangeMhGroupMain").value == "") {
+        vmsg = "กรุณากรอกข้อมูล GroupMain !!!";
+        document.getElementById("txtMHourChangeMhGroupMain").focus();
+    } else if (document.getElementById("txtMHourChangeMhGroupSub").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Group Sub!!!";
+        document.getElementById("txtMHourChangeMhGroupSub").focus();
+    }
+    else if (document.getElementById("txtMHourChangeMhProcessName").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Process Name!!!";
+        document.getElementById("txtMHourChangeMhProcessName").focus();
+    }
+    if (vmsg != "") {
+        swal.fire({
+            title: 'แจ้งเตือน',
+            icon: 'warning',
+            text: vmsg,
+
+        })
+            .then((result) => {
+            });
+    }
+    else {
+        $.each(formData, function (index, input) {
+            viewModel.append(input.name, input.value);
+        });
+
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: viewModel,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                swal.fire({
+                    html: '<h5>Loading...</h5>',
+                    showConfirmButton: false,
+                    onRender: function () {
+                        // there will only ever be one sweet alert open.
+                        //$('.swal2-content').prepend(sweet_loader);
+                    }
+                });
+            },
+            success: async function (config) {
+                // alert(config.c1);
+                if (config.c1 == "S") {
+                    // $("#loaderDiv").hide();
+                    await $("#myModalMHourChage").modal("hide");
+                    swal.fire({
+                        title: 'SUCCESS',
+                        icon: 'success',
+                        text: config.c2,
+                    }).then((result) => {
+                        //if (result.isConfirmed) {
+                        //    console.log("config.c3" + config.c3);
+                        GoSideMenu("AddMHourChage");
+                        //}
+                    });
+                }
+                else if (config.c1 == "E") {
+                    //$("#loaderDiv").hide();
+                    //await $("#myModal1").modal("hide");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ERROR',
+                        text: config.c2,
+                    })
+                        .then((result) => {
+                            $("#myModalMHourChage").modal("show");
+                        });
+
+                }
+                else if (config.c1 == "N") {
+                    //$("#loaderDiv").hide();
+                    //await $("#myModal1").modal("hide");
+                    Swal.fire({
+                        icon: 'แจ้งเตือน',
+                        title: 'warning',
+                        text: config.c2,
+                    })
+                        .then((result) => {
+                            $("#myModalMHourChage").modal("show");
+                        });
+
+                }
+            }
+        });
+    }
+
+
+
+
+
+}
+function Menubar_DeleteMHourChage(mhid, action) {
+    //var getID = document.getElementById("i_New_DocumentNo").value; //txtMIssueID
+
+
+    //action, vForm, vTeam, vSubject, vSrNo
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure delete Master Hour Change ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { mhid: mhid },
+                success: function (res) {
+                    swal.fire({
+                        title: 'แจ้งเตือน',
+                        icon: res.res,
+                        text: res.res,
+                    })
+                        .then((result) => {
+                            //$("#myModal3").modal("hide");
+                            GoSideMenu("AddMHourChage");
+                            // GoNewRequest(getID)
+                            //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                        });
+
+
+
+                }
+            });
+        } else {
+            //console.log('Cancel');
+            return false;
+        }
+    });
 }

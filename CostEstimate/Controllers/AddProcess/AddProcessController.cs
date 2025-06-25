@@ -42,7 +42,7 @@ namespace CostEstimate.Controllers.AddProcess
         public IActionResult Index(Class @class)
         {
             @class._ListceMastProcess = new List<ViewceMastProcess>();
-            @class._ListceMastProcess = _MK._ViewceMastProcess.OrderBy(z => z.mpGroupName.Trim()).ToList();
+            @class._ListceMastProcess = _MK._ViewceMastProcess.Where(x=>x.mpType== "subMaker").OrderBy(z => z.mpGroupName.Trim()).ToList();
 
 
 
@@ -54,7 +54,7 @@ namespace CostEstimate.Controllers.AddProcess
             try
             {
                 //cerunCostPalnning
-                ViewceMastProcess vRun = _MK._ViewceMastProcess.Where(x => x.mpGroupName == processGroup && x.mpProcessName == processName).FirstOrDefault();
+                ViewceMastProcess vRun = _MK._ViewceMastProcess.Where(x => x.mpGroupName == processGroup && x.mpProcessName == processName && x.mpType == "subMaker").FirstOrDefault();
                 if (vRun != null)
                 {
                     _MK._ViewceMastProcess.Remove(vRun);
@@ -72,9 +72,6 @@ namespace CostEstimate.Controllers.AddProcess
             //return Json(_IT.rpEmails.Where(p => p.emEmail.Contains(term) || p.emEmail_M365.Contains(term)).Select(p => p.emEmail_M365).ToList());
 
         }
-
-
-
         [HttpPost]
         public PartialViewResult SearchMastProcess(int mpNo, Class @class)
         {
@@ -125,6 +122,7 @@ namespace CostEstimate.Controllers.AddProcess
                             _viewceMastProcess.mpProcessName = @class._ViewceMastProcess.mpProcessName;
                             _viewceMastProcess.mpEnable_WTMan = @class._ViewceMastProcess.mpEnable_WTMan;
                             _viewceMastProcess.mpEnable_WTAuto = @class._ViewceMastProcess.mpEnable_WTAuto;
+                            _viewceMastProcess.mpType = "subMaker";
                             _viewceMastProcess.mpUpdateBy = IssueBy;
                             _MK._ViewceMastProcess.Update(_viewceMastProcess);
                         }
@@ -136,6 +134,7 @@ namespace CostEstimate.Controllers.AddProcess
                         _viewceMastProcess.mpProcessName = @class._ViewceMastProcess.mpProcessName;
                         _viewceMastProcess.mpEnable_WTMan = @class._ViewceMastProcess.mpEnable_WTMan;
                         _viewceMastProcess.mpEnable_WTAuto = @class._ViewceMastProcess.mpEnable_WTAuto;
+                        _viewceMastProcess.mpType = "subMaker";
                         _viewceMastProcess.mpIssueBy = IssueBy;
                         _viewceMastProcess.mpUpdateBy = IssueBy;
                         _MK._ViewceMastProcess.Add(_viewceMastProcess);
