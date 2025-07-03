@@ -60,6 +60,8 @@ namespace CostEstimate.Models.Table.MK
 
         public string smTypeCavity { get; set; }
 
+        public string smIcsName { get; set; } //30/06/2025
+        
 
     }
 
@@ -346,6 +348,8 @@ namespace CostEstimate.Models.Table.MK
         public double mfTotalMt { get; set; }
 
 
+        public string mfIcsname { get; set; } //30/06/2025 
+
 
     }
     [Table("ceItemModifyRequest")]
@@ -534,5 +538,16 @@ namespace CostEstimate.Models.Table.MK
 
     }
 
+    [Table("ceMastType")]
+    public class ViewceMastType
+    {
+        [Key]
+        public int mtId { get; set; }
+        public string mtName { get; set; }
+        public string mtType { get; set; }
+        public string mtProgram { get; set; }
+        public string mtIssueBy { get; set; }
+
+    }
 
 }

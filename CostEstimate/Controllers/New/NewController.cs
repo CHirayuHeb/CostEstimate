@@ -67,19 +67,20 @@ namespace CostEstimate.Controllers.New
             ViewBag.vbformMaster_Mold_Control = formMaster_Mold_Control;
 
 
+            List<string> _listTypeofCavity = _MK._ViewceMastType.Where(x => x.mtType.Contains("Cavity") && x.mtProgram.Contains("SubMaker")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
 
-            List<string> _listTypeofCavity = new List<string>{
-                                            "CAVITIES(R/L =1 Set) x 2MOLD",
-                                            "CAVITIES(R/L =1 Set)",
-                                            "CAVITIES",
-                                            "CAVITIES x 2 MOLD",
-                                            "CAVITY x 2 MOLD",
-                                            "CAVITY"};
+            //List<string> _listTypeofCavity = new List<string>{
+            //                                "CAVITIES(R/L =1 Set) x 2MOLD",
+            //                                "CAVITIES(R/L =1 Set)",
+            //                                "CAVITIES",
+            //                                "CAVITIES x 2 MOLD",
+            //                                "CAVITY x 2 MOLD",
+            //                                "CAVITY"};
             SelectList _TypeofCavity = new SelectList(_listTypeofCavity);
             ViewBag.TypeofCavity = _TypeofCavity;
 
 
-           // @class._ListceMastFlowApprove = _MK._ViewceMastFlowApprove.ToList();
+            // @class._ListceMastFlowApprove = _MK._ViewceMastFlowApprove.ToList();
             @class._ListceMastFlowApprove = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "1").ToList();
 
             try
@@ -186,9 +187,9 @@ namespace CostEstimate.Controllers.New
             {
                 //List<ViewLLLedger> __ViewLLLedger = new List<ViewLLLedger>();
                 //__ViewLLLedger = _MOLD._ViewLLLedger.Where(p => p.LGLegNo.Contains(term)).ToList();
-                //return Json(_MOLD._ViewLLLedger.Where(p => p.LGLegNo.Contains(term)).Select(p => p.LGLegNo + "" + p.LGTypeCode + "|" + p.LGCustomer + "|" + p.LGMoldName + "" + p.LGMoldNo + "|" + "0").ToList());
+                // _MOLD._ViewLLLedger.Where(p => p.LGLegNo.Contains(term)).Select(p => p.LGLegNo + "" + p.LGTypeCode + "|" + p.LGCustomer + "|" + p.LGMoldName + "" + p.LGMoldNo + "|" + "0"+ "|" + p.LGIcsName).ToList());
 
-                return Json(_MOLD._ViewLLLedger.Where(p => p.LGLegNo.Contains(term)).Select(p => p.LGLegNo + "" + p.LGTypeCode + "|" + p.LGCustomer + "|" + p.LGMoldNo + "/" + p.LGMoldName + "|" + "0").ToList());
+                return Json(_MOLD._ViewLLLedger.Where(p => p.LGLegNo.Contains(term)).Select(p => p.LGLegNo + "" + p.LGTypeCode + "|" + p.LGCustomer + "|" + p.LGMoldNo + "/" + p.LGMoldName + "|" + "0" + "|"+ (p.LGIcsName ?? "") + "|" + (p.LGPart ?? "-")).ToList());
                 // return Json(_MOLD._ViewmtMaster_Mold_Control.Where(p => p.mcLedger_Number.Contains(term)).Select(p => p.mcLedger_Number + "|" + p.mcCUS + "|" + p.mcMoldname + "|" + (p.mcCavity != "" ? p.mcCavity : "0")).ToList());
             }
         }
@@ -208,14 +209,14 @@ namespace CostEstimate.Controllers.New
             {
 
                 List<ViewceMastProcess> _ListceMastProcess = new List<ViewceMastProcess>();
-                string v_CostPlanningNo = _MK._ViewceMastCostModel.Where(x => x.mcModelName == search ).OrderByDescending(x => x.mcCostPlanningNo).Select(x => x.mcCostPlanningNo).First();
+                string v_CostPlanningNo = _MK._ViewceMastCostModel.Where(x => x.mcModelName == search).OrderByDescending(x => x.mcCostPlanningNo).Select(x => x.mcCostPlanningNo).First();
 
                 List<ViewceCostPlanning> _ViewceCostPlanning = new List<ViewceCostPlanning>();
                 var v_ListceCostPlanning = _MK._ViewceCostPlanning.Where(x => x.cpCostPlanningNo == v_CostPlanningNo).ToList();
 
 
-                _ListceMastProcess = _MK._ViewceMastProcess.Where(x=>x.mpType == "subMaker").ToList();
-                @class._ListceMastProcess = _MK._ViewceMastProcess.Where(x=>x.mpType== "subMaker").ToList();
+                _ListceMastProcess = _MK._ViewceMastProcess.Where(x => x.mpType == "subMaker").ToList();
+                @class._ListceMastProcess = _MK._ViewceMastProcess.Where(x => x.mpType == "subMaker").ToList();
 
                 List<ViewceDetailSubMakerRequest> _ListceDetailSubMakerRequest = new List<ViewceDetailSubMakerRequest>();
                 for (int i = 0; i < v_ListceCostPlanning.Count(); i++)
@@ -378,7 +379,7 @@ namespace CostEstimate.Controllers.New
 
 
             //get emp operator
-            var v_empstep = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "1") != null ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo=="1").Select(x => x.mfTo).FirstOrDefault() : "";
+            var v_empstep = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "1") != null ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "1").Select(x => x.mfTo).FirstOrDefault() : "";
             if (v_empstep != null) //step 2-5
             {
                 var v_emailTo = _IT.rpEmails.Where(x => x.emEmpcode == v_empstep).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
@@ -399,12 +400,15 @@ namespace CostEstimate.Controllers.New
                 string tbHistory3 = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 3).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 3).Select(x => x.htFrom).FirstOrDefault();
                 string tbHistory3EMPCODE = tbHistory3 == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistory3)).Select(x => x.emEmpcode).FirstOrDefault();
 
+                //add operator
+                string tbHistory4 = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 4).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 4).Select(x => x.htFrom).FirstOrDefault();
+                string tbHistory4EMPCODE = tbHistory4 == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistory4)).Select(x => x.emEmpcode).FirstOrDefault();
 
                 string tbHistory5 = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 5).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 5).Select(x => x.htFrom).FirstOrDefault();
                 string tbHistory5EMPCODE = tbHistory5 == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistory5)).Select(x => x.emEmpcode).FirstOrDefault();
 
 
-                @class._ViewceHistoryApproved.htCC = tbHistory2 + "," + tbHistory3 + "," + tbHistory5 + ",";
+                @class._ViewceHistoryApproved.htCC = tbHistory2 + "," + tbHistory3 + "," + tbHistory4 + "," + tbHistory5 + ",";
 
 
             }
@@ -928,7 +932,7 @@ namespace CostEstimate.Controllers.New
                         _ViewceMastSubMakerRequest.smStep = vstep; // public int 
                         _ViewceMastSubMakerRequest.smStatus = _smStatus;//@class._ViewceMastSubMakerRequest.smStatus; //public int
                         _ViewceMastSubMakerRequest.smTotalProCost = @class._ViewceMastSubMakerRequest.smTotalProCost; // public double 
-
+                        _ViewceMastSubMakerRequest.smIcsName = @class._ViewceMastSubMakerRequest.smIcsName; //30/06/2025
                         _ViewceMastSubMakerRequest.smTypeCavity = @class._ViewceMastSubMakerRequest.smTypeCavity; // public string 
 
                         _MK._ViewceMastSubMakerRequest.AddAsync(_ViewceMastSubMakerRequest);
@@ -1018,6 +1022,7 @@ namespace CostEstimate.Controllers.New
                             _ViewceMastSubMakerRequest.smTotalProCost = @class._ViewceMastSubMakerRequest.smTotalProCost; // public double 
 
                             _ViewceMastSubMakerRequest.smTypeCavity = @class._ViewceMastSubMakerRequest.smTypeCavity; // public string 
+                            _ViewceMastSubMakerRequest.smIcsName = @class._ViewceMastSubMakerRequest.smIcsName; //30/06/2025
                             //_ViewceMastSubMakerRequest.smEmpCodeApprove = empApprove;
                             //_ViewceMastSubMakerRequest.smNameApprove = NickNameApprove;
                             //_ViewceMastSubMakerRequest.smStep = vstep;

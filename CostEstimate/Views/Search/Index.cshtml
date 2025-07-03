@@ -154,8 +154,9 @@
                                     <div class="grid-item fw-800 center" style="text-align:left;">Type of Cavity</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
+                                    @Html.DropDownListFor(m => m._ViewSearchData.v_TypeofCavity, (SelectList)ViewBag.TypeofCavity, "กรุณาเลือก", new { @class = "form-control", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:12px" })
 
-                                    <input type="text" class="form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_TypeofCavity">
+                                    @*<input type="text" class="form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_TypeofCavity">*@
 
                                 </div>
                                 <div class="col-5 " style="">
@@ -172,7 +173,7 @@
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
 
-                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueFrom">
+                                    <input type="text" class="input-with-image Searchdatepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueFrom">
 
                                 </div>
                                 <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7;">
@@ -180,7 +181,7 @@
                                     <div class="grid-item fw-800 center" style="text-align:left;">Issue/Date (To)</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueTo">
+                                    <input type="text" class="input-with-image Searchdatepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueTo">
                                 </div>
                                 <div class="col-5 " style="">
 

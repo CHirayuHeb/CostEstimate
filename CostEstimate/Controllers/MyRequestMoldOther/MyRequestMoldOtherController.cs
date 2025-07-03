@@ -1,0 +1,45 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using CostEstimate.Models.Common;
+using CostEstimate.Models.DBConnect;
+using CostEstimate.Models.MyRequest;
+using CostEstimate.Models.Table.HRMS;
+using CostEstimate.Models.Table.LAMP;
+using CostEstimate.Models.Table.MK;
+using Microsoft.AspNetCore.Mvc.Rendering;
+namespace CostEstimate.Controllers.MyRequestMoldOther
+{
+    public class MyRequestMoldOtherController : Controller
+    {
+        private LAMP _LAMP;
+        private HRMS _HRMS;
+        private IT _IT;
+        private MK _MK;
+        private MOLD _MOLD;
+        private CacheSettingController _Cache;
+        private FunctionsController _callFunc;
+
+        public MyRequestMoldOtherController(LAMP lamp, HRMS hrms, IT it, MK mk, MOLD mold, CacheSettingController cacheController, FunctionsController callfunction)
+        {
+            _LAMP = lamp;
+            _HRMS = hrms;
+            _IT = it;
+            _MK = mk;
+            _MOLD = mold;
+            _Cache = cacheController;
+            _callFunc = callfunction;
+        }
+
+        [Authorize("Checked")]
+        public IActionResult Index(Class @class)
+        {
+            return View(@class);
+        }
+    }
+}

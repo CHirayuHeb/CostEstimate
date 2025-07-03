@@ -62,12 +62,27 @@ namespace CostEstimate.Controllers.SearchMold
 
                 @class._ListViewceMastModifyRequest = _MK._ViewceMastModifyRequest.OrderByDescending(x => x.mfCENo).ToList();
 
-                List<string> _listTypeofCavity = new List<string>{
-                                            "CAVITIES(R/L =1 Set) x 2MOLD",
-                                            "CAVITIES(R/L =1 Set)",
-                                            "CAVITIES",
-                                            "CAVITY x 2 MOLD",
-                                            "CAVITY"};
+                @class._ListViewceMastModifyRequest.ForEach(item =>
+                {
+                    var day = item.mfIssueDate.Substring(0, 2);
+                    var month = item.mfIssueDate.Substring(3, 2);
+                    var year = item.mfIssueDate.Substring(6, 4);
+
+                    item.mfIssueDate = $"{year}/{month}/{day}";
+                });
+
+
+                //List<string> _listTypeofCavity1 = _MK._ViewceMastType.Where(x=>x.mtProgram == "MoldModify" && x.mtType.ToLower.Contains("cavity") )
+
+                //List<string> _listTypeofCavity = _MK._ViewceMastType.Where(x => x.mtType.Contains("Cavity") && x.mtProgram.Contains("MoldModify")).Select(x => x.mtName).ToList();
+                List<string> _listTypeofCavity = _MK._ViewceMastType.Where(x => x.mtType.Contains("Cavity") && x.mtProgram.Contains("MoldModify")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+
+                //List<string> _listTypeofCavity = new List<string>{
+                //                            "CAVITIES(R/L =1 Set) x 2MOLD",
+                //                            "CAVITIES(R/L =1 Set)",
+                //                            "CAVITIES",
+                //                            "CAVITY x 2 MOLD",
+                //                            "CAVITY"};
                 SelectList _TypeofCavity = new SelectList(_listTypeofCavity);
                 ViewBag.TypeofCavity = _TypeofCavity;
 

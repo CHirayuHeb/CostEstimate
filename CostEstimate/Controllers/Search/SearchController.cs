@@ -23,7 +23,7 @@ using System.Globalization;
 
 
 using PagedList;
-using System.Globalization;
+//using System.Globalization;
 
 namespace CostEstimate.Controllers.Search
 {
@@ -54,6 +54,9 @@ namespace CostEstimate.Controllers.Search
         {
             try
             {
+                List<string> _listTypeofCavity = _MK._ViewceMastType.Where(x => x.mtType.Contains("Cavity") && x.mtProgram.Contains("SubMaker")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+                SelectList _TypeofCavity = new SelectList(_listTypeofCavity);
+                ViewBag.TypeofCavity = _TypeofCavity;
 
                 //int pageSize = 10; // จำนวนรายการที่จะแสดงต่อหน้า
                 //int pageNumber = (page ?? 1); // หน้าเริ่มต้นคือหน้า 1 ถ้าไม่มีการระบุ
@@ -62,11 +65,21 @@ namespace CostEstimate.Controllers.Search
                 SelectList formStatus = new SelectList(_ViewceMastFlowApprove.Select(s => s.mfSubject).Distinct());
                 ViewBag.vbformStatus = formStatus;
 
-                @class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.OrderByDescending(x =>  x.smDocumentNo).ToList();
+                @class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.OrderByDescending(x => x.smDocumentNo).ToList();
 
-    //            @class._ListceMastSubMakerRequest =  _MK._ViewceMastSubMakerRequest
-    //.OrderByDescending(x => DateTime.ParseExact(x.smIssueDate, "dd/MM/yyyy", CultureInfo.InvariantCulture))
-    //.ToList();
+                @class._ListceMastSubMakerRequest.ForEach(item =>
+                {
+                    var day = item.smIssueDate.Substring(0, 2);
+                    var month = item.smIssueDate.Substring(3, 2);
+                    var year = item.smIssueDate.Substring(6, 4);
+
+                    item.smIssueDate = year + "/" + month + "/" + day;
+                });
+
+
+                //            @class._ListceMastSubMakerRequest =  _MK._ViewceMastSubMakerRequest
+                //.OrderByDescending(x => DateTime.ParseExact(x.smIssueDate, "dd/MM/yyyy", CultureInfo.InvariantCulture))
+                //.ToList();
                 if (@class._ViewSearchData != null)
                 {
                     if (@class._ViewSearchData.v_OrderNo != null && @class._ViewSearchData.v_OrderNo != "")
@@ -143,12 +156,18 @@ namespace CostEstimate.Controllers.Search
 
                     //date issue
                     //date resuest
+                    //var format = "yyyy/MM/dd";
+                    //var culture = CultureInfo.InvariantCulture;
                     if (@class._ViewSearchData.v_DateIssueFrom != null && @class._ViewSearchData.v_DateIssueFrom != "")
                     {
+                        // @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x =>DateTime.ParseExact(x.smIssueDate, format, culture) >=DateTime.ParseExact(@class._ViewSearchData.v_DateIssueFrom, format, culture)).ToList();
+
                         @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smIssueDate) >= DateTime.Parse(@class._ViewSearchData.v_DateIssueFrom)).ToList();
                     }
                     if (@class._ViewSearchData.v_DateIssueTo != null && @class._ViewSearchData.v_DateIssueTo != "")
                     {
+                        //@class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.ParseExact(x.smIssueDate, format, culture) <= DateTime.ParseExact(@class._ViewSearchData.v_DateIssueTo, format, culture)).ToList();
+
                         @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smIssueDate) <= DateTime.Parse(@class._ViewSearchData.v_DateIssueTo)).ToList();
                     }
 

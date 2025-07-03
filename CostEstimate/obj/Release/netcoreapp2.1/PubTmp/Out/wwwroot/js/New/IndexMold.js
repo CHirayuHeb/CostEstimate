@@ -50,20 +50,14 @@ $("#btnfileMold").click(function () {
 
 $("#i_NewMold_Type").on("click", function () {
     const selectedValue = $(this).val();
-    console.log("Selected value:", selectedValue);
+   // console.log("Selected value:", selectedValue);
 
     // ตัวอย่างเช็กว่าเลือก "กรุณาเลือก" หรือยัง
-    if (selectedValue && selectedValue.toLowerCase().includes("claim")) {
-
-        //- แต่ถ้าเลือกงาน CLAIM MAKER
-        //ใช้คูณ 1.00
-        console.log("✅ เลือก claim แล้วเด้อ!");
-        $("#i_NewMoldRateUnit").val("1.0");
-    }
-    else {
+    //console.log("indexMold.js ✅ เลือก selectedValue แล้วเด้อ!  = " + selectedValue);
+    if (selectedValue.toLowerCase().includes("mold")) {
         const input = document.querySelector('#tbDetailMoldProcessDetail input.WT_Man.W\\.');
         const value = input ? input.value : null;
-        console.log("#tbDetailMoldProcessDetail tr.GM\\. input#WT_Man\\ W\\. : == " + value);
+        //console.log("#tbDetailMoldProcessDetail tr.GM\\. input#WT_Man\\ W\\. : == " + value);
 
         if (value > 0) {
             $("#i_NewMoldRateUnit").val("1.15");
@@ -72,12 +66,44 @@ $("#i_NewMold_Type").on("click", function () {
             $("#i_NewMoldRateUnit").val("1.10");
         }
 
+
+    }
+    else {
+        //- แต่ถ้าเลือกงาน CLAIM MAKER
+        //ใช้คูณ 1.00
+        //console.log("✅ เลือก claim แล้วเด้อ!");
+        $("#i_NewMoldRateUnit").val("1.0");
         //สำหรับงานที่ถูกเลือกเป็น MODIFICATION
         //    - ถ้ามีการใส่ชั่วโมงงานที่ช่อง W จะใช้ตัวคูณที่ 1.15
         //    - ถ้าไม่มีชั่วโมงงานที่ช่อง W จะใช้ตัวคูณ 1.10
 
     }
-  FuntionTotalProCost();
+
+    //if (selectedValue && selectedValue.toLowerCase().includes("claim")) {
+
+    //    //- แต่ถ้าเลือกงาน CLAIM MAKER
+    //    //ใช้คูณ 1.00
+    //    console.log("✅ เลือก claim แล้วเด้อ!");
+    //    $("#i_NewMoldRateUnit").val("1.0");
+    //}
+    //else {
+    //    const input = document.querySelector('#tbDetailMoldProcessDetail input.WT_Man.W\\.');
+    //    const value = input ? input.value : null;
+    //    console.log("#tbDetailMoldProcessDetail tr.GM\\. input#WT_Man\\ W\\. : == " + value);
+
+    //    if (value > 0) {
+    //        $("#i_NewMoldRateUnit").val("1.15");
+    //    }
+    //    else {
+    //        $("#i_NewMoldRateUnit").val("1.10");
+    //    }
+
+    //    //สำหรับงานที่ถูกเลือกเป็น MODIFICATION
+    //    //    - ถ้ามีการใส่ชั่วโมงงานที่ช่อง W จะใช้ตัวคูณที่ 1.15
+    //    //    - ถ้าไม่มีชั่วโมงงานที่ช่อง W จะใช้ตัวคูณ 1.10
+
+    //}
+    FuntionTotalProCost();
 });
 // });
 

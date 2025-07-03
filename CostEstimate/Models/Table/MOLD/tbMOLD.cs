@@ -36,6 +36,10 @@ namespace CostEstimate.Models.Table.MOLD
         public double? LGMkPrice { get; set; }
         public double? LGCostResult { get; set; }
 
+        public string LGIcsName { get; set; }
+        public string LGPart { get; set; }
+
+
 
 
     }

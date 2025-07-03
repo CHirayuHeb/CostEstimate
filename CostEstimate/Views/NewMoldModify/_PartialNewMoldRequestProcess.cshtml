@@ -173,7 +173,7 @@
 
                             </td>
                             <td style="text-align:left" colspan="2"><input class="form-control center " id="i_MoldTotalWorkingTime" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly value="0" /></td>
-                            <td style="text-align:left;" colspan="6"></td>
+                            <td style="@(_Permission.ToUpper() != _admin ? "display: none;text-align:left;" : "text-align:left;")" colspan="6"></td>
                         </tr>
 
                     }
@@ -380,28 +380,54 @@
 
         //add for sumary
         const selectedValue = $("#i_NewMold_Type").val();
-        if (selectedValue && selectedValue.toLowerCase().includes("claim")) {
-            //- แต่ถ้าเลือกงาน CLAIM MAKER
-            //ใช้คูณ 1.00
-            $("#i_NewMoldRateUnit").val("1.0");
-        } else {
-
+        if ( selectedValue.toLowerCase().includes("mold")) {
             const input = document.querySelector('#tbDetailMoldProcessDetail input.WT_Man.W\\.');
             const value = input ? input.value : null;
-            //console.log("#tbDetailMoldProcessDetail tr.GM\\. input#WT_Man\\ W\\. : == " + value);
 
             if (value > 0) {
+               // console.log("เลือก Mold value > 0   = " + selectedValue);
                 $("#i_NewMoldRateUnit").val("1.15");
             }
             else {
+               // console.log("เลือก Mold value < 0   = " + selectedValue);
                 $("#i_NewMoldRateUnit").val("1.10");
             }
+
+        } else {
+           // console.log("เลือก Not Mold  = " + selectedValue);
+            $("#i_NewMoldRateUnit").val("1.0");
 
             //สำหรับงานที่ถูกเลือกเป็น MODIFICATION
             //    - ถ้ามีการใส่ชั่วโมงงานที่ช่อง W จะใช้ตัวคูณที่ 1.15
             //    - ถ้าไม่มีชั่วโมงงานที่ช่อง W จะใช้ตัวคูณ 1.10
 
         }
+
+
+
+
+        //const selectedValue = $("#i_NewMold_Type").val();
+        //if (selectedValue && selectedValue.toLowerCase().includes("claim")) {
+        //    //- แต่ถ้าเลือกงาน CLAIM MAKER
+        //    //ใช้คูณ 1.00
+        //    $("#i_NewMoldRateUnit").val("1.0");
+        //} else {
+
+        //    const input = document.querySelector('#tbDetailMoldProcessDetail input.WT_Man.W\\.');
+        //    const value = input ? input.value : null;
+          
+        //    if (value > 0) {
+        //        $("#i_NewMoldRateUnit").val("1.15");
+        //    }
+        //    else {
+        //        $("#i_NewMoldRateUnit").val("1.10");
+        //    }
+
+        //    //สำหรับงานที่ถูกเลือกเป็น MODIFICATION
+        //    //    - ถ้ามีการใส่ชั่วโมงงานที่ช่อง W จะใช้ตัวคูณที่ 1.15
+        //    //    - ถ้าไม่มีชั่วโมงงานที่ช่อง W จะใช้ตัวคูณ 1.10
+
+        //}
 
 
         const dpInput = document.querySelector('#tbDetailMoldProcessDetail input.DP_Cost.CAD-M\\.');
@@ -411,9 +437,9 @@
         const vdpInput = dpInput ? dpInput.value : null;
         const vmeInput = meInput ? meInput.value : null;
         const vlabourInput = labourInput ? labourInput.value : null;
-        console.log("vdpInput" + vdpInput);
-        console.log("vmeInput" + vmeInput);
-        console.log("vlabourInput" + vlabourInput);
+        //console.log("vdpInput" + vdpInput);
+        //console.log("vmeInput" + vmeInput);
+        //console.log("vlabourInput" + vlabourInput);
 
 
         $("#i_NewMoldLaborCost").val(parseFloat($("#i_MoldTotalPocessLabour_Cost").val()).toFixed(2));
@@ -916,15 +942,15 @@
         let sumWT_Auto_NC = document.querySelector('[id="dsWT_Auto NC."]') ? document.querySelector('[id="dsWT_Auto NC."]').value : 0;
         let sumWT_auto_Man = parseFloat(sumWT_Man_NC) + parseFloat(sumWT_Auto_NC);
 
-        console.log("sumWT_Man_NC" + sumWT_Man_NC);
-        console.log("sumWT_Auto_NC" + sumWT_Auto_NC);
-        console.log("vEdmCA" + vEdmCA);
-        console.log("vEdmCO" + vEdmCO);
-        console.log("vWE" + vWE);
-        console.log("sumF18_F20 " + sumF18_F20);
+        //console.log("sumWT_Man_NC" + sumWT_Man_NC);
+        //console.log("sumWT_Auto_NC" + sumWT_Auto_NC);
+        //console.log("vEdmCA" + vEdmCA);
+        //console.log("vEdmCO" + vEdmCO);
+        //console.log("vWE" + vWE);
+        //console.log("sumF18_F20 " + sumF18_F20);
 
         const sumTool = parseFloat((sumWT_auto_Man - parseFloat(sumWT_Man_NC) - parseFloat(sumF18_F20)) * 100).toFixed(2);
-        console.log("sum Tool :  " + sumTool);
+       // console.log("sum Tool :  " + sumTool);
         $("#i_NewMold_MTTool").val(sumTool); // เคลียร์ค่า
 
     }
@@ -942,7 +968,7 @@
             });
         }
 
-        console.log('Total:', sum);
+       // console.log('Total:', sum);
         const mtToolValue = parseFloat($("#i_NewMold_MTTool").val()) || 0;
         const total = mtToolValue + sum;
 

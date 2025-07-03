@@ -128,26 +128,48 @@
         <div class="row" style="height:170px">
             <div class="col-100">
                 <div class="row" style="margin-bottom:10px">
-                    <div class="col-40">
+                    <div class="col-20">
                         <span style="font-size:14px; text-decoration-line: underline;">
                             Mold No. & Name :
                         </span>
                     </div>
-                    <div class="col-60 left">
-                        <span style="font-size:21px;padding:0.5px;">@Html.DisplayFor(model => model._ViewceMastModifyRequest.mfMoldNoOrMoldName)</span>
-                    </div>
-                    @*<div class="col-10">
+                    <div class="col-55" style="text-align: center;">
+                   
 
-                        </div>*@
+
+
+                        @{
+                            var vMoldName = Model._ViewceMastModifyRequest.mfMoldNoOrMoldName;
+                            var vMold = "";
+
+                            if (Model._ViewceMastModifyRequest.mfIcsname == null || Model._ViewceMastModifyRequest.mfIcsname == "")
+                            {
+                                vMold = vMoldName;
+                            }
+                            else
+                            {
+                                vMold = Model._ViewceMastModifyRequest.mfIcsname + "<br> (" + Model._ViewceMastModifyRequest.mfMoldNoOrMoldName + ")";
+                            }
+
+
+                           // var vMoldicsMoldNoName = Model._ViewceMastModifyRequest.mfIcsname + "<br> (" + Model._ViewceMastModifyRequest.mfMoldNoOrMoldName + ")";
+                        }
+                        <span style="font-size:28px;padding:0.5px;">@Html.Raw(vMold)</span>
+                        @*<span style="font-size:21px;padding:0.5px;">@vMoldicsMoldNoName</span>*@
+
+                    </div>
+                    <div class="col-25">
+
+                        </div>
                 </div>
 
                 <div class="row" style="margin-bottom:10px">
-                    <div class="col-40">
+                    <div class="col-20">
                         <span style="font-size:14px; text-decoration-line: underline;">
                             Numbers  of  cavity :
                         </span>
                     </div>
-                    <div class="col-30 center">
+                    <div class="col-50 center">
                         <span style="font-size:20px;padding:0.5px">@Html.DisplayFor(model => model._ViewceMastModifyRequest.mfCavityNo)</span>
                     </div>
                     <div class="col-30 " style="align-items:flex-end">
@@ -158,12 +180,12 @@
                 </div>
 
                 <div class="row" style="margin-bottom:10px">
-                    <div class="col-40">
+                    <div class="col-20">
                         <span style="font-size:14px; text-decoration-line: underline;">
                             Amount & quantity :
                         </span>
                     </div>
-                    <div class="col-30 center">
+                    <div class="col-50 center">
                         @{
                             var vAmount = @Model._ViewceMastModifyRequest.mfRoundupotalESTCost;
 
@@ -226,7 +248,7 @@
 
                     @*@Html.TextAreaFor(model => model._ViewceMastModifyRequest.mfDetail, new { @class = "font-Arial", rows = 8, @readonly = "readonly", @style = "border: none; resize: none; background: transparent; width: 100%;font-size:12px;margin-left:20px;field-sizing: content;" })*@
                     @{
-                        var combinedText = Model._ViewceMastModifyRequest.mfDetail + " \n (REQUEST BY: " + Model._ViewceMastModifyRequest.mfIssueDept + ").";
+                        var combinedText = Model._ViewceMastModifyRequest.mfDetail + "\n(REQUEST BY: " + Model._ViewceMastModifyRequest.mfIssueDept + ").";
                     }
 
                     @Html.TextArea("combinedText", combinedText, new {
@@ -328,10 +350,16 @@
                 <span style="font-size:12px;padding:0.5px">@Html.DisplayFor(model => model._ViewOperaterCP.IssueBy)</span>
             </div>
             <div class="col-30 center" style="text-decoration: underline; border-bottom: 1px solid black;nderline;padding-bottom: 1px;">
-                @if (@Model._ViewOperaterCP.empIssueBy == "004168")
+                @{
+                    var empOP = Model._ViewOperaterCP.empIssueBy;
+                }
+
+                <img src="~/images/@(empOP).png" style="width:100px;height:20px;" onerror="this.style.display='none';" />
+
+                @*@if (@Model._ViewOperaterCP.empIssueBy == "004168")
                 {
                     <img src="~/images/004168.png" style="width:100px;height:20px;" />
-                }
+                }*@
 
                 @*<img src="~/images/@(Model._ViewOperaterCP.empIssueBy + ".png")" style="width:100px;height:30px;" />*@
             </div>
@@ -348,7 +376,14 @@
             <div class="col-30 center" style="text-decoration: underline; border-bottom: 1px solid black;nderline;padding-bottom: 1px;">
 
                 @*<img src="~/images/@(Model._ViewOperaterCP.empCheckedBy + ".png")" style="width:100px;height:30px;" />*@
-                @if (@Model._ViewOperaterCP.empCheckedByTL == "002429")
+                @{
+                    var empTL = Model._ViewOperaterCP.empCheckedByTL;
+                }
+
+                <img src="~/images/@(empTL).png" style="width:100px;height:20px;" onerror="this.style.display='none';" />
+
+
+                @*@if (@Model._ViewOperaterCP.empCheckedByTL == "002429")
                 {
                     <img src="~/images/002429.png" style="width:100px;height:20px;" />
                 }
@@ -371,10 +406,9 @@
                 else if (@Model._ViewOperaterCP.empCheckedByTL == "001578")
                 {
                     <img src="~/images/001578.png" style="width:160px;height:30px;" />
-                }
+                }*@
 
-                @*<img src="~/images/002429.png" style="width:100px;height:20px;" />
-                    <img src="~/images/002989.png" style="width:100px;height:20px;" />*@
+               
             </div>
         </div>
         <br />
@@ -388,7 +422,16 @@
             </div>
             <div class="col-30 center" style="text-decoration: underline; border-bottom: 1px solid black;nderline;padding-bottom: 1px;">
                 @*<img src="~/images/@(Model._ViewOperaterCP.empCheckedBy + ".png")" style="width:100px;height:30px;" />*@
-                @if (@Model._ViewOperaterCP.empCheckedByTM == "002429")
+
+                @{
+                    var empTM = Model._ViewOperaterCP.empCheckedByTM;
+                }
+
+                <img src="~/images/@(empTM).png" style="width:100px;height:20px;" onerror="this.style.display='none';" />
+
+
+
+                @*@if (@Model._ViewOperaterCP.empCheckedByTM == "002429")
                 {
                     <img src="~/images/002429.png" style="width:100px;height:20px;" />
                 }
@@ -411,10 +454,10 @@
                 else if (@Model._ViewOperaterCP.empCheckedByTM == "001578")
                 {
                     <img src="~/images/001578.png" style="width:160px;height:30px;" />
-                }
+                }*@
 
                 @*<img src="~/images/002429.png" style="width:100px;height:20px;" />
-                    <img src="~/images/002989.png" style="width:100px;height:20px;" />*@
+        <img src="~/images/002989.png" style="width:100px;height:20px;" />*@
             </div>
         </div>
         <br />
@@ -427,7 +470,15 @@
                 <span style="font-size:12px;padding:0.5px">@Html.DisplayFor(model => model._ViewOperaterCP.ApproveBy)</span>
             </div>
             <div class="col-30 center" style="text-decoration: underline; border-bottom: 1px solid black;nderline;padding-bottom: 1px;">
-                @if (@Model._ViewOperaterCP.empApproveBy == "009197")
+
+
+                @{
+                    //var empAP = Model._ViewOperaterCP.empApproveBy;
+                    var empAP = Model._ViewOperaterCP.empApproveBy;
+                }
+
+                <img src="~/images/@(empAP).png" style="width:100px;height:20px;"  onerror="this.style.display='none';" />
+                @*@if (@Model._ViewOperaterCP.empApproveBy == "009197")
                 {
                     <img src="~/images/009197.png" style="width:100px;height:20px;" />
                 }
@@ -450,11 +501,11 @@
                 else if (@Model._ViewOperaterCP.empApproveBy == "002989")
                 {
                     <img src="~/images/002989.png" style="width:100px;height:20px;" />
-                }
+                }*@
 
                 @*<img src="~/images/@(Model._ViewOperaterCP.empApproveBy + ".png")" style="width:100px;height:30px;" />*@
                 @*<img src="~/images/009197.png" style="width:100px;height:20px;" />
-                    <img src="~/images/001578.png" style="width:160px;height:30px;" />*@
+        <img src="~/images/001578.png" style="width:160px;height:30px;" />*@
             </div>
         </div>
     </div>

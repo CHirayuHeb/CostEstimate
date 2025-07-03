@@ -194,7 +194,7 @@ function GoSideMenu(controller) {
 
 
 function PositionY(menu) {
-    if (menu.search("New") > -1 && menu.search("NewMoldModify") == -1) {
+    if (menu.search("New") > -1 && menu.search("NewMoldModify") == -1 && menu.search("NewMoldOther") == -1) {
         menu = "New";
     }
     let PY = 0;
@@ -209,6 +209,14 @@ function PositionY(menu) {
             opacity = "opacity-dot-7";
             break;
         case "Search":
+            //LoadScript("js/New/Index.js", "NewItem");
+            //LoadScript("js/New/EventMore.js", "EventNewMore");
+            LoadScript("js/Home/Index.js", "Home");
+            PY = "0px";
+            //PY = "52px";
+            opacity = "opacity-dot-3";
+            break;
+        case "SearchMold":
             //LoadScript("js/New/Index.js", "NewItem");
             //LoadScript("js/New/EventMore.js", "EventNewMore");
             LoadScript("js/Home/Index.js", "Home");
@@ -308,6 +316,18 @@ function PositionY(menu) {
             LoadScript("js/Home/Index.js", "Home");
             PY = "265px";
             // PY = "331px";
+            opacity = "opacity-dot-3";
+            break;
+        //Mold Other
+        case "NewMoldOther":
+            //console.log("New:NewMoldModify");
+            LoadScript("js/Home/Index.js", "Home");
+            LoadScript("js/New/IndexMoldOther.js", "New");
+            //LoadScript("js/New/IndexMold.js", "New");
+            LoadScript("js/Home/Hour.js", "EventHomeHour");
+            LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
+            PY = "52px";
+            //PY = "114px";
             opacity = "opacity-dot-3";
             break;
 

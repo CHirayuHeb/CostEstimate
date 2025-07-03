@@ -1,0 +1,30 @@
+﻿@model CostEstimate.Models.Common.Class;
+@{
+    ViewData["Title"] = "MyRequest | ThaiStanley";
+    Layout = "~/Views/Shared/_MenuBar_MoldOther.cshtml";
+}
+@{
+    string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+<link href="~/css/MyRequest/siteMyRequest.css" rel="stylesheet" />
+<link href="~/css/New/mNew.css" rel="stylesheet" />
+
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("MyRequestMoldOther"); } }</script>
+<div class="home-content">
+    <div id="DisplayContent" class="content-box">
+        @using (Html.BeginForm("Index", "MyRequestMoldOther", FormMethod.Post, new { enctype = "multipart/form-data", id = "formMyReqMold" }))
+        {
+            <div class="content-text" style=" margin: auto; padding: 10px; width: 95%;">
+                <h5 class="control-title">คำร้องของฉัน <img src="~/images/request.png" height="35px" width="35px" style="vertical-align:middle" /></h5>
+            </div>
+        }
+
+    </div>
+</div>

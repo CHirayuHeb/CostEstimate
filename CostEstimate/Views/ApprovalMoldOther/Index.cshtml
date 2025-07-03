@@ -1,0 +1,22 @@
+﻿@model CostEstimate.Models.Common.Class;
+@{
+    ViewData["Title"] = "Approval Mold | ThaiStanley";
+    Layout = "~/Views/Shared/_MenuBar_MoldOther.cshtml";
+}
+
+<link href="~/css/MyRequest/siteMyRequest.css" rel="stylesheet" />
+<link href="~/css/New/mNew.css" rel="stylesheet" />
+
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("ApprovalMoldOther"); } }</script>
+<div class="home-content">
+    <div id="DisplayContent" class="content-box">
+        @using (Html.BeginForm("Index", "ApprovalMoldOther", FormMethod.Post, new { enctype = "multipart/form-data", id = "formApprovalMold" }))
+        {
+            <div class="content-text" style=" margin: auto; padding: 10px; width: 95%;">
+                <h5 class="control-title">งานของฉัน <img src="~/images/Approval.png" height="35px" width="35px" style="vertical-align:middle" /></h5>
+
+            </div>
+        }
+    </div>
+</div>

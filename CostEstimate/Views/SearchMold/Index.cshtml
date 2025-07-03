@@ -5,7 +5,9 @@
     Layout = "~/Views/Shared/_MenuBar_mold.cshtml";
 }
 <link href="~/css/Home/siteHome.css" rel="stylesheet" />
-<script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("searchMold"); } }</script>
+
+
+<script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("SearchMold"); } }</script>
 <div class="home-content">
     <div id="DisplayContent" class="content-box">
         <div class="row center">
@@ -88,7 +90,7 @@
                                     <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_CusName">
                                 </div>
                                 <div class="col-20 border1_5brown" style=" display: flex;align-items: center;">
-                                    <div class="grid-item fw-800 center" style="text-align:left;">Mold Name/Mold No.</div>
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Mold No. / Mold Name.</div>
                                 </div>
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
                                     <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_MoldName">
@@ -151,7 +153,7 @@
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
 
-                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueFrom">
+                                    <input type="text" class="input-with-image Searchdatepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueFrom">
 
                                 </div>
                                 <div class="col-20 border1_5brown" style=" display: flex;align-items: center;">
@@ -159,7 +161,7 @@
                                     <div class="grid-item fw-800 center" style="text-align:left;">Issue/Date (To)</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueTo">
+                                    <input type="text" class="input-with-image Searchdatepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueTo">
                                 </div>
                                 <div class="col-5 " style="">
 
@@ -217,9 +219,9 @@
                     @*<input type="button" style="font-size:18px" value="&#x1F50E;" onclick="GoNewRequest('@item.srRequestBy','Edit','@Url.Action("Index", "RequestForm")','@item.srFrom','@item.srType','@item.srSubject','@item.srNo')">*@
                     @*<input type="button" style="font-size:18px" value="New Sub Maker Request Sheet " class=" btn-login">*@
                     @*<button class="button" style="@( (@_UserId == @Model._ViewsvsServiceRequest.srRequestBy || @_UserId == @Model._ViewsvsServiceRequest.srApproveEmpcode) && Model._ViewsvsServiceRequest.srStep >2 && Model._ViewsvsServiceRequest.srStep < 5 ? "width:100px; " : "display:none;")" onclick="savesubmit('@Url.Action("SavePageForm","RequestForm")')">
-                        <img src="~/images/save_1.png" style="width:30px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                        บันทึก
-                    </button>*@
+                            <img src="~/images/save_1.png" style="width:30px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                            บันทึก
+                        </button>*@
 
 
                 </div>
@@ -240,46 +242,46 @@
                         @*<div class="pagination" style="text-align:right">
 
 
-                            @if (ViewBag.CurrentPage > 1)
-                            {
-                                <a href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, @class = ViewData.Model })" class="prev">&laquo; Previous</a>
-                            }
+                                @if (ViewBag.CurrentPage > 1)
+                                {
+                                    <a href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, @class = ViewData.Model })" class="prev">&laquo; Previous</a>
+                                }
 
-                            @for (int i = ViewBag.StartPage; i <= ViewBag.EndPage; i++)
-                            {
-                                <a href="@Url.Action("Index", new { page = i, @class = ViewData.Model })" class="@(i == ViewBag.CurrentPage ? "active" : "")">@i</a>
-                            }
+                                @for (int i = ViewBag.StartPage; i <= ViewBag.EndPage; i++)
+                                {
+                                    <a href="@Url.Action("Index", new { page = i, @class = ViewData.Model })" class="@(i == ViewBag.CurrentPage ? "active" : "")">@i</a>
+                                }
 
-                            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
-                            {
-                                <a href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1, @class = ViewData.Model })" class="next">Next &raquo;</a>
-                            }
+                                @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                                {
+                                    <a href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1, @class = ViewData.Model })" class="next">Next &raquo;</a>
+                                }
 
 
-                        </div>*@
+                            </div>*@
                     </div>
                 </div>
 
 
                 @*<div class="grid-item fw-800" style="text-align:left;padding-left:10px">
-                    <label style="font-size:14px">
-                        จำนวน
-                        @if (Model._ListceMastSubMakerRequest != null)
-                        {
-                            <span style="color:royalblue">
-                                @Model._ListceMastSubMakerRequest.Count
-                            </span>
-                        }
-                        else
-                        {
-                            <span style="color:royalblue">
-                                0
-                            </span>
-                        }
-                        แถว
+                        <label style="font-size:14px">
+                            จำนวน
+                            @if (Model._ListceMastSubMakerRequest != null)
+                            {
+                                <span style="color:royalblue">
+                                    @Model._ListceMastSubMakerRequest.Count
+                                </span>
+                            }
+                            else
+                            {
+                                <span style="color:royalblue">
+                                    0
+                                </span>
+                            }
+                            แถว
 
-                    </label>
-                </div>*@
+                        </label>
+                    </div>*@
                 <div class="row center" style="background-color:aliceblue">
                     <div class="col-5 " style="">
 
@@ -301,12 +303,12 @@
                                             <th style="text-align:center">Model Name</th>
                                             <th style="text-align:center">Function</th>
                                             <th style="text-align:center">Mold Mass​</th>
-                                            <th style="text-align:center">Mold Name/Mold No.​</th>
+                                            <th style="text-align:center">Mold No/Mold Name.​</th>
                                             <th style="text-align:center">Type Cavity</th>
                                             <th style="text-align:center">Lead Time</th>
                                             <th style="text-align:center">Issue By ,Date</th>
                                             @*<th style="text-align:center">Material Out/Date​</th>
-                                            <th style="text-align:center">Delivery/Date​</th>*@
+                                                <th style="text-align:center">Delivery/Date​</th>*@
                                             <th style="text-align:center">Waiting Approve​</th>
                                             <th style="text-align:center">Status​</th>
                                             <th style="text-align:center">Action​</th>
@@ -336,7 +338,7 @@
                                                 <td style="text-align:center">@item.mfLeadTime</td>
                                                 <td style="text-align:center">@item.mfEmpCodeRequest @item.mfNameRequest @item.mfIssueDate</td>
                                                 @*<td style="text-align:center">@item.smMatOutDate @item.smMatOutTime</td>
-                                                <td style="text-align:center">@item.smDeliveryDate   @item.smDeliveryTime</td>*@
+                                                    <td style="text-align:center">@item.smDeliveryDate   @item.smDeliveryTime</td>*@
                                                 <td style="text-align:center">
                                                     @if (@item.mfStep < 6)
                                                     {
@@ -364,7 +366,7 @@
                                                     else if (@item.mfStep == 5)
                                                     { <img src="~/images/6.png" alt="icon" style="height: 23px; width: 23px;" />}
                                                     @*else if (@item.mfStep == 6)
-                                                    { <img src="~/images/7.png" alt="icon" style="height: 23px; width: 23px;" />}*@
+                                                        { <img src="~/images/7.png" alt="icon" style="height: 23px; width: 23px;" />}*@
                                                     else if (@item.mfStep == 6)
                                                     { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
 
@@ -373,7 +375,8 @@
                                                 <td style="text-align:center">
                                                     @if (@item.mfStep == 6)
                                                     {
-                                                        <img src="~/images/revision.png" alt="icon" onclick="GoNewMoldRevision('@item.mfCENo','@item.mfRevision')" class="img" />
+                                                        <img src="~/images/revision.png" alt="icon" onclick="GoNewMoldRevision('@item.mfCENo','@item.mfRevision')" class="imgM" />
+
                                                     }
                                                     <input type="button" style="font-size:18px" value="&#x1F50E;" onclick="GoNewMoldRequest('@item.mfCENo')">
                                                 </td>
@@ -399,5 +402,5 @@
             </div>
         }
     </div>
-  
+
 </div>

@@ -142,15 +142,10 @@
 
         //add for sumary
         const selectedValue = $("#i_NewMold_Type").val();
-        if (selectedValue && selectedValue.toLowerCase().includes("claim")) {
-            //- แต่ถ้าเลือกงาน CLAIM MAKER
-            //ใช้คูณ 1.00
-            $("#i_NewMoldRateUnit").val("1.0");
-        } else {
-
+        if (selectedValue && selectedValue.toLowerCase().includes("mold")) {
             const input = document.querySelector('#tbDetailMoldProcessDetail input.WT_Man.W\\.');
             const value = input ? input.value : null;
-           // console.log("#tbDetailMoldProcessDetail tr.GM\\. input#WT_Man\\ W\\. : == " + value);
+            // console.log("#tbDetailMoldProcessDetail tr.GM\\. input#WT_Man\\ W\\. : == " + value);
 
             if (value > 0) {
                 $("#i_NewMoldRateUnit").val("1.15");
@@ -159,11 +154,41 @@
                 $("#i_NewMoldRateUnit").val("1.10");
             }
 
+          
+        } else {
+
+            //- แต่ถ้าเลือกงาน CLAIM MAKER
+            //ใช้คูณ 1.00
+            $("#i_NewMoldRateUnit").val("1.0");
+
             //สำหรับงานที่ถูกเลือกเป็น MODIFICATION
             //    - ถ้ามีการใส่ชั่วโมงงานที่ช่อง W จะใช้ตัวคูณที่ 1.15
             //    - ถ้าไม่มีชั่วโมงงานที่ช่อง W จะใช้ตัวคูณ 1.10
 
         }
+
+        //if (selectedValue && selectedValue.toLowerCase().includes("claim")) {
+        //    //- แต่ถ้าเลือกงาน CLAIM MAKER
+        //    //ใช้คูณ 1.00
+        //    $("#i_NewMoldRateUnit").val("1.0");
+        //} else {
+
+        //    const input = document.querySelector('#tbDetailMoldProcessDetail input.WT_Man.W\\.');
+        //    const value = input ? input.value : null;
+        //   // console.log("#tbDetailMoldProcessDetail tr.GM\\. input#WT_Man\\ W\\. : == " + value);
+
+        //    if (value > 0) {
+        //        $("#i_NewMoldRateUnit").val("1.15");
+        //    }
+        //    else {
+        //        $("#i_NewMoldRateUnit").val("1.10");
+        //    }
+
+        //    //สำหรับงานที่ถูกเลือกเป็น MODIFICATION
+        //    //    - ถ้ามีการใส่ชั่วโมงงานที่ช่อง W จะใช้ตัวคูณที่ 1.15
+        //    //    - ถ้าไม่มีชั่วโมงงานที่ช่อง W จะใช้ตัวคูณ 1.10
+
+        //}
 
 
         const dpInput = document.querySelector('#tbDetailMoldProcessDetail input.DP_Cost.CAD-M\\.');
@@ -173,9 +198,9 @@
         const vdpInput = dpInput ? dpInput.value : null;
         const vmeInput = meInput ? meInput.value : null;
         const vlabourInput = labourInput ? labourInput.value : null;
-        console.log("vdpInput" + vdpInput);
-        console.log("vmeInput" + vmeInput);
-        console.log("vlabourInput" + vlabourInput);
+        //console.log("vdpInput" + vdpInput);
+        //console.log("vmeInput" + vmeInput);
+        //console.log("vlabourInput" + vlabourInput);
 
 
         $("#i_NewMoldLaborCost").val(parseFloat($("#i_MoldTotalPocessLabour_Cost").val()).toFixed(2));

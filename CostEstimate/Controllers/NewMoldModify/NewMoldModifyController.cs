@@ -65,26 +65,31 @@ namespace CostEstimate.Controllers.NewMoldModify
                 @class._ViewOperaterCP = new ViewOperaterCP();
                 @class._ViewceMastFlowApprove = new ViewceMastFlowApprove();
 
-                List<string> _listTypeofCavity = new List<string>{
-                                            "CAVITIES(R/L =1 Set) x 2MOLD",
-                                            "CAVITIES(R/L =1 Set)",
-                                            "CAVITIES",
-                                            "CAVITIES x 2 MOLD",
-                                            "CAVITY x 2 MOLD",
-                                            "CAVITY"};
+
+                List<string> _listTypeofCavity = _MK._ViewceMastType.Where(x => x.mtType.Contains("Cavity") && x.mtProgram.Contains("MoldModify")).OrderBy(x=>x.mtName).Select(x => x.mtName).ToList();
+
+                //List<string> _listTypeofCavity = new List<string>{
+                //                            "CAVITIES(R/L =1 Set) x 2MOLD",
+                //                            "CAVITIES(R/L =1 Set)",
+                //                            "CAVITIES",
+                //                            "CAVITIES x 2 MOLD",
+                //                            "CAVITY x 2 MOLD",
+                //                            "CAVITY"};
                 SelectList _TypeofCavity = new SelectList(_listTypeofCavity);
                 ViewBag.TypeofCavity = _TypeofCavity;
 
-                List<string> _listTypeofMODIFICATION = new List<string>{
-                                            "CLAIM SUB MAKER",
-                                            "MOLD MODIFICATION"};
+                List<string> _listTypeofMODIFICATION = _MK._ViewceMastType.Where(x => x.mtType.Contains("Rate") && x.mtProgram.Contains("MoldModify")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+                //List<string> _listTypeofMODIFICATION = new List<string>{
+                //                            "CLAIM SUB MAKER",
+                //                            "MOLD MODIFICATION",
+                //                            "SUB MAKER (CASE MODIFY)"};
                 SelectList _TypeofMODIFICATION = new SelectList(_listTypeofMODIFICATION);
                 ViewBag.TypeofMODIFICATION = _TypeofMODIFICATION;
 
 
-
-                List<string> _listRequestBy = new List<string>{
-                                            "CUSTOMER", "DC", "LAMP","MOLD","NMD","PED"};
+                List<string> _listRequestBy = _MK._ViewceMastType.Where(x => x.mtType.Contains("RequestBy") && x.mtProgram.Contains("MoldModify")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+                //List<string> _listRequestBy = new List<string>{
+                //                            "CUSTOMER", "DC", "LAMP","MOLD","NMD","PED"};
                 SelectList _TypeofRequestBy = new SelectList(_listRequestBy);
                 ViewBag.TypeofRequestBy = _TypeofRequestBy;
                 @class._ViewOperaterCP = new ViewOperaterCP();
@@ -330,11 +335,14 @@ _MOLD._ViewLLLedger
         p.LGLegNo + "" +
         p.LGTypeCode + "|" +
         p.LGCustomer + "|" +
-        p.LGMoldName + "/" + p.LGMoldNo + "|" +
+        p.LGMoldNo + "/" + p.LGMoldName + "|" +
+        //p.LGMoldName + "/" + p.LGMoldNo + "|" +
         "0" + "|" +
         (p.LGEstimateDM ?? 0).ToString("0.##") + "|" +
         (p.LGCostResult ?? 0).ToString("0.##") + "|" +
-        (p.LGMkPrice ?? 0).ToString("0.##")
+        (p.LGMkPrice ?? 0).ToString("0.##") + "|" +
+        (p.LGIcsName ?? "") + "|" +
+        (p.LGPart ?? "-")
     )
     .ToList()
 );
@@ -711,13 +719,15 @@ _MOLD._ViewLLLedger
                 string tbHistory3 = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 2).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 2).Select(x => x.htFrom).FirstOrDefault();
                 string tbHistory3EMPCODE = tbHistory3 == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistory3)).Select(x => x.emEmpcode).FirstOrDefault();
 
+                string tbHistory2 = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 3).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 3).Select(x => x.htFrom).FirstOrDefault();
+                string tbHistory2EMPCODE = tbHistory2 == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistory2)).Select(x => x.emEmpcode).FirstOrDefault();
 
                 string tbHistory5 = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 4).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 4).Select(x => x.htFrom).FirstOrDefault();
                 string tbHistory5EMPCODE = tbHistory5 == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistory5)).Select(x => x.emEmpcode).FirstOrDefault();
 
 
-                // @class._ViewceHistoryApproved.htCC = tbHistory2 + "," + tbHistory3 + "," + tbHistory5 + ",";
-                @class._ViewceHistoryApproved.htCC = tbHistory3 + "," + tbHistory5 + ",";
+                @class._ViewceHistoryApproved.htCC = tbHistory2 + "," + tbHistory3 + "," + tbHistory5 + ",";
+                //@class._ViewceHistoryApproved.htCC = tbHistory3 + "," + tbHistory5 + ",";
 
             }
 
@@ -1331,6 +1341,9 @@ _MOLD._ViewLLLedger
                         _ViewceMastModifyRequest.mfStatus = _smStatus;//@class._ViewceMastModifyRequest.mfStatus;
                         _ViewceMastModifyRequest.mfMtTool = @class._ViewceMastModifyRequest.mfMtTool;
                         _ViewceMastModifyRequest.mfTotalMt = @class._ViewceMastModifyRequest.mfTotalMt;
+
+                        _ViewceMastModifyRequest.mfIcsname = @class._ViewceMastModifyRequest.mfIcsname; //30/06/2025
+
                         _MK._ViewceMastModifyRequest.AddAsync(_ViewceMastModifyRequest);
                         _MK.SaveChanges();
                     }
@@ -1432,6 +1445,9 @@ _MOLD._ViewLLLedger
                             _ViewceMastModifyRequest.mfStatus = _smStatus;//@class._ViewceMastModifyRequest.mfStatus;
                             _ViewceMastModifyRequest.mfMtTool = @class._ViewceMastModifyRequest.mfMtTool;
                             _ViewceMastModifyRequest.mfTotalMt = @class._ViewceMastModifyRequest.mfTotalMt;
+
+                            _ViewceMastModifyRequest.mfIcsname = @class._ViewceMastModifyRequest.mfIcsname; //30/06/2025
+
                             _MK._ViewceMastModifyRequest.Update(_ViewceMastModifyRequest);
                         }
 
@@ -2147,6 +2163,8 @@ _MOLD._ViewLLLedger
                         _ViewceMastModifyRequest.mfStatus = _smStatus;//@class._ViewceMastModifyRequest.mfStatus;
                         _ViewceMastModifyRequest.mfMtTool = @class._ViewceMastModifyRequest.mfMtTool;
                         _ViewceMastModifyRequest.mfTotalMt = @class._ViewceMastModifyRequest.mfTotalMt;
+
+                        _ViewceMastModifyRequest.mfIcsname = @class._ViewceMastModifyRequest.mfIcsname; //30/06/2025
                         _MK._ViewceMastModifyRequest.AddAsync(_ViewceMastModifyRequest);
                         _MK.SaveChanges();
                     }
@@ -2253,6 +2271,8 @@ _MOLD._ViewLLLedger
                             _ViewceMastModifyRequest.mfStatus = _smStatus;//@class._ViewceMastModifyRequest.mfStatus;
                             _ViewceMastModifyRequest.mfMtTool = @class._ViewceMastModifyRequest.mfMtTool;
                             _ViewceMastModifyRequest.mfTotalMt = @class._ViewceMastModifyRequest.mfTotalMt;
+
+                            _ViewceMastModifyRequest.mfIcsname = @class._ViewceMastModifyRequest.mfIcsname; //30/06/2025
                             _MK._ViewceMastModifyRequest.Update(_ViewceMastModifyRequest);
                         }
 

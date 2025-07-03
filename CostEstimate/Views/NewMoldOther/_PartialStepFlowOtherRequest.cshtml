@@ -1,0 +1,115 @@
+﻿@model CostEstimate.Models.Common.Class;
+<div class="card-body" id="FormFlow" style="background-color: unset;padding-top:10px;">
+    <div class="grid-item fw-800 center " style="text-align:left;font-size:15px">Approve and Check step </div>
+
+    <br />
+    <div style="display: flex; justify-content: center;">
+        <ul class="progressbar ">
+            @if (@Model._ListceMastFlowApprove != null && @Model._ViewceMastModifyRequest != null)
+            {
+                @for (int i = 0; i < Model._ListceMastFlowApprove.Count - 1; i++)
+                {
+                    <li class="@(@Model._ViewceMastModifyRequest.mfStep >= i ? "active" : "")">
+                        <span style="@(i==@Model._ViewceMastModifyRequest.mfStep ? "font-size:12.5px;color:#78a820;font-weight: 600":"font-size:11px;color:black;")" class="step-title">@Model._ListceMastFlowApprove[i].mfSubject</span>
+
+                        @*<span style="@(@Model._ViewceMastSubMakerRequest.smStep == 7 && i==7 ? "font-size:11px;color:green;font-weight: 600":"font-size:10px;color:black;")" class="step-title">@Model._ListceMastFlowApprove[i].mfSubject</span>*@
+
+                        @*<span style="font-size:10px;color:black" class="step-title">@Model._ListceMastFlowApprove[i].mfSubject</span>*@
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+
+
+    @*<hr />*@
+</div>
+
+<style>
+
+    .container {
+        width: 100%;
+        margin: auto;
+    }
+
+    .text-msg {
+        margin: 20px 0;
+        display: block;
+        clear: both;
+        text-align: justify;
+    }
+
+    .progressbar {
+        /*margin: 0;
+        padding-left: 5%;
+        counter-reset: step;
+        clear: both;*/
+        display: flex;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        counter-reset: step;
+        width: auto; /* ✅ หรือระบุ max-width ถ้าอยากควบคุม */
+        padding-left: 10%;
+    }
+
+        .progressbar li {
+            list-style-type: none;
+            /*width: 11%;*/
+            /*width: 11%;*/
+            width: 10%;
+            /*width: 11%;*/
+            float: left;
+            font-size: 15px;
+            margin-top: 25px;
+            padding-top: 5px;
+            position: relative;
+            text-align: center;
+            /*text-transform: uppercase;*/
+            color: #7d7d7d;
+            z-index: 5;
+            margin: 9px;
+        }
+
+            .progressbar li:before {
+                width: 38px;
+                height: 38px;
+                content: counter(step);
+                counter-increment: step;
+                line-height: 30px;
+                border: 2px solid #7d7d7d;
+                display: block;
+                text-align: center;
+                margin: 0 auto 10px auto;
+                border-radius: 50%;
+                background-color: white;
+            }
+
+            .progressbar li:after {
+                width: 100%;
+                height: 2px;
+                content: '';
+                position: absolute;
+                background-color: #7d7d7d;
+                border: 1.5px solid;
+                top: 24px;
+                left: -50%;
+                z-index: -1;
+            }
+
+            .progressbar li:first-child:after {
+                content: none;
+            }
+
+            .progressbar li.active {
+                color: #9bbd5e; /*#0dcaf0;*/
+            }
+
+                .progressbar li.active:before {
+                    border-color: #9bbd5e; /*#0dcaf0;*/
+                }
+
+                .progressbar li.active + li:after {
+                    background-color: #9bbd5e; /*#0dcaf0;*/
+                }
+</style>

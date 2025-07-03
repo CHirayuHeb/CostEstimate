@@ -110,7 +110,7 @@ namespace CostEstimate.Models.Common
 
         public GroupedResult _GroupedResult { get; set; }
         public List<GroupedResult> _ListGroupedResult { get; set; }
-     
+
 
         public ProcessResult _ProcessResult { get; set; }
         public List<ProcessResult> _ListProcessResult { get; set; }
@@ -140,7 +140,7 @@ namespace CostEstimate.Models.Common
 
         public ViewceMastHourChage _ViewceMastHourChage { get; set; }
         public List<ViewceMastHourChage> _ListViewceMastHourChage { get; set; }
-        
+
 
 
 
@@ -162,6 +162,11 @@ namespace CostEstimate.Models.Common
 
         public YeartHourChange YeartHourChange { get; set; }
         public List<YeartHourChange> _ListYeartHourChange { get; set; }
+
+
+        public ViewceMastType ViewceMastType { get; set; }
+        public List<ViewceMastType> _ListViewceMastType { get; set; }
+
 
     }
 

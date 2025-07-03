@@ -69,6 +69,9 @@ namespace CostEstimate.Models.DBConnect
 
         public DbSet<ViewceHourChangeEntryMonth> _ViewceHourChangeEntryMonth { get; set; }
         public DbSet<ViewceMastHourChage> _ViewceMastHourChage { get; set; }
+
+        public DbSet<ViewceMastType> _ViewceMastType { get; set; }
+
         
 
         //public DbSet<GroupedResult> _GroupedResult { get; set; }

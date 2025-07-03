@@ -3,7 +3,7 @@
     ViewData["Title"] = "New Mold | ThaiStanley";
     //Layout = "~/Views/Shared/_MenuBar_Mold.cshtml";
     //Layout = "~/Views/Shared/_MenuBar.cshtml";
-    Layout = "~/Views/Shared/_MenuBar_mold.cshtml";
+    Layout = "~/Views/Shared/_MenuBar_Mold.cshtml";
 }
 @{
     string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
@@ -75,9 +75,12 @@
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Reference No.</div>
                                 </div>
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" asp-for="_ViewceMastModifyRequest.mfRefNo" id="i_NewMold_ReferenceNo" readonly="@(@Model._ViewceMastModifyRequest !=null ? (@Model._ViewceMastModifyRequest.mfRefNo != null ? "readonly" : null) : null)" maxlength="20">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" asp-for="_ViewceMastModifyRequest.mfRefNo" id="i_NewMold_ReferenceNo" maxlength="20">
                                     @*<input type="text" class="form-control left text-gray" style=" @(@Model._ViewceMastSubMakerRequest.smOrderNo != null ? "pointer-events: none;width:100%;height:80%;font-size:12px" : "width:100%;height:80%;font-size:12px")" autocomplete="off" asp-for="
-                                        .smOrderNo" id="i_New_OrderNo">*@
+                                        .smOrderNo" id="i_New_OrderNo"
+                                                                 readonly="@(@Model._ViewceMastModifyRequest !=null ? (@Model._ViewceMastModifyRequest.mfRefNo != null ? "readonly" : null) : null)"
+
+                                                                >*@
                                 </div>
                                 <div class="col-20 border1_5brown" style=" display: flex;align-items: center;">
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Document No.</div>
@@ -96,7 +99,7 @@
                                 </div>
 
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control" id="i_NewMold_LotNo" style="font-size:12px;width:100%;background-color:yellow" autocomplete="off" asp-for="_ViewceMastModifyRequest.mfLotNo" readonly="@(Model._ViewceMastModifyRequest.mfLotNo != null ? "readonly" : null)"  maxlength="20"/>
+                                    <input type="text" class="form-control" id="i_NewMold_LotNo" style="font-size:12px;width:100%;background-color:yellow" autocomplete="off" asp-for="_ViewceMastModifyRequest.mfLotNo" maxlength="20" />
                                 </div>
                                 <div class="col-20 border1_5brown" style=" display: flex;align-items: center;">
                                     <div class="grid-item fw-800 center" style="text-align:left;">Revision.</div>
@@ -119,7 +122,7 @@
                                     <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMastModifyRequest.mfCustomerName" id="i_NewMold_CustomerName" readonly>
                                 </div>
                                 <div class="col-20 border1_5brown" style=" display: flex;align-items: center; ">
-                                    <div class="grid-item fw-800 center" style="text-align:left;">Mold Name / Mold No. </div>
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Mold No. / Mold Name.</div>
                                 </div>
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
                                     @Html.TextAreaFor(model => model._ViewceMastModifyRequest.mfMoldNoOrMoldName, new { @class = "form-control left", rows = 2, @readonly = "readonly", @id = "i_NewMold_MoldName", @style = "width:100%;field-sizing: content;font-size:12px;background-color:lightgray;" })
@@ -159,7 +162,7 @@
                                     <div class="grid-item fw-800 center" style="text-align:left;">Function</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewMold_Function" asp-for="_ViewceMastModifyRequest.mfFunction">
+                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewMold_Function" asp-for="_ViewceMastModifyRequest.mfFunction" readonly>
                                 </div>
                                 <div class="col-20 border1_5brown" style=" display: flex;align-items: center;">
                                     <div class="grid-item fw-800 center" style="text-align:left;">Request By</div>
@@ -217,6 +220,27 @@
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
                                     <input type="number" min="0" class="form-control left " style="width:40%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" asp-for="_ViewceMastModifyRequest.mfLeadTime" id="i_NewMold_LeadTime">
                                     @*<input type="text" class="form-control left text-gray" style=" @(@Model._ViewceMastSubMakerRequest.smOrderNo != null ? "pointer-events: none;width:100%;height:80%;font-size:12px" : "width:100%;height:80%;font-size:12px")" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smOrderNo" id="i_New_OrderNo">*@
+                                </div>
+                                <div class="col-5 " style="">
+
+                                </div>
+
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5brown" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">ICS Name.</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    @*<input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_New_TypeCavity" asp-for="_ViewceMastSubMakerRequest.smTypeCavity">*@
+                                    @Html.TextAreaFor(model => model._ViewceMastModifyRequest.mfIcsname, new { @class = "form-control left", rows = 2, @readonly = "readonly", @id = "i_New_MoldIcsName", @style = "width:100%;field-sizing: content;font-size:12px;background-color:lightgray;" })
+                                </div>
+
+                                <div class="col-20 " style=" display: flex;align-items: center;">
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
                                 </div>
                                 <div class="col-5 " style="">
 
@@ -316,7 +340,7 @@
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
                                     @*<input type="text" class="input-with-image MMYYpicker  form-control center" style="width:100%;font-size:12px;background-color:yellow" id="i_NewMold_CostRate" asp-for="_ViewceMastModifyRequest.mfCostRate" onchange="FCallProcessDetail()">*@
 
-                                    @Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfCostRate, new SelectList(Model._ListMlistMonth, "Month", "Month"),"กรุณาเลือก",new { @class = "form-control",id = "i_NewMold_CostRate", autocomplete = "off",style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
+                                    @Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfCostRate, new SelectList(Model._ListMlistMonth, "Month", "Month"), "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_CostRate", autocomplete = "off", style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
 
                                 </div>
                                 <div class="col-20" style=" display: flex;align-items: center;">
@@ -610,6 +634,9 @@
                     document.getElementById("i_NewMold_EstimateCost").value = ui.item.value.split("|")[4];
                     document.getElementById("i_NewMold_MKPriceCost").value = ui.item.value.split("|")[5];
                     document.getElementById("i_NewMold_ResultCost").value = ui.item.value.split("|")[6];
+                    document.getElementById("i_New_MoldIcsName").value = ui.item.value.split("|")[7];
+                    document.getElementById("i_NewMold_Function").value = ui.item.value.split("|")[8];
+
 
 
 
