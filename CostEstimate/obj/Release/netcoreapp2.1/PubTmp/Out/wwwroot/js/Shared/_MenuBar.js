@@ -24,7 +24,7 @@ var addCard = document.querySelector("button.add_card");
 var addProcess = document.querySelector("button.process_add");
 var addModel = document.querySelector("button.model_add");
 var addMaster = document.querySelector("button.Master_add");
-
+var historysum = document.querySelector("button.SubHistorysum");
 
 //Mold Modify
 //var search = document.querySelector("button.searchMold");
@@ -84,6 +84,14 @@ if (administrator != null)
     administrator.addEventListener("click", function () {
         GoSideMenu("Administrator");
     });
+
+if (historysum != null)
+    historysum.addEventListener("click", function () {
+        //console.log("SubHistorysum");
+        GoSideMenu("SubHistorysum");
+    });
+
+
 if (signOut != null)
     signOut.addEventListener("click", function () {
         window.location.href = urlDefault + "\\Login\\SignOut\\";
@@ -147,6 +155,16 @@ function GoNewRevision(smDocumentNo, smRevision) {
     //let url = "New?smLotNo=" + smLotNo + "&smOrderNo=" + smOrderNo + "&smRevision=" + smRevision;
     GoSideMenu(url);
 }
+
+function GoNewHisSumRequest(vLotNoMoldName) {
+    //smLotNo
+    //smOrderNo
+    //smRevision
+    let url = "SubHistorysum?vLotNoMoldName=" + vLotNoMoldName;
+    //let url = "New?smLotNo=" + smLotNo + "&smOrderNo=" + smOrderNo + "&smRevision=" + smRevision;
+    GoSideMenu(url);
+}
+
 function GoSideMenu(controller) {
     displayLoading();
     //console.time();
@@ -194,9 +212,14 @@ function GoSideMenu(controller) {
 
 
 function PositionY(menu) {
+    let vmenu = menu;
     if (menu.search("New") > -1 && menu.search("NewMoldModify") == -1 && menu.search("NewMoldOther") == -1) {
         menu = "New";
     }
+    else if (menu.search("SubHistorysum") > -1) {
+        menu = "SubHistorysum";
+    }
+
     let PY = 0;
     let opacity;
     switch (menu) {
@@ -229,8 +252,8 @@ function PositionY(menu) {
             //LoadScript("js/New/EventMore.js", "EventNewMore");
             LoadScript("js/Home/Index.js", "Home");
             LoadScript("js/New/Index.js", "New");
-            LoadScript("js/Home/Hour.js", "EventHomeHour");
-            LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
+            //LoadScript("js/Home/Hour.js", "EventHomeHour");
+            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
             //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
             PY = "52px";
             //PY = "114px";
@@ -305,6 +328,27 @@ function PositionY(menu) {
             // PY = "331px";
             opacity = "opacity-dot-3";
             break;
+        case "SubHistorysum":
+            LoadScript("js/Home/Index.js", "Home");
+            LoadScript("js/New/IndexHisSum.js", "New");
+            //LoadScript("js/New/Index.js", "New");
+            //LoadScript("js/Home/Hour.js", "EventHomeHour");
+            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
+            //LoadScript("js/Home/Index.js", "Home");
+            //LoadScript("js/New/Index.js", "New");
+            //LoadScript("js/Home/Hour.js", "EventHomeHour");
+            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
+
+            //LoadScript("js/New/Index.js", "New");
+            //LoadScript("js/Home/Hour.js", "EventHomeHour");
+            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
+            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
+           
+            PY = "330px";
+            // PY = "331px";
+            opacity = "opacity-dot-3";
+            //GoSideMenu(menu);
+            break;
         //addProcess
         case "AddProcess":
             LoadScript("js/Home/Index.js", "Home");
@@ -337,6 +381,7 @@ function PositionY(menu) {
     var oldOpacity = Array.from(bg.classList).find(c => c.startsWith('opacity'));
     bg.classList.replace(oldOpacity, opacity);
     Selector.style.transform = "translate(0px, " + PY + ")";
+   
 }
 
 function LoadScript(sourceFile, name) {
@@ -2114,4 +2159,363 @@ function Menubar_PrintMoldQUOTATION(action, mpNo) {
         }
     });
     $("#myModalMoldQUOTATION").modal("show");
+}
+
+
+function updateStatusReq(action) {
+   // const vDocumentNo = document.getElementById("i_New_DocumentNo").value;
+    var getID = document.getElementById("i_New_DocumentNo").value; //txtMIssueID
+    const checkbox = document.getElementById("statusToggle");
+    const label = document.getElementById("statusLabel");
+    let vstatus;
+    const currentValue = checkbox.checked;
+    //console.log("vDocumentNo" + vDocumentNo)
+  
+   
+ 
+
+
+    //action, vForm, vTeam, vSubject, vSrNo
+
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you Sure Update Status ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            if (checkbox.checked) {
+                //label.textContent = "Use";
+                console.log("Status changed to: Use");
+                vstatus = "1";
+            } else {
+                //label.textContent = "Not Use";
+                console.log("Status changed to: Not Use");
+                vstatus = "0";
+            }
+
+
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { id: getID, status: vstatus },
+                success: async function (config) {
+                    if (config.c1 == "S") {
+
+                        swal.fire({
+                            title: 'SUCCESS',
+                            icon: "success",
+                            text: config.c2,
+                        })
+                            .then((result) => {
+                                GoNewRequest(getID);
+                            });
+                    }
+                    else {
+                        swal.fire({
+                            title: 'แจ้งเตือน',
+                            icon: "warning",
+                            text: config.c2,
+                        })
+                            .then((result) => {
+                                checkbox.checked = !currentValue;
+                                //label.textContent = currentValue;
+                               // GoNewRequest(getID);
+                            });
+                    }
+                   
+
+                }
+            });
+         
+        } else {
+            checkbox.checked = !currentValue;
+            //label.textContent = currentValue;
+            console.log('Cancel');
+            return false;
+        }
+    });
+}
+
+//History sum
+function Menubar_SearchMasterMastSub(action) {
+    console.log("Menubar_SearchMasterMastSub");
+    let vmsg = "";
+    let selectedVal = $('#i_HisSumLotNoMoldName').val();
+    let pipeCount = (selectedVal.match(/\|/g) || []).length;
+    console.log("pipeCount" + pipeCount);
+    if (selectedVal === "" || pipeCount !== 3) {
+        vmsg = "กรุณาเลือกข้อมูลจาก Lot No หรือ format ไม่ถูกต้อง !!!!";
+        document.getElementById("i_HisSumLotNoMoldName").focus();
+        document.getElementById("i_HisSumLotNoMoldName").value = "";
+    }
+    //else if (pipeCount != 4) {
+    //    vmsg = "กรุณาเลือก Lot No ให้ถูกต้อง !!!!";
+    //    document.getElementById("i_HisSumLotNoMoldName").focus();
+    //}
+
+    if (vmsg != "") {
+        swal.fire({
+            title: 'แจ้งเตือน',
+            icon: 'warning',
+            text: vmsg,
+
+        })
+            .then((result) => {
+            });
+    } else {
+        GoNewHisSumRequest(selectedVal);
+     
+    }
+
+
+  
+    //$.ajax({
+    //    url: action,//'/New/SearchbyModelName', // URL ของ Controller
+    //    type: 'POST',
+    //    data: {
+    //        mmNo: mmNo,
+    //        ModelName: mmmodelName,
+    //    },
+    //    beforeSend: function () {
+    //        console.log("Showing loader..."); // ตรวจสอบว่าทำงานจริง
+    //        $("#loadingIndicatorModel").css("display", "block"); // แสดง Loader
+    //        $("#ResultMastModel").css("display", "none"); // ซ่อน Loader
+    //    },
+    //    success: function (response) {
+    //        $("#ResultMastModel").css("display", "block"); // แสดง Loader
+    //        $("#ResultMastModel").html(response); // เอา HTML Partial View มาใส่ใน Div
+    //    },
+    //    error: function () {
+    //        alert("Error!!");
+    //    },
+    //    complete: function () {
+    //        // ซ่อนรูปโหลดเมื่อ request เสร็จ
+    //        console.log("Hiding loader..."); // ตรวจสอบว่าทำงานจริง
+    //        $("#loadingIndicatorModel").css("display", "none"); // ซ่อน Loader
+    //    }
+    //});
+
+}
+
+function Menubar_saveHistorysum(action) {
+    let vLotNo = $('#i_HissumLotNo').val();
+    
+    let vmsg = "";
+    if (vmsg != "") {
+        swal.fire({
+            title: 'แจ้งเตือน',
+            icon: 'warning',
+            text: vmsg,
+
+        })
+            .then((result) => {
+            });
+    }
+    else {
+        const rows = document.querySelectorAll("#tableBodyHisSum tr"); //table id material body
+        let formData = document.forms.namedItem("formHisSumData");
+        let formDataRemark = document.forms.namedItem("formHisSumDataRemark");
+        let viewModel = new FormData(formData);
+        let viewModel1 = new FormData(formDataRemark);
+
+        $.each(formData, function (index, input) {
+            viewModel.append(input.name, input.value);
+        });
+        $.each(formDataRemark, function (index, input) {
+            viewModel1.append(input.name, input.value);
+        });
+
+        let combinedFormData = new FormData();
+        viewModel.forEach((value, key) => {
+            combinedFormData.append(key, value);
+        });
+        viewModel1.forEach((value, key) => {
+            combinedFormData.append(key, value);
+        });
+
+      
+        _ListViewceMastSubDetailHistorySum = [];
+        rows.forEach((row, index) => {
+
+            //const itemNameInput = row.querySelector(".imItemName");
+            //const itemName = itemNameInput.value.trim();
+
+            //if (!itemName) {
+            //    alert(`กรุณากรอกชื่อ Item (บรรทัดที่ ${index + 1})`);
+            //    itemNameInput.focus(); // optional: focus ช่องนั้น
+            //    throw new Error("Item name is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
+            //}
+
+            _ListViewceMastSubDetailHistorySum.push({
+                sdDocNo: row.querySelector(".shDocNo").value.trim() || "CE-M",
+                sdRunNo: index + 1, // ✅ เริ่มจาก 1
+                sdLotNo: row.querySelector(".smMoldName").value.trim() ,
+                sdGroupName: row.querySelector(".sdGroupName").value.trim(),
+                sdProcessName: row.querySelector(".sdProcessName").value.trim(),
+                sdWK_Man: row.querySelector(".WK_Man").value.trim(),
+                sdWK_Auto: row.querySelector(".WK_Auto").value.trim(),
+                sdActive_WKMan: row.querySelector(".sdActive_WKMan").value.trim(),
+                sdActive_WKAuto: row.querySelector(".sdActive_WKAuto").value.trim(),
+                sdKIJWT_Man: row.querySelector(".KIJUNWT_Man").value.trim(),
+                sdKJWT_Auto: row.querySelector(".KIJUNWT_Auto").value.trim(),
+                sdWT_Man: row.querySelector(".WTWT_Man").value.trim(),
+                sdWT_Auto: row.querySelector(".WTWT_Auto").value.trim()
+            });
+        });
+
+        combinedFormData.append("_ListViewceMastSubDetailHistorySum", JSON.stringify(_ListViewceMastSubDetailHistorySum));
+
+      
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: combinedFormData,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                swal.fire({
+                    html: '<h5>Loading...</h5>',
+                    showConfirmButton: false,
+                    onRender: function () {
+                        // there will only ever be one sweet alert open.
+                        //$('.swal2-content').prepend(sweet_loader);
+                    }
+                });
+            },
+            success: async function (config) {
+                // alert(config.c1);
+                if (config.c1 == "S" || config.c1 == "D") {
+                    // $("#loaderDiv").hide();
+                    //await $("#myModal1").modal("hide");
+                    swal.fire({
+                        title: 'SUCCESS',
+                        icon: 'success',
+                        text: config.c2,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            //console.log("config.c3" + config.c3);
+                            GoNewHisSumRequest(vLotNo);
+                          //  GoSideMenu("Search");
+
+                            //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                        }
+                    });
+                }
+                else if (config.c1 == "E") {
+                    //$("#loaderDiv").hide();
+                    //await $("#myModal1").modal("hide");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ERROR',
+                        text: config.c2,
+                    })
+                        .then((result) => {
+                           // $("#myModal1").modal("show");
+                        });
+
+                }
+                else if (config.c1 == "P") {
+                    //$("#loaderDiv").hide();
+                    //await $("#myModal1").modal("hide");
+                   // await $("#myModal1").modal("hide");
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'warning',
+                        text: config.c2,
+                    })
+                        .then((result) => {
+
+                            //$("#myModal1").modal("show");
+                        });
+
+                }
+
+            }
+        });
+    }
+
+
+
+
+
+
+}
+
+
+function updateStatusHissum(action) {
+    // const vDocumentNo = document.getElementById("i_New_DocumentNo").value;
+    var getID = document.getElementById("i_HisSumDocNo").value; //txtMIssueID
+    const checkbox = document.getElementById("statusToggle");
+    const label = document.getElementById("statusLabel");
+    let vstatus;
+    const currentValue = checkbox.checked;
+    //console.log("vDocumentNo" + vDocumentNo)
+    
+    //action, vForm, vTeam, vSubject, vSrNo
+
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you Sure Update Status ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            if (checkbox.checked) {
+                //label.textContent = "Use";
+                console.log("Status changed to: Use");
+                vstatus = "1";
+            } else {
+                //label.textContent = "Not Use";
+                console.log("Status changed to: Not Use");
+                vstatus = "0";
+            }
+
+
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { id: getID, status: vstatus },
+                success: async function (config) {
+                    if (config.c1 == "S") {
+
+                        swal.fire({
+                            title: 'SUCCESS',
+                            icon: "success",
+                            text: config.c2,
+                        })
+                            .then((result) => {
+                                GoNewRequest(getID);
+                            });
+                    }
+                    else {
+                        swal.fire({
+                            title: 'แจ้งเตือน',
+                            icon: "warning",
+                            text: config.c2,
+                        })
+                            .then((result) => {
+                                checkbox.checked = !currentValue;
+                                //label.textContent = currentValue;
+                                // GoNewRequest(getID);
+                            });
+                    }
+
+
+                }
+            });
+
+        } else {
+            checkbox.checked = !currentValue;
+            //label.textContent = currentValue;
+            console.log('Cancel');
+            return false;
+        }
+    });
 }

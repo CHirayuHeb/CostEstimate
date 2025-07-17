@@ -2,6 +2,12 @@
 @{
     ViewData["Title"] = "Search | Thai Stanley";
     Layout = "~/Views/Shared/_MenuBar.cshtml";
+    string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
 }
 <link href="~/css/Home/siteHome.css" rel="stylesheet" />
 <script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("Search"); } }</script>
@@ -25,6 +31,8 @@
             <div class="col-5" style="text-align:right">
             </div>
         </div>
+
+
         @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { enctype = "multipart/form-data", id = "formSearch", name = "formSearch" }))
         {
             <div style="" class="content-text">
@@ -214,207 +222,207 @@
 
 
                             @*<div class="row center">
-                                <div class="col-5 " style="">
+                                    <div class="col-5 " style="">
+                                    </div>
+                                    <div class="col-20 border1_5 " style=" display: flex;align-items: center;background-color:#cbeff7;">
+                                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Document No</div>
+                                    </div>
+                                    <div class="col-25 " style=" display: flex;align-items: center; ">
+                                        <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DocumentNo">
+                                    </div>
+                                    <div class="col-20 border1_5 " style=" display: flex;align-items: center;background-color:#cbeff7 ">
+                                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Status</div>
+                                    </div>
+                                    <div class="col-25" style=" display: flex;align-items: center; ">
+
+                                        @Html.DropDownListFor(m => m._ViewSearchData.v_status, (SelectList)ViewBag.vbformStatus, "กรุณาเลือก", new { @class = "form-control", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:12px" })
+                                    </div>
+                                    <div class="col-5 " style="">
+
+                                    </div>
                                 </div>
-                                <div class="col-20 border1_5 " style=" display: flex;align-items: center;background-color:#cbeff7;">
-                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Document No</div>
+                                <div class="row center">
+                                    <div class="col-5 " style="">
+
+                                    </div>
+                                    <div class="col-20 border1_5 " style=" display: flex;align-items: center;background-color:#cbeff7;">
+                                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Lot No.</div>
+                                    </div>
+                                    <div class="col-25 " style=" display: flex;align-items: center; ">
+                                        <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_LotNo">
+                                    </div>
+                                    <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
+                                        <div class="grid-item fw-800 center" style="text-align:left;">Order No.</div>
+                                    </div>
+                                    <div class="col-25" style=" display: flex;align-items: center; ">
+                                        <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_OrderNo">
+                                    </div>
+                                    <div class="col-5 " style="">
+
+                                    </div>
                                 </div>
-                                <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DocumentNo">
+                                <div class="row center">
+                                    <div class="col-5 " style="">
+
+                                    </div>
+                                    <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
+                                        <div class="grid-item fw-800 center" style="text-align:left;">Customer Name</div>
+                                    </div>
+                                    <div class="col-25 " style=" display: flex;align-items: center; ">
+                                        <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_CusName">
+                                    </div>
+                                    <div class="col-20 border1_5" style=" display: flex;align-items: center; background-color:#cbeff7">
+                                        <div class="grid-item fw-800 center" style="text-align:left;">Mold Name/Mold No.</div>
+                                    </div>
+                                    <div class="col-25 " style=" display: flex;align-items: center; ">
+                                        <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_MoldName">
+                                    </div>
+                                    <div class="col-5 " style="">
+
+                                    </div>
                                 </div>
-                                <div class="col-20 border1_5 " style=" display: flex;align-items: center;background-color:#cbeff7 ">
-                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Status</div>
-                                </div>
-                                <div class="col-25" style=" display: flex;align-items: center; ">
-                                  
-                                    @Html.DropDownListFor(m => m._ViewSearchData.v_status, (SelectList)ViewBag.vbformStatus, "กรุณาเลือก", new { @class = "form-control", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:12px" })
-                                </div>
-                                <div class="col-5 " style="">
+                                <div class="row center">
+                                    <div class="col-5 " style="">
+
+                                    </div>
+                                    <div class="col-20 border1_5" style=" display: flex;align-items: center; background-color:#cbeff7">
+                                        <div class="grid-item fw-800 center" style="text-align:left;">Mold Mass</div>
+                                    </div>
+                                    <div class="col-25 " style=" display: flex;align-items: center; ">
+                                        <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_MoldMass">
+                                    </div>
+                                    <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
+                                        <div class="grid-item fw-800 center" style="text-align:left;">Cavity No.</div>
+                                    </div>
+                                    <div class="col-25 " style=" display: flex;align-items: center; ">
+                                        <input type="number" class="form-control left" style="width:45%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_CavityNo">
+                                        <span style="margin-left:10px;color:blue">*กรอกตัวเลขเท่านั่น</span>
+                                    </div>
+                                    <div class="col-5 " style="">
+
+                                    </div>
 
                                 </div>
-                            </div>
-                            <div class="row center">
-                                <div class="col-5 " style="">
+                                <div class="row center">
+                                    <div class="col-5 " style="">
 
-                                </div>
-                                <div class="col-20 border1_5 " style=" display: flex;align-items: center;background-color:#cbeff7;">
-                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Lot No.</div>
-                                </div>
-                                <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_LotNo">
-                                </div>
-                                <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
-                                    <div class="grid-item fw-800 center" style="text-align:left;">Order No.</div>
-                                </div>
-                                <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_OrderNo">
-                                </div>
-                                <div class="col-5 " style="">
+                                    </div>
+                                    <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
+                                        <div class="grid-item fw-800 center" style="text-align:left;">Function</div>
+                                    </div>
+                                    <div class="col-25" style=" display: flex;align-items: center; ">
+                                        <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_Function">
+                                    </div>
+                                    <div class="col-20 border1_5" style=" display: flex;align-items: center; background-color:#cbeff7">
+                                        <div class="grid-item fw-800 center" style="text-align:left;">Development Stage</div>
+                                    </div>
+                                    <div class="col-25 " style=" display: flex;align-items: center; ">
+                                        <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DevelopmentStage">
+                                    </div>
+                                    <div class="col-5 " style="">
 
-                                </div>
-                            </div>
-                            <div class="row center">
-                                <div class="col-5 " style="">
-
-                                </div>
-                                <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
-                                    <div class="grid-item fw-800 center" style="text-align:left;">Customer Name</div>
-                                </div>
-                                <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_CusName">
-                                </div>
-                                <div class="col-20 border1_5" style=" display: flex;align-items: center; background-color:#cbeff7">
-                                    <div class="grid-item fw-800 center" style="text-align:left;">Mold Name/Mold No.</div>
-                                </div>
-                                <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_MoldName">
-                                </div>
-                                <div class="col-5 " style="">
-
-                                </div>
-                            </div>
-                            <div class="row center">
-                                <div class="col-5 " style="">
-
-                                </div>
-                                <div class="col-20 border1_5" style=" display: flex;align-items: center; background-color:#cbeff7">
-                                    <div class="grid-item fw-800 center" style="text-align:left;">Mold Mass</div>
-                                </div>
-                                <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_MoldMass">
-                                </div>
-                                <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
-                                    <div class="grid-item fw-800 center" style="text-align:left;">Cavity No.</div>
-                                </div>
-                                <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="number" class="form-control left" style="width:45%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_CavityNo">
-                                    <span style="margin-left:10px;color:blue">*กรอกตัวเลขเท่านั่น</span>
-                                </div>
-                                <div class="col-5 " style="">
-
-                                </div>
-
-                            </div>
-                            <div class="row center">
-                                <div class="col-5 " style="">
-
-                                </div>
-                                <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
-                                    <div class="grid-item fw-800 center" style="text-align:left;">Function</div>
-                                </div>
-                                <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_Function">
-                                </div>
-                                <div class="col-20 border1_5" style=" display: flex;align-items: center; background-color:#cbeff7">
-                                    <div class="grid-item fw-800 center" style="text-align:left;">Development Stage</div>
-                                </div>
-                                <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DevelopmentStage">
-                                </div>
-                                <div class="col-5 " style="">
-
-                                </div>
+                                    </div>
 
 
-                            </div>
-                            <div class="row center">
-                                <div class="col-5 " style="">
+                                </div>
+                                <div class="row center">
+                                    <div class="col-5 " style="">
+
+                                    </div>
+                                    <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
+                                        <div class="grid-item fw-800 center" style="text-align:left;">Type of Cavity</div>
+                                    </div>
+                                    <div class="col-25" style=" display: flex;align-items: center; ">
+
+                                        <input type="text" class="form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_TypeofCavity">
+
+                                    </div>
+                                    <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7;">
+                                        <div class="grid-item fw-800 center" style="text-align:left;">Revision.</div>
+                                    </div>
+                                    <div class="col-25 " style=" display: flex;align-items: center; ">
+                                        <input type="text" class="form-control left" style="width:45%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_Revision">
+                                        <span style="margin-left:10px;color:blue">*EX 00</span>
+                                    </div>
+                                    <div class="col-5 " style="">
+
+                                    </div>
 
                                 </div>
-                                <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
-                                    <div class="grid-item fw-800 center" style="text-align:left;">Type of Cavity</div>
-                                </div>
-                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                <div class="row center">
+                                    <div class="col-5 " style="">
 
-                                    <input type="text" class="form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_TypeofCavity">
+                                    </div>
+                                    <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
+                                        <div class="grid-item fw-800 center" style="text-align:left;">Issue/Date (from)</div>
+                                    </div>
+                                    <div class="col-25" style=" display: flex;align-items: center; ">
 
-                                </div>
-                                <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7;">
-                                    <div class="grid-item fw-800 center" style="text-align:left;">Revision.</div>
-                                </div>
-                                <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left" style="width:45%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_Revision">
-                                    <span style="margin-left:10px;color:blue">*EX 00</span>
-                                </div>
-                                <div class="col-5 " style="">
+                                        <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueFrom">
 
-                                </div>
+                                    </div>
+                                    <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7;">
 
-                            </div>
-                            <div class="row center">
-                                <div class="col-5 " style="">
+                                        <div class="grid-item fw-800 center" style="text-align:left;">Issue/Date (To)</div>
+                                    </div>
+                                    <div class="col-25" style=" display: flex;align-items: center; ">
+                                        <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueTo">
+                                    </div>
+                                    <div class="col-5 " style="">
 
-                                </div>
-                                <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
-                                    <div class="grid-item fw-800 center" style="text-align:left;">Issue/Date (from)</div>
-                                </div>
-                                <div class="col-25" style=" display: flex;align-items: center; ">
-
-                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueFrom">
+                                    </div>
 
                                 </div>
-                                <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7;">
+                                <div class="row center">
+                                    <div class="col-5 " style="">
 
-                                    <div class="grid-item fw-800 center" style="text-align:left;">Issue/Date (To)</div>
-                                </div>
-                                <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueTo">
-                                </div>
-                                <div class="col-5 " style="">
+                                    </div>
+                                    <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
+                                        <div class="grid-item fw-800 center" style="text-align:left;">Material Out/Date(from)</div>
+                                    </div>
+                                    <div class="col-25" style=" display: flex;align-items: center; ">
 
-                                </div>
+                                        <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_MaterialOutDateFrom">
 
-                            </div>
-                            <div class="row center">
-                                <div class="col-5 " style="">
+                                    </div>
+                                    <div class="col-20 border1_5" style=" display: flex;align-items: center; background-color:#cbeff7">
+                                        <div class="grid-item fw-800 center" style="text-align:left;">Material Out/Date(To)</div>
+                                    </div>
+                                    <div class="col-25 " style=" display: flex;align-items: center; ">
 
-                                </div>
-                                <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
-                                    <div class="grid-item fw-800 center" style="text-align:left;">Material Out/Date(from)</div>
-                                </div>
-                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                        <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_MaterialOutDateTo">
 
-                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_MaterialOutDateFrom">
+                                    </div>
+                                    <div class="col-5 " style="">
 
-                                </div>
-                                <div class="col-20 border1_5" style=" display: flex;align-items: center; background-color:#cbeff7">
-                                    <div class="grid-item fw-800 center" style="text-align:left;">Material Out/Date(To)</div>
-                                </div>
-                                <div class="col-25 " style=" display: flex;align-items: center; ">
-
-                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_MaterialOutDateTo">
-
-                                </div>
-                                <div class="col-5 " style="">
-
-                                </div>
-
-                            </div>
-
-                            <div class="row center">
-                                <div class="col-5 " style="">
-
-                                </div>
-                                <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
-                                    <div class="grid-item fw-800 center" style="text-align:left;">Delivery/Date (from)</div>
-                                </div>
-                                <div class="col-25" style=" display: flex;align-items: center; ">
-
-                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DaliverryDateFrom">
-
-                                </div>
-                                <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7;">
-
-                                    <div class="grid-item fw-800 center" style="text-align:left;">Delivery/Date (To)</div>
-                                </div>
-                                <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DaliverryDateTo">
-                                </div>
-                                <div class="col-5 " style="">
+                                    </div>
 
                                 </div>
 
-                            </div>*@
+                                <div class="row center">
+                                    <div class="col-5 " style="">
+
+                                    </div>
+                                    <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7 ">
+                                        <div class="grid-item fw-800 center" style="text-align:left;">Delivery/Date (from)</div>
+                                    </div>
+                                    <div class="col-25" style=" display: flex;align-items: center; ">
+
+                                        <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DaliverryDateFrom">
+
+                                    </div>
+                                    <div class="col-20 border1_5" style=" display: flex;align-items: center;background-color:#cbeff7;">
+
+                                        <div class="grid-item fw-800 center" style="text-align:left;">Delivery/Date (To)</div>
+                                    </div>
+                                    <div class="col-25" style=" display: flex;align-items: center; ">
+                                        <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DaliverryDateTo">
+                                    </div>
+                                    <div class="col-5 " style="">
+
+                                    </div>
+
+                                </div>*@
 
 
                         </div>
@@ -422,28 +430,25 @@
 
                     </div>
                 </div>
-                <div class="row center">
-                    <div class="col-30 ">
+              
+                    <div class="row center" >
+                        <div class="col-30 ">
+                        </div>
+                        <div class="col-40 ">
+                            <button class="button btnBlue" style="width:auto">
+                                <img src="~/images/search.png" style="width:35px;height:26px;padding-right:2px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                                SEARCH
+                            </button>
+                        </div>
+                        <div class="col-30 " style="text-align:right">
+
+
+                        </div>
+              
                     </div>
-                    <div class="col-40 ">
-                        <button class="button btnBlue" style="width:auto">
-                            <img src="~/images/search.png" style="width:35px;height:26px;padding-right:2px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                            SEARCH
-                        </button>
-                    </div>
-                    <div class="col-30 " style="text-align:right">
+              
 
 
-                    </div>
-                    @*<input type="button" style="font-size:18px" value="&#x1F50E;" onclick="GoNewRequest('@item.srRequestBy','Edit','@Url.Action("Index", "RequestForm")','@item.srFrom','@item.srType','@item.srSubject','@item.srNo')">*@
-                    @*<input type="button" style="font-size:18px" value="New Sub Maker Request Sheet " class=" btn-login">*@
-                    @*<button class="button" style="@( (@_UserId == @Model._ViewsvsServiceRequest.srRequestBy || @_UserId == @Model._ViewsvsServiceRequest.srApproveEmpcode) && Model._ViewsvsServiceRequest.srStep >2 && Model._ViewsvsServiceRequest.srStep < 5 ? "width:100px; " : "display:none;")" onclick="savesubmit('@Url.Action("SavePageForm","RequestForm")')">
-                            <img src="~/images/save_1.png" style="width:30px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                            บันทึก
-                        </button>*@
-
-
-                </div>
                 <div class="row">
                     <div class="col-30 ">
                         <label style="font-size:14px;font-weight:600">
@@ -501,6 +506,34 @@
 
                         </label>
                     </div>*@
+                <div class="row center" style="@( _Permission?.ToUpper() != "ADMIN" ? "display:none;" : "" )">
+                    <div class="col-50 " style="">
+
+                    </div>
+                    <div class="col-50 right" style="text-align:right">
+                        <div style="display: flex; justify-content: flex-end; align-items: center; gap: 8px;">
+                            <span style="font-weight:600">กรุณาเลือก Lot No :</span>
+
+                            @*@Html.DropDownListFor(m => m._ViewSearchHisSum.s_LotNoMoldName, (SelectList)ViewBag.listMastSubMarker, "กรุณาเลือก", new { @class = "form-control", id = "i_HisSumLotNoMoldName", autocomplete = "off", @style = "width:50%;font-size:12px;background-color:lightyellow;height:60%;" })*@
+
+
+                            <input type="text" id="i_HisSumLotNoMoldName"  asp-for="_ViewSearchHisSum.s_LotNoMoldName"   autocomplete="off"
+                                   class="form-control" list="lotNoList" style="width:50%;font-size:12px;background-color:lightyellow;height:60%;" />
+                            <datalist id="lotNoList" >
+                                @foreach (var item in (SelectList)ViewBag.listMastSubMarker)
+                                {
+                                    <option value="@item.Text" />
+                                }
+                            </datalist>
+                            <input type="button" style="font-size:18px" value="&#x1F4C4;" onclick="Menubar_SearchMasterMastSub('@Url.Action("SearchMastCostHourChange","AddMCost")')">
+
+                        </div>
+
+                       
+                    </div>
+
+                </div>
+
                 <div class="row center" style="background-color:aliceblue">
                     <div class="col-5 " style="">
 
@@ -509,8 +542,8 @@
 
                         <div class="row center" style="">
 
-                            <div class="col-100 table-container" style="align-items: center; ">
-                                <table class="summarys">
+                            <div class="col-100 table-container" style="align-items: center;max-height: 500px; ">
+                                <table class="summarys" style="">
                                     <thead>
                                         <tr>
                                             <th style="text-align:center">No.​</th>
@@ -527,12 +560,15 @@
                                             <th style="text-align:center">Development Stage</th>
                                             <th style="text-align:center">Issue By ,Date</th>
                                             @*<th style="text-align:center">Material Out/Date​</th>
-                                            <th style="text-align:center">Delivery/Date​</th>*@
+                                                <th style="text-align:center">Delivery/Date​</th>*@
                                             <th style="text-align:center">Waiting Approve​</th>
                                             <th style="text-align:center">Status​</th>
+                                            <th style="text-align:center">Step​</th>
                                             <th style="text-align:center">Action​</th>
                                         </tr>
                                     </thead>
+
+
 
 
 
@@ -557,12 +593,33 @@
                                                 <td style="text-align:center">@item.smDevelopmentStage</td>
                                                 <td style="text-align:center">@item.smEmpCodeRequest @item.smNameRequest @item.smIssueDate</td>
                                                 @*<td style="text-align:center">@item.smMatOutDate @item.smMatOutTime</td>
-                                                <td style="text-align:center">@item.smDeliveryDate   @item.smDeliveryTime</td>*@
+                                                    <td style="text-align:center">@item.smDeliveryDate   @item.smDeliveryTime</td>*@
                                                 <td style="text-align:center">
                                                     @if (@item.smStep < 7)
                                                     {
                                                         @item.smNameApprove
                                                     }
+                                                </td>
+                                                <td style="text-align:center">
+                                                    @*@if (@item.smReqStatus == false)
+                                                        {
+
+                                                        }
+                                                        else
+                                                        {
+
+                                                        }*@
+                                                    @if (@item.smReqStatus == true)
+                                                    {
+                                                        <img src="~/images/use.png" alt="icon" style="height: 20px; width: 20px;" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/images/notuse.png" alt="icon" style="height: 20px; width: 20px;" />
+                                                    }
+
+
+
                                                 </td>
                                                 <td style="text-align:center">
                                                     @*@item.smStep*@

@@ -109,6 +109,7 @@ C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\AddProcess\_PartialMastProcess.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\Administrator\Index.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\Administrator\Setting\_ptvApproverSetting.g.cshtml.cs
+C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\ApprovalMoldOther\Index.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\ApprovalMold\Index.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\Approval\Category\_CateWorker.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\Approval\HR.g.cshtml.cs
@@ -136,6 +137,7 @@ C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\MainPage\Index.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\MasterCost\Index.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\MasterMold\Index.g.cshtml.cs
+C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\MyRequestMoldOther\Index.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\MyRequestMold\Index.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\MyRequest\Index.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\MyRequest\_DisplayDisapproved.g.cshtml.cs
@@ -153,6 +155,7 @@ C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\NewMoldModify\_PartialNewMoldSummary.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\NewMoldModify\_PartialStepFlowMoldModify.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\NewMoldOther\Index.g.cshtml.cs
+C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\NewMoldOther\_PartialStepFlowOtherRequest.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\New\.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\New\Draft\_DraftForm.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\New\Draft\_DraftOTAddWorker.g.cshtml.cs
@@ -183,6 +186,7 @@ C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\New\_PartialStepFlow.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\New\_PartialStepFlowNew.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\PageNotFound\Index.g.cshtml.cs
+C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\SearchMoldOther\Index.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\SearchMold\Index.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\Search\Index.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\Shared\OTViewDetail\_CateWorker.g.cshtml.cs
@@ -198,6 +202,9 @@ C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\Shared\_MenuBar_MoldOther.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\Shared\_PartialDisplayMenu.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\Shared\_ptvViewOTDetail.g.cshtml.cs
+C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\SubHistorysum\Index.g.cshtml.cs
+C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\SubHistorysum\_PartialHistorysumProcess.g.cshtml.cs
+C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\SubHistorysum\_PartialHistorysumRemark.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\_ViewImports.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\_ViewStart.g.cshtml.cs
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\CostEstimate.RazorTargetAssemblyInfo.cache
@@ -207,7 +214,3 @@ C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\CostEstimate.pdb
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\CostEstimate.csproj.CopyComplete
 C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\CostEstimate.csprojAssemblyReference.cache
-C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\NewMoldOther\_PartialStepFlowOtherRequest.g.cshtml.cs
-C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\SearchMoldOther\Index.g.cshtml.cs
-C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\MyRequestMoldOther\Index.g.cshtml.cs
-C:\Users\t0015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\ApprovalMoldOther\Index.g.cshtml.cs

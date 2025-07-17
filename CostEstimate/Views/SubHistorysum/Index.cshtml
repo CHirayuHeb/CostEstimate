@@ -1,0 +1,179 @@
+﻿@model CostEstimate.Models.Common.Class;
+@using CostEstimate.Models.Common;
+@{
+    ViewData["Title"] = "History sum | Thai Stanley";
+    Layout = "~/Views/Shared/_MenuBar.cshtml";
+
+    string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+}
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<link href="~/css/New/nStyle.css" rel="stylesheet" />
+<script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("SubHistorysum"); } }</script>
+<div class="home-content">
+    <div id="DisplayContent" class="content-box">
+        <div style="margin:15px">
+            <br />
+            <div class="row center" style="padding:0px;background-color:#cbeff7;margin-bottom:5px;border:0px solid black;padding-bottom:10px">
+                <div class="col-80 " style="text-align:left">
+                    @*<div class="grid-item fw-800  " style="text-align:left;font-size:24px;padding-top:8px"><span style="color:orange">HISTORY SUM SubMaker​</span><span style="color:black"> REQUEST SHEET</span> <img src="~/images/interest-rate.png" height="35px" width="35px" style="vertical-align:middle" /></div>*@
+                    <div class="grid-item fw-800 " style="text-align:left;font-size:20px;padding-top:8px"><span style="color:orange">SUB MAKER</span> REQUEST SHEET DETAIL.</div>
+                    <div class="grid-item fw-800 " style="text-align:left;font-size:18px;padding-top:10px">COST PLANNING DIVISION.</div>
+                </div>
+                <div class="col-20 right" style="text-align:right">
+                    <button class="button btnBlue" style="height:100%;width:60%"
+                            onclick="Menubar_saveHistorysum('@Url.Action("SaveHisSumSub","SubHistorysum")')">
+                        <img src="~/images/savedaft.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                        SAVE
+                    </button>
+                </div>
+            </div>
+
+            <form action="" id="formHisSumData" name="formHisSumData">
+               
+                <div style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:5px;border-radius:2px;">
+                    <div class="status-wrapper" style="display: flex; justify-content: flex-end; align-items: center;">
+                        <span style="font-weight:600">Status: </span>
+                        <label class="switch">
+                            <input asp-for="_ViewceMastSubHistorySum.shStatus" type="checkbox" id="statusToggle" />
+                            <span class="slider"></span>
+                        </label>
+                        @*<span class="label-text" id="statusLabel">@((Model._ViewceMastSubMakerRequest.smReqStatus) ? "Use" : "Not Use")</span>*@
+                    </div>
+                    <div class="row">
+                        <div class="row center">
+                            <div class="col-5 " style="">
+                            </div>
+                            <div class="col-15  " style=" display: flex;align-items: center;">
+
+                            </div>
+                            <div class="col-15 " style=" display: flex;align-items: center; ">
+                                @*<input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off">*@
+                            </div>
+                            <div class="col-15  " style=" display: flex;align-items: center; ">
+                            </div>
+                            <div class="col-15" style=" display: flex;align-items: center; ">
+                            </div>
+                            <div class="col-15 border1_5SkyBlue " style=" display: flex;align-items: center; ">
+                                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Doc No :</div>
+                            </div>
+                            <div class="col-15" style="display: flex;  justify-content: center;">
+                                <span style="font-weight:600">
+                                    @Html.DisplayFor(x => x._ViewceMastSubHistorySum.shDocNo)
+                                </span>
+
+
+                                <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px;display:none" autocomplete="off" asp-for="_ViewceMastSubHistorySum.shDocNo" id="i_HisSumDocNo">
+                                <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px;display:none" autocomplete="off" asp-for="_ViewceMastSubHistorySum.shIssueBy">
+
+                            </div>
+                            <div class="col-5 " style="">
+                            </div>
+                        </div>
+                        <div class="row center">
+                            <div class="col-5 " style="">
+                            </div>
+                            <div class="col-15 border1_5SkyBlue " style=" display: flex;align-items: center;">
+                                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Customer Name:</div>
+                            </div>
+                            <div class="col-15 " style=" display: flex;align-items: center; ">
+                                @*<input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off">*@
+                                <textarea class="form-control left" style="width:100%;height:80%;font-size:12px;field-sizing: content;background-color:lightgoldenrodyellow" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smCustomerName"></textarea>
+                            </div>
+                            <div class="col-15 border1_5SkyBlue " style=" display: flex;align-items: center; ">
+                                <div class="grid-item fw-800 center" style="text-align:left;">Mold No.& Name:</div>
+                            </div>
+                            <div class="col-15" style=" display: flex;align-items: center; ">
+                                <textarea class="form-control left" style="width:100%;height:80%;font-size:12px;field-sizing: content;background-color:lightgoldenrodyellow" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smMoldName"></textarea>
+                                @*<input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off">*@
+                            </div>
+                            <div class="col-15 border1_5SkyBlue " style=" display: flex;align-items: center; ">
+                                <div class="grid-item fw-800 center" style="text-align:left;">Date Issue.</div>
+                            </div>
+                            <div class="col-15" style=" display: flex;align-items: center; ">
+                                <textarea class="form-control left" style="width:100%;height:80%;font-size:11px;field-sizing: content;background-color:lightgray" autocomplete="off" asp-for="_ViewceMastSubHistorySum.shIssueBy" id="i_HissubIssue" readonly></textarea>
+                                @*<input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px;background-color:lightgoldenrodyellow" autocomplete="off" asp-for="_ViewceMastSubHistorySum.shIssueBy" id="i_HissubIssue" />*@
+                            </div>
+                            <div class="col-5 " style="">
+
+                            </div>
+                        </div>
+                        <div class="row center">
+                            <div class="col-5 " style="">
+                            </div>
+                            <div class="col-15 border1_5SkyBlue " style=" display: flex;align-items: center;">
+                                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Model Name:</div>
+                            </div>
+                            <div class="col-15 " style=" display: flex;align-items: center; ">
+                                <textarea class="form-control left" style="width:100%;height:80%;font-size:12px;field-sizing: content;background-color:lightgoldenrodyellow" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smModelName"></textarea>
+
+                            </div>
+                            <div class="col-15 border1_5SkyBlue " style=" display: flex;align-items: center; ">
+                                <div class="grid-item fw-800 center" style="text-align:left;">Cavity No.:</div>
+                            </div>
+                            <div class="col-15" style=" display: flex;align-items: center; ">
+                                <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px;background-color:lightgoldenrodyellow" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smCavityNo">
+                            </div>
+                            <div class="col-15 border1_5SkyBlue " style=" display: flex;align-items: center; ">
+                                <div class="grid-item fw-800 center" style="text-align:left;">Revision:</div>
+                            </div>
+                            <div class="col-15" style=" display: flex;align-items: center; ">
+                                <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px;background-color:lightgoldenrodyellow" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smRevision">
+                            </div>
+                            <div class="col-5 " style="">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-5 " style="">
+                        </div>
+                        <div class="col-15 border1_5SkyBlue " style=" display: flex;align-items: center;">
+                            <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Function :</div>
+                        </div>
+                        <div class="col-15 " style=" display: flex;align-items: center; ">
+                            <textarea class="form-control left" style="width:100%;height:80%;font-size:12px;field-sizing: content;background-color:lightgoldenrodyellow" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smFunction"></textarea>
+                        </div>
+                        <div class="col-15 border1_5SkyBlue " style=" display: flex;align-items: center; ">
+                            <div class="grid-item fw-800 center" style="text-align:left;">Development Stage:</div>
+                        </div>
+                        <div class="col-15" style=" display: flex;align-items: center; ">
+                            <textarea class="form-control left" style="width:100%;height:80%;font-size:12px;field-sizing: content;background-color:lightgoldenrodyellow" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smDevelopmentStage"></textarea>
+                        </div>
+                        <div class="col-15 border1_5SkyBlue " style=" display: flex;align-items: center; ">
+                            <div class="grid-item fw-800 center" style="text-align:left;">Lot No.:</div>
+                        </div>
+                        <div class="col-15" style=" display: flex;align-items: center; ">
+                            <textarea class="form-control left" style="width:100%;height:80%;font-size:12px;field-sizing: content;background-color:lightgoldenrodyellow" autocomplete="off" asp-for="@Model._ViewceMastSubMakerRequest.smLotNo" id="i_HissumLotNo"></textarea>
+                            <textarea class="form-control left" style="width:100%;height:80%;font-size:12px;field-sizing: content;background-color:lightgoldenrodyellow;display:none" autocomplete="off" asp-for="@Model._ViewceMastSubHistorySum.shLotNo"></textarea>
+                        </div>
+                        <div class="col-5 " style="">
+
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+            <div id="partialsumProcess" style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:10px;border-radius:2px;">
+                @await Html.PartialAsync("_PartialHistorysumProcess", Model)
+            </div>
+            <form action="" id="formHisSumDataRemark" name="formHisSumDataRemark">
+                <div style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:10px;border-radius:2px;">
+                    @await Html.PartialAsync("_PartialHistorysumRemark", Model)
+                </div>
+            </form>
+
+
+
+        </div>
+
+
+
+
+    </div>
+</div>
+

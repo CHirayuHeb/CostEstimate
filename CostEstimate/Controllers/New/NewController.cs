@@ -61,6 +61,10 @@ namespace CostEstimate.Controllers.New
         public IActionResult Index(Class @class, string smDocumentNo, string smRevision)
         {
 
+
+
+
+
             @class._ViewOperaterCP = new ViewOperaterCP();
             List<ViewmtMaster_Mold_Control> _ViewmtMaster_Mold_Control = _MOLD._ViewmtMaster_Mold_Control.OrderBy(x => x.mcLedger_Number).Distinct().ToList();
             SelectList formMaster_Mold_Control = new SelectList(_ViewmtMaster_Mold_Control.Select(s => s.mcLedger_Number).Distinct());
@@ -189,7 +193,7 @@ namespace CostEstimate.Controllers.New
                 //__ViewLLLedger = _MOLD._ViewLLLedger.Where(p => p.LGLegNo.Contains(term)).ToList();
                 // _MOLD._ViewLLLedger.Where(p => p.LGLegNo.Contains(term)).Select(p => p.LGLegNo + "" + p.LGTypeCode + "|" + p.LGCustomer + "|" + p.LGMoldName + "" + p.LGMoldNo + "|" + "0"+ "|" + p.LGIcsName).ToList());
 
-                return Json(_MOLD._ViewLLLedger.Where(p => p.LGLegNo.Contains(term)).Select(p => p.LGLegNo + "" + p.LGTypeCode + "|" + p.LGCustomer + "|" + p.LGMoldNo + "/" + p.LGMoldName + "|" + "0" + "|"+ (p.LGIcsName ?? "") + "|" + (p.LGPart ?? "-")).ToList());
+                return Json(_MOLD._ViewLLLedger.Where(p => p.LGLegNo.Contains(term)).Select(p => p.LGLegNo + "" + p.LGTypeCode + "|" + p.LGCustomer + "|" + p.LGMoldNo + "/" + p.LGMoldName + "|" + "0" + "|" + (p.LGIcsName ?? "") + "|" + (p.LGPart ?? "-")).ToList());
                 // return Json(_MOLD._ViewmtMaster_Mold_Control.Where(p => p.mcLedger_Number.Contains(term)).Select(p => p.mcLedger_Number + "|" + p.mcCUS + "|" + p.mcMoldname + "|" + (p.mcCavity != "" ? p.mcCavity : "0")).ToList());
             }
         }
@@ -934,7 +938,7 @@ namespace CostEstimate.Controllers.New
                         _ViewceMastSubMakerRequest.smTotalProCost = @class._ViewceMastSubMakerRequest.smTotalProCost; // public double 
                         _ViewceMastSubMakerRequest.smIcsName = @class._ViewceMastSubMakerRequest.smIcsName; //30/06/2025
                         _ViewceMastSubMakerRequest.smTypeCavity = @class._ViewceMastSubMakerRequest.smTypeCavity; // public string 
-
+                        _ViewceMastSubMakerRequest.smReqStatus = @class._ViewceMastSubMakerRequest.smReqStatus; // public string 
                         _MK._ViewceMastSubMakerRequest.AddAsync(_ViewceMastSubMakerRequest);
 
 
@@ -1023,6 +1027,7 @@ namespace CostEstimate.Controllers.New
 
                             _ViewceMastSubMakerRequest.smTypeCavity = @class._ViewceMastSubMakerRequest.smTypeCavity; // public string 
                             _ViewceMastSubMakerRequest.smIcsName = @class._ViewceMastSubMakerRequest.smIcsName; //30/06/2025
+                            _ViewceMastSubMakerRequest.smReqStatus = @class._ViewceMastSubMakerRequest.smReqStatus; // public string 
                             //_ViewceMastSubMakerRequest.smEmpCodeApprove = empApprove;
                             //_ViewceMastSubMakerRequest.smNameApprove = NickNameApprove;
                             //_ViewceMastSubMakerRequest.smStep = vstep;
@@ -1032,6 +1037,21 @@ namespace CostEstimate.Controllers.New
                             // _MK.SaveChanges();
                         }
                         _MK.SaveChanges();
+
+
+                        //new check 01 disible 00 old version  Order No.​ lot no
+                        if (vstep == 7 && vRevision !="00")
+                        {
+                            var _RViewceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smOrderNo == @class._ViewceMastSubMakerRequest.smOrderNo && x.smLotNo == @class._ViewceMastSubMakerRequest.smLotNo && x.smRevision != vRevision).ToList();
+                            if (_RViewceMastSubMakerRequest.Count > 0)
+                            {
+                                foreach (var item in _RViewceMastSubMakerRequest)
+                                {
+                                    item.smReqStatus = false;
+                                }
+                                _MK.SaveChanges();
+                            }
+                        }
 
 
                     }
@@ -1425,6 +1445,48 @@ namespace CostEstimate.Controllers.New
             return PartialView("_PartialDisplayQuotation", @class);
             //return PartialView("_PartialDisplayQuotationTHSarabun", @class);
 
+        }
+
+
+
+
+
+        public JsonResult updateStatus(string id, string status)
+        {
+            string config = "S";
+            string msg = "Update Success !!";
+            using (var dbContextTransaction = _MK.Database.BeginTransaction())
+            {
+
+                try
+                {
+                    string _Permiss = User.Claims.FirstOrDefault(s => s.Type == "Permission")?.Value;
+                    if (_Permiss.ToUpper() != "ADMIN")
+                    {
+                        config = "P";
+                        msg = "You don't have permission to access";
+                        return Json(new { c1 = config, c2 = msg });
+                    }
+
+
+                    ViewceMastSubMakerRequest _ViewceMastSubMakerRequest = new ViewceMastSubMakerRequest();
+                    _ViewceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smDocumentNo == id).FirstOrDefault();
+                    _ViewceMastSubMakerRequest.smReqStatus = status != null ? status == "0" ? false : true : true;
+                    _MK._ViewceMastSubMakerRequest.Update(_ViewceMastSubMakerRequest);
+                    _MK.SaveChanges();
+                    dbContextTransaction.Commit();
+                    return Json(new { c1 = config, c2 = msg });
+                }
+
+                catch (Exception ex)
+                {
+                    dbContextTransaction.Rollback();
+                    config = "E";
+                    msg = "Something is wrong !!!!! : " + ex.Message;
+                    return Json(new { c1 = config, c2 = msg });
+                }
+
+            }
         }
 
 

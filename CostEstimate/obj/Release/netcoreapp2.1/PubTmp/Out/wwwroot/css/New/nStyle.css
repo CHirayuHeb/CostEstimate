@@ -1,0 +1,57 @@
+﻿.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px; /* ลดจาก 60px */
+    height: 20px; /* ลดจาก 30px */
+}
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f44336; /* Not Use */
+    transition: 0.4s;
+    border-radius: 20px; /* ปรับตามขนาด */
+}
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px; /* ลดขนาด */
+        width: 16px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+    }
+
+input:checked + .slider {
+    background-color: #4CAF50; /* Use */
+}
+
+    input:checked + .slider:before {
+        transform: translateX(20px); /* จาก 30px */
+    }
+
+.label-text {
+    margin-left: 8px;
+    font-weight: 500;
+    font-size: 12px; /* ลดขนาดฟอนต์ */
+    font-family: sans-serif;
+}
+
+.status-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}

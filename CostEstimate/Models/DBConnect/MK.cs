@@ -42,6 +42,14 @@ namespace CostEstimate.Models.DBConnect
             {
                 entity.HasKey(k => new { k.imCENo, k.imItemNo });
             });
+            modelBuilder.Entity<ViewceMastSubHistorySum>(entity =>
+            {
+                entity.HasKey(k => new { k.shDocNo, k.shLotNo });
+            });
+            modelBuilder.Entity<ViewceMastSubDetailHistorySum>(entity =>
+            {
+                entity.HasKey(k => new { k.sdDocNo, k.sdRunNo, k.sdLotNo });
+            });
         }
 
         public DbSet<ViewLoginPgm> _ViewLoginPgm { get; set; }
@@ -72,7 +80,13 @@ namespace CostEstimate.Models.DBConnect
 
         public DbSet<ViewceMastType> _ViewceMastType { get; set; }
 
-        
+
+        public DbSet<ViewceMastSubHistorySum> _ViewceMastSubHistorySum { get; set; } //for report history sum 
+        public DbSet<ViewceMastSubDetailHistorySum> _ViewceMastSubDetailHistorySum { get; set; } //for report history sum 
+
+
+
+
 
         //public DbSet<GroupedResult> _GroupedResult { get; set; }
         //public DbSet<ProcessResult> _ProcessResult { get; set; }

@@ -61,7 +61,9 @@ namespace CostEstimate.Models.Table.MK
         public string smTypeCavity { get; set; }
 
         public string smIcsName { get; set; } //30/06/2025
-        
+
+        public bool smReqStatus { get; set; } = true; //30/06/2025
+
 
     }
 
@@ -377,7 +379,7 @@ namespace CostEstimate.Models.Table.MK
         public string hcGroupSub { get; set; }
         public string hcProcessName { get; set; }
         public string hcIssue { get; set; }
-        
+
     }
 
     public class GroupViewceHourChangeCategory
@@ -548,6 +550,90 @@ namespace CostEstimate.Models.Table.MK
         public string mtProgram { get; set; }
         public string mtIssueBy { get; set; }
 
+    }
+    public class ViewSearchHisSum
+    {
+        public string s_LotNoMoldName { get; set; }
+    }
+
+    public class GroupedListceDetailSubMakerRequest
+    {
+        public string glDocNo { get; set; }
+        public List<ViewceDetailSubMakerRequest> gllistDetail { get; set; }
+    }
+
+    public class GroupedListceDetailSub
+    {
+        public string glDocNo { get; set; }
+        public List<GroupedListceDetailSubMakerRequest> listGroupViewceDetailSubMakerRequest { get; set; }
+    }
+
+    public class VisaulViewceDetailSubMakerRequest
+    {
+        public string dsDocumentNo { get; set; }
+        public int dsRunNo { get; set; }
+        public string dsLotNo { get; set; }
+        public string dsOrderNo { get; set; }
+        public string dsGroupName { get; set; }
+        public string dsProcessName { get; set; }
+        public double dsKIJUNWT_Man { get; set; }
+        public double dsKIJUNWT_Auto { get; set; }
+        public double dsWT_Man { get; set; }
+        public double dsWT_Auto { get; set; }
+    }
+    public class GroupViewceDetailSubMakerRequestHissum
+    {
+        public string GroupName { get; set; }
+        public List<VisaulViewceDetailSubMakerRequest> DetailSubMakerRequest { get; set; }
+    }
+
+    [Table("ceMastSubHistorySum")]
+    public class ViewceMastSubHistorySum
+    {
+        [Key]
+        public string shDocNo { get; set; }
+        public string shLotNo { get; set; }
+        public double shCKjMat { get; set; } 
+        public double shCKjCofficient { get; set; }
+        public double shCKjWorkingTime { get; set; } 
+        public double shCKjTotal { get; set; } 
+        public double shCSmMat { get; set; } 
+        public double shCSmCofficient { get; set; } 
+        public double shCSmWorkingTime { get; set; } 
+        public double shCSmTotal { get; set; }
+        public double shCMcMat { get; set; }
+        public double shCMcCofficient { get; set; } 
+        public double shCMcWorkingTime { get; set; }
+        public double shCMcTotal { get; set; }
+        public bool shStatus { get; set; } = false;
+        public string shIssueBy { get; set; }
+    }
+
+    [Table("ceMastSubDetailHistorySum")]
+    public class ViewceMastSubDetailHistorySum
+    {
+        [Key]
+
+        public string sdDocNo { get; set; }
+        public int sdRunNo { get; set; }
+        public string sdLotNo { get; set; }
+        public string sdGroupName { get; set; }
+        public string sdProcessName { get; set; }
+        public double sdWK_Man { get; set; }
+        public double sdWK_Auto { get; set; }
+        public bool sdActive_WKMan { get; set; }
+        public bool sdActive_WKAuto { get; set; }
+        public double sdKIJWT_Man { get; set; }
+        public double sdKJWT_Auto { get; set; }
+        public double sdWT_Man { get; set; }
+        public double sdWT_Auto { get; set; }
+
+
+    }
+    public class GroupDetailSubMakerRequestHissum
+    {
+        public string GroupName { get; set; }
+        public List<ViewceMastSubDetailHistorySum> DetailSubMakerRequest { get; set; }
     }
 
 }

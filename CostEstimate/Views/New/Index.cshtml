@@ -1,9 +1,11 @@
 ﻿@model CostEstimate.Models.Common.Class;
+@using CostEstimate.Models.Common;
 @{
     ViewData["Title"] = "New | ThaiStanley";
     Layout = "~/Views/Shared/_MenuBar.cshtml";
 }
 @{
+    string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
     string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
     string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
     string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
@@ -14,6 +16,8 @@
 }
 
 <link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<link href="~/css/New/nStyle.css" rel="stylesheet" />
+
 
 @*after document ready*@
 <script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("New"); } }</script>
@@ -53,8 +57,17 @@
             </div>
             @*<form action="" id="formRequest" name="formData" style="@(@Model._ViewceMastSubMakerRequest != null ?( @Model._ViewceMastSubMakerRequest.smEmpCodeApprove != null &&( @Model._ViewceMastSubMakerRequest.smStep == 5 || @Model._ViewceMastSubMakerRequest.smEmpCodeApprove != _UserId ) ? "pointer-events: none;" : ""):"")">*@
             <form action="" id="formRequest" name="formData">
-                <div style="width:100%;">
+              
                     <div id="divSearchMain" style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:10px;border-radius:2px;">
+                        <div class="status-wrapper" style="justify-content: flex-end;margin-top:10px; @(Model._ViewceMastSubMakerRequest.smStep == 7 ?  "" : "display:none;")">
+                            <span style="font-weight:600">Status: </span>
+                            <label class="switch">
+                                <input asp-for="_ViewceMastSubMakerRequest.smReqStatus" type="checkbox" id="statusToggle" onchange="updateStatusReq('@Url.Action("updateStatus","New")')" />
+                                <span class="slider"></span>
+                            </label>
+                            @*<span class="label-text" id="statusLabel">@((Model._ViewceMastSubMakerRequest.smReqStatus) ? "Use" : "Not Use")</span>*@
+                        </div>
+
                         <div class="row center">
                             <div class="col-5 " style="">
                             </div>
@@ -65,7 +78,6 @@
                             </div>
 
                         </div>
-
 
                         <div class="row center" style="@(Model._ViewceMastSubMakerRequest.smStep == 7
                                                                             || (Model._ViewceMastSubMakerRequest.smStep == 0 && (Model._ViewceMastSubMakerRequest.smEmpCodeRequest != null && Model._ViewceMastSubMakerRequest.smEmpCodeRequest != "") && Model._ViewceMastSubMakerRequest.smEmpCodeRequest != _UserId )
@@ -98,11 +110,11 @@
                                 </div>
 
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control" id="i_New_LotNo" style="font-size:12px;width:100%;background-color:yellow" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smLotNo"  />
+                                    <input type="text" class="form-control" id="i_New_LotNo" style="font-size:12px;width:100%;background-color:yellow" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smLotNo" />
                                     @*<button class="button btnGray" style="width:auto" onclick="Menubar_SearchLedger($('#i_New_OrderNo').val(),'@Url.Action("SearchLedger","New")')">
-                    <img src="~/images/search.png" style="width:22px;height:22px;padding-right:0px;margin-right:3px;margin-top: 2px;margin-bottom: 2px;" />
-                    ค้นหา
-                </button>*@
+                                            <img src="~/images/search.png" style="width:22px;height:22px;padding-right:0px;margin-right:3px;margin-top: 2px;margin-bottom: 2px;" />
+                                            ค้นหา
+                                        </button>*@
 
                                     @*@Html.DropDownListFor(m => m._ViewceDetailSubMakerRequest.dsLotNo, (SelectList)ViewBag.vbformMaster_Mold_Control, "กรุณาเลือก", new { @class = "form-control", id = "ipCodeDept", autocomplete = "off", @style = "width:100%;font-size:13px" })*@
                                     @*<input type="text" class="form-control left" style="width:100%;height:80%" autocomplete="off">*@
@@ -234,7 +246,7 @@
                                 </div>
 
                             </div>
-                      
+
                             <div class="row center">
                                 <div class="col-5 " style="">
 
@@ -330,8 +342,6 @@
                         </div>
                     </div>
             </form>
-
-
 
         </div>
     </div>
@@ -460,8 +470,8 @@
                             <img src="~/images/wait1.gif" alt="Loading..." width="100px"><span style="font-weight:600">Loading...</span>
                         </div>
                         @*<div id="ResultMastProcess" style="display: none;">
-                            @await Html.PartialAsync("_PartialMastProcess", Model)
-                        </div>*@
+                                @await Html.PartialAsync("_PartialMastProcess", Model)
+                            </div>*@
 
                         <div id="ResultQuotation" style="display: none;">
                             @*@await Html.PartialAsync(" _PartialDisplayQuotationTHSarabun", Model);*@
@@ -482,7 +492,8 @@
 
 
 <script type="text/javascript">
-        $(function () {
+    $(function () {
+
             function split(val) {
                 return val.split(/,\s*/);
             }
@@ -610,7 +621,27 @@
     })
 
 
+    //function updateLabel() {
+    //    const vDocumentNo = document.getElementById("i_New_DocumentNo").value;
+    //    const checkbox = document.getElementById("statusToggle");
+    //    const label = document.getElementById("statusLabel");
 
+    //    console.log("vDocumentNo" + vDocumentNo)
+    //    if (checkbox.checked) {
+    //        label.textContent = "Use";
+    //        console.log("Status changed to: Use");
+    //    } else {
+    //        label.textContent = "Not Use";
+    //        console.log("Status changed to: Not Use");
+    //    }
+
+
+
+
+    //}
+
+    // ให้มันแสดง console ตอนเปิดหน้า (sync สถานะ)
+   // document.addEventListener("DOMContentLoaded", updateLabel);
 
 
 

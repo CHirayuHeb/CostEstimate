@@ -158,7 +158,7 @@ if (addMasterMold != null)
 //Mold modify Other
 if (searchMoldO != null)
     searchMoldO.addEventListener("click", function () {
-        GoSideMenu("SearchMold");
+        GoSideMenu("SearchMoldOther");
     });
 if (createMoldO != null)
     createMoldO.addEventListener("click", function () {
@@ -166,11 +166,11 @@ if (createMoldO != null)
     });
 if (myRequestMoldO != null)
     myRequestMoldO.addEventListener("click", function () {
-        GoSideMenu("MyRequestMold");
+        GoSideMenu("MyRequestMoldOther");
     });
 if (approvalMoldO != null)
     approvalMoldO.addEventListener("click", function () {
-        GoSideMenu("ApprovalMold");
+        GoSideMenu("ApprovalMoldOther");
     });
 if (addMasterMoldO != null)
     addMasterMoldO.addEventListener("click", function () {
@@ -417,6 +417,15 @@ function PositionY(menu) {
             opacity = "opacity-dot-3";
             break;
         //Mold Other
+        case "SearchMoldOther":
+            //LoadScript("js/New/Index.js", "NewItem");
+            //LoadScript("js/New/EventMore.js", "EventNewMore");
+            LoadScript("js/Home/Index.js", "Home");
+
+            PY = "0px";
+            //PY = "52px";
+            opacity = "opacity-dot-3";
+            break;
         case "NewMoldOther":
             //console.log("New:NewMoldModify");
             LoadScript("js/Home/Index.js", "Home");
@@ -427,6 +436,22 @@ function PositionY(menu) {
             //PY = "114px";
             opacity = "opacity-dot-3";
             break;
+        case "MyRequestMoldOther":
+            //LoadScript("js/MyRequest/Index.js", "MyRequest");
+            //LoadScript("js/New/EventMore.js", "EventMyRequestMore");
+            LoadScript("js/Home/Index.js", "Home");
+            PY = "114px";
+            //PY = "176px";
+            opacity = "opacity-dot-3";
+            break;
+        case "ApprovalMoldOther":
+            //LoadScript("js\\Approval\\Index.js", "Approval");
+            //LoadScript("js\\New\\EventMore.js", "EventApprovalMore");
+            PY = "176px";
+            // PY = "238px";
+            opacity = "opacity-dot-3";
+            break;
+     
 
     }
     var Selector = document.getElementById("selector");

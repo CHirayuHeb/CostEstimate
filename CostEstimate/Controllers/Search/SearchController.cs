@@ -54,6 +54,32 @@ namespace CostEstimate.Controllers.Search
         {
             try
             {
+                //for new his sum 09/07/2025 
+                @class._ViewSearchHisSum = new ViewSearchHisSum();
+                @class._ViewceMastSubMakerRequest = new ViewceMastSubMakerRequest();
+                var _listViewceMastSubHistorySum = _MK._ViewceMastSubHistorySum.ToList();
+
+                //List<string> _listMastSubMarker1 = _MK._ViewceMastSubMakerRequest.Select(x => x.smLotNo + "|" + x.smMoldName + "|" + x.smModelName).Distinct().ToList();
+
+
+
+                List<string> _listMastSubMarker = _MK._ViewceMastSubMakerRequest.Select(x => x.smLotNo + "|" + x.smMoldName + "|" + x.smModelName
+                + "|" +
+                (_listViewceMastSubHistorySum.Where(s => s.shLotNo == x.smLotNo).FirstOrDefault() != null
+                ? _listViewceMastSubHistorySum.Where(s => s.shLotNo == x.smLotNo).Select(f=>f.shStatus).FirstOrDefault() == true ? "OK" : "DRAFT"
+                : "NEW"
+                )
+                ).Distinct().ToList();
+
+
+
+
+
+                SelectList _listofMastSubMarker = new SelectList(_listMastSubMarker);
+                ViewBag.listMastSubMarker = _listofMastSubMarker;
+
+
+
                 List<string> _listTypeofCavity = _MK._ViewceMastType.Where(x => x.mtType.Contains("Cavity") && x.mtProgram.Contains("SubMaker")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
                 SelectList _TypeofCavity = new SelectList(_listTypeofCavity);
                 ViewBag.TypeofCavity = _TypeofCavity;
@@ -64,6 +90,8 @@ namespace CostEstimate.Controllers.Search
                 List<ViewceMastFlowApprove> _ViewceMastFlowApprove = _MK._ViewceMastFlowApprove.OrderBy(x => x.mfStep).Distinct().ToList();
                 SelectList formStatus = new SelectList(_ViewceMastFlowApprove.Select(s => s.mfSubject).Distinct());
                 ViewBag.vbformStatus = formStatus;
+
+                //<List>ViewceMastSubMakerRequest
 
                 @class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.OrderByDescending(x => x.smDocumentNo).ToList();
 

@@ -1,0 +1,345 @@
+﻿@using System.Security.Claims;
+@model CostEstimate.Models.Common.Class;
+@using CostEstimate.Models.Common;
+@*@model IEnumerable<IGrouping<string, CostEstimate.Models.Table.MK.ViewceMastProcess>>*@
+@{
+    string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+    string _admin = GlobalVariable.perAdmin.ToUpper();
+
+}
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+@{
+    double sumPCostsubMaker = 0;
+}
+<div style="border:0.5px solid gray;padding-bottom:10px">
+    <div class="row center">
+
+
+        <div class="col-60 ">
+            <table class="summarys" style="margin-right:-5px">
+                <table class="summarys" id="tbDetailSubMakerHissumRequest1" style="margin-right:-5px">
+                    <tr>
+                        <th style="text-align:center;" colspan="3">
+                            @Html.DisplayFor(x => x._ViewceMastSubMakerRequest.smMoldName)
+                        </th>
+                        <th style="text-align:right;padding-right:20px " colspan="4">
+                            SUM ALL
+                        </th>
+
+                    </tr>
+                    <tr>
+                        <th style="text-align:center;" rowspan="2">DETAIL</th>
+                        <th style="text-align:center;" colspan="2">WORKING TIME</th>
+                        <th style="text-align:center;" colspan="2">KIJUN - SUB</th>
+                        <th style="text-align:center;" colspan="2">WT (Hr).</th>
+                    </tr>
+                    <tr>
+                        <th style="text-align:center;">(MAN)</th>
+                        <th style="text-align:center;">(TOTAL)</th>
+                        <th style="text-align:center;">(MAN)</th>
+                        <th style="text-align:center;">(TOTAL)</th>
+                        <th style="text-align:center;">(MAN)</th>
+                        <th style="text-align:center;">(TOTAL)</th>
+
+                    </tr>
+
+                    @if (@Model._ListGroupDetailSubMakerRequestHissum != null)
+                    {
+                        int RowCount = 0;
+
+                        double sumPProcess = 0;
+                        double sumPWTProcess = 0;
+                        double sumPKJProcess = 0;
+
+                        double sumPWTMan = 0;
+                        double sumPWTAuto = 0;
+                        double sumPKJMan = 0;
+                        double sumPKJAuto = 0;
+                        double sumPWHMan = 0;
+                        double sumPWHAuto = 0;
+                        @foreach (var group in @Model._ListGroupDetailSubMakerRequestHissum)
+                        {
+
+                            double sumWTMan = 0;
+                            double sumWTAuto = 0;
+                            double sumKJMan = 0;
+                            double sumKJAuto = 0;
+                            double sumWHMan = 0;
+                            double sumWHAuto = 0;
+                            @for (int i = 0; i < group.DetailSubMakerRequest.Count(); i++)
+                            {
+                                double vWtMan = @group.DetailSubMakerRequest[i].sdWK_Man;
+                                double vWtAuto = @group.DetailSubMakerRequest[i].sdWK_Auto;
+
+                                double vKJMan = @group.DetailSubMakerRequest[i].sdKIJWT_Man;
+                                double vKJAuto = @group.DetailSubMakerRequest[i].sdKJWT_Auto;
+
+                                double vWHMan = @group.DetailSubMakerRequest[i].sdWT_Man;
+                                double vWHAuto = @group.DetailSubMakerRequest[i].sdWT_Auto;
+
+                                <tbody id="tableBodyHisSum">
+                                    <tr class="@group.GroupName.Trim()">
+                                        <td style="text-align:left;">
+                                            <span style="font-size:10px">@group.DetailSubMakerRequest[i].sdProcessName</span>
+                                            <input type="text" class="form-control center shDocNo" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="" />
+                                            <input type="text" class="form-control center smMoldName" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ViewceMastSubMakerRequest.smMoldName" />
+                                            <input asp-for="_ListViewceMastSubDetailHistorySum[RowCount].sdGroupName" type="text" class="form-control center sdGroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@group.DetailSubMakerRequest[i].sdGroupName.Trim()" />
+                                            <input asp-for="_ListViewceMastSubDetailHistorySum[RowCount].sdProcessName" type="text" class="form-control center sdProcessName" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@group.DetailSubMakerRequest[i].sdProcessName.Trim()" />
+                                        </td>
+                                        <td>
+                                            <input asp-for="_ListViewceMastSubDetailHistorySum[RowCount].sdActive_WKMan" class="form-control center sdActive_WKMan" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@group.DetailSubMakerRequest[i].sdActive_WKMan" type="text" />
+                                            <input asp-for="_ListViewceMastSubDetailHistorySum[RowCount].sdWK_Man" class="form-control center WK_Man" autocomplete="off" style="@(@group.DetailSubMakerRequest[i].sdActive_WKMan == false ? "width:100%;height:80%;font-size:10px;background-color:darkgrey" : "width:100%;height:80%;font-size:10px;background-color:yellow")" value="@group.DetailSubMakerRequest[i].sdWK_Man" type="number" readonly="@(@group.DetailSubMakerRequest[i].sdActive_WKMan == false ? "readonly" : null)" min="0" />
+                                        </td>
+                                        <td style="">
+                                            <input asp-for="_ListViewceMastSubDetailHistorySum[RowCount].sdActive_WKAuto" class="form-control center sdActive_WKAuto" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@group.DetailSubMakerRequest[i].sdActive_WKAuto" type="text" />
+                                            <input asp-for="_ListViewceMastSubDetailHistorySum[RowCount].sdWK_Auto" class="form-control center WK_Auto " autocomplete="off" style="@(@group.DetailSubMakerRequest[i].sdActive_WKAuto == false ? "width:100%;height:80%;font-size:10px;background-color:darkgrey" : "width:100%;height:80%;font-size:10px;background-color:yellow")" value="@group.DetailSubMakerRequest[i].sdWK_Auto" type="number" readonly="@(@group.DetailSubMakerRequest[i].sdActive_WKAuto == false ? "readonly" : null)" min="0" />
+                                        </td>
+                                        <td style="">
+                                            <input asp-for="_ListViewceMastSubDetailHistorySum[RowCount].sdKIJWT_Man" value="@group.DetailSubMakerRequest[i].sdKIJWT_Man" class="form-control center KIJUNWT_Man" autocomplete="off" type="number" min="0" style="width:100%;height:80%;font-size:10px;background-color:darkgray" readonly />
+                                        </td>
+                                        <td style="">
+                                            <input asp-for="_ListViewceMastSubDetailHistorySum[RowCount].sdKJWT_Auto" value="@group.DetailSubMakerRequest[i].sdKJWT_Auto" class="form-control center KIJUNWT_Auto" autocomplete="off" type="number" min="0" style="width:100%;height:80%;font-size:10px;background-color:darkgray" readonly />
+                                        </td>
+                                        <td style="">
+                                            <input asp-for="_ListViewceMastSubDetailHistorySum[RowCount].sdWT_Man" value="@group.DetailSubMakerRequest[i].sdWT_Man" class="form-control center WTWT_Man " autocomplete="off" type="number" min="0" style="width:100%;height:80%;font-size:10px;background-color:darkgray" readonly />
+                                        </td>
+                                        <td style="">
+                                            <input asp-for="_ListViewceMastSubDetailHistorySum[RowCount].sdWT_Auto" value="@group.DetailSubMakerRequest[i].sdWT_Auto" class="form-control center WTWT_Auto " autocomplete="off" type="number" min="0" style="width:100%;height:80%;font-size:10px;background-color:darkgray" readonly />
+                                        </td>
+
+                                        <span style="display:none">@(sumWTMan += vWtMan)</span>
+                                        <span style="display:none">@(sumWTAuto += vWtAuto)</span>
+
+                                        <span style="display:none">@(sumKJMan += vKJMan)</span>
+                                        <span style="display:none">@(sumKJAuto += vKJAuto)</span>
+
+
+                                        <span style="display:none">@(sumWHMan += vWHMan)</span>
+                                        <span style="display:none">@(sumWHAuto += vWHAuto)</span>
+                                        <span style="display:none">@(RowCount += 1)</span>
+                                    </tr>
+                                </tbody>
+
+
+                            }
+
+                            <tr style="background-color:lightgrey">
+                                <td style="text-align:left"><span style="font-weight:600;font-size:9px">TOTAL:@group.GroupName.Trim()</span></td>
+                                <td style="text-align:left"><input class="form-control center dsWK_Man @group.GroupName.Trim()" id="dsWK_Man @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray" type="number" min="0" readonly value="@sumWTMan" /></td>
+                                <td style="text-align:left"><input class="form-control center dsWK_Auto @group.GroupName.Trim()" id="dsWK_Auto @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray" type="number" min="0" readonly value="@sumWTAuto" /></td>
+                                <td style="text-align:left"><input class="form-control center dsKIJUNWT_Man @group.GroupName.Trim()" id="dsKIJUNWT_Man @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray" type="text" min="0" readonly value="@sumKJMan" /></td>
+                                <td style="text-align:left"><input class="form-control center dsKIJUNWT_Auto @group.GroupName.Trim()" id="dsKIJUNWT_Auto @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray" type="text" min="0" readonly value="@sumKJAuto" /></td>
+                                <td style="text-align:left"><input class="form-control center dsWTWT_Man @group.GroupName.Trim()" id="dsWTWT_Man @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray" type="text" min="0" readonly value="@sumWHMan" /></td>
+                                <td style="text-align:left"><input class="form-control center dsWTWT_Auto @group.GroupName.Trim()" id="dsWTWT_Auto @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray" type="text" min="0" readonly value="@sumWHAuto" /></td>
+                                <span style="display:none">@(sumPWTMan += sumWTMan)</span>
+                                <span style="display:none">@(sumPWTAuto += sumWTAuto)</span>
+                                <span style="display:none">@(sumPKJMan += sumKJMan)</span>
+                                <span style="display:none">@(sumPKJAuto += sumKJAuto)</span>
+                                <span style="display:none">@(sumPWHMan += sumWHMan)</span>
+                                <span style="display:none">@(sumPWHAuto += sumWHAuto)</span>
+
+                                @{
+                                    string vGroupName = @group.GroupName.Trim();
+                                    if (vGroupName.ToLower().Contains("nc"))
+                                    {
+                                        sumPProcess += sumWTAuto;
+                                        sumPWTProcess += sumWHAuto;
+                                        sumPKJProcess += sumKJAuto;
+                                    }
+                                    else
+                                    {
+                                        sumPProcess += sumWTMan;
+                                        sumPWTProcess += sumWHMan;
+                                        sumPKJProcess += sumKJMan;
+                                    }
+
+                                }
+
+                            </tr>
+                        }
+                        <tr style="background-color:palegreen">
+                            <td style="text-align:left;"><span style="font-weight:600;font-size:8px">Tot.PROCESS.</span></td>
+                            <td style="text-align:left">
+                                <input class="form-control center " id="i_TotalPocessMan" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen" type="number" min="0" readonly value="@sumPProcess" />
+                                <input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" type="number" min="0" readonly value="@sumPWTMan" />
+                            </td>
+                            <td style="text-align:left"><input class="form-control center " id="i_TotalPocessAuto" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" type="number" min="0" readonly value="@sumPWTAuto" /></td>
+
+                            <td style="text-align:left">
+                                <input class="form-control center " id="i_TotalPocessKJProcess" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen;display:none" type="number" min="0" readonly value="@sumPKJProcess" />
+                                <input class="form-control center " id="i_TotalPocessKJMan" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen" type="number" min="0" readonly value="@sumPKJMan" />
+                            </td>
+                            <td style="text-align:left"><input class="form-control center " id="i_TotalPocessKJAuto" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen" type="number" min="0" readonly value="@sumPKJAuto" /></td>
+
+                            <td style="text-align:left">
+                                <input class="form-control center " id="" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen" type="number" min="0" readonly value="@sumPWTProcess" />
+                                <input class="form-control center " id="" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" type="number" min="0" readonly value="@sumPWHMan" />
+                            </td>
+                            <td style="text-align:left"><input class="form-control center " id="" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" type="number" min="0" readonly value="@sumPWHAuto" /></td>
+
+
+
+
+                        </tr>
+
+                    }
+                    <tr>
+                        <th colspan="5" style="text-align:right;font-weight:600">COST SUB MAKER</th>
+                        <th colspan="2">
+                            <input class="form-control center " id="i_HissubCostsubMaker" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightskyblue" type="number" min="0" readonly value="0" />
+                        </th>
+                    </tr>
+
+
+
+                    @*</tbody>*@
+                </table>
+
+            </table>
+        </div>
+        <div class="col-40" style="">
+            <div class="table-containerHM" style="margin:-4px;height:100%">
+
+
+                @foreach (var group in @Model._ListGroupedListceDetailSub)
+                {
+                    <table class="summarys" style="max-width:300px;min-width:200px">
+                        @*<h2>Document No: @group.glDocNo</h2>*@
+                        <tr>
+                            @*<th colspan="3" style="text-align:center;">@group.glDocNo</th>*@
+                            <th colspan="2" style="text-align:center;">@group.glDocNo</th>
+                        </tr>
+                        <tr>
+
+                            @*<th style="text-align:center;width: 10% " rowspan="2">DETAIL</th>
+                                <th style="text-align:center;width: 10% " colspan="2">WORKING TIME</th>*@
+
+                            <th style="text-align:center;width: 10% " colspan="2">WORKING TIME</th>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center;width: 10% ">(MAN)</th>
+                            <th style="text-align:center;width: 10% ">(TOTAL)</th>
+
+                        </tr>
+                        @{
+                            double sumPWTCostSUB = 0;
+                            double sumPWTProcess = 0;
+                            double sumPWTManNc = 0;
+                            double sumPWTMan = 0;
+                            double sumPWTAuto = 0;
+                        }
+                        @foreach (var subGroup in group.listGroupViewceDetailSubMakerRequest)
+                        {
+                            double sumWTMan = 0;
+                            double sumWTAuto = 0;
+                            @foreach (var item in subGroup.gllistDetail)
+                            {
+                                double vWtMan = @item.dsWT_Man;
+                                double vWtAuto = @item.dsWT_Auto;
+                                <tr>
+                                    @*<td>@item.dsProcessName</td>*@
+                                    <td>
+                                        <input class="form-control center  CEWT_Man" autocomplete="off" style=" width:100%;height:80%;font-size:10px;background-color:lightgray" value="@item.dsWT_Man" />
+                                        @*@item.dsWT_Man*@
+                                    </td>
+                                    <td>
+                                        <input class="form-control center  CEWT_Auto" autocomplete="off" style=" width:100%;height:80%;font-size:10px;background-color:lightgray" value="@item.dsWT_Auto" />
+
+                                        @*@item.dsWT_Auto*@
+                                    </td>
+                                    <span style="display:none">@(sumWTMan += vWtMan)</span>
+                                    <span style="display:none">@(sumWTAuto += vWtAuto)</span>
+
+                                    @{
+                                        string vGroupName = @item.dsGroupName;
+                                        if (vGroupName.ToLower().Contains("nc"))
+                                        {
+                                            sumPWTProcess += vWtAuto;
+
+                                            sumPWTManNc += vWtMan;
+                                        }
+                                        else
+                                        {
+                                            sumPWTProcess += vWtMan;
+                                        }
+                                    }
+                                </tr>
+                            }
+                            <tr style="background-color:lightgrey">
+                                @*<td style="text-align:left"></td>*@
+                                <td style="text-align:left">
+
+                                    <input class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray" type="text" min="0" readonly value="@sumWTMan" />
+                                </td>
+                                <td style="text-align:left"><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray" type="text" min="0" readonly value="@sumWTAuto" /></td>
+                            </tr>
+
+
+
+
+                            <span style="display:none">@(sumPWTMan += sumWTMan)</span>
+                            <span style="display:none">@(sumPWTAuto += sumWTAuto)</span>
+
+                            //check NC
+
+
+
+
+
+                        }
+                        <tr style="background-color:palegreen">
+                            @*<td style="text-align:left;"></td>*@
+                            <td style="text-align:left">
+                                <input class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen" type="text" min="0" readonly value="@sumPWTProcess" />
+                                <input class="form-control center " id="" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray;display:none" type="text" readonly value="@sumPWTMan" />
+                            </td>
+                            <td style="text-align:left"><input class="form-control center " id="" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray;display:none" type="text" readonly value="@sumPWTAuto" /></td>
+
+
+                        </tr>
+                        <tr style="background-color:palegreen">
+                            @{
+                                sumPWTCostSUB = (sumPWTProcess - sumPWTManNc) * 1000;
+                                sumPCostsubMaker = sumPCostsubMaker + sumPWTCostSUB;
+
+
+                            }
+
+                            <th style="text-align:left" colspan="2"><input class="form-control center SumbyCE" id="i_HissubdetailSumbyCE @group.glDocNo" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightskyblue" type="text" readonly value="@sumPWTCostSUB" /></th>
+                        </tr>
+                    </table>
+
+                    @*@if (group == @Model._ListGroupedListceDetailSub.Last())
+                        {
+                            <input class="form-control center " id="i_HissubCostsub" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightskyblue" type="number" min="0" readonly value="@sumPCostsubMaker" />
+
+
+                        }*@
+                }
+
+            </div>
+        </div>
+
+
+    </div>
+    @*<div class="row">
+            <div class="col-30"></div>
+            <div class="col-30">
+                <input class="form-control center " id="i_HissubCostsub" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightskyblue" type="number" min="0" readonly value="@sumPCostsubMaker" />
+            </div>
+            <div class="col-30"></div>
+        </div>*@
+</div>
+
+<script type="text/javascript">
+
+
+
+                        //sumGroupWK_Man();
+
+</script>

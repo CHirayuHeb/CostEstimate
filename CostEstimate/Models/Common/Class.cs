@@ -33,8 +33,14 @@ namespace CostEstimate.Models.Common
         public ViewLoginPgm _ViewLoginPgm { get; set; }
         public ViewSearchData _ViewSearchData { get; set; }
 
+        public ViewSearchHisSum _ViewSearchHisSum { get; set; } //for search history sum 09/07/2025
+
+        
+
+
         public List<ViewceMastSubMakerRequest> _ListceMastSubMakerRequest { get; set; }
         public List<ViewceDetailSubMakerRequest> _ListceDetailSubMakerRequest { get; set; }
+        public List<ViewceDetailSubMakerRequest> _ListceDetailSubMakerRequestHisSum { get; set; }
         public List<ViewceMastProcess> _ListceMastProcess { get; set; }
         public List<ViewceCostPlanning> _ListceCostPlanning { get; set; }
         public List<ViewceMastCostModel> _ListceMastCostModel { get; set; }
@@ -71,7 +77,8 @@ namespace CostEstimate.Models.Common
         //public List<GroupViewceCostPlanning> _ListGroupViewceCostPlanning { get; set; }
 
 
-
+        //public GroupViewceDetailSubMakerRequestHissum _GroupViewceDetailSubMakerRequestHisSum { get; set; }
+        //public List<GroupViewceDetailSubMakerRequestHissum> _ListGroupViewceDetailSubMakerRequestHisSum { get; set; }
 
 
         ////MOLD
@@ -166,6 +173,29 @@ namespace CostEstimate.Models.Common
 
         public ViewceMastType ViewceMastType { get; set; }
         public List<ViewceMastType> _ListViewceMastType { get; set; }
+
+
+        public GroupedListceDetailSubMakerRequest _GroupedListceDetailSubMakerRequest { get; set; }
+        public List<GroupedListceDetailSubMakerRequest> _ListGroupedListceDetailSubMakerRequest { get; set; }
+
+
+        public GroupedListceDetailSub _GroupedListceDetailSub { get; set; }
+        public List<GroupedListceDetailSub> _ListGroupedListceDetailSub { get; set; }
+
+        public GroupViewceDetailSubMakerRequest _GroupViewceDetailSubMakerRequest1 { get; set; }
+        public List<GroupViewceDetailSubMakerRequest> _ListGroupViewceDetailSubMakerRequest1 { get; set; }
+
+        //sum all 
+        public VisaulViewceDetailSubMakerRequest _VisaulViewceDetailSubMakerRequest { get; set; }
+        public List<VisaulViewceDetailSubMakerRequest> _ListVisaulViewceDetailSubMakerRequest { get; set; }
+        public GroupViewceDetailSubMakerRequestHissum groupViewceDetailSubMakerRequestHissum { get; set; }
+        public List<GroupViewceDetailSubMakerRequestHissum> _ListGroupViewceDetailSubMakerRequestHissum { get; set; }
+
+        public ViewceMastSubHistorySum _ViewceMastSubHistorySum { get; set; }
+        public List<ViewceMastSubDetailHistorySum> _ListViewceMastSubDetailHistorySum  { get; set; }
+        public GroupDetailSubMakerRequestHissum GroupDetailSubMakerRequestHissum { get; set; }
+        public List<GroupDetailSubMakerRequestHissum> _ListGroupDetailSubMakerRequestHissum { get; set; }
+
 
 
     }
