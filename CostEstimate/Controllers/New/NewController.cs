@@ -813,9 +813,7 @@ namespace CostEstimate.Controllers.New
             //User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
             string v_msg = "";
             string v_status = "";
-
-
-
+            
             using (var dbContextTransaction = _MK.Database.BeginTransaction())
             {
                 try
@@ -1083,12 +1081,16 @@ namespace CostEstimate.Controllers.New
         public string[] chkPermission(Class @class)
         {
             string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
+            string _Permiss = User.Claims.FirstOrDefault(s => s.Type == "Permission")?.Value;
             string message_per = "";
             string status_per = "";
             var chkData = _MK._ViewceMastSubMakerRequest.Where(x => x.smDocumentNo == @class._ViewceMastSubMakerRequest.smDocumentNo).FirstOrDefault();
             try
             {
-                if (chkData != null)
+              
+                
+
+                    if (chkData != null)
                 {
                     //check operator //check create user
                     if (chkData.smStep == 0 && _UserId == chkData.smEmpCodeRequest)
@@ -1097,6 +1099,11 @@ namespace CostEstimate.Controllers.New
                         message_per = "You have permission ";
                     }
                     else if (_UserId == chkData.smEmpCodeApprove)
+                    {
+                        status_per = "S";
+                        message_per = "You have permission ";
+                    }
+                    else if(chkData.smStep == 7  && _Permiss.ToUpper() == "ADMIN")
                     {
                         status_per = "S";
                         message_per = "You have permission ";

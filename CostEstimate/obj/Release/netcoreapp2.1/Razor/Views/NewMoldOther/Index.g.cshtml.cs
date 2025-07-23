@@ -80,7 +80,7 @@ using CostEstimate;
             WriteLiteral("\r\n");
             EndContext();
             BeginContext(780, 56, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "7e03899e378a48a6999baec59c5849a2", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "631c62a982404158ae7a9f086dd6e928", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -138,7 +138,7 @@ WriteAttributeValue("", 1920, Model._ViewceMastModifyRequest.mfCENo, 1920, 38, f
             WriteLiteral(">\r\n                        ");
             EndContext();
             BeginContext(1988, 136, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "04f950c8c433453caafb06f7dd38b40d", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "e9d20afdcdf7412182c15a9c425aa0a7", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -169,7 +169,7 @@ WriteAttributeValue("", 2315, Url.Action("History","NewMoldModify"), 2315, 38, f
             WriteLiteral(">\r\n                        ");
             EndContext();
             BeginContext(2383, 135, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "1b0c0d245a834716a126608d387a6535", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "1dadd8c226184cba82ab768ce60ea099", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -215,7 +215,7 @@ WriteAttributeValue("", 2836, Url.Action("SaveCeDetailSub","NewMoldModify"), 283
             WriteLiteral(">\r\n                        ");
             EndContext();
             BeginContext(2912, 137, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "556c8fa0f26b4a69b5d71f161ef9fda0", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "69d569c8395a4990b28fb2e44906c319", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -241,7 +241,7 @@ WriteAttributeValue("", 2836, Url.Action("SaveCeDetailSub","NewMoldModify"), 283
                     ");
             EndContext();
             BeginContext(3373, 2245, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "6aa826b6f3144a98a8f38f3caba820d3", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "3217170133494ad082ea3ea68d8fa35b", async() => {
                 BeginContext(3424, 239, true);
                 WriteLiteral("\r\n                        <div class=\"row center\">\r\n                            <div class=\"col-5 \" style=\"\">\r\n                            </div>\r\n                            <div class=\"col-90 \" style=\"\">\r\n                                ");
                 EndContext();

@@ -515,18 +515,15 @@
                             <span style="font-weight:600">กรุณาเลือก Lot No :</span>
 
                             @*@Html.DropDownListFor(m => m._ViewSearchHisSum.s_LotNoMoldName, (SelectList)ViewBag.listMastSubMarker, "กรุณาเลือก", new { @class = "form-control", id = "i_HisSumLotNoMoldName", autocomplete = "off", @style = "width:50%;font-size:12px;background-color:lightyellow;height:60%;" })*@
-
-
                             <input type="text" id="i_HisSumLotNoMoldName"  asp-for="_ViewSearchHisSum.s_LotNoMoldName"   autocomplete="off"
                                    class="form-control" list="lotNoList" style="width:50%;font-size:12px;background-color:lightyellow;height:60%;" />
-                            <datalist id="lotNoList" >
+                            <datalist id="lotNoList"  >
                                 @foreach (var item in (SelectList)ViewBag.listMastSubMarker)
                                 {
-                                    <option value="@item.Text" />
+                                    <option  value="@item.Text" />
                                 }
                             </datalist>
                             <input type="button" style="font-size:18px" value="&#x1F4C4;" onclick="Menubar_SearchMasterMastSub('@Url.Action("SearchMastCostHourChange","AddMCost")')">
-
                         </div>
 
                        
