@@ -57,9 +57,142 @@ namespace CostEstimate.Controllers.NewMoldOther
         [Authorize("Checked")]
         public IActionResult Index(Class @class)
         {
+            List<string> _listRequestBy = _MK._ViewceMastType.Where(x => x.mtType.Contains("RequestBy") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+            SelectList _TypeofRequestBy = new SelectList(_listRequestBy);
+            ViewBag.TypeofRequestBy = _TypeofRequestBy;
+
             @class._ViewceMastModifyRequest = new ViewceMastModifyRequest();
             @class._ListceMastFlowApprove = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "2").ToList();
             return View(@class);
         }
+
+
+        [Authorize("Checked")]
+        [HttpPost]
+        public JsonResult History(Class @classs)//string getID)
+        {
+            //Class @class ,
+            string partialUrl = "";
+            int v_step = @classs._ViewceMastModifyRequest != null ? @classs._ViewceMastModifyRequest.mfStep : 0;
+            string v_issue = @classs._ViewceMastModifyRequest != null ? @classs._ViewceMastModifyRequest.mfEmpCodeRequest : "";
+            string v_DocNo = @classs._ViewceMastModifyRequest != null ? @classs._ViewceMastModifyRequest.mfCENo : "";
+            List<ViewceHistoryApproved> _listHistory = new List<ViewceHistoryApproved>();
+            partialUrl = Url.Action("SendMail", "NewMoldOther", new { @class = @classs, s_step = v_step, s_issue = v_issue, mpNo = v_DocNo });
+            //try
+            //{
+            //    if (@classs._ViewceMastModifyRequest != null)
+            //    {
+            //        if (@classs._ViewceMastModifyRequest.mfCENo != "" && @classs._ViewceMastModifyRequest.mfCENo != null)
+            //        {
+            //            // htCostPlanningNo
+            //            String htDocNo = @classs._ViewceMastModifyRequest.mfCENo.ToString(); //htCostPlanningNo
+            //                                                                                 //_listHistory = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == htDocNo).OrderBy(x => x.htStep).ThenBy(x=>x.htDate).ThenBy(x=>x.htTime).ToList();
+            //            _listHistory = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == htDocNo).OrderBy(x => x.htDate).ThenBy(x => x.htTime).ThenBy(x => x.htStep).ToList();
+            //            if (_listHistory.Count() > 0)
+            //            {
+            //                for (int j = 0; j < _listHistory.Count(); j++)
+            //                {
+            //                    var v_htcc = _listHistory[j].htCC;
+            //                    string v_CCemail = "";
+            //                    if (v_htcc != null)
+            //                    {
+            //                        ViewrpEmail fromEmailCC = new ViewrpEmail();
+            //                        string[] splitCC = v_htcc.Split(',');
+            //                        foreach (var i in splitCC)
+            //                        {
+            //                            if (i != " " & i != "")
+            //                            {
+            //                                var v_cc = "";
+            //                                try
+            //                                {
+            //                                    fromEmailCC = _IT.rpEmails.Where(w => w.emEmpcode == i.Trim()).FirstOrDefault();
+            //                                    v_CCemail += fromEmailCC.emName_M365.ToString() + ",";
+            //                                }
+            //                                catch (Exception e)
+            //                                {
+            //                                    v_cc = e.Message;
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+
+            //                    _listHistory[j].htCC = v_CCemail;
+
+
+            //                }
+
+            //            }
+
+
+            //            return Json(new { status = "hasHistory", listHistory = _listHistory, partial = partialUrl });
+            //        }
+            //    }
+
+            //}
+            //catch (Exception e)
+            //{
+
+            //}
+
+            //return Json(new { status = "empty", listHistory = _listHistory, partial = partialUrl });
+            return Json(new { status = "empty", listHistory = _listHistory, partial = partialUrl });
+        }
+        public ActionResult SendMail(Class @class, int s_step, string s_issue, string mpNo)
+        {
+           ViewBag.vDate = DateTime.Now.ToString("yyyy/MM/dd") + " " + DateTime.Now.ToString("HH:mm:ss");
+            //string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
+
+            //@class._ViewceHistoryApproved = new ViewceHistoryApproved();
+            //var v_emailFrom = _IT.rpEmails.Where(x => x.emEmpcode == _UserId).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
+            //if (mpNo != null && mpNo != "")
+            //{
+            //    @class._ViewceMastModifyRequest = _MK._ViewceMastModifyRequest.Where(x => x.mfCENo == mpNo).FirstOrDefault();
+            //    s_issue = @class._ViewceMastModifyRequest.mfEmpCodeRequest;
+            //}
+
+            ////get emp operator
+            //var v_empstep = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "2") != null ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "2").Select(x => x.mfTo).FirstOrDefault() : "";
+            //if (v_empstep != null) //step 2-5
+            //{
+            //    var v_emailTo = _IT.rpEmails.Where(x => x.emEmpcode == v_empstep).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
+            //    @class._ViewceHistoryApproved.htTo = v_emailTo;
+            //}
+
+            ////step 6 Waiting Apporve By DM For ST Department ==> issue
+            //if (s_step == 5)
+            //{
+            //    //var vdocNo = @class.
+            //    var v_emailTo = _IT.rpEmails.Where(x => x.emEmpcode == s_issue).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
+            //    @class._ViewceHistoryApproved.htTo = v_emailTo;
+
+
+            //    //string tbHistory2 = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 1).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 1).Select(x => x.htFrom).FirstOrDefault();
+            //    //string tbHistory2EMPCODE = tbHistory2 == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistory2)).Select(x => x.emEmpcode).FirstOrDefault();
+
+            //    string tbHistory3 = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 2).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 2).Select(x => x.htFrom).FirstOrDefault();
+            //    string tbHistory3EMPCODE = tbHistory3 == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistory3)).Select(x => x.emEmpcode).FirstOrDefault();
+
+            //    string tbHistory2 = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 3).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 3).Select(x => x.htFrom).FirstOrDefault();
+            //    string tbHistory2EMPCODE = tbHistory2 == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistory2)).Select(x => x.emEmpcode).FirstOrDefault();
+
+            //    string tbHistory5 = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 4).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 4).Select(x => x.htFrom).FirstOrDefault();
+            //    string tbHistory5EMPCODE = tbHistory5 == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistory5)).Select(x => x.emEmpcode).FirstOrDefault();
+
+
+            //    @class._ViewceHistoryApproved.htCC = tbHistory2 + "," + tbHistory3 + "," + tbHistory5 + ",";
+            //    //@class._ViewceHistoryApproved.htCC = tbHistory3 + "," + tbHistory5 + ",";
+
+            //}
+
+
+            ////step 4 fix ST dept check
+
+            //@class._ViewceHistoryApproved.htFrom = v_emailFrom;
+            //@class._ViewceHistoryApproved.htStatus = "Approve";
+            //ViewBag.step = s_step;
+            return PartialView("SendMail", @class);
+        }
+
+
     }
 }

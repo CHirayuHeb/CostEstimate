@@ -4240,3 +4240,253 @@ function Menubar_DeleteMHourChage(mhid, action) {
         }
     });
 }
+
+
+
+//Mold Other
+function Menubar_MoldOthersendmail(getID, action) {
+    let vmsg = "";
+    //if (document.getElementById("i_NewMold_ReferenceNo").value == "") {
+    //    vmsg = "กรุณากรอกข้อมูล Reference No !!!";
+    //    document.getElementById("i_NewMold_ReferenceNo").focus();
+    //} else if (document.getElementById("i_NewMold_LotNo").value == "") {
+    //    vmsg = "กรุณากรอกข้อมูล Lot No !!!";
+    //    document.getElementById("i_NewMold_LotNo").focus();
+    //} else if (document.getElementById("i_NewMold_CustomerName").value == "") {
+    //    vmsg = "กรุณากรอกข้อมูล Customer Name !!!";
+    //    document.getElementById("i_NewMold_CustomerName").focus();
+    //} else if (document.getElementById("i_NewMold_MoldName").value == "") {
+    //    vmsg = "กรุณากรอกข้อมูล Mold Name !!!";
+    //    document.getElementById("i_NewMold_MoldName").focus();
+    //} else if (document.getElementById("i_NewMold_ModelName").value == "") {
+    //    vmsg = "กรุณากรอกข้อมูล Model Name !!!";
+    //    document.getElementById("i_NewMold_ModelName").focus();
+    //} else if (document.getElementById("i_NewMold_CavityNo").value == "") {
+    //    vmsg = "กรุณากรอกข้อมูล Cavity No !!!";
+    //    document.getElementById("i_NewMold_CavityNo").focus();
+    //} else if (document.getElementById("i_NewMold_Function").value == "") {
+    //    vmsg = "กรุณากรอกข้อมูล Function !!!";
+    //    document.getElementById("i_NewMold_Function").focus();
+    //} else if (document.getElementById("i_NewMold_RequestBy").value == "") {
+    //    vmsg = "กรุณากรอกข้อมูล Request By !!!";
+    //    document.getElementById("i_NewMold_RequestBy").focus();
+    //} else if (document.getElementById("i_NewMold_MoldMass").value == "") {
+    //    vmsg = "กรุณากรอกข้อมูล Mold Mass !!!";
+    //    document.getElementById("i_NewMold_MoldMass").focus();
+    //} else if (document.getElementById("i_NewMold_TypeCavity").value == "") {
+    //    vmsg = "กรุณากรอกข้อมูล Type Cavity !!!";
+    //    document.getElementById("i_NewMold_TypeCavity").focus();
+    //} else if (document.getElementById("i_NewMold_LeadTime").value == "") {
+    //    vmsg = "กรุณากรอกข้อมูล Lead Time !!!";
+    //    document.getElementById("i_NewMold_LeadTime").focus();
+    //} else if (document.getElementById("i_NewMold_EstimateCost").value == "") {
+    //    vmsg = "กรุณากรอกข้อมูล Estimate Cost !!!";
+    //    document.getElementById("i_NewMold_EstimateCost").focus();
+    //} else if (document.getElementById("i_NewMold_MKPriceCost").value == "") {
+    //    vmsg = "กรุณากรอกข้อมูล MK Price Cost !!!";
+    //    document.getElementById("i_NewMold_MKPriceCost").focus();
+    //} else if (document.getElementById("i_NewMold_ResultCost").value == "") {
+    //    vmsg = "กรุณากรอกข้อมูล Result Cost !!!";
+    //    document.getElementById("i_NewMold_ResultCost").focus();
+    //} else if (document.getElementById("i_NewMold_IssueRate").value == "") {
+    //    vmsg = "กรุณากรอกข้อมูล Issue Rate !!!";
+    //    document.getElementById("i_NewMold_IssueRate").focus();
+    //} else if (document.getElementById("i_NewMold_CostRate").value == "") {
+    //    vmsg = "กรุณากรอกข้อมูล Cost Rate !!!";
+    //    document.getElementById("i_NewMold_CostRate").focus();
+    //} else if (document.getElementById("i_NewMold_CostRateType").value == "") {
+    //    vmsg = "กรุณากรอกข้อมูล Cost Rate Type !!!";
+    //    document.getElementById("i_NewMold_CostRateType").focus();
+    //} else if (document.getElementById("i_NewMold_Type").value == "") {
+    //    vmsg = "กรุณากรอกข้อมูล Mold Type !!!";
+    //    document.getElementById("i_NewMold_Type").focus();
+    //    //} else if (document.getElementById("i_NewMold_mfProcess").value == "") {
+    //    //    vmsg = "กรุณากรอกข้อมูล MF Process !!!";
+    //    //    document.getElementById("i_NewMold_mfProcess").focus();
+    //} else if (document.getElementById("i_NewMold_Detail").value == "") {
+    //    vmsg = "กรุณากรอกข้อมูล Detail !!!";
+    //    document.getElementById("i_NewMold_Detail").focus();
+    //}
+
+    //let table1 = document.getElementById('tbDetailMoldProcessDetail');
+    //let rows1 = table1.getElementsByTagName('tr');
+
+
+    //if (rows1.length < 3) { // Check if there is more than just the header row
+    //    msg = "กรุณากรอกข้อมูล Model Name ให้ถูกต้อง !!!";
+    //    document.getElementById("i_NewMold_ModelName").focus();
+    //    console.log("The table has more than 0 rows.");
+    //}
+
+
+    //const rows = document.querySelectorAll("#tableBody tr"); //table id material body
+    ////table matrerail body
+    //ceItemModifyRequest = [];
+    //rows.forEach((row, index) => {
+
+    //    const itemNameInput = row.querySelector(".imItemName");
+    //    const itemName = itemNameInput.value.trim();
+
+    //    if (!itemName) {
+    //        alert(`กรุณากรอกชื่อ Item (บรรทัดที่ ${index + 1})`);
+    //        itemNameInput.focus(); // optional: focus ช่องนั้น
+    //        throw new Error("Item name is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
+    //    }
+
+    //    ceItemModifyRequest.push({
+    //        imCENo: row.querySelector(".imCENo").value.trim() || "CE-M",
+    //        imItemNo: index + 1, // ✅ เริ่มจาก 1
+    //        imItemName: row.querySelector(".imItemName").value.trim(),
+    //        imPCS: parseInt(row.querySelector(".imPCS").value) || 0,
+    //        imAmount: parseFloat(row.querySelector(".imAmount").value) || 0
+    //    });
+    //});
+
+
+
+
+    if (vmsg != "") {
+        swal.fire({
+            title: 'แจ้งเตือน',
+            icon: 'warning',
+            text: vmsg,
+        })
+            .then((result) => {
+
+            });
+    }
+    else {
+        const form1 = document.forms.namedItem("formOtherData1");
+        //const form2 = document.forms.namedItem("formMoldData2");
+        //const form3 = document.forms.namedItem("formMoldData3");
+        let viewModel1 = new FormData(form1);
+        //let viewModel2 = new FormData(form2);
+        //let viewModel3 = new FormData(form3);
+
+
+        $.each(form1, function (index, input) {
+            viewModel1.append(input.name, input.value);
+        });
+        //$.each(form3, function (index, input) {
+        //    viewModel3.append(input.name, input.value);
+        //});
+
+
+        // สร้าง FormData ใหม่เพื่อรวมทั้งสองอัน
+        let combinedFormData = new FormData();
+        // ใส่ข้อมูลจาก viewModel1
+        viewModel1.forEach((value, key) => {
+            combinedFormData.append(key, value);
+        });
+        //// ใส่ข้อมูลจาก viewModel2
+        //viewModel3.forEach((value, key) => {
+        //    combinedFormData.append(key, value);
+        //});
+
+
+        ////tab mat
+        //$.each(form2, function (index, input) {
+        //    viewModel2.append(input.name, input.value);
+        //});
+        
+        $.ajax({
+            type: 'post',
+            url: action,
+            data: combinedFormData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log("fsendMoldMail");
+                var htmls = "";
+                //if (data.status == "hasHistory") {
+                //    htmls = " <div class='panel panel-default property'>"
+                //    // console.log(data.listHistory.length);
+                //    $.each(data.listHistory, function (i, item) {
+                //        //console.log('test' + item.htTo); console.log(data.listHistory[0].htTo);
+                //        console.log("OK")
+                //        htmls += "     <div class='panel-heading panel-heading-custom property' tabindex = '0' >"
+                //        htmls += "         <h4 class='panel-title faq-title-range collapsed' data-bs-toggle='collapse' data-bs-target='#Ans" + item.htStep + "' aria-expanded='false' aria-controls='collapseExample'>"
+                //        htmls += "             <label style='font-size: 13px;'>Step : "
+                //        if (item.htStep == 0) {
+                //            htmls += item.htStep
+                //        }
+                //        else {
+                //            htmls += (item.htStep + 1)
+                //        }
+
+                //        htmls += "  </label > <label class='lbV'></label>"
+                //        htmls += "         </h4>"
+                //        htmls += "     </div >"
+                //        htmls += "     <div class='panel-collapse collapse' style = 'overflow: auto;' id = 'Ans" + item.htStep + "' > "
+
+                //        htmls += "         <div class='panel-body'>"
+                //        htmls += "             <div style='font-size: x-small; clear: both; width: 100%; tetx-align: left; font-weight: bold;'>"
+                //        htmls += "                 <label> " + item.htDate + " :: " + item.htTime + " น.</label>"
+
+                //        htmls += "             </div>"
+                //        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
+                //        htmls += "                 <label>FROM : </label></br>"
+                //        htmls += "                 <label>" + item.htFrom + "</label > "
+                //        htmls += "             </div>"
+                //        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
+                //        htmls += "                 <label>TO : </label></br>"
+                //        htmls += "                 <label>" + item.htTo + "</label>"
+                //        htmls += "             </div>"
+                //        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
+                //        if (item.htCC == null) { item.htCC = "" }
+                //        else { item.htCC = item.htCC }
+                //        htmls += "                 <label>CC : </label>"
+                //        htmls += "                 <label>" + item.htCC + "</label>"
+                //        htmls += "             </div>"
+                //        htmls += "             <div style='font-size: x-small; float: right; width: 20%; tetx-align: left;'>"
+                //        if (item.htRemark == null) { item.htRemark = "" }
+                //        else { item.htRemark = item.htRemark }
+                //        htmls += "                 <label>Remark : </label>"
+                //        htmls += "                 <label>" + item.htRemark + "</label>"
+                //        htmls += "             </div>"
+                //        htmls += "             <div style='font-size: x-small; float: right; width: 20%; tetx-align: left;'>"
+                //        htmls += "                 <label>Status : </label>"
+                //        if (item.htStatus == null) { item.htStatus = "" }
+                //        else {
+                //            item.htStatus = item.htStatus
+                //            if (item.htStatus == "Finished") {
+                //                htmls += "                 <label><span style='color: green;'>" + item.htStatus + "</span></label>"
+                //            } else {
+                //                htmls += "                 <label><span style='color: darkkhaki;'>" + item.htStatus + "</span></label>"
+                //            }
+                //        }
+
+                //        htmls += "             </div>"
+                //        htmls += "         </div>"
+                //        htmls += "     </div>"
+
+                //    });
+                //    htmls += "</div>"
+                //}
+                //else {
+                //    htmls = " <div class='panel panel-default property'>"
+                //    htmls += "     <div class='panel-heading panel-heading-custom property' tabindex = '0' >"
+                //    htmls += " <label><span style='color: blue;'>ไม่มีประวัติการส่งอีเมล์</span></label>"
+                //    htmls += "</div>"
+                //    htmls += "</div>"
+                //}
+
+                //var url = data.partial + "&vform=" + vform;
+
+                //var url = data.partial + mydata;
+                var url = data.partial;
+                //console.log("url" + url);
+                $("#myModalBodySendMold").load(url, function () {
+                    //$('#divHistory').html(htmls);
+                    $("#myModalSendMold").modal("show");
+                })
+
+            }
+        });
+    }
+
+
+}
+
+
+

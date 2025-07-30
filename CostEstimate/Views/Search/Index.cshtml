@@ -27,6 +27,8 @@
                 <a asp-area="" asp-controller="Search" asp-action="btnExportExcel" style="margin-right:5px;font-size:10px;text-decoration:auto" class="button">
                     <img src="~/images/excel.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />Search
                 </a>
+
+
             </div>
             <div class="col-5" style="text-align:right">
             </div>
@@ -594,6 +596,8 @@
                                                 <td style="text-align:center">
                                                     @if (@item.smStep < 7)
                                                     {
+                                                        @item.smEmpCodeApprove
+                                                        <span></span>
                                                         @item.smNameApprove
                                                     }
                                                 </td>

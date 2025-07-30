@@ -102,7 +102,11 @@ function sumGroupKJ_Man() {
         $(".dsKIJUNWT_Man" + "." + str).each(function () {
             // parseFloat(total).toFixed(2);
             $(this).val(parseFloat(total).toFixed(2));
-            // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            if (parseFloat(total) < 0) {
+                $(this).css("color", "red");
+            } else {
+                $(this).css("color", "black"); // หรือสีปกติที่ต้องการ
+            }
         });
     });
 
@@ -141,6 +145,12 @@ function sumGroupKJ_Auto() {
         $(".dsKIJUNWT_Auto" + "." + str).each(function () {
             // parseFloat(total).toFixed(2);
             $(this).val(parseFloat(total).toFixed(2));
+            if (parseFloat(total) < 0) {
+                $(this).css("color", "red");
+            } else {
+                $(this).css("color", "black"); // หรือสีปกติที่ต้องการ
+            }
+
             // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
         });
     });
@@ -204,12 +214,13 @@ function sumTotalProcess() {
         let value = parseFloat(input.value) || 0;
         TotalsumKJM += value;
     });
+ 
+
     document.querySelectorAll('.dsKIJUNWT_Auto').forEach(function (input) {
         let value = parseFloat(input.value) || 0;
         TotalsumKJA += value;
     });
-    // console.log("dsKIJUNWT_Man:", total);
-
+ 
 
 
 
@@ -230,7 +241,22 @@ function sumTotalProcess() {
     $("#i_TotalPocessKJMan").val((TotalsumKJM).toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
     $("#i_TotalPocessKJAuto").val((TotalsumKJA).toFixed(2)); // Format ทศนิยม 2 ตำแหน่ง
 
+
+    setInputColor("#i_TotalPocessKJProcess", TotalsumKJTOTAL + TotalsumKJMAN);
+    setInputColor("#i_TotalPocessKJMan", TotalsumKJM);
+    setInputColor("#i_TotalPocessKJAuto", TotalsumKJA);
+
+
 }
+
+function setInputColor(selector, value) {
+    if (value < 0) {
+        $(selector).css("color", "red");
+    } else {
+        $(selector).css("color", "black");
+    }
+}
+
 function sumProcess() {
     // console.log("sumProcess");
     //document.getElementById("i_HissubCostsubMaker").value = "11111";
@@ -281,7 +307,18 @@ function calcRow(row) {
 
 
 
+    // ตรวจสอบและเปลี่ยนสี
+    if (sumKJMan < 0) {
+        row.find(".KIJUNWT_Man").css("color", "red");
+    } else {
+        row.find(".KIJUNWT_Man").css("color", "black");
+    }
 
+    if (sumKJAuto < 0) {
+        row.find(".KIJUNWT_Auto").css("color", "red");
+    } else {
+        row.find(".KIJUNWT_Auto").css("color", "black");
+    }
 
 }
 function calcAll() {
@@ -310,6 +347,12 @@ $(document).on("keyup change", ".WK_Man, .WK_Auto", function () {
 sumGroupWK_Man();
 sumProcess();
 
+document.querySelectorAll(".form-control").forEach(input => {
+    input.addEventListener("input", function () {
+        this.style.color = parseFloat(this.value) < 0 ? "red" : "black";
+    });
+});
+
 
 
 
@@ -326,9 +369,14 @@ $(document).on("input change", "#i_HissubshCKjMat", function () {
     let v2 = parseFloat($("#i_HissubshCKjTotal").val()) || 0;
 
     //sum
-
+    const result = (v2 - v1 - value1).toFixed(2);
     $("#i_HissubshCKjCofficient").val((v2 - v1 - value1).toFixed(2));
     $("#i_HissubshCMcCofficient").val((v2 - v1 - value1).toFixed(2));
+
+    // เช็กค่าและเปลี่ยนสี
+    setInputColor("#i_HissubshCKjCofficient", result);
+    setInputColor("#i_HissubshCMcCofficient", result);
+
 
 });
 
@@ -339,16 +387,23 @@ $(document).on("input change", "#i_HissubshCKjWorkingTime", function () {
     const vSmWk = parseFloat($(this).val()) || 0;
     let vCKj = parseFloat($("#i_HissubshCSmWorkingTime").val()) || 0;
 
+    const resultWK = (vCKj + vSmWk).toFixed(2);
     $("#i_HissubshCMcWorkingTime").val((vCKj + vSmWk).toFixed(2));
+    setInputColor("#i_HissubshCMcWorkingTime", resultWK);
 
 
     let v1 = parseFloat($("#i_HissubshCKjMat").val()) || 0;
     let v2 = parseFloat($("#i_HissubshCKjTotal").val()) || 0;
 
     //sum
+    const result = (v2 - vSmWk - v1).toFixed(2);
 
     $("#i_HissubshCKjCofficient").val((v2 - vSmWk - v1).toFixed(2));
     $("#i_HissubshCMcCofficient").val((v2 - vSmWk - v1).toFixed(2));
+
+    setInputColor("#i_HissubshCKjCofficient", result);
+    setInputColor("#i_HissubshCMcCofficient", result);
+
 });
 
 $(document).on("input change", "#i_HissubshCKjTotal", function () {
@@ -360,8 +415,12 @@ $(document).on("input change", "#i_HissubshCKjTotal", function () {
     let v2 = parseFloat($("#i_HissubshCKjMat").val()) || 0;
     //sum
 
+    const result = (value1 - v1 - v2).toFixed(2);
     $("#i_HissubshCKjCofficient").val((value1 - v1 - v2).toFixed(2));
     $("#i_HissubshCMcCofficient").val((value1 - v1 - v2).toFixed(2));
+
+    setInputColor("#i_HissubshCKjCofficient", result);
+    setInputColor("#i_HissubshCMcCofficient", result);
 
 });
 

@@ -331,19 +331,6 @@ function PositionY(menu) {
         case "SubHistorysum":
             LoadScript("js/Home/Index.js", "Home");
             LoadScript("js/New/IndexHisSum.js", "New");
-            //LoadScript("js/New/Index.js", "New");
-            //LoadScript("js/Home/Hour.js", "EventHomeHour");
-            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
-            //LoadScript("js/Home/Index.js", "Home");
-            //LoadScript("js/New/Index.js", "New");
-            //LoadScript("js/Home/Hour.js", "EventHomeHour");
-            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
-
-            //LoadScript("js/New/Index.js", "New");
-            //LoadScript("js/Home/Hour.js", "EventHomeHour");
-            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
-            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
-           
             PY = "330px";
             // PY = "331px";
             opacity = "opacity-dot-3";

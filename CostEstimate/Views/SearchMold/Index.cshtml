@@ -306,7 +306,7 @@
                                             <th style="text-align:center">Mold No/Mold Name.​</th>
                                             <th style="text-align:center">Type Cavity</th>
                                             <th style="text-align:center">Lead Time</th>
-                                            <th style="text-align:center">Issue By ,Date</th>
+                                            <th style="text-align:center">Issue By,Date</th>
                                             @*<th style="text-align:center">Material Out/Date​</th>
                                                 <th style="text-align:center">Delivery/Date​</th>*@
                                             <th style="text-align:center">Waiting Approve​</th>
@@ -342,6 +342,8 @@
                                                 <td style="text-align:center">
                                                     @if (@item.mfStep < 6)
                                                     {
+                                                        @item.mfEmpCodeApprove
+                                                        <span></span>
                                                         @item.mfNameApprove
                                                     }
                                                 </td>

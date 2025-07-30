@@ -16,6 +16,7 @@
 @{
     double sumPCostsubMaker = 0;
 }
+@*<button onclick="exportTableToExcel('tbDetailSubMakerHissumRequest1', 'ข้อมูลคะแนน')">Export to Excel</button>*@
 <div style="border:0.5px solid gray;padding-bottom:10px">
     <div class="row center">
 
@@ -30,7 +31,6 @@
                         <th style="text-align:right;padding-right:20px " colspan="4">
                             SUM ALL
                         </th>
-
                     </tr>
                     <tr>
                         <th style="text-align:center;" rowspan="2">DETAIL</th>
@@ -100,16 +100,16 @@
                                             <input asp-for="_ListViewceMastSubDetailHistorySum[RowCount].sdWK_Auto" class="form-control center WK_Auto " autocomplete="off" style="@(@group.DetailSubMakerRequest[i].sdActive_WKAuto == false ? "width:100%;height:80%;font-size:10px;background-color:darkgrey" : "width:100%;height:80%;font-size:10px;background-color:yellow")" value="@group.DetailSubMakerRequest[i].sdWK_Auto" type="number" readonly="@(@group.DetailSubMakerRequest[i].sdActive_WKAuto == false ? "readonly" : null)" min="0" />
                                         </td>
                                         <td style="">
-                                            <input asp-for="_ListViewceMastSubDetailHistorySum[RowCount].sdKIJWT_Man" value="@group.DetailSubMakerRequest[i].sdKIJWT_Man" class="form-control center KIJUNWT_Man" autocomplete="off" type="number" min="0" style="width:100%;height:80%;font-size:10px;background-color:darkgray" readonly />
+                                            <input asp-for="_ListViewceMastSubDetailHistorySum[RowCount].sdKIJWT_Man" value="@group.DetailSubMakerRequest[i].sdKIJWT_Man" class="form-control center KIJUNWT_Man" autocomplete="off" type="number" min="0" style="width:100%;height:80%;font-size:10px;background-color:darkgray; color:@(group.DetailSubMakerRequest[i].sdKIJWT_Man < 0 ? "red" : "black");" readonly />
                                         </td>
                                         <td style="">
-                                            <input asp-for="_ListViewceMastSubDetailHistorySum[RowCount].sdKJWT_Auto" value="@group.DetailSubMakerRequest[i].sdKJWT_Auto" class="form-control center KIJUNWT_Auto" autocomplete="off" type="number" min="0" style="width:100%;height:80%;font-size:10px;background-color:darkgray" readonly />
+                                            <input asp-for="_ListViewceMastSubDetailHistorySum[RowCount].sdKJWT_Auto" value="@group.DetailSubMakerRequest[i].sdKJWT_Auto" class="form-control center KIJUNWT_Auto" autocomplete="off" type="number" min="0" style="width:100%;height:80%;font-size:10px;background-color:darkgray; color:@(group.DetailSubMakerRequest[i].sdKJWT_Auto < 0 ? "red" : "black");" readonly />
                                         </td>
                                         <td style="">
-                                            <input asp-for="_ListViewceMastSubDetailHistorySum[RowCount].sdWT_Man" value="@group.DetailSubMakerRequest[i].sdWT_Man" class="form-control center WTWT_Man " autocomplete="off" type="number" min="0" style="width:100%;height:80%;font-size:10px;background-color:darkgray" readonly />
+                                            <input asp-for="_ListViewceMastSubDetailHistorySum[RowCount].sdWT_Man" value="@group.DetailSubMakerRequest[i].sdWT_Man" class="form-control center WTWT_Man " autocomplete="off" type="number" min="0" style="width:100%;height:80%;font-size:10px;background-color:darkgray; color:@(group.DetailSubMakerRequest[i].sdWT_Man < 0 ? "red" : "black");" readonly />
                                         </td>
                                         <td style="">
-                                            <input asp-for="_ListViewceMastSubDetailHistorySum[RowCount].sdWT_Auto" value="@group.DetailSubMakerRequest[i].sdWT_Auto" class="form-control center WTWT_Auto " autocomplete="off" type="number" min="0" style="width:100%;height:80%;font-size:10px;background-color:darkgray" readonly />
+                                            <input asp-for="_ListViewceMastSubDetailHistorySum[RowCount].sdWT_Auto" value="@group.DetailSubMakerRequest[i].sdWT_Auto" class="form-control center WTWT_Auto " autocomplete="off" type="number" min="0" style="width:100%;height:80%;font-size:10px;background-color:darkgray; color:@(group.DetailSubMakerRequest[i].sdWT_Auto < 0 ? "red" : "black");" readonly />
                                         </td>
 
                                         <span style="display:none">@(sumWTMan += vWtMan)</span>
@@ -130,12 +130,12 @@
 
                             <tr style="background-color:lightgrey">
                                 <td style="text-align:left"><span style="font-weight:600;font-size:9px">TOTAL:@group.GroupName.Trim()</span></td>
-                                <td style="text-align:left"><input class="form-control center dsWK_Man @group.GroupName.Trim()" id="dsWK_Man @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray" type="number" min="0" readonly value="@sumWTMan" /></td>
-                                <td style="text-align:left"><input class="form-control center dsWK_Auto @group.GroupName.Trim()" id="dsWK_Auto @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray" type="number" min="0" readonly value="@sumWTAuto" /></td>
-                                <td style="text-align:left"><input class="form-control center dsKIJUNWT_Man @group.GroupName.Trim()" id="dsKIJUNWT_Man @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray" type="text" min="0" readonly value="@sumKJMan" /></td>
-                                <td style="text-align:left"><input class="form-control center dsKIJUNWT_Auto @group.GroupName.Trim()" id="dsKIJUNWT_Auto @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray" type="text" min="0" readonly value="@sumKJAuto" /></td>
-                                <td style="text-align:left"><input class="form-control center dsWTWT_Man @group.GroupName.Trim()" id="dsWTWT_Man @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray" type="text" min="0" readonly value="@sumWHMan" /></td>
-                                <td style="text-align:left"><input class="form-control center dsWTWT_Auto @group.GroupName.Trim()" id="dsWTWT_Auto @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray" type="text" min="0" readonly value="@sumWHAuto" /></td>
+                                <td style="text-align:left"><input class="form-control center dsWK_Man @group.GroupName.Trim()" id="dsWK_Man @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray; color:@(sumWTMan < 0 ? "red" : "black");" type="number" min="0" readonly value="@sumWTMan" /></td>
+                                <td style="text-align:left"><input class="form-control center dsWK_Auto @group.GroupName.Trim()" id="dsWK_Auto @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray; color:@(sumWTAuto < 0 ? "red" : "black");" type="number" min="0" readonly value="@sumWTAuto" /></td>
+                                <td style="text-align:left"><input class="form-control center dsKIJUNWT_Man @group.GroupName.Trim()" id="dsKIJUNWT_Man @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray; color:@(sumKJMan < 0 ? "red" : "black");" type="text" min="0" readonly value="@sumKJMan" /></td>
+                                <td style="text-align:left"><input class="form-control center dsKIJUNWT_Auto @group.GroupName.Trim()" id="dsKIJUNWT_Auto @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray; color:@(sumKJAuto < 0 ? "red" : "black");" type="text" min="0" readonly value="@sumKJAuto" /></td>
+                                <td style="text-align:left"><input class="form-control center dsWTWT_Man @group.GroupName.Trim()" id="dsWTWT_Man @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray; color:@(sumWHMan < 0 ? "red" : "black");" type="text" min="0" readonly value="@sumWHMan" /></td>
+                                <td style="text-align:left"><input class="form-control center dsWTWT_Auto @group.GroupName.Trim()" id="dsWTWT_Auto @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:darkgray; color:@(sumWHAuto < 0 ? "red" : "black");" type="text" min="0" readonly value="@sumWHAuto" /></td>
                                 <span style="display:none">@(sumPWTMan += sumWTMan)</span>
                                 <span style="display:none">@(sumPWTAuto += sumWTAuto)</span>
                                 <span style="display:none">@(sumPKJMan += sumKJMan)</span>
@@ -165,19 +165,19 @@
                         <tr style="background-color:palegreen">
                             <td style="text-align:left;"><span style="font-weight:600;font-size:8px">Tot.PROCESS.</span></td>
                             <td style="text-align:left">
-                                <input class="form-control center " id="i_TotalPocessMan" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen" type="number" min="0" readonly value="@sumPProcess" />
+                                <input class="form-control center " id="i_TotalPocessMan" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen; color:@(sumPProcess < 0 ? "red" : "black");" type="number" min="0" readonly value="@sumPProcess" />
                                 <input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" type="number" min="0" readonly value="@sumPWTMan" />
                             </td>
                             <td style="text-align:left"><input class="form-control center " id="i_TotalPocessAuto" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" type="number" min="0" readonly value="@sumPWTAuto" /></td>
 
                             <td style="text-align:left">
                                 <input class="form-control center " id="i_TotalPocessKJProcess" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen;display:none" type="number" min="0" readonly value="@sumPKJProcess" />
-                                <input class="form-control center " id="i_TotalPocessKJMan" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen" type="number" min="0" readonly value="@sumPKJMan" />
+                                <input class="form-control center " id="i_TotalPocessKJMan" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen; color:@(sumPKJMan < 0 ? "red" : "black");" type="number" min="0" readonly value="@sumPKJMan" />
                             </td>
-                            <td style="text-align:left"><input class="form-control center " id="i_TotalPocessKJAuto" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen" type="number" min="0" readonly value="@sumPKJAuto" /></td>
+                            <td style="text-align:left"><input class="form-control center " id="i_TotalPocessKJAuto" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen; color:@(sumPKJAuto < 0 ? "red" : "black");" type="number" min="0" readonly value="@sumPKJAuto" /></td>
 
                             <td style="text-align:left">
-                                <input class="form-control center " id="" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen" type="number" min="0" readonly value="@sumPWTProcess" />
+                                <input class="form-control center " id="" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen; color:@(sumPWTProcess < 0 ? "red" : "black");" type="number" min="0" readonly value="@sumPWTProcess" />
                                 <input class="form-control center " id="" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" type="number" min="0" readonly value="@sumPWHMan" />
                             </td>
                             <td style="text-align:left"><input class="form-control center " id="" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" type="number" min="0" readonly value="@sumPWHAuto" /></td>
@@ -338,8 +338,20 @@
 
 <script type="text/javascript">
 
+    function exportTableToExcel(tableID, filename = '') {
+        const downloadLink = document.createElement("a");
+        const table = document.getElementById(tableID);
+        const html = table.outerHTML.replace(/ /g, '%20');
 
+        filename = filename ? filename + '.xls' : 'excel_data.xls';
 
-                        //sumGroupWK_Man();
+        downloadLink.href = 'data:application/vnd.ms-excel,' + html;
+        downloadLink.download = filename;
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+
 
 </script>

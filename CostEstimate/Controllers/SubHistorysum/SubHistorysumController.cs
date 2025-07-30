@@ -20,11 +20,14 @@ using OfficeOpenXml;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
+using OfficeOpenXml.Style;
+using System.Drawing;
 
 namespace CostEstimate.Controllers.SubHistorysum
 {
     public class SubHistorysumController : Controller
     {
+        public string[] Header_FileExport = { "No.", "Document No.", "Lot No.", "Customer Name", "Rev.No​ ", "Model Name", "Function", "Mold No. ", "Mold Name", "Cavity No.", "Development Stage", "Material Out/Date​", "Delivery/Date​", "Waiting Approve", "Status​ " };
         private LAMP _LAMP;
         private HRMS _HRMS;
         private IT _IT;
@@ -290,7 +293,7 @@ namespace CostEstimate.Controllers.SubHistorysum
                             _ViewceMastSubHistorySum.shCMcTotal = @class._ViewceMastSubHistorySum.shCMcTotal;
                             _ViewceMastSubHistorySum.shStatus = @class._ViewceMastSubHistorySum.shStatus;
                             _MK._ViewceMastSubHistorySum.Update(_ViewceMastSubHistorySum);
-                           
+
                             //shIssueBy
                         }
                     }
@@ -390,6 +393,749 @@ namespace CostEstimate.Controllers.SubHistorysum
             return vRevision;
         }
 
+        public IActionResult btnExportExcel(Class @class, string lotno)
+        {
+            string slipMat = lotno + "|" + DateTime.Now.ToString("yyyyMMdd:HHmmss");
+            string TempPath = Path.GetTempFileName();
+            string fileName = "Export(" + slipMat + ").xlsx";
+            try
+            {
+
+                ViewceMastSubMakerRequest _ViewceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smLotNo == lotno).FirstOrDefault();
+                ViewceMastSubHistorySum _ViewceMastSubHistorySum = _MK._ViewceMastSubHistorySum.Where(x => x.shLotNo == lotno).FirstOrDefault();
+
+
+
+                string vlotNo = "";
+                string vMoldName = "";
+
+                string vLotNoMoldName = lotno;
+
+                @class._ViewceMastSubMakerRequest = new ViewceMastSubMakerRequest();
+
+                @class._ViewceMastSubHistorySum = new ViewceMastSubHistorySum(); //for report main
+                @class._ListViewceMastSubDetailHistorySum = new List<ViewceMastSubDetailHistorySum>(); //for report main
+                List<ViewceMastSubDetailHistorySum> _listViewceMastSubDetailHistorySum = new List<ViewceMastSubDetailHistorySum>();
+                List<ViewceMastSubDetailHistorySum> _ViewceMastSubDetailHistorySum = new List<ViewceMastSubDetailHistorySum>(); //for report main
+
+                @class._ViewceMastSubHistorySum = _MK._ViewceMastSubHistorySum.Where(x => x.shLotNo == vLotNoMoldName).FirstOrDefault();
+                _listViewceMastSubDetailHistorySum = _MK._ViewceMastSubDetailHistorySum.Where(x => x.sdLotNo == vLotNoMoldName).ToList();
+
+                //@class._ViewceMastSubHistorySum = _MK._ViewceMastSubHistorySum.Where(x => x.shDocNo.Contains(vLotNoMoldName)).FirstOrDefault();
+                //@class._ListViewceMastSubDetailHistorySum = _MK._ViewceMastSubDetailHistorySum.Where(x => x.sdLotNo.Contains(vLotNoMoldName)).OrderBy(x=>x.sdRunNo).ToList();
+
+
+                if (vLotNoMoldName != null || vLotNoMoldName != "")
+                {
+                    vlotNo = vLotNoMoldName.Split("|")[0];
+                    //vMoldName = vLotNoMoldName.Split("|")[1];
+                    @class._ViewceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smLotNo == vlotNo).OrderByDescending(x => x.smDocumentNo).FirstOrDefault();
+
+
+                }
+
+                List<ViewceMastProcess> _ListceMastProcess = new List<ViewceMastProcess>();
+                List<ViewceDetailSubMakerRequest> _ListceDetailSubMakerRequest = new List<ViewceDetailSubMakerRequest>();
+                List<ViewceCostPlanning> _ViewceCostPlanning = new List<ViewceCostPlanning>();
+                List<VisaulViewceDetailSubMakerRequest> _ListVisaulViewceDetailSubMakerRequest = new List<VisaulViewceDetailSubMakerRequest>(); //sum all
+                @class._ListGroupViewceDetailSubMakerRequest = new List<GroupViewceDetailSubMakerRequest>();
+
+                string v_CostPlanningNo = _MK._ViewceMastCostModel.OrderByDescending(x => x.mcCostPlanningNo).Select(x => x.mcCostPlanningNo).First();
+                var v_ListceCostPlanning = _MK._ViewceCostPlanning.Where(x => x.cpCostPlanningNo == v_CostPlanningNo).ToList();
+                _ListceMastProcess = _MK._ViewceMastProcess.Where(x => x.mpType == "subMaker").ToList();
+                @class._ListceMastProcess = _MK._ViewceMastProcess.Where(x => x.mpType == "subMaker").ToList();
+
+
+                //start detail all
+                @class._ListceMastSubMakerRequest = new List<ViewceMastSubMakerRequest>();
+                @class._ListceDetailSubMakerRequest = new List<ViewceDetailSubMakerRequest>();
+                @class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smLotNo == vlotNo && x.smReqStatus == true).OrderByDescending(x => x.smDocumentNo).ToList();
+                @class._ListceDetailSubMakerRequest = _MK._ViewceDetailSubMakerRequest.Where(d => @class._ListceMastSubMakerRequest.Select(m => m.smDocumentNo).Contains(d.dsDocumentNo)).ToList();
+
+
+                var viewList = @class._ListceDetailSubMakerRequest; // สมมุติว่าเป็น List<ViewceDetailSubMakerRequest>
+
+                @class._ListGroupedListceDetailSub = viewList
+                    .GroupBy(x => x.dsDocumentNo) // Group ชั้นที่ 1
+                    .Select(group1 => new GroupedListceDetailSub
+                    {
+                        glDocNo = group1.Key,
+                        listGroupViewceDetailSubMakerRequest = group1
+                            .GroupBy(x => x.dsGroupName) // Group ชั้นที่ 2
+                            .Select(group2 => new GroupedListceDetailSubMakerRequest
+                            {
+                                glDocNo = group2.Key,
+                                gllistDetail = group2.ToList() // ชั้นสุดท้าย
+                            }).ToList()
+                    }).ToList();
+
+                //end detail all
+
+
+                //start sum all
+                var result = @class._ListceDetailSubMakerRequest.GroupBy(x => new { x.dsGroupName, x.dsProcessName })
+                            .Select(g => new
+                            {
+                                GroupName = g.Key.dsGroupName,
+                                ProcessName = g.Key.dsProcessName,
+                                TotalWTMan = g.Sum(x => x.dsWT_Man),
+                                TotalWTAuto = g.Sum(x => x.dsWT_Auto)
+                            })
+                            .ToList();
+                for (int i = 0; i < v_ListceCostPlanning.Count(); i++)
+                {
+                    double vsdWK_Man = _listViewceMastSubDetailHistorySum != null ?
+                                  _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.sdProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.sdWK_Man).FirstOrDefault()
+                                  : 0;
+                    double vsdWK_Auto = _listViewceMastSubDetailHistorySum != null ?
+                                 _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.sdProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.sdWK_Auto).FirstOrDefault()
+                                 : 0;
+                    double vsdWT_Man = result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTMan).FirstOrDefault();
+                    double vsdWT_Auto = result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTAuto).FirstOrDefault();
+
+                    @class._ListViewceMastSubDetailHistorySum.Add(new ViewceMastSubDetailHistorySum
+                    {
+
+                        sdDocNo = @class._ViewceMastSubHistorySum is null ? "" : @class._ViewceMastSubHistorySum.shDocNo,
+                        sdRunNo = i + 1,
+                        sdLotNo = @class._ViewceMastSubMakerRequest.smLotNo,
+                        sdGroupName = v_ListceCostPlanning[i].cpGroupName.Trim(),
+                        sdProcessName = v_ListceCostPlanning[i].cpProcessName,
+                        sdWK_Man = _listViewceMastSubDetailHistorySum != null ?
+                                   _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.sdProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.sdWK_Man).FirstOrDefault()
+                                   : 0,
+                        sdWK_Auto = _listViewceMastSubDetailHistorySum != null ?
+                                   _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.sdProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.sdWK_Auto).FirstOrDefault()
+                                   : 0,
+                        sdActive_WKMan = _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTMan).First(),  //true,
+                        sdActive_WKAuto = _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTAuto).First(),
+                        sdKIJWT_Man = vsdWK_Man - vsdWT_Man,
+                        sdKJWT_Auto = vsdWK_Auto - vsdWT_Auto,
+                        sdWT_Man = result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTMan).FirstOrDefault(),
+                        sdWT_Auto = result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTAuto).FirstOrDefault(),
+
+                    });
+
+                }
+
+                //_ListGroupDetailSubMakerRequestHissum
+                @class._ListGroupDetailSubMakerRequestHissum = @class._ListViewceMastSubDetailHistorySum.GroupBy(p => p.sdGroupName).Select(g => new GroupDetailSubMakerRequestHissum
+                {
+                    GroupName = g.Key.Trim(),
+                    DetailSubMakerRequest = g.ToList()
+                }
+             ).ToList();
+                // end sum all
+
+                using (ExcelPackage package = new ExcelPackage())
+                {
+                    var worksheet = package.Workbook.Worksheets.Add("Sheet1");
+                    worksheet.Cells.Style.Font.Size = 30;
+                    worksheet.Cells["C2"].Value = "SUB MAKER REQUEST SHEET DETAIL.";
+                    worksheet.Cells["C2"].Style.Font.Size = 50;
+                    worksheet.Cells["C2"].Style.Font.Bold = true;
+                    worksheet.Cells["C3"].Value = "COST PLANNING DIVISION.";
+                    worksheet.Cells["C3"].Style.Font.Size = 42;
+                    worksheet.Cells["C3"].Style.Font.Bold = true;
+
+                    //detail  header
+                    //row 1
+                    worksheet.Cells["C5"].Value = "Customer Name :";
+                    worksheet.Cells["C5"].Style.Font.Size = 30;
+                    worksheet.Cells["C5"].Style.Font.Bold = true;
+                    worksheet.Cells["D5"].Value = _ViewceMastSubMakerRequest.smCustomerName;
+                    worksheet.Cells["D5"].Style.Font.Size = 30;
+
+                    worksheet.Cells["E5"].Value = "Mold No. & Name :";
+                    worksheet.Cells["E5"].Style.Font.Size = 30;
+                    worksheet.Cells["E5"].Style.Font.Bold = true;
+                    worksheet.Cells["F5"].Value = _ViewceMastSubMakerRequest.smMoldName;
+                    worksheet.Cells["F5"].Style.Font.Size = 30;
+
+                    worksheet.Cells["G5"].Value = "Model Name :";
+                    worksheet.Cells["G5"].Style.Font.Size = 30;
+                    worksheet.Cells["G5"].Style.Font.Bold = true;
+                    worksheet.Cells["H5"].Value = _ViewceMastSubMakerRequest.smMoldName;
+                    worksheet.Cells["H5"].Style.Font.Size = 30;
+
+
+                    //row 2
+                    worksheet.Cells["C6"].Value = "Function :";
+                    worksheet.Cells["C6"].Style.Font.Size = 30;
+                    worksheet.Cells["C6"].Style.Font.Bold = true;
+                    worksheet.Cells["D6"].Value = _ViewceMastSubMakerRequest.smFunction;
+                    worksheet.Cells["D6"].Style.Font.Size = 30;
+
+                    worksheet.Cells["E6"].Value = "Lot No :";
+                    worksheet.Cells["E6"].Style.Font.Size = 30;
+                    worksheet.Cells["E6"].Style.Font.Bold = true;
+                    worksheet.Cells["F6"].Value = _ViewceMastSubMakerRequest.smLotNo;
+                    worksheet.Cells["F6"].Style.Font.Size = 30;
+
+                    worksheet.Cells["G6"].Value = "Development Stage :";
+                    worksheet.Cells["G6"].Style.Font.Size = 30;
+                    worksheet.Cells["G6"].Style.Font.Bold = true;
+                    worksheet.Cells["H6"].Value = _ViewceMastSubMakerRequest.smDevelopmentStage;
+                    worksheet.Cells["H6"].Style.Font.Size = 30;
+
+                    //row 3
+                    worksheet.Cells["C7"].Value = "Revision :";
+                    worksheet.Cells["C7"].Style.Font.Size = 30;
+                    worksheet.Cells["C7"].Style.Font.Bold = true;
+                    worksheet.Cells["D7"].Value = _ViewceMastSubMakerRequest.smRevision;
+                    worksheet.Cells["D7"].Style.Font.Size = 30;
+
+                    worksheet.Cells["E7"].Value = "Cavity No. :";
+                    worksheet.Cells["E7"].Style.Font.Size = 30;
+                    worksheet.Cells["E7"].Style.Font.Bold = true;
+                    worksheet.Cells["F7"].Value = _ViewceMastSubMakerRequest.smCavityNo;
+                    worksheet.Cells["F7"].Style.Font.Size = 30;
+
+                    worksheet.Cells["G7"].Value = "Date Issue :";
+                    worksheet.Cells["G7"].Style.Font.Size = 30;
+                    worksheet.Cells["G7"].Style.Font.Bold = true;
+                    worksheet.Cells["H7"].Value = _ViewceMastSubHistorySum.shIssueBy;
+                    worksheet.Cells["H7"].Style.Font.Size = 30;
+
+
+
+
+
+                    //detail
+                    worksheet.Cells["C10:G10"].Merge = true;
+                    worksheet.Cells["C10"].Value = _ViewceMastSubHistorySum.shLotNo;
+                    worksheet.Cells["C10"].Style.Font.Size = 36;
+                    worksheet.Cells["C10"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    worksheet.Cells["H10:I10"].Merge = true;
+                    worksheet.Cells["H10"].Value = "SUB ALL";
+                    worksheet.Cells["H10"].Style.Font.Size = 36;
+                    worksheet.Cells["H10"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+
+                    /////
+                    worksheet.Cells["C11:C12"].Merge = true;
+                    worksheet.Cells["C11"].Value = "DETAIL.";
+                    worksheet.Cells["C11"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet.Cells["C11"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                    worksheet.Cells["D11:E11"].Merge = true;
+                    worksheet.Cells["D11"].Value = "WORKING TIME";
+                    worksheet.Cells["D11"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    worksheet.Cells["F11:G11"].Merge = true;
+                    worksheet.Cells["F11"].Value = "KIJUN - SUB";
+                    worksheet.Cells["F11"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    worksheet.Cells["H11:I11"].Merge = true;
+                    worksheet.Cells["H11"].Value = "WT (Hr).";
+                    worksheet.Cells["H11"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+
+                    worksheet.Cells["D12"].Value = "MAN";
+                    worksheet.Cells["E12"].Value = "(TOTAL)";
+                    worksheet.Cells["F12"].Value = "MAN";
+                    worksheet.Cells["G12"].Value = "(TOTAL)";
+                    worksheet.Cells["H12"].Value = "MAN";
+                    worksheet.Cells["I12"].Value = "(TOTAL)";
+                    worksheet.Cells["D12:I12"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    //ตีเส้น
+                    worksheet.Cells["C10:G10"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    worksheet.Cells["H10:I10"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    worksheet.Cells["C11:C12"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    worksheet.Cells["D11:E11"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    worksheet.Cells["F11:G11"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    worksheet.Cells["H11:I11"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    var unmergedRange = worksheet.Cells["D12:I12"];
+                    foreach (var cell in unmergedRange)
+                    {
+                        cell.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    }
+                    worksheet.Cells["C10:I12"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    worksheet.Cells["C10:I12"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet.Cells["C10:I12"].Style.Font.Bold = true;
+
+                    int D_row = 13;
+                    int D_col = 3;
+                    double sumPProcess = 0;
+                    double sumPWTProcess = 0;
+                    double sumPKJProcess = 0;
+
+                    double sumPKJMan = 0;
+                    double sumPKJAuto = 0;
+
+                    foreach (var row in @class._ListGroupDetailSubMakerRequestHissum)
+                    {
+                        double VsumsdWK_Man = 0;
+                        double VsdWK_Auto = 0;
+                        double VsdKIJWT_Man = 0;
+                        double VsdKJWT_Auto = 0;
+                        double VsdWT_Man = 0;
+                        double VsdWT_Auto = 0;
+
+                        for (int i = 0; i < row.DetailSubMakerRequest.Count(); i++)
+                        {
+                            worksheet.Cells[D_row + i, D_col].Value = row.DetailSubMakerRequest[i].sdProcessName.ToString();
+
+                            worksheet.Cells[D_row + i, D_col + 1].Value = row.DetailSubMakerRequest[i].sdWK_Man.ToString();
+                            worksheet.Cells[D_row + i, D_col + 2].Value = row.DetailSubMakerRequest[i].sdWK_Auto.ToString();
+
+                            worksheet.Cells[D_row + i, D_col + 3].Value = row.DetailSubMakerRequest[i].sdKIJWT_Man.ToString();
+                            worksheet.Cells[D_row + i, D_col + 4].Value = row.DetailSubMakerRequest[i].sdKJWT_Auto.ToString();
+
+                            worksheet.Cells[D_row + i, D_col + 5].Value = row.DetailSubMakerRequest[i].sdWT_Man.ToString();
+                            worksheet.Cells[D_row + i, D_col + 6].Value = row.DetailSubMakerRequest[i].sdWT_Auto.ToString();
+
+
+                            VsumsdWK_Man += row.DetailSubMakerRequest[i].sdWK_Man;
+                            VsdWK_Auto += row.DetailSubMakerRequest[i].sdWK_Auto;
+                            VsdKIJWT_Man += row.DetailSubMakerRequest[i].sdKIJWT_Man;
+                            VsdKJWT_Auto += row.DetailSubMakerRequest[i].sdKJWT_Auto;
+                            VsdWT_Man += row.DetailSubMakerRequest[i].sdWT_Man;
+                            VsdWT_Auto += row.DetailSubMakerRequest[i].sdWT_Auto;
+
+
+
+
+
+
+                        }
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col].Value = "TOTAL " + row.GroupName.ToString();
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col].Style.Font.Bold = true;
+
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 1].Value = VsumsdWK_Man.ToString();
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 2].Value = VsdWK_Auto.ToString();
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 3].Value = VsdKIJWT_Man.ToString();
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 4].Value = VsdKJWT_Auto.ToString();
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 5].Value = VsdWT_Man.ToString();
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 6].Value = VsdWT_Auto.ToString();
+
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col].Style.Fill.PatternType = ExcelFillStyle.Solid; // ต้องมี!
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col].Style.Fill.BackgroundColor.SetColor(Color.LightGray); // หรือ Color.FromArgb(128, 128, 128)
+
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 1].Style.Fill.PatternType = ExcelFillStyle.Solid; // ต้องมี!
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 1].Style.Fill.BackgroundColor.SetColor(Color.LightGray); // หรือ Color.FromArgb(128, 128, 128)
+
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 2].Style.Fill.PatternType = ExcelFillStyle.Solid; // ต้องมี!
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 2].Style.Fill.BackgroundColor.SetColor(Color.LightGray); // หรือ Color.FromArgb(128, 128, 128)
+
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 3].Style.Fill.PatternType = ExcelFillStyle.Solid; // ต้องมี!
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 3].Style.Fill.BackgroundColor.SetColor(Color.LightGray); // หรือ Color.FromArgb(128, 128, 128)
+
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 4].Style.Fill.PatternType = ExcelFillStyle.Solid; // ต้องมี!
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 4].Style.Fill.BackgroundColor.SetColor(Color.LightGray); // หรือ Color.FromArgb(128, 128, 128)
+
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 5].Style.Fill.PatternType = ExcelFillStyle.Solid; // ต้องมี!
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 5].Style.Fill.BackgroundColor.SetColor(Color.LightGray); // หรือ Color.FromArgb(128, 128, 128)
+
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 6].Style.Fill.PatternType = ExcelFillStyle.Solid; // ต้องมี!
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 6].Style.Fill.BackgroundColor.SetColor(Color.LightGray); // หรือ Color.FromArgb(128, 128, 128)
+
+
+
+
+
+                        sumPKJMan += VsdKIJWT_Man;
+                        sumPKJAuto += VsdKJWT_Auto;
+
+                        //sum process
+                        string vGroupName = row.GroupName.Trim();
+                        if (vGroupName.ToLower().Contains("nc"))
+                        {
+                            sumPProcess += VsdWK_Auto;
+                            sumPWTProcess += VsdWT_Auto;
+                            sumPKJProcess += VsdKJWT_Auto;
+                        }
+                        else
+                        {
+                            sumPProcess += VsumsdWK_Man;
+                            sumPWTProcess += VsdWT_Man;
+                            sumPKJProcess += VsdKIJWT_Man;
+                        }
+
+
+
+
+                        // ตีกรอบทั้งหมดตั้งแต่บรรทัดเริ่มต้นของกลุ่มจนถึง TOTAL
+                        int startRow1 = D_row;
+                        int endRow1 = D_row + row.DetailSubMakerRequest.Count(); // รวมแถว TOTAL ด้วย
+                        int startCol1 = D_col;
+                        int endCol1 = D_col + 6;
+
+                        for (int r = startRow1; r <= endRow1; r++)
+                        {
+                            for (int c = startCol1; c <= endCol1; c++)
+                            {
+                                var cell = worksheet.Cells[r, c];
+                                cell.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                                cell.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                                cell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                                cell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            }
+                        }
+
+
+                        D_row = D_row + row.DetailSubMakerRequest.Count() + 1;
+
+
+
+                    }
+                    //Totoal Process
+                    worksheet.Cells[D_row, D_col].Value = "TOTAL PROCESS ";
+                    worksheet.Cells[D_row, D_col + 1].Value = sumPProcess.ToString();  //PROCESS
+                    worksheet.Cells[D_row, D_col + 3].Value = sumPKJMan.ToString(); //KJ Man
+                    worksheet.Cells[D_row, D_col + 4].Value = sumPKJAuto.ToString(); //KJ Auto
+                    worksheet.Cells[D_row, D_col + 5].Value = sumPWTProcess.ToString(); //WT Process
+
+                    worksheet.Cells[D_row + 1, D_col + 4].Value = "COST SUB MAKER";
+                    worksheet.Cells[D_row + 1, D_col + 5, D_row + 1, D_col + 6].Merge = true;
+                    worksheet.Cells[D_row + 1, D_col + 5].Value = _ViewceMastSubHistorySum.shCSmMat.ToString();
+                    worksheet.Cells[D_row + 1, D_col + 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    worksheet.Cells[D_row + 1, D_col + 5].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                    // ตีเส้นรอบพื้นที่ทั้งหมด
+                    var borderRange = worksheet.Cells[D_row, D_col, D_row + 1, D_col + 6];
+                    borderRange.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    borderRange.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    borderRange.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    borderRange.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+
+
+
+                    worksheet.Cells[D_row + 3, 3, D_row + 4, 4].Merge = true;
+                    worksheet.Cells[D_row + 3, 3].Value = "REMARK";
+                    worksheet.Cells[D_row + 3, 3].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    worksheet.Cells[D_row + 3, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+
+                    worksheet.Cells[D_row + 3, 5, D_row + 4, 5].Merge = true;
+                    worksheet.Cells[D_row + 3, 5].Value = "KIJUN COST";
+                    worksheet.Cells[D_row + 3, 5].Style.Font.Size = 28;
+                    worksheet.Cells[D_row + 3, 5].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    worksheet.Cells[D_row + 3, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    worksheet.Cells[D_row + 3, 6, D_row + 4, 6].Merge = true;
+                    worksheet.Cells[D_row + 3, 6].Value = "SUB MAKER COST";
+                    worksheet.Cells[D_row + 3, 6].Style.Font.Size = 28;
+                    worksheet.Cells[D_row + 3, 6].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    worksheet.Cells[D_row + 3, 6].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    worksheet.Cells[D_row + 3, 7, D_row + 4, 7].Merge = true;
+                    worksheet.Cells[D_row + 3, 7].Value = "MOLD CONTROL";
+                    worksheet.Cells[D_row + 3, 7].Style.Font.Size = 28;
+                    worksheet.Cells[D_row + 3, 7].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    worksheet.Cells[D_row + 3, 7].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    worksheet.Cells[D_row + 5, 3, D_row + 5, 4].Merge = true; // C15 ถึง D15
+                    worksheet.Cells[D_row + 5, 3].Value = "COST MATERIAL";
+                    worksheet.Cells[D_row + 5, 5].Value = _ViewceMastSubHistorySum.shCKjMat.ToString();
+                    worksheet.Cells[D_row + 5, 6].Value = _ViewceMastSubHistorySum.shCSmMat.ToString();
+                    worksheet.Cells[D_row + 5, 7].Value = _ViewceMastSubHistorySum.shCMcMat.ToString();
+
+                    worksheet.Cells[D_row + 6, 3, D_row + 6, 4].Merge = true; // C15 ถึง D15
+                    worksheet.Cells[D_row + 6, 3].Value = "COST COFFICIENT";
+                    worksheet.Cells[D_row + 6, 5].Value = _ViewceMastSubHistorySum.shCKjCofficient.ToString();
+                    worksheet.Cells[D_row + 6, 6].Value = "";
+                    worksheet.Cells[D_row + 6, 7].Value = _ViewceMastSubHistorySum.shCMcCofficient.ToString();
+
+                    worksheet.Cells[D_row + 7, 3, D_row + 7, 4].Merge = true; // C15 ถึง D15
+                    worksheet.Cells[D_row + 7, 3].Value = "COST WORKING TIME";
+                    worksheet.Cells[D_row + 7, 5].Value = _ViewceMastSubHistorySum.shCKjWorkingTime.ToString();
+                    worksheet.Cells[D_row + 7, 6].Value = _ViewceMastSubHistorySum.shCSmWorkingTime.ToString();
+                    worksheet.Cells[D_row + 7, 7].Value = _ViewceMastSubHistorySum.shCMcWorkingTime.ToString();
+
+                    worksheet.Cells[D_row + 8, 3, D_row + 8, 4].Merge = true; // C15 ถึง D15
+                    worksheet.Cells[D_row + 8, 3].Value = "TOTAL COST";
+                    worksheet.Cells[D_row + 8, 5].Value = _ViewceMastSubHistorySum.shCKjTotal.ToString();
+                    worksheet.Cells[D_row + 8, 6].Value = "";
+                    worksheet.Cells[D_row + 8, 7].Value = _ViewceMastSubHistorySum.shCMcTotal.ToString();
+
+
+                    var tableRange = worksheet.Cells[D_row + 3, 3, D_row + 8, 7];
+                    tableRange.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    tableRange.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    tableRange.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    tableRange.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+
+
+                    // Auto fit column width
+                    worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+                    for (int col = 3; col <= 9; col++)
+                    {
+                        //if (col == 3)
+                        //{
+                        //    worksheet.Column(col).Width = 45;
+                        //}
+                        //else
+                        //{
+                        //    worksheet.Column(col).Width = 30;
+                        //}
+
+                        worksheet.Column(col).Width = 48;
+                    }
+
+
+
+                    //sheet 2
+                    var worksheet2 = package.Workbook.Worksheets.Add("Sheet2");
+                    worksheet2.Cells.Style.Font.Size = 30;
+                    worksheet2.Cells["C2"].Value = "SUB MAKER REQUEST SHEET DETAIL.";
+                    worksheet2.Cells["C2"].Style.Font.Size = 50;
+                    worksheet2.Cells["C2"].Style.Font.Bold = true;
+                    worksheet2.Cells["C3"].Value = "COST PLANNING DIVISION.";
+                    worksheet2.Cells["C3"].Style.Font.Size = 42;
+                    worksheet2.Cells["C3"].Style.Font.Bold = true;
+
+                    //detail  header
+                    //row 1
+                    worksheet2.Cells["C5"].Value = "Customer Name :";
+                    worksheet2.Cells["C5"].Style.Font.Size = 30;
+                    worksheet2.Cells["C5"].Style.Font.Bold = true;
+                    worksheet2.Cells["D5"].Value = _ViewceMastSubMakerRequest.smCustomerName;
+                    worksheet2.Cells["D5"].Style.Font.Size = 30;
+
+                    worksheet2.Cells["E5"].Value = "Mold No. & Name :";
+                    worksheet2.Cells["E5"].Style.Font.Size = 30;
+                    worksheet2.Cells["E5"].Style.Font.Bold = true;
+                    worksheet2.Cells["F5"].Value = _ViewceMastSubMakerRequest.smMoldName;
+                    worksheet2.Cells["F5"].Style.Font.Size = 30;
+
+                    worksheet2.Cells["G5"].Value = "Model Name :";
+                    worksheet2.Cells["G5"].Style.Font.Size = 30;
+                    worksheet2.Cells["G5"].Style.Font.Bold = true;
+                    worksheet2.Cells["H5"].Value = _ViewceMastSubMakerRequest.smMoldName;
+                    worksheet2.Cells["H5"].Style.Font.Size = 30;
+
+
+                    //row 2
+                    worksheet2.Cells["C6"].Value = "Function :";
+                    worksheet2.Cells["C6"].Style.Font.Size = 30;
+                    worksheet2.Cells["C6"].Style.Font.Bold = true;
+                    worksheet2.Cells["D6"].Value = _ViewceMastSubMakerRequest.smFunction;
+                    worksheet2.Cells["D6"].Style.Font.Size = 30;
+
+                    worksheet2.Cells["E6"].Value = "Lot No :";
+                    worksheet2.Cells["E6"].Style.Font.Size = 30;
+                    worksheet2.Cells["E6"].Style.Font.Bold = true;
+                    worksheet2.Cells["F6"].Value = _ViewceMastSubMakerRequest.smLotNo;
+                    worksheet2.Cells["F6"].Style.Font.Size = 30;
+
+                    worksheet2.Cells["G6"].Value = "Development Stage :";
+                    worksheet2.Cells["G6"].Style.Font.Size = 30;
+                    worksheet2.Cells["G6"].Style.Font.Bold = true;
+                    worksheet2.Cells["H6"].Value = _ViewceMastSubMakerRequest.smDevelopmentStage;
+                    worksheet2.Cells["H6"].Style.Font.Size = 30;
+
+                    //row 3
+                    worksheet2.Cells["C7"].Value = "Revision :";
+                    worksheet2.Cells["C7"].Style.Font.Size = 30;
+                    worksheet2.Cells["C7"].Style.Font.Bold = true;
+                    worksheet2.Cells["D7"].Value = _ViewceMastSubMakerRequest.smRevision;
+                    worksheet2.Cells["D7"].Style.Font.Size = 30;
+
+                    worksheet2.Cells["E7"].Value = "Cavity No. :";
+                    worksheet2.Cells["E7"].Style.Font.Size = 30;
+                    worksheet2.Cells["E7"].Style.Font.Bold = true;
+                    worksheet2.Cells["F7"].Value = _ViewceMastSubMakerRequest.smCavityNo;
+                    worksheet2.Cells["F7"].Style.Font.Size = 30;
+
+                    worksheet2.Cells["G7"].Value = "Date Issue :";
+                    worksheet2.Cells["G7"].Style.Font.Size = 30;
+                    worksheet2.Cells["G7"].Style.Font.Bold = true;
+                    worksheet2.Cells["H7"].Value = _ViewceMastSubHistorySum.shIssueBy;
+                    worksheet2.Cells["H7"].Style.Font.Size = 30;
+
+
+
+
+
+                    int W2_row = 11;
+                    int W2_col = 3; // doc no
+                    int W2_colD = 3; // doc no
+
+                    int W2_rowW = 13; //row detail
+                    int W2_colW = 3; // col  detail
+
+                    int W2_rowWSum = 13; //row detail
+
+
+                    foreach (var row in @class._ListGroupedListceDetailSub)
+                    {
+                        // Merge 2 คอลัมน์ในแนวนอน
+
+                        worksheet2.Cells[W2_row, W2_col, W2_row, W2_col + 1].Merge = true;
+
+                        // ใส่ค่า
+                        worksheet2.Cells[W2_row, W2_col].Value = row.glDocNo;
+                        worksheet2.Cells[W2_row + 1, W2_colD].Value = "(MAN)";
+                        worksheet2.Cells[W2_row + 1, W2_colD + 1].Value = "(TOTAL)";
+
+                        SetAlignCenter(worksheet2.Cells[W2_row, W2_col]);
+                        SetAlignCenter(worksheet2.Cells[W2_row + 1, W2_col]);
+                        SetAlignCenter(worksheet2.Cells[W2_row + 1, W2_col + 1]);
+
+
+                        SetBorder(worksheet2.Cells[W2_row, W2_col, W2_row, W2_col + 1]);
+                        SetBorder(worksheet2.Cells[W2_row + 1, W2_colD]);
+                        SetBorder(worksheet2.Cells[W2_row + 1, W2_col + 1]);
+
+                        double sumPWTCostSUB = 0;
+                        double sumPWTProcessD = 0;
+                        double sumPWTManNc = 0;
+                        double sumPWTMan = 0;
+                        double sumPWTAuto = 0;
+
+
+                        foreach (var subGroup in row.listGroupViewceDetailSubMakerRequest)
+                        {
+                            double sumWTMan = 0;
+                            double sumWTAuto = 0;
+
+
+                            foreach (var item in subGroup.gllistDetail)
+                            {
+                                double vWtMan = item.dsWT_Man;
+                                double vWtAuto = item.dsWT_Auto;
+
+                                worksheet2.Cells[W2_rowW, W2_colD].Value = vWtMan.ToString();
+                                worksheet2.Cells[W2_rowW, W2_colD + 1].Value = vWtAuto.ToString();
+
+
+                                SetAlignCenter(worksheet2.Cells[W2_rowW, W2_colD]);
+                                SetAlignCenter(worksheet2.Cells[W2_rowW, W2_colD + 1]);
+                                SetBorder(worksheet2.Cells[W2_rowW, W2_colD]);
+                                SetBorder(worksheet2.Cells[W2_rowW, W2_colD + 1]);
+
+
+                                sumWTMan += vWtMan;
+                                sumWTAuto += vWtAuto;
+                                string vGroupName = @item.dsGroupName;
+                                if (vGroupName.ToLower().Contains("nc"))
+                                {
+                                    sumPWTProcessD += vWtAuto;
+                                    sumPWTManNc += vWtMan;
+                                }
+                                else
+                                {
+                                    sumPWTProcessD += vWtMan;
+                                }
+
+                                W2_rowW += 1;
+                                W2_rowWSum += 1;
+                            }
+                            worksheet2.Cells[W2_rowW, W2_colD].Value = sumWTMan.ToString();
+                            worksheet2.Cells[W2_rowW, W2_colD + 1].Value = sumWTAuto.ToString();
+
+                            worksheet2.Cells[W2_rowW, W2_colD].Style.Font.Bold = true;
+                            worksheet2.Cells[W2_rowW, W2_colD + 1].Style.Font.Bold = true;
+
+                            //worksheet2.Cells[W2_rowW, W2_colD].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(200, 200, 200)); //LightGray
+                            //worksheet2.Cells[W2_rowW, W2_colD + 1].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(200, 200, 200)); //LightGray
+
+                            worksheet2.Cells[W2_rowW, W2_colD].Style.Fill.PatternType = ExcelFillStyle.Solid; // ต้องมี!
+                            worksheet2.Cells[W2_rowW, W2_colD].Style.Fill.BackgroundColor.SetColor(Color.LightGray); // หรือ Color.FromArgb(128, 128, 128)
+
+                            worksheet2.Cells[W2_rowW, W2_colD + 1].Style.Fill.PatternType = ExcelFillStyle.Solid; // ต้องมี!
+                            worksheet2.Cells[W2_rowW, W2_colD + 1].Style.Fill.BackgroundColor.SetColor(Color.LightGray); // หรือ Color.FromArgb(128, 128, 128)
+
+
+
+                            SetAlignCenter(worksheet2.Cells[W2_rowW, W2_colD]);
+                            SetBorder(worksheet2.Cells[W2_rowW, W2_colD]);
+                            SetAlignCenter(worksheet2.Cells[W2_rowW, W2_colD + 1]);
+                            SetBorder(worksheet2.Cells[W2_rowW, W2_colD + 1]);
+
+
+                            W2_rowW += 1;
+                            W2_rowWSum += 1;
+
+                            //worksheet2.Cells[W2_rowW, W2_colW].Value = "TOTAL ";
+                        }
+                        sumPWTCostSUB = (sumPWTProcessD - sumPWTManNc) * 1000;
+                        worksheet2.Cells[W2_rowWSum, W2_colD].Value = sumPWTProcessD.ToString();
+                        worksheet2.Cells[W2_rowWSum, W2_colD].Style.Font.Bold = true;
+
+
+                        worksheet2.Cells[W2_rowWSum + 1, W2_colD].Value = "COST SUB MAKER";
+                        worksheet2.Cells[W2_rowWSum + 1, W2_colD + 1].Value = sumPWTCostSUB.ToString();
+
+                        SetAlignCenter(worksheet2.Cells[W2_rowWSum, W2_colD]);
+                        SetBorder(worksheet2.Cells[W2_rowWSum, W2_colD]);
+
+                        SetAlignCenter(worksheet2.Cells[W2_rowWSum, W2_colD + 1]);
+                        SetBorder(worksheet2.Cells[W2_rowWSum, W2_colD + 1]);
+
+                        SetAlignCenter(worksheet2.Cells[W2_rowWSum + 1, W2_colD]);
+                        SetBorder(worksheet2.Cells[W2_rowWSum + 1, W2_colD]);
+
+                        SetAlignCenter(worksheet2.Cells[W2_rowWSum + 1, W2_colD + 1]);
+                        SetBorder(worksheet2.Cells[W2_rowWSum + 1, W2_colD + 1]);
+
+                        W2_rowW = 13;
+                        W2_rowWSum = 13;
+
+
+                        W2_col += 2;
+                        W2_colD += 2;
+                    }
+
+
+                    //sumPWTCostSUB = (sumPWTProcessD - sumPWTManNc) * 1000;
+                    //sumPCostsubMaker = sumPCostsubMaker + sumPWTCostSUB;
+
+
+
+
+
+
+
+                    // Auto fit column width
+                    worksheet2.Cells[worksheet2.Dimension.Address].AutoFitColumns();
+                    for (int col = 3; col <= W2_colD; col++)
+                    {
+                        worksheet2.Column(col).Width = 48;
+                    }
+
+
+
+                    // Export เป็น stream
+                    var stream = new MemoryStream();
+                    package.SaveAs(stream);
+                    stream.Position = 0;
+
+                    // ส่งไฟล์ออก (ใช้ใน ASP.NET Core)
+                    // string fileName = $"Export_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+                    return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                var stream = new MemoryStream();
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+
+
+
+
+        }
+        void SetBorder(ExcelRange cell)
+        {
+            cell.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+            cell.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+            cell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+            cell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+        }
+
+        void SetAlignCenter(ExcelRange cell)
+        {
+            cell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            cell.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+        }
 
     }
 }

@@ -19,22 +19,31 @@
         <div style="margin:15px">
             <br />
             <div class="row center" style="padding:0px;background-color:#cbeff7;margin-bottom:5px;border:0px solid black;padding-bottom:10px">
-                <div class="col-80 " style="text-align:left">
+                <div class="col-75 " style="text-align:left">
                     @*<div class="grid-item fw-800  " style="text-align:left;font-size:24px;padding-top:8px"><span style="color:orange">HISTORY SUM SubMaker​</span><span style="color:black"> REQUEST SHEET</span> <img src="~/images/interest-rate.png" height="35px" width="35px" style="vertical-align:middle" /></div>*@
                     <div class="grid-item fw-800 " style="text-align:left;font-size:20px;padding-top:8px"><span style="color:orange">SUB MAKER</span> REQUEST SHEET DETAIL.</div>
                     <div class="grid-item fw-800 " style="text-align:left;font-size:18px;padding-top:10px">COST PLANNING DIVISION.</div>
                 </div>
-                <div class="col-20 right" style="text-align:right">
-                    <button class="button btnBlue" style="height:100%;width:60%"
+                <div class="col-10">
+                    <a asp-area="" asp-controller="SubHistorysum" asp-action="btnExportExcel" asp-route-lotno="@Model._ViewceMastSubMakerRequest.smLotNo"
+                       style="margin-right:5px;font-size:10px;text-decoration:auto;width: 100%; @(Model._ViewceMastSubHistorySum == null ?"Display:none;":"")" class="button">
+                        <img src="~/images/excel.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />EXCEL
+                    </a>
+                </div>
+
+                <div class="col-15 right" style="text-align:right">
+                    <button class="button btnBlue" style="height:100%;width:100%"
                             onclick="Menubar_saveHistorysum('@Url.Action("SaveHisSumSub","SubHistorysum")')">
                         <img src="~/images/savedaft.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
                         SAVE
                     </button>
+
                 </div>
+
             </div>
 
             <form action="" id="formHisSumData" name="formHisSumData">
-               
+
                 <div style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:5px;border-radius:2px;">
                     <div class="status-wrapper" style="display: flex; justify-content: flex-end; align-items: center;">
                         <span style="font-weight:600">Status: </span>

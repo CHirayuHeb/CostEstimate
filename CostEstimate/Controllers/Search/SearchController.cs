@@ -63,10 +63,16 @@ namespace CostEstimate.Controllers.Search
 
 
 
-                List<string> _listMastSubMarker = _MK._ViewceMastSubMakerRequest.Select(x => x.smLotNo + "|" + x.smMoldName + "|" + x.smModelName
+                List<string> _listMastSubMarker = _MK._ViewceMastSubMakerRequest.Select(x => x.smLotNo + "|"
+                +
+                 (_MK._ViewceMastSubMakerRequest.Where(e => e.smLotNo == x.smLotNo).FirstOrDefault() != null
+                ? _MK._ViewceMastSubMakerRequest.Where(e => e.smLotNo == x.smLotNo).Select(r => r.smMoldName).FirstOrDefault() : ""
+                )
+                //x.smMoldName 
+                + "|" + x.smModelName
                 + "|" +
                 (_listViewceMastSubHistorySum.Where(s => s.shLotNo == x.smLotNo).FirstOrDefault() != null
-                ? _listViewceMastSubHistorySum.Where(s => s.shLotNo == x.smLotNo).Select(f=>f.shStatus).FirstOrDefault() == true ? "OK" : "DRAFT"
+                ? _listViewceMastSubHistorySum.Where(s => s.shLotNo == x.smLotNo).Select(f => f.shStatus).FirstOrDefault() == true ? "OK" : "DRAFT"
                 : "NEW"
                 )
                 ).Distinct().ToList();

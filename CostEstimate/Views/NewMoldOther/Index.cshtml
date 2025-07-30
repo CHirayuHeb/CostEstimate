@@ -23,7 +23,7 @@
             <br />
             <div class="row center" style="padding:5px;background-color:#9bbd5e;margin-bottom:5px;border:0px solid #b4f739;margin:5px">
                 <div class="col-60 " style="text-align:left">
-                    <div class="grid-item fw-800  " style="text-align:left;font-size:24px;padding-top:8px;padding-bottom:8px"> <span style="color:darkolivegreen">MOLD OTHER </span> REQUEST SHEET DETAIL.</div>
+                    <div class="grid-item fw-800  " style="text-align:left;font-size:24px;padding-top:8px;padding-bottom:8px"> <span style="color:green">MOLD OTHER </span> REQUEST SHEET DETAIL.</div>
 
                 </div>
                 <div class="col-40 center" style="text-align:right;">
@@ -33,11 +33,10 @@
                         <img src="~/images/printer.png" style="width:33px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
                         REPORT
                     </button>
-                    <button class="button" style="width:auto" onclick="Menubar_Moldsendmail($('#i_NewMold_DocumentNo').val(),'@Url.Action("History","NewMoldModify")')">
+                    <button class="button" style="width:auto" onclick="Menubar_MoldOthersendmail('','@Url.Action("History","NewMoldOther")')">
                         <img src="~/images/direct.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
                         SEND
                     </button>
-
                     <button class="button btnGray" style="width:auto ; @(Model._ViewceMastModifyRequest.mfStep == 6 ? "pointer-events: none;" : "")"
                             onclick="Menubar_MoldsaveDraft('@Url.Action("SaveDraft","NewMoldModify")','@Url.Action("SaveCeDetailSub","NewMoldModify")')">
                         <img src="~/images/savedaft.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
@@ -66,19 +65,139 @@
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Reference No.</div>
                                 </div>
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off"  id="i_NewOther_ReferenceNo" maxlength="20">
-                               
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_ReferenceNo" maxlength="20">
+
                                 </div>
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Document No.</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off"  id="i_NewOther_DocumentNo" readonly>
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_DocumentNo" readonly>
                                 </div>
                                 <div class="col-5 " style="">
                                 </div>
                             </div>
                         </div>
+                        <div class="row center">
+                            <div class="row center">
+                                <div class="col-5 " style="">
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Lot No.</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_ReferenceNo" maxlength="20">
+
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Revision.</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_DocumentNo" readonly>
+                                </div>
+                                <div class="col-5 " style="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row center">
+                            <div class="row center">
+                                <div class="col-5 " style="">
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Customer Name</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_ReferenceNo" maxlength="20">
+
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Mold Name / Mold No.</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_DocumentNo" readonly>
+                                </div>
+                                <div class="col-5 " style="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row center">
+                            <div class="row center">
+                                <div class="col-5 " style="">
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Model Name</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_ReferenceNo" maxlength="20">
+
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Request Dept.</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_DocumentNo" readonly>
+                                </div>
+                                <div class="col-5 " style="">
+                                </div>
+                            </div>
+                        </div>
+                      
+                        <div class="row center">
+                            <div class="row center">
+                                <div class="col-5 " style="">
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Date Issue</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_ReferenceNo" maxlength="20">
+
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center  " style="text-align:left;font-size:12px">Response by</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    @Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfIssueDept, (SelectList)ViewBag.TypeofRequestBy, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_RequestBy", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
+
+                                </div>
+                                <div class="col-5 " style="">
+                                </div>
+                            </div>
+                        </div>
+                          <div class="row center">
+                            <div class="row center">
+                                <div class="col-5 " style="">
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Request Dept.</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off">
+
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Answer Date</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" >
+                                   
+                                </div>
+                                <div class="col-5 " style="">
+                                </div>
+                            </div>
+                        </div>
+                      
+                        <div class="modal modal-xl fade" id="myModalSendMold" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content ">
+                                    <div class="modal-body" id="myModalBodySendMold">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </form>
 
 

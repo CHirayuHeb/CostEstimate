@@ -30,26 +30,26 @@
                 <tr>
                     <th>COST MATERIAL</th>
                     <td><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:yellow" type="number" min="0" asp-for="_ViewceMastSubHistorySum.shCKjMat" id="i_HissubshCKjMat"  /></td>
-                    <td><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightskyblue" type="number" min="0" asp-for="_ViewceMastSubHistorySum.shCSmMat" id="i_HissubshCSmMat"  readonly /></td>
-                    <td><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="number" min="0" asp-for="_ViewceMastSubHistorySum.shCMcMat" id="i_HissubshCMcMat"  readonly /></td>
+                    <td><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightskyblue; color:@((Model._ViewceMastSubHistorySum?.shCSmMat ?? 0) < 0 ? "red" : "black");" type="number" min="0" asp-for="_ViewceMastSubHistorySum.shCSmMat" id="i_HissubshCSmMat"  readonly /></td>
+                    <td><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray; color:@((Model._ViewceMastSubHistorySum?.shCMcMat ?? 0) < 0 ? "red" : "black");" type="number" min="0" asp-for="_ViewceMastSubHistorySum.shCMcMat" id="i_HissubshCMcMat"  readonly /></td>
                 </tr>
                 <tr>
                     <th>COST COFFICIENT</th>
-                    <td><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="number" min="0" asp-for="_ViewceMastSubHistorySum.shCKjCofficient" id="i_HissubshCKjCofficient"  readonly /></td>
+                    <td><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray ; color:@((Model._ViewceMastSubHistorySum?.shCKjCofficient ?? 0) < 0 ? "red" : "black");" type="number" min="0" asp-for="_ViewceMastSubHistorySum.shCKjCofficient" id="i_HissubshCKjCofficient"  readonly /></td>
                     <td><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray;display:none" type="number" min="0" asp-for="_ViewceMastSubHistorySum.shCSmCofficient" id="i_HissubshCSmCofficient"  readonly /></td>
-                    <td><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="number" min="0" asp-for="_ViewceMastSubHistorySum.shCMcCofficient" id="i_HissubshCMcCofficient"  readonly /></td>
+                    <td><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray; color:@((Model._ViewceMastSubHistorySum?.shCMcCofficient ?? 0) < 0 ? "red" : "black");" type="number" min="0" asp-for="_ViewceMastSubHistorySum.shCMcCofficient" id="i_HissubshCMcCofficient"  readonly /></td>
                 </tr>
                 <tr>
                     <th>COST WORKING TIME</th>
                     <td><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:yellow" type="number" min="0" asp-for="_ViewceMastSubHistorySum.shCKjWorkingTime" id="i_HissubshCKjWorkingTime"  /></td>
-                    <td><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightskyblue" type="number" min="0" asp-for="_ViewceMastSubHistorySum.shCSmWorkingTime" id="i_HissubshCSmWorkingTime"  readonly /></td>
-                    <td><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="number" min="0" asp-for="_ViewceMastSubHistorySum.shCMcWorkingTime" id="i_HissubshCMcWorkingTime"  readonly /></td>
+                    <td><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightskyblue ; color:@((Model._ViewceMastSubHistorySum?.shCSmWorkingTime ?? 0) < 0 ? "red" : "black");" type="number" min="0" asp-for="_ViewceMastSubHistorySum.shCSmWorkingTime" id="i_HissubshCSmWorkingTime"  readonly /></td>
+                    <td><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray ;color:@((Model._ViewceMastSubHistorySum?.shCMcWorkingTime ?? 0) < 0 ? "red" : "black");" type="number" min="0" asp-for="_ViewceMastSubHistorySum.shCMcWorkingTime" id="i_HissubshCMcWorkingTime"  readonly /></td>
                 </tr>
                 <tr>
                     <th>TOTAL COST</th>
                     <td><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:yellow" type="number" min="0" asp-for="_ViewceMastSubHistorySum.shCKjTotal" id="i_HissubshCKjTotal"  /></td>
                     <td><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:yellow;display:none" type="number" min="0" asp-for="_ViewceMastSubHistorySum.shCSmTotal" id="i_HissubshCSmTotal"  readonly /></td>
-                    <td><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="number" min="0" asp-for="_ViewceMastSubHistorySum.shCMcTotal" id="i_HissubshCMcTotal"  readonly /></td>
+                    <td><input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray ; color:@((Model._ViewceMastSubHistorySum?.shCMcTotal ?? 0) < 0 ? "red" : "black");" type="number" min="0" asp-for="_ViewceMastSubHistorySum.shCMcTotal" id="i_HissubshCMcTotal"  readonly /></td>
                 </tr>
             </table>
         </div>
