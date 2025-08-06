@@ -1,0 +1,69 @@
+﻿@model CostEstimate.Models.Common.Class;
+@{
+    ViewData["Title"] = "MATERIAL| ThaiStanley";
+    Layout = "~/Views/Shared/_MenuBar_MoldOther.cshtml";
+}
+@{
+    string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+<link href="~/css/MyRequest/siteMyRequest.css" rel="stylesheet" />
+<link href="~/css/New/mNew.css" rel="stylesheet" />
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("NewMoldOtherMT"); } }</script>
+<div class="home-content">
+    <div id="DisplayContent" class="content-box">
+        <div style="" class="content-text">
+            <br />
+            <div class="row center" style="padding:5px;background-color:#9bbd5e;margin-bottom:5px;border:0px solid #b4f739;margin:5px">
+                <div class="col-60 " style="text-align:left">
+                    @*<div class="grid-item fw-800  " style="text-align:left;font-size:24px;padding-top:8px;padding-bottom:8px"> <span style="color:green">MOLD OTHER </span> REQUEST SHEET DETAIL.</div>
+                <div class="grid-item fw-800  " style="text-align:left;font-size:24px;padding-top:8px;padding-bottom:8px;color:	#F4D35E">MATERIAL</div>*@
+
+                    <span style="text-align:left;font-size:24px;padding-top:8px;padding-bottom:15px;font-weight:600">
+                        <span style="color:green">MOLD OTHER </span> REQUEST SHEET DETAIL.
+                    </span><br />
+                    <span style="text-align:left;font-size:22px;padding-top:20px;padding-bottom:8px;font-weight:600;color:#F4D35E">
+                        MATERIAL
+                    </span>
+
+
+                </div>
+                <div class="col-40 center" style="text-align:right;">
+
+                    @*<button class="button btnBlue" style="margin-right:20px;width:auto; @(Model._ViewceMastModifyRequest.mfStep > 1 ? "" : "display:none")"
+                        onclick="Menubar_PrintMoldQUOTATION('@Url.Action("PrintMoldQUOTATION","NewMoldModify")','@Model._ViewceMastModifyRequest.mfCENo')">
+                    <img src="~/images/printer.png" style="width:33px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                    REPORT
+                </button>*@
+                    @*<button class="button" style="width:auto" onclick="Menubar_MoldOthersendmail('','@Url.Action("History","NewMoldOther")')">
+                    <img src="~/images/direct.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                    SEND
+                </button>
+                <button class="button btnGray" style="width:auto ; @(Model._ViewceMastModifyRequest.mfStep == 6 ? "pointer-events: none;" : "")"
+                        onclick="Menubar_MoldsaveDraft('@Url.Action("SaveDraft","NewMoldModify")','@Url.Action("SaveCeDetailSub","NewMoldModify")')">
+                    <img src="~/images/savedaft.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                    SAVE DAFT
+                </button>*@
+                </div>
+            </div>
+            <div style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:5px;border-radius:2px;">
+                <div class="row center">
+                    <div class="col-15 " style="">
+                    </div>
+                    <div class="col-70 " style="">
+                        @await Html.PartialAsync("_PartialStepFlowOtherRequest.cshtml", Model)
+                    </div>
+                    <div class="col-15 " style="">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

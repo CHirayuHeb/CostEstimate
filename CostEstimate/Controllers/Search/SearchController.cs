@@ -256,26 +256,44 @@ namespace CostEstimate.Controllers.Search
             @class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.ToList();
             if (@class._ViewSearchData != null)
             {
-                @class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.ToList();
+                if (@class._ViewSearchData.v_OrderNo != null && @class._ViewSearchData.v_OrderNo != "")
+                {
+                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smOrderNo.ToUpper().Contains(@class._ViewSearchData.v_OrderNo.ToUpper())).ToList();
+                }
                 if (@class._ViewSearchData.v_DocumentNo != null && @class._ViewSearchData.v_DocumentNo != "")
                 {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smDocumentNo.Contains(@class._ViewSearchData.v_DocumentNo)).ToList();
+                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smDocumentNo.ToUpper().Contains(@class._ViewSearchData.v_DocumentNo.ToUpper())).ToList();
+                }
+                if (@class._ViewSearchData.v_status != null)
+                {
+                    //int smstep = _MK._ViewceMastFlowApprove.Where(x => x.mfSubject.Contains(@class._ViewSearchData.v_status)).Select(x => x.mfStep).FirstOrDefault();
+                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smStatus.Contains(@class._ViewSearchData.v_status)).ToList();
+                    // @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smStep == smstep).OrderBy(x => x.smStep).ThenBy(x => x.smIssueDate).ToList();
+
                 }
                 if (@class._ViewSearchData.v_LotNo != null && @class._ViewSearchData.v_LotNo != "")
                 {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smLotNo.Contains(@class._ViewSearchData.v_LotNo)).ToList();
+                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smLotNo.ToUpper().Contains(@class._ViewSearchData.v_LotNo.ToUpper())).ToList();
                 }
                 if (@class._ViewSearchData.v_MoldNo != null && @class._ViewSearchData.v_MoldNo != "")
                 {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smMoldNo.Contains(@class._ViewSearchData.v_MoldNo)).ToList();
+                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smMoldNo.ToUpper().Contains(@class._ViewSearchData.v_MoldNo.ToUpper())).ToList();
+                }
+                if (@class._ViewSearchData.v_MoldMass != null && @class._ViewSearchData.v_MoldMass != "")
+                {
+                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smMoldNo.ToUpper().Contains(@class._ViewSearchData.v_MoldMass.ToUpper())).ToList();
                 }
                 if (@class._ViewSearchData.v_CusName != null && @class._ViewSearchData.v_CusName != "")
                 {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smCustomerName.Contains(@class._ViewSearchData.v_CusName)).ToList();
+                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smCustomerName.ToUpper().Contains(@class._ViewSearchData.v_CusName.ToUpper())).ToList();
+                }
+                if (@class._ViewSearchData.v_MoldName != null && @class._ViewSearchData.v_MoldName != "")
+                {
+                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smMoldName.ToUpper().Contains(@class._ViewSearchData.v_MoldName.ToUpper())).ToList();
                 }
                 if (@class._ViewSearchData.v_ModelName != null && @class._ViewSearchData.v_ModelName != "")
                 {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smModelName.Contains(@class._ViewSearchData.v_ModelName)).ToList();
+                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smModelName.ToUpper().Contains(@class._ViewSearchData.v_ModelName.ToUpper())).ToList();
                 }
                 if (@class._ViewSearchData.v_CavityNo != null && @class._ViewSearchData.v_CavityNo != "")
                 {
@@ -283,11 +301,11 @@ namespace CostEstimate.Controllers.Search
                 }
                 if (@class._ViewSearchData.v_Function != null && @class._ViewSearchData.v_Function != "")
                 {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smFunction.Contains(@class._ViewSearchData.v_Function)).ToList();
+                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smFunction.ToUpper().Contains(@class._ViewSearchData.v_Function.ToUpper())).ToList();
                 }
                 if (@class._ViewSearchData.v_DevelopmentStage != null && @class._ViewSearchData.v_DevelopmentStage != "")
                 {
-                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smDevelopmentStage.Contains(@class._ViewSearchData.v_DevelopmentStage)).ToList();
+                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smDevelopmentStage.ToUpper().Contains(@class._ViewSearchData.v_DevelopmentStage.ToUpper())).ToList();
                 }
 
                 //Material
@@ -310,7 +328,34 @@ namespace CostEstimate.Controllers.Search
                     @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smDeliveryDate) <= DateTime.Parse(@class._ViewSearchData.v_DaliverryDateTo)).ToList();
                 }
 
+                //date issue
+                //date resuest
+                //var format = "yyyy/MM/dd";
+                //var culture = CultureInfo.InvariantCulture;
+                if (@class._ViewSearchData.v_DateIssueFrom != null && @class._ViewSearchData.v_DateIssueFrom != "")
+                {
+                    // @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x =>DateTime.ParseExact(x.smIssueDate, format, culture) >=DateTime.ParseExact(@class._ViewSearchData.v_DateIssueFrom, format, culture)).ToList();
 
+                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smIssueDate) >= DateTime.Parse(@class._ViewSearchData.v_DateIssueFrom)).ToList();
+                }
+                if (@class._ViewSearchData.v_DateIssueTo != null && @class._ViewSearchData.v_DateIssueTo != "")
+                {
+                    //@class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.ParseExact(x.smIssueDate, format, culture) <= DateTime.ParseExact(@class._ViewSearchData.v_DateIssueTo, format, culture)).ToList();
+
+                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smIssueDate) <= DateTime.Parse(@class._ViewSearchData.v_DateIssueTo)).ToList();
+                }
+
+                if (@class._ViewSearchData.v_TypeofCavity != null && @class._ViewSearchData.v_TypeofCavity != "")
+                {
+                    //@class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smTypeCavity.Contains(@class._ViewSearchData.v_TypeofCavity)).ToList();
+
+                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smTypeCavity != null && x.smTypeCavity.IndexOf(@class._ViewSearchData.v_TypeofCavity, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+                }
+
+                if (@class._ViewSearchData.v_Revision != null && @class._ViewSearchData.v_Revision != "")
+                {
+                    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smRevision.Contains(@class._ViewSearchData.v_Revision)).ToList();
+                }
             }
             using (ExcelPackage package = new ExcelPackage())
             {

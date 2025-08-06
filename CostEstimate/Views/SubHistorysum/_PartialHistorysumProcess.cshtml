@@ -171,10 +171,10 @@
                             <td style="text-align:left"><input class="form-control center " id="i_TotalPocessAuto" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" type="number" min="0" readonly value="@sumPWTAuto" /></td>
 
                             <td style="text-align:left">
-                                <input class="form-control center " id="i_TotalPocessKJProcess" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen;display:none" type="number" min="0" readonly value="@sumPKJProcess" />
-                                <input class="form-control center " id="i_TotalPocessKJMan" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen; color:@(sumPKJMan < 0 ? "red" : "black");" type="number" min="0" readonly value="@sumPKJMan" />
+                                <input class="form-control center " id="i_TotalPocessKJProcess" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen;color:@(sumPKJProcess < 0 ? "red" : "black");" type="number" min="0" readonly value="@sumPKJProcess" />
+                                <input class="form-control center " id="i_TotalPocessKJMan" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen;display:none; color:@(sumPKJMan < 0 ? "red" : "black");" type="number" min="0" readonly value="@sumPKJMan" />
                             </td>
-                            <td style="text-align:left"><input class="form-control center " id="i_TotalPocessKJAuto" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen; color:@(sumPKJAuto < 0 ? "red" : "black");" type="number" min="0" readonly value="@sumPKJAuto" /></td>
+                            <td style="text-align:left"><input class="form-control center " id="i_TotalPocessKJAuto" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen;display:none; color:@(sumPKJAuto < 0 ? "red" : "black");" type="number" min="0" readonly value="@sumPKJAuto" /></td>
 
                             <td style="text-align:left">
                                 <input class="form-control center " id="" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:limegreen; color:@(sumPWTProcess < 0 ? "red" : "black");" type="number" min="0" readonly value="@sumPWTProcess" />

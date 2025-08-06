@@ -23,7 +23,11 @@
             <br />
             <div class="row center" style="padding:5px;background-color:#9bbd5e;margin-bottom:5px;border:0px solid #b4f739;margin:5px">
                 <div class="col-60 " style="text-align:left">
-                    <div class="grid-item fw-800  " style="text-align:left;font-size:24px;padding-top:8px;padding-bottom:8px"> <span style="color:green">MOLD OTHER </span> REQUEST SHEET DETAIL.</div>
+                    <span style="text-align:left;font-size:24px;padding-top:8px;padding-bottom:8px;font-weight:600">
+                        <span style="color:green">MOLD OTHER </span> REQUEST SHEET DETAIL.
+                    </span>
+
+                    @*<div class="grid-item fw-800  " style="text-align:left;font-size:24px;padding-top:8px;padding-bottom:8px"> <span style="color:green">MOLD OTHER </span> REQUEST SHEET DETAIL.</div>*@
 
                 </div>
                 <div class="col-40 center" style="text-align:right;">
@@ -33,10 +37,11 @@
                         <img src="~/images/printer.png" style="width:33px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
                         REPORT
                     </button>
-                    <button class="button" style="width:auto" onclick="Menubar_MoldOthersendmail('','@Url.Action("History","NewMoldOther")')">
+                    <button class="button" style="width:auto" onclick="Menubar_MoldOther_sendmail('','@Url.Action("History","NewMoldOther")')">
                         <img src="~/images/direct.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
                         SEND
                     </button>
+
                     <button class="button btnGray" style="width:auto ; @(Model._ViewceMastModifyRequest.mfStep == 6 ? "pointer-events: none;" : "")"
                             onclick="Menubar_MoldsaveDraft('@Url.Action("SaveDraft","NewMoldModify")','@Url.Action("SaveCeDetailSub","NewMoldModify")')">
                         <img src="~/images/savedaft.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
@@ -45,8 +50,9 @@
                 </div>
             </div>
             <div style="width:100%;">
-                <div id="divNewOther" style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:10px;border-radius:2px;">
-                    <form id="formOtherRequest1" name="formOtherData1">
+                <form id="formOtherRequest1" name="formOtherData1">
+                    <div id="divNewOther" style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:10px;border-radius:2px;">
+
                         <div class="row center">
                             <div class="col-5 " style="">
                             </div>
@@ -62,18 +68,21 @@
                                 <div class="col-5 " style="">
                                 </div>
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Reference No.</div>
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Customer Name.</div>
                                 </div>
-                                <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_ReferenceNo" maxlength="20">
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_CusName">
+                                </div>
 
-                                </div>
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Document No.</div>
                                 </div>
-                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
                                     <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_DocumentNo" readonly>
+
                                 </div>
+
+
                                 <div class="col-5 " style="">
                                 </div>
                             </div>
@@ -83,38 +92,42 @@
                                 <div class="col-5 " style="">
                                 </div>
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Lot No.</div>
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Function</div>
                                 </div>
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_ReferenceNo" maxlength="20">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_Function" maxlength="20">
 
                                 </div>
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Revision.</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_DocumentNo" readonly>
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_Rev" readonly>
                                 </div>
                                 <div class="col-5 " style="">
                                 </div>
                             </div>
                         </div>
+
                         <div class="row center">
                             <div class="row center">
                                 <div class="col-5 " style="">
                                 </div>
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Customer Name</div>
+                                    <div class="grid-item fw-800 center  " style="text-align:left;font-size:12px">Model Name</div>
                                 </div>
-                                <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_ReferenceNo" maxlength="20">
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    @*@Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfIssueDept, (SelectList)ViewBag.TypeofRequestBy, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_RequestBy", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })*@
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_ModelName">
 
                                 </div>
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Mold Name / Mold No.</div>
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Event.</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_DocumentNo" readonly>
+                                    @*@Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfType, (SelectList)ViewBag.TypeofEvent, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMoldOther_Event", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })*@
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_Event">
+
                                 </div>
                                 <div class="col-5 " style="">
                                 </div>
@@ -125,86 +138,526 @@
                                 <div class="col-5 " style="">
                                 </div>
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Model Name</div>
+                                    <div class="grid-item fw-800 center  " style="text-align:left;font-size:12px">Mold Go.</div>
                                 </div>
-                                <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_ReferenceNo" maxlength="20">
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueFrom" id="i_NewOther_MoldGo">
 
                                 </div>
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Request Dept.</div>
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Try 1.</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_DocumentNo" readonly>
+                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueFrom" id="i_NewOther_Try1">
                                 </div>
                                 <div class="col-5 " style="">
                                 </div>
                             </div>
                         </div>
-                      
+
                         <div class="row center">
                             <div class="row center">
                                 <div class="col-5 " style="">
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Mold Mass</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueFrom" id="i_NewOther_MoldMass">
                                 </div>
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Date Issue</div>
                                 </div>
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_ReferenceNo" maxlength="20">
-
-                                </div>
-                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                    <div class="grid-item fw-800 center  " style="text-align:left;font-size:12px">Response by</div>
-                                </div>
-                                <div class="col-25" style=" display: flex;align-items: center; ">
-                                    @Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfIssueDept, (SelectList)ViewBag.TypeofRequestBy, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_RequestBy", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_ReferenceNo" asp-for="_ViewceMastModifyRequest.mfIssueDate" value="@(Model._ViewceMastModifyRequest.mfIssueDate == null ? DateTime.Now.ToString("dd/MM/yyyy") : Model._ViewceMastModifyRequest.mfIssueDate)" readonly>
 
                                 </div>
                                 <div class="col-5 " style="">
                                 </div>
                             </div>
                         </div>
-                          <div class="row center">
-                            <div class="row center">
-                                <div class="col-5 " style="">
-                                </div>
-                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Request Dept.</div>
-                                </div>
-                                <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off">
 
-                                </div>
-                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Answer Date</div>
-                                </div>
-                                <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" >
-                                   
-                                </div>
-                                <div class="col-5 " style="">
-                                </div>
+                        <div class="row center">
+                            <div class="col-5"></div>
+                            <div class="col-90">
+                                <hr />
                             </div>
-                        </div>
-                      
-                        <div class="modal modal-xl fade" id="myModalSendMold" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content ">
-                                    <div class="modal-body" id="myModalBodySendMold">
-
-                                    </div>
-                                </div>
-                            </div>
+                            <div class="col-5"></div>
                         </div>
 
+                        <div class="row center">
+                            <div class="col-5 " style="">
+                            </div>
+                            <div class="col-80 " style=" display: flex;align-items: center;">
+                            </div>
+                            <div class="col-10" style=" display: flex;align-items: center; ">
+                            </div>
+                            <div class="col-5 " style="">
+                                <input type='button' class='button btnOrange' value='➕' style="width:auto;height:30px;vertical-align: sub;" onclick="btnaddPartName()">
+                                <select id="template_TypeCavity" style="display:none">
+                                    <option value="">กรุณาเลือก</option>
+                                    @foreach (var item in (SelectList)ViewBag.TypeofCavity)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row center">
+                            <div class="col-5 " style="">
+                            </div>
+                            <div class="col-90 " style="">
+                                <table class="tbgreen  " id="tbMoldOtherItem">
+                                    <tr>
+                                        <th style="text-align:center">No.​</th>
+                                        <th style="text-align:center">Part Name.​</th>
+                                        @*<th style="text-align:center">Customer Name.​</th>*@
+                                        <th style="text-align:center">Cavity No.​</th>
+                                        <th style="text-align:center">Type of Cavity.​</th>
+                                        <th style="text-align:center">Delete</th>
+                                    </tr>
+                                    <tbody id="tableBodyItem"></tbody>
 
-                    </form>
+                                </table>
+                            </div>
+                            <div class="col-5 " style="">
+                            </div>
 
 
+
+                        </div>
+                        <br />
+
+
+
+                        @*<div class="row center">
+                <div class="row center">
+                    <div class="col-5 " style="">
+                    </div>
+                    <div class="col-20 " style=" display: flex;align-items: center;">
+                    </div>
+                    <div class="col-25 " style=" display: flex;align-items: center; ">
+
+                    </div>
+                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Lot No.</div>
+
+                    </div>
+                    <div class="col-25" style=" display: flex;align-items: center; ">
+                        <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_SLotNo" maxlength="20">
+
+                    </div>
+                    <div class="col-5 " style="">
+                    </div>
                 </div>
+            </div>
+            <br />
+            <div class="row center">
+                <div class="col-5 " style="">
+                </div>
+                <div class="col-90 " style="">
+                    <table class="tbgreen  " id="tbMoldOtherItem">
+                        <tr>
+                            <th style="text-align:center">No.​</th>
+                            <th style="text-align:center">Lot No.​</th>
+                            <th style="text-align:center">Customer Name​</th>
+                            <th style="text-align:center">Mold No​</th>
+                            <th style="text-align:center">Mold Name.​</th>
+                            <th style="text-align:center" width="10%">Type Cavity</th>
+                            <th style="text-align:center">Delete</th>
+                        </tr>
+                        <tbody id="tableBodyItem"></tbody>
+
+                    </table>
+                </div>
+                <div class="col-5 " style="">
+                </div>
+
+
+
+            </div>*@
+
+                        <br />
+
+                        <div class="row center">
+                            <div class="col-5 " style="">
+                            </div>
+                            <div class="col-90" style="">
+
+                                <table class="tbgreen text-left">
+                                    <tr>
+                                        <th style="text-align:center">No.​</th>
+                                        <th style="text-align:center">Document Type​</th>
+                                        <th style="text-align:center">Waiting Approve​</th>
+                                        <th style="text-align:center">Status​</th>
+                                        <th style="text-align:center" width="70px">More​</th>
+                                    </tr>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>
+                                                WORKING TIME
+                                            </td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td class="center">
+                                                <a href="@Url.Action("Index", "NewMoldOtherWK",new {Docno = Model._ViewceMastModifyRequest.mfStep})" target="_blank" style="font-size:15px;text-decoration: none;">
+                                                    <img src="~/images/revision.png" alt="icon" class="imgM" />
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>
+                                                MATERIAL
+                                            </td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td class="center">
+                                                <a href="@Url.Action("Index", "NewMoldOtherMT")" target="_blank" style="font-size:12px;text-decoration: none;">
+                                                    <img src="~/images/revision.png" alt="icon" class="imgM" />
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>TOOL & GR</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td class="center">
+                                                <a href="@Url.Action("Index", "NewMoldOtherTGR")" target="_blank" style="font-size:12px;text-decoration: none;">
+                                                    <img src="~/images/revision.png" alt="icon" class="imgM" />
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td>INFORMATION SPEC MOLD</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td class="center">
+                                                <a href="@Url.Action("Index", "NewMoldOtherSM")" target="_blank" style="font-size:12px;text-decoration: none;">
+                                                    <img src="~/images/revision.png" alt="icon" class="imgM" />
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+
+
+                                </a><br />
+                                <br />
+                            </div>
+                            <div class="col-5 " style="">
+                            </div>
+                        </div>
+                    </div>
+
+
+                
+
+                    @*//send mail step 2*@
+                    <div class="modal modal-sxl fade" id="myModalSendMold" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
+                        <div class="modal-dialog">
+                            <div class="modal-content ">
+                                <div class="modal-body" id="myModalBodySendMold">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </form>
+
+
             </div>
         </div>
     </div>
 </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        function split(val) {
+            return val.split(/,\s*/);
+        }
+        function extractLast(term) {
+            return split(term).pop();
+        }
 
+        $("#i_NewOther_SLotNo")
+            //don't navigate away from the field on tab when selecting an item
+            .on("keydown", function (event) {
+                console.log("OK");
+                if (event.keyCode === $.ui.keyCode.TAB &&
+                    $(this).autocomplete("instance").menu.active) {
+                    console.log("OKLotNo");
+                    event.preventDefault();
+                }
+            })
+            .autocomplete({
+                minLength: 1,
+                source: function (request, response) {
+                    $.getJSON('@Url.Action("SearchMold_Ledger_Number", "NewMoldOther")', {
+                        term: extractLast(request.term)
+                    }, response);
+                },
+                focus: function () {
+                    //prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    const LotNo = ui.item.value.split("|")[0];
+                    const vCustomer = ui.item.value.split("|")[1];
+                    const vMoldNo = ui.item.value.split("|")[2];
+                    const vMoldName = ui.item.value.split("|")[3];
+                    const vCavity = ui.item.value.split("|")[4];
+
+
+
+                    //document.getElementById("i_NewMold_CustomerName").value = ui.item.value.split("|")[1];
+                    //document.getElementById("i_NewMold_MoldName").value = ui.item.value.split("|")[2];
+                    //document.getElementById("i_NewMold_CavityNo").value = ui.item.value.split("|")[3];
+                    console.log("0: " + ui.item.value.split("|")[0]);
+                    console.log("1: " + ui.item.value.split("|")[1]);
+                    console.log("2: " + ui.item.value.split("|")[2]);
+                    console.log("3: " + ui.item.value.split("|")[3]);
+
+
+
+
+                    var table = document.getElementById("tbMoldOtherItem");
+                    var rows = table.getElementsByTagName("tr"); // เลือกแถวทั้งหมด
+                    var msg = ""; // เลือกแถวทั้งหมด
+                    var found = false; // ตัวแปรเช็คว่าเจอข้อมูลหรือไม่
+                    //check dupicate
+                    //console.log("rows.length" + rows.length);
+                    var sLotNo = LotNo;
+                    for (var i = 1; i < rows.length; i++) { // เริ่มจากแถวที่ 1 เพราะแถวที่ 0 คือ header
+                        var cells = rows[i].getElementsByTagName("td"); // เลือกเซลล์ในแถว
+                        var input = cells[1].querySelector('.LotNo');
+                        var cellText = input ? input.value : '';
+                        console.log("sLotNo" + sLotNo);
+                        // เช็คว่าเซลล์มีข้อความที่เราต้องการหรือไม่
+                        if (cellText.includes(sLotNo)) {
+                            //alert("พบข้อความที่ค้นหาในแถว " + (i) + " คอลัมน์ " + (j + 1) + ": " + cellText);
+                            found = true;
+                            break; // หยุดการค้นหาเมื่อเจอ
+                        }
+
+                        if (found) break; // หยุดการค้นหาเมื่อเจอข้อความ
+                    }
+                    if (!found && LotNo != null && LotNo !=='') {
+                        console.log("ไม่พบข้อความที่ค้นหา");
+                        //add value in table
+                        var htmls = "";
+                        var rowCount = document.getElementById('tableBodyItem').rows.length;
+                        var rowi = rowCount + 1;
+                        htmls += "<tr>";
+                        htmls += " <td>" + rowi + "</td>";
+                        htmls += " <td><input type='text' class='vPartNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgray ;' value ='" + LotNo + "'  ></td>";
+                        htmls += " <td><input type='text' class='vCustomerName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgray ;' value ='" + vCustomer + "'  ></td>";
+                        htmls += " <td><input type='text' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgray ;' value ='" + vMoldNo + "'  ></td>";
+                        htmls += " <td><input type='text' class='vMoldName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgray ;' value ='" + vMoldName + "' readonly ></td>";
+                        htmls += " <td><input type='text' class='vCavity form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgray ;' value ='" + vCavity + "'  readonly></td>";
+                        htmls += "<td align='Center'><input type='button' class='RemoveRow' value='&#x274C'></td>";
+                        htmls += "</tr>";
+
+                        document.getElementById("tableBodyItem").insertAdjacentHTML('beforeend', htmls);
+                    }
+                    else {
+                        console.log("ซ้ำ");
+                        swal.fire({
+                            title: 'แจ้งเตือน',
+                            icon: "warning",
+                            text: "Lot No is duplicate. Please select a different Lot No.",
+                        })
+                            .then((result) => {
+                                document.getElementById("i_NewOther_SLotNo").focus();
+                            });
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    var terms = split(this.value);
+                    //remove the current input
+                    terms.pop();
+                    //add the selected item
+
+                    //terms.push(ui.item.value);
+                    //terms.push(LotNo);
+                    //terms.push("");
+                    //add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join("");
+                    return false;
+                }
+            });
+
+
+
+        $("#i_NewOther_CusName")
+            //don't navigate away from the field on tab when selecting an item
+            .on("keydown", function (event) {
+                console.log("OK");
+                if (event.keyCode === $.ui.keyCode.TAB &&
+                    $(this).autocomplete("instance").menu.active) {
+                    console.log("OKOther_CusName");
+                    event.preventDefault();
+                }
+            })
+            .autocomplete({
+                minLength: 1,
+                source: function (request, response) {
+                    $.getJSON('@Url.Action("SearchCustomer", "NewMoldOther")', {
+                        term: extractLast(request.term)
+                    }, response);
+                },
+                focus: function () {
+                    //prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    const vCus = ui.item.value.split("|")[0];
+                    var terms = split(this.value);
+                    //remove the current input
+                    terms.pop();
+                    //add the selected item
+
+                    //terms.push(ui.item.value);
+                    terms.push(vCus);
+                    //terms.push("");
+                    //add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join("");
+                    return false;
+                }
+            });
+
+
+        $("#i_NewOther_Function")
+            //don't navigate away from the field on tab when selecting an item
+            .on("keydown", function (event) {
+                console.log("OK");
+                if (event.keyCode === $.ui.keyCode.TAB &&
+                    $(this).autocomplete("instance").menu.active) {
+                    console.log("OK Function");
+                    event.preventDefault();
+                }
+            })
+            .autocomplete({
+                minLength: 1,
+                source: function (request, response) {
+                    $.getJSON('@Url.Action("SearchFuntion", "NewMoldOther")', {
+                        term: extractLast(request.term)
+                    }, response);
+                },
+                focus: function () {
+                    //prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    const vCus = ui.item.value.split("|")[0];
+                    var terms = split(this.value);
+                    //remove the current input
+                    terms.pop();
+                    //add the selected item
+
+                    //terms.push(ui.item.value);
+                    terms.push(vCus);
+                    //terms.push("");
+                    //add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join("");
+                    return false;
+                }
+            });
+
+        $("#i_NewOther_ModelName")
+            //don't navigate away from the field on tab when selecting an item
+            .on("keydown", function (event) {
+                console.log("OK");
+                if (event.keyCode === $.ui.keyCode.TAB &&
+                    $(this).autocomplete("instance").menu.active) {
+                    console.log("OK Model name");
+                    event.preventDefault();
+                }
+            })
+            .autocomplete({
+                minLength: 1,
+                source: function (request, response) {
+                    $.getJSON('@Url.Action("SearchModel", "NewMoldOther")', {
+                        term: extractLast(request.term)
+                    }, response);
+                },
+                focus: function () {
+                    //prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    const vModel = ui.item.value.split("|")[0];
+                    var terms = split(this.value);
+                    //remove the current input
+                    terms.pop();
+                    //add the selected item
+
+                    //terms.push(ui.item.value);
+                    terms.push(vModel);
+                    //terms.push("");
+                    //add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join("");
+                    return false;
+                }
+            });
+
+    });
+
+    $('table').on('click', '.RemoveRow', function () {
+        $(this).closest('tr').remove();
+
+    });
+
+
+
+    function btnaddPartName() {
+
+
+
+        var htmls = "";
+        var rowCount = document.getElementById('tableBodyItem').rows.length;
+        var rowi = rowCount + 1;
+        htmls += "<tr>";
+        htmls += " <td>" + rowi + "</td>";
+        htmls += " <td><input type='text' class='vPartNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow ;' value =''  ></td>";
+       // htmls += " <td><input type='text' class='vCustomerName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow ;' value =''  ></td>";
+        htmls += " <td><input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow ;' value ='0' min='0'   ></td>";
+        htmls += "<td>" + document.getElementById("template_TypeCavity").outerHTML.replace('template_TypeCavity', 'i_NewMold_TypeCavity').replace('style="display:none"', 'class="vTypeCavity form-control" style="width:100%;font-size:10px;background-color:yellow;"') + "</td>";
+        //htmls += "<td>" + document.getElementById("template_TypeCavity").outerHTML.replace('template_TypeCavity', 'i_NewMold_TypeCavity').replace('style="display:none"', 'class="vTypeCavity form-control " style="width:100%;font-size:12px;background-color:yellow;height:10%;"') + "</td>";
+        htmls += "<td align='Center'><input type='button' class='RemoveRow' value='&#x274C'></td>";
+        htmls += "</tr>";
+
+        document.getElementById("tableBodyItem").insertAdjacentHTML('beforeend', htmls);
+
+    }
+
+
+
+
+
+
+</script>
 

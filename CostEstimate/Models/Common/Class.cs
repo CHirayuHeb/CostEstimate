@@ -59,6 +59,7 @@ namespace CostEstimate.Models.Common
         public ViewceMastModel _ViewceMastModel { get; set; }
         public ViewceMastFlowApprove _ViewceMastFlowApprove { get; set; }
         public ViewceHistoryApproved _ViewceHistoryApproved { get; set; }
+        public List<ViewceHistoryApproved> _ListViewceHistoryApproved { get; set; }
         public ViewceRunDocument _ViewceRunDocument { get; set; }
 
         public ViewcceRunCostpalnning _ViewcceRunCostpalnning { get; set; }
@@ -197,6 +198,9 @@ namespace CostEstimate.Models.Common
         public List<GroupDetailSubMakerRequestHissum> _ListGroupDetailSubMakerRequestHissum { get; set; }
 
 
+        //mold other
+        public ViewceSubWorkingTimeRequestItem _ViewceSubWorkingTimeRequestItem { get; set; }
+        public List<ViewceSubWorkingTimeRequestItem> _ListViewceSubWorkingTimeRequestItem { get; set; }
 
     }
 

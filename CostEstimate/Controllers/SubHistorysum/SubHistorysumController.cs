@@ -44,6 +44,9 @@ namespace CostEstimate.Controllers.SubHistorysum
             _callFunc = callfunction;
         }
 
+        // เมธอดช่วยลดซ้ำ
+
+
         [Authorize("Checked")]
         public IActionResult Index(Class @class, string vLotNoMoldName)
         {
@@ -93,7 +96,7 @@ namespace CostEstimate.Controllers.SubHistorysum
                 //start detail all
                 @class._ListceMastSubMakerRequest = new List<ViewceMastSubMakerRequest>();
                 @class._ListceDetailSubMakerRequest = new List<ViewceDetailSubMakerRequest>();
-                @class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smLotNo == vlotNo && x.smReqStatus == true).OrderByDescending(x => x.smDocumentNo).ToList();
+                @class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smLotNo == vlotNo && x.smReqStatus == true && x.smStep == 7).OrderByDescending(x => x.smDocumentNo).ToList();
                 @class._ListceDetailSubMakerRequest = _MK._ViewceDetailSubMakerRequest.Where(d => @class._ListceMastSubMakerRequest.Select(m => m.smDocumentNo).Contains(d.dsDocumentNo)).ToList();
 
 
@@ -126,6 +129,54 @@ namespace CostEstimate.Controllers.SubHistorysum
                                 TotalWTAuto = g.Sum(x => x.dsWT_Auto)
                             })
                             .ToList();
+
+                //check 02/08/2025
+                //group  NC(CA). NC(CO).
+                double sumNC_WK_Man = _listViewceMastSubDetailHistorySum != null ?
+                                  _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains("NC.") && (x.sdProcessName.Contains("NC(CA)") || x.sdProcessName.Contains("NC(CO)"))).Sum(x => x.sdWK_Man)
+                                  : 0;
+                double sumNC_WK_Auto = _listViewceMastSubDetailHistorySum != null ?
+                                  _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains("NC.") && (x.sdProcessName.Contains("NC(CA)") || x.sdProcessName.Contains("NC(CO)"))).Sum(x => x.sdWK_Auto)
+                                  : 0;
+                double sumNC_WT_Man = result.Where(x => x.GroupName.Contains("NC.") && (
+                                      x.ProcessName.Trim().Contains("NC(CA)") || x.ProcessName.Trim().Contains("NC(CO)"))).Sum(x => x.TotalWTMan);
+                double sumNC_WT_Auto = result.Where(x => x.GroupName.Contains("NC.") && (
+                                     x.ProcessName.Trim().Contains("NC(CA)") || x.ProcessName.Trim().Contains("NC(CO)"))).Sum(x => x.TotalWTAuto);
+                double sumNC_KIJWT_Man = sumNC_WK_Man - sumNC_WT_Man;
+                double sumNC_KIJWT_Auto = sumNC_WK_Auto - sumNC_WT_Auto;
+
+                //group  NCG(CA). NCG(CO).
+                double sumNCG_WK_Man = _listViewceMastSubDetailHistorySum != null ?
+                                 _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains("NC.") && (x.sdProcessName.Contains("NCG(CA)") || x.sdProcessName.Contains("NCG(CO)"))).Sum(x => x.sdWK_Man)
+                                 : 0;
+                double sumNCG_WK_Auto = _listViewceMastSubDetailHistorySum != null ?
+                                  _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains("NC.") && (x.sdProcessName.Contains("NCG(CA)") || x.sdProcessName.Contains("NCG(CO)"))).Sum(x => x.sdWK_Auto)
+                                  : 0;
+                double sumNCG_WT_Man = result.Where(x => x.GroupName.Contains("NC.") && (
+                                      x.ProcessName.Trim().Contains("NCG(CA)") || x.ProcessName.Trim().Contains("NCG(CO)"))).Sum(x => x.TotalWTMan);
+                double sumNCG_WT_Auto = result.Where(x => x.GroupName.Contains("NC.") && (
+                                     x.ProcessName.Trim().Contains("NCG(CA)") || x.ProcessName.Trim().Contains("NCG(CO)"))).Sum(x => x.TotalWTAuto);
+                double sumNCG_KIJWT_Man = sumNCG_WK_Man - sumNCG_WT_Man;
+                double sumNCG_KIJWT_Auto = sumNCG_WK_Auto - sumNCG_WT_Auto;
+
+
+                //group  EDM(CA). EDM(CO).
+                double sumEDM_WK_Man = _listViewceMastSubDetailHistorySum != null ?
+                              _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains("NC.") && (x.sdProcessName.Contains("EDM(CA)") || x.sdProcessName.Contains("EDM(CO)"))).Sum(x => x.sdWK_Man)
+                              : 0;
+                double sumEDM_WK_Auto = _listViewceMastSubDetailHistorySum != null ?
+                                  _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains("NC.") && (x.sdProcessName.Contains("EDM(CA)") || x.sdProcessName.Contains("EDM(CO)"))).Sum(x => x.sdWK_Auto)
+                                  : 0;
+                double sumEDM_WT_Man = result.Where(x => x.GroupName.Contains("NC.") && (
+                                      x.ProcessName.Trim().Contains("EDM(CA)") || x.ProcessName.Trim().Contains("EDM(CO)"))).Sum(x => x.TotalWTMan);
+                double sumEDM_WT_Auto = result.Where(x => x.GroupName.Contains("NC.") && (
+                                     x.ProcessName.Trim().Contains("EDM(CA)") || x.ProcessName.Trim().Contains("EDM(CO)"))).Sum(x => x.TotalWTAuto);
+                double sumEDM_KIJWT_Man = sumEDM_WK_Man - sumEDM_WT_Man;
+                double sumEDM_KIJWT_Auto = sumEDM_WK_Auto - sumEDM_WT_Auto;
+
+
+
+
                 for (int i = 0; i < v_ListceCostPlanning.Count(); i++)
                 {
                     double vsdWK_Man = _listViewceMastSubDetailHistorySum != null ?
@@ -137,6 +188,61 @@ namespace CostEstimate.Controllers.SubHistorysum
                     double vsdWT_Man = result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTMan).FirstOrDefault();
                     double vsdWT_Auto = result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTAuto).FirstOrDefault();
 
+                    double sdWT_Man = result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTMan).FirstOrDefault();
+                    double sdWT_Auto = result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTAuto).FirstOrDefault();
+
+                    bool sdActive_WKMan = _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTMan).First();  //true,
+                    bool sdActive_WKAuto = _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTAuto).First();
+
+
+
+                    if (v_ListceCostPlanning[i].cpProcessName.Trim().Contains("NC(CA)") || v_ListceCostPlanning[i].cpProcessName.Contains("NCG(CA)") || v_ListceCostPlanning[i].cpProcessName.Contains("EDM(CA)"))
+                    {
+                        vsdWK_Man = 0;
+                        vsdWK_Auto = 0;
+                        vsdWT_Man = 0;
+                        vsdWT_Auto = 0;
+                        sdWT_Man = 0;
+                        sdWT_Auto = 0;
+                        sdActive_WKMan = false;
+                        sdActive_WKAuto = false;
+
+
+
+                    }
+                    else if (v_ListceCostPlanning[i].cpProcessName.Trim().Contains("NC(CO)"))
+                    {
+                        vsdWK_Man = sumNC_WK_Man;
+                        vsdWK_Auto = sumNC_WK_Auto;
+                        vsdWT_Man = sumNC_WT_Man;
+                        vsdWT_Auto = sumNC_WT_Auto;
+                        sdWT_Man = sumNC_WT_Man;
+                        sdWT_Auto = sumNC_WT_Auto;
+                    }
+                    else if (v_ListceCostPlanning[i].cpProcessName.Trim().Contains("NCG(CO)"))
+                    {
+                        vsdWK_Man = sumNCG_WK_Man;
+                        vsdWK_Auto = sumNCG_WK_Auto;
+                        vsdWT_Man = sumNCG_WT_Man;
+                        vsdWT_Auto = sumNCG_WT_Auto;
+                        sdWT_Man = sumNCG_WT_Man;
+                        sdWT_Auto = sumNCG_WT_Auto;
+                    }
+                    else if (v_ListceCostPlanning[i].cpProcessName.Trim().Contains("EDM(CO)"))
+                    {
+                        vsdWK_Man = sumEDM_WK_Man;
+                        vsdWK_Auto = sumEDM_WK_Auto;
+                        vsdWT_Man = sumEDM_WT_Man;
+                        vsdWT_Auto = sumEDM_WT_Auto;
+                        sdWT_Man = sumEDM_WT_Man;
+                        sdWT_Auto = sumEDM_WT_Auto;
+                    }
+
+
+
+
+
+
                     @class._ListViewceMastSubDetailHistorySum.Add(new ViewceMastSubDetailHistorySum
                     {
 
@@ -145,18 +251,27 @@ namespace CostEstimate.Controllers.SubHistorysum
                         sdLotNo = @class._ViewceMastSubMakerRequest.smLotNo,
                         sdGroupName = v_ListceCostPlanning[i].cpGroupName.Trim(),
                         sdProcessName = v_ListceCostPlanning[i].cpProcessName,
-                        sdWK_Man = _listViewceMastSubDetailHistorySum != null ?
-                                   _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.sdProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.sdWK_Man).FirstOrDefault()
-                                   : 0,
-                        sdWK_Auto = _listViewceMastSubDetailHistorySum != null ?
-                                   _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.sdProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.sdWK_Auto).FirstOrDefault()
-                                   : 0,
-                        sdActive_WKMan = _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTMan).First(),  //true,
-                        sdActive_WKAuto = _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTAuto).First(),
+
+
+
+                        sdWK_Man = vsdWK_Man,
+                        sdWK_Auto = vsdWK_Auto,
+                        //sdWK_Man = _listViewceMastSubDetailHistorySum != null ?
+                        //   _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.sdProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.sdWK_Man).FirstOrDefault()
+                        //   : 0,
+                        //sdWK_Auto = _listViewceMastSubDetailHistorySum != null ?
+                        //           _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.sdProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.sdWK_Auto).FirstOrDefault()
+                        //           : 0,
+                        sdActive_WKMan = sdActive_WKMan, // _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTMan).First(),  //true,
+                        sdActive_WKAuto = sdActive_WKAuto,//_ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTAuto).First(),
+
                         sdKIJWT_Man = vsdWK_Man - vsdWT_Man,
                         sdKJWT_Auto = vsdWK_Auto - vsdWT_Auto,
-                        sdWT_Man = result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTMan).FirstOrDefault(),
-                        sdWT_Auto = result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTAuto).FirstOrDefault(),
+                        sdWT_Man = sdWT_Man,//result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTMan).FirstOrDefault(),
+                        sdWT_Auto = sdWT_Auto,//result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTAuto).FirstOrDefault(),
+
+
+
 
                     });
 
@@ -168,7 +283,7 @@ namespace CostEstimate.Controllers.SubHistorysum
                     GroupName = g.Key.Trim(),
                     DetailSubMakerRequest = g.ToList()
                 }
-             ).ToList();
+                 ).ToList();
                 // end sum all
 
 
@@ -198,6 +313,7 @@ namespace CostEstimate.Controllers.SubHistorysum
             }
         }
 
+        [Authorize("Checked")]
         [HttpPost]
         public JsonResult SaveHisSumSub(Class @class, string _ListViewceMastSubDetailHistorySum)
         {
@@ -449,7 +565,7 @@ namespace CostEstimate.Controllers.SubHistorysum
                 //start detail all
                 @class._ListceMastSubMakerRequest = new List<ViewceMastSubMakerRequest>();
                 @class._ListceDetailSubMakerRequest = new List<ViewceDetailSubMakerRequest>();
-                @class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smLotNo == vlotNo && x.smReqStatus == true).OrderByDescending(x => x.smDocumentNo).ToList();
+                @class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smLotNo == vlotNo && x.smReqStatus == true && x.smStep == 7).OrderByDescending(x => x.smDocumentNo).ToList();
                 @class._ListceDetailSubMakerRequest = _MK._ViewceDetailSubMakerRequest.Where(d => @class._ListceMastSubMakerRequest.Select(m => m.smDocumentNo).Contains(d.dsDocumentNo)).ToList();
 
 
@@ -482,16 +598,115 @@ namespace CostEstimate.Controllers.SubHistorysum
                                 TotalWTAuto = g.Sum(x => x.dsWT_Auto)
                             })
                             .ToList();
+                //check 02/08/2025
+                //group  NC(CA). NC(CO).
+                double sumNC_WK_Man = _listViewceMastSubDetailHistorySum != null ?
+                                  _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains("NC.") && (x.sdProcessName.Contains("NC(CA)") || x.sdProcessName.Contains("NC(CO)"))).Sum(x => x.sdWK_Man)
+                                  : 0;
+                double sumNC_WK_Auto = _listViewceMastSubDetailHistorySum != null ?
+                                  _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains("NC.") && (x.sdProcessName.Contains("NC(CA)") || x.sdProcessName.Contains("NC(CO)"))).Sum(x => x.sdWK_Auto)
+                                  : 0;
+                double sumNC_WT_Man = result.Where(x => x.GroupName.Contains("NC.") && (
+                                      x.ProcessName.Trim().Contains("NC(CA)") || x.ProcessName.Trim().Contains("NC(CO)"))).Sum(x => x.TotalWTMan);
+                double sumNC_WT_Auto = result.Where(x => x.GroupName.Contains("NC.") && (
+                                     x.ProcessName.Trim().Contains("NC(CA)") || x.ProcessName.Trim().Contains("NC(CO)"))).Sum(x => x.TotalWTAuto);
+                double sumNC_KIJWT_Man = sumNC_WK_Man - sumNC_WT_Man;
+                double sumNC_KIJWT_Auto = sumNC_WK_Auto - sumNC_WT_Auto;
+
+                //group  NCG(CA). NCG(CO).
+                double sumNCG_WK_Man = _listViewceMastSubDetailHistorySum != null ?
+                                 _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains("NC.") && (x.sdProcessName.Contains("NCG(CA)") || x.sdProcessName.Contains("NCG(CO)"))).Sum(x => x.sdWK_Man)
+                                 : 0;
+                double sumNCG_WK_Auto = _listViewceMastSubDetailHistorySum != null ?
+                                  _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains("NC.") && (x.sdProcessName.Contains("NCG(CA)") || x.sdProcessName.Contains("NCG(CO)"))).Sum(x => x.sdWK_Auto)
+                                  : 0;
+                double sumNCG_WT_Man = result.Where(x => x.GroupName.Contains("NC.") && (
+                                      x.ProcessName.Trim().Contains("NCG(CA)") || x.ProcessName.Trim().Contains("NCG(CO)"))).Sum(x => x.TotalWTMan);
+                double sumNCG_WT_Auto = result.Where(x => x.GroupName.Contains("NC.") && (
+                                     x.ProcessName.Trim().Contains("NCG(CA)") || x.ProcessName.Trim().Contains("NCG(CO)"))).Sum(x => x.TotalWTAuto);
+                double sumNCG_KIJWT_Man = sumNCG_WK_Man - sumNCG_WT_Man;
+                double sumNCG_KIJWT_Auto = sumNCG_WK_Auto - sumNCG_WT_Auto;
+
+
+                //group  EDM(CA). EDM(CO).
+                double sumEDM_WK_Man = _listViewceMastSubDetailHistorySum != null ?
+                              _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains("NC.") && (x.sdProcessName.Contains("EDM(CA)") || x.sdProcessName.Contains("EDM(CO)"))).Sum(x => x.sdWK_Man)
+                              : 0;
+                double sumEDM_WK_Auto = _listViewceMastSubDetailHistorySum != null ?
+                                  _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains("NC.") && (x.sdProcessName.Contains("EDM(CA)") || x.sdProcessName.Contains("EDM(CO)"))).Sum(x => x.sdWK_Auto)
+                                  : 0;
+                double sumEDM_WT_Man = result.Where(x => x.GroupName.Contains("NC.") && (
+                                      x.ProcessName.Trim().Contains("EDM(CA)") || x.ProcessName.Trim().Contains("EDM(CO)"))).Sum(x => x.TotalWTMan);
+                double sumEDM_WT_Auto = result.Where(x => x.GroupName.Contains("NC.") && (
+                                     x.ProcessName.Trim().Contains("EDM(CA)") || x.ProcessName.Trim().Contains("EDM(CO)"))).Sum(x => x.TotalWTAuto);
+                double sumEDM_KIJWT_Man = sumEDM_WK_Man - sumEDM_WT_Man;
+                double sumEDM_KIJWT_Auto = sumEDM_WK_Auto - sumEDM_WT_Auto;
+
                 for (int i = 0; i < v_ListceCostPlanning.Count(); i++)
                 {
                     double vsdWK_Man = _listViewceMastSubDetailHistorySum != null ?
-                                  _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.sdProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.sdWK_Man).FirstOrDefault()
-                                  : 0;
+                                _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.sdProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.sdWK_Man).FirstOrDefault()
+                                : 0;
                     double vsdWK_Auto = _listViewceMastSubDetailHistorySum != null ?
                                  _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.sdProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.sdWK_Auto).FirstOrDefault()
                                  : 0;
                     double vsdWT_Man = result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTMan).FirstOrDefault();
                     double vsdWT_Auto = result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTAuto).FirstOrDefault();
+
+                    double sdWT_Man = result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTMan).FirstOrDefault();
+                    double sdWT_Auto = result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTAuto).FirstOrDefault();
+
+                    bool sdActive_WKMan = _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTMan).First();  //true,
+                    bool sdActive_WKAuto = _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTAuto).First();
+
+
+
+                    if (v_ListceCostPlanning[i].cpProcessName.Trim().Contains("NC(CA)") || v_ListceCostPlanning[i].cpProcessName.Contains("NCG(CA)") || v_ListceCostPlanning[i].cpProcessName.Contains("EDM(CA)"))
+                    {
+                        vsdWK_Man = 0;
+                        vsdWK_Auto = 0;
+                        vsdWT_Man = 0;
+                        vsdWT_Auto = 0;
+                        sdWT_Man = 0;
+                        sdWT_Auto = 0;
+                        sdActive_WKMan = false;
+                        sdActive_WKAuto = false;
+
+
+
+                    }
+                    else if (v_ListceCostPlanning[i].cpProcessName.Trim().Contains("NC(CO)"))
+                    {
+                        vsdWK_Man = sumNC_WK_Man;
+                        vsdWK_Auto = sumNC_WK_Auto;
+                        vsdWT_Man = sumNC_WT_Man;
+                        vsdWT_Auto = sumNC_WT_Auto;
+                        sdWT_Man = sumNC_WT_Man;
+                        sdWT_Auto = sumNC_WT_Auto;
+                    }
+                    else if (v_ListceCostPlanning[i].cpProcessName.Trim().Contains("NCG(CO)"))
+                    {
+                        vsdWK_Man = sumNCG_WK_Man;
+                        vsdWK_Auto = sumNCG_WK_Auto;
+                        vsdWT_Man = sumNCG_WT_Man;
+                        vsdWT_Auto = sumNCG_WT_Auto;
+                        sdWT_Man = sumNCG_WT_Man;
+                        sdWT_Auto = sumNCG_WT_Auto;
+                    }
+                    else if (v_ListceCostPlanning[i].cpProcessName.Trim().Contains("EDM(CO)"))
+                    {
+                        vsdWK_Man = sumEDM_WK_Man;
+                        vsdWK_Auto = sumEDM_WK_Auto;
+                        vsdWT_Man = sumEDM_WT_Man;
+                        vsdWT_Auto = sumEDM_WT_Auto;
+                        sdWT_Man = sumEDM_WT_Man;
+                        sdWT_Auto = sumEDM_WT_Auto;
+                    }
+
+
+
+
+
 
                     @class._ListViewceMastSubDetailHistorySum.Add(new ViewceMastSubDetailHistorySum
                     {
@@ -501,18 +716,27 @@ namespace CostEstimate.Controllers.SubHistorysum
                         sdLotNo = @class._ViewceMastSubMakerRequest.smLotNo,
                         sdGroupName = v_ListceCostPlanning[i].cpGroupName.Trim(),
                         sdProcessName = v_ListceCostPlanning[i].cpProcessName,
-                        sdWK_Man = _listViewceMastSubDetailHistorySum != null ?
-                                   _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.sdProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.sdWK_Man).FirstOrDefault()
-                                   : 0,
-                        sdWK_Auto = _listViewceMastSubDetailHistorySum != null ?
-                                   _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.sdProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.sdWK_Auto).FirstOrDefault()
-                                   : 0,
-                        sdActive_WKMan = _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTMan).First(),  //true,
-                        sdActive_WKAuto = _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTAuto).First(),
+
+
+
+                        sdWK_Man = vsdWK_Man,
+                        sdWK_Auto = vsdWK_Auto,
+                        //sdWK_Man = _listViewceMastSubDetailHistorySum != null ?
+                        //   _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.sdProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.sdWK_Man).FirstOrDefault()
+                        //   : 0,
+                        //sdWK_Auto = _listViewceMastSubDetailHistorySum != null ?
+                        //           _listViewceMastSubDetailHistorySum.Where(x => x.sdGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.sdProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.sdWK_Auto).FirstOrDefault()
+                        //           : 0,
+                        sdActive_WKMan = sdActive_WKMan, // _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTMan).First(),  //true,
+                        sdActive_WKAuto = sdActive_WKAuto,//_ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTAuto).First(),
+
                         sdKIJWT_Man = vsdWK_Man - vsdWT_Man,
                         sdKJWT_Auto = vsdWK_Auto - vsdWT_Auto,
-                        sdWT_Man = result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTMan).FirstOrDefault(),
-                        sdWT_Auto = result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTAuto).FirstOrDefault(),
+                        sdWT_Man = sdWT_Man,//result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTMan).FirstOrDefault(),
+                        sdWT_Auto = sdWT_Auto,//result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTAuto).FirstOrDefault(),
+
+
+
 
                     });
 
@@ -686,6 +910,17 @@ namespace CostEstimate.Controllers.SubHistorysum
                             worksheet.Cells[D_row + i, D_col + 3].Value = row.DetailSubMakerRequest[i].sdKIJWT_Man.ToString();
                             worksheet.Cells[D_row + i, D_col + 4].Value = row.DetailSubMakerRequest[i].sdKJWT_Auto.ToString();
 
+                            if (row.DetailSubMakerRequest[i].sdKIJWT_Man < 0) //color red
+                            {
+                                SetNegativeCellStyle(worksheet.Cells[D_row + i, D_col + 3]);
+                            }
+                            if (row.DetailSubMakerRequest[i].sdKJWT_Auto < 0)
+                            {
+                                SetNegativeCellStyle(worksheet.Cells[D_row + i, D_col + 4]);
+                            }
+
+
+
                             worksheet.Cells[D_row + i, D_col + 5].Value = row.DetailSubMakerRequest[i].sdWT_Man.ToString();
                             worksheet.Cells[D_row + i, D_col + 6].Value = row.DetailSubMakerRequest[i].sdWT_Auto.ToString();
 
@@ -706,12 +941,12 @@ namespace CostEstimate.Controllers.SubHistorysum
                         worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col].Value = "TOTAL " + row.GroupName.ToString();
                         worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col].Style.Font.Bold = true;
 
-                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 1].Value = VsumsdWK_Man.ToString();
-                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 2].Value = VsdWK_Auto.ToString();
-                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 3].Value = VsdKIJWT_Man.ToString();
-                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 4].Value = VsdKJWT_Auto.ToString();
-                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 5].Value = VsdWT_Man.ToString();
-                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 6].Value = VsdWT_Auto.ToString();
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 1].Value = VsumsdWK_Man.ToString("N0");
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 2].Value = VsdWK_Auto.ToString("N0");
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 3].Value = VsdKIJWT_Man.ToString("N0");
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 4].Value = VsdKJWT_Auto.ToString("N0");
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 5].Value = VsdWT_Man.ToString("N0");
+                        worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 6].Value = VsdWT_Auto.ToString("N0");
 
                         worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col].Style.Fill.PatternType = ExcelFillStyle.Solid; // ต้องมี!
                         worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col].Style.Fill.BackgroundColor.SetColor(Color.LightGray); // หรือ Color.FromArgb(128, 128, 128)
@@ -734,6 +969,14 @@ namespace CostEstimate.Controllers.SubHistorysum
                         worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 6].Style.Fill.PatternType = ExcelFillStyle.Solid; // ต้องมี!
                         worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 6].Style.Fill.BackgroundColor.SetColor(Color.LightGray); // หรือ Color.FromArgb(128, 128, 128)
 
+
+                        //color red 
+                        if (VsumsdWK_Man < 0) { SetNegativeCellStyle(worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 1]); }
+                        if (VsdWK_Auto < 0) { SetNegativeCellStyle(worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 2]); }
+                        if (VsdKIJWT_Man < 0) { SetNegativeCellStyle(worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 3]); }
+                        if (VsdKJWT_Auto < 0) { SetNegativeCellStyle(worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 4]); }
+                        if (VsdWT_Man < 0) { SetNegativeCellStyle(worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 5]); }
+                        if (VsdWT_Auto < 0) { SetNegativeCellStyle(worksheet.Cells[D_row + row.DetailSubMakerRequest.Count(), D_col + 6]); }
 
 
 
@@ -785,14 +1028,22 @@ namespace CostEstimate.Controllers.SubHistorysum
                     }
                     //Totoal Process
                     worksheet.Cells[D_row, D_col].Value = "TOTAL PROCESS ";
-                    worksheet.Cells[D_row, D_col + 1].Value = sumPProcess.ToString();  //PROCESS
-                    worksheet.Cells[D_row, D_col + 3].Value = sumPKJMan.ToString(); //KJ Man
-                    worksheet.Cells[D_row, D_col + 4].Value = sumPKJAuto.ToString(); //KJ Auto
-                    worksheet.Cells[D_row, D_col + 5].Value = sumPWTProcess.ToString(); //WT Process
+                    worksheet.Cells[D_row, D_col + 1].Value = sumPProcess.ToString("N0");  //PROCESS
+                    //worksheet.Cells[D_row, D_col + 3].Value = sumPKJMan.ToString(); //KJ Man
+                    worksheet.Cells[D_row, D_col + 3].Value = sumPKJProcess.ToString("N0"); //PKJ Process
+                    //worksheet.Cells[D_row, D_col + 4].Value = sumPKJAuto.ToString(); //KJ Auto
+                    worksheet.Cells[D_row, D_col + 5].Value = sumPWTProcess.ToString("N0"); //WT Process
+
+                    if (sumPProcess < 0) { SetNegativeCellStyle(worksheet.Cells[D_row, D_col + 1]); }
+                    if (sumPKJProcess < 0) { SetNegativeCellStyle(worksheet.Cells[D_row, D_col + 3]); }
+                    if (sumPWTProcess < 0) { SetNegativeCellStyle(worksheet.Cells[D_row, D_col + 5]); }
+
+
 
                     worksheet.Cells[D_row + 1, D_col + 4].Value = "COST SUB MAKER";
                     worksheet.Cells[D_row + 1, D_col + 5, D_row + 1, D_col + 6].Merge = true;
-                    worksheet.Cells[D_row + 1, D_col + 5].Value = _ViewceMastSubHistorySum.shCSmMat.ToString();
+                    worksheet.Cells[D_row + 1, D_col + 5].Value = _ViewceMastSubHistorySum.shCSmMat.ToString("N0");
+                    if (_ViewceMastSubHistorySum.shCSmMat < 0) { SetNegativeCellStyle(worksheet.Cells[D_row + 1, D_col + 5]); }
                     worksheet.Cells[D_row + 1, D_col + 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                     worksheet.Cells[D_row + 1, D_col + 5].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
@@ -832,27 +1083,48 @@ namespace CostEstimate.Controllers.SubHistorysum
 
                     worksheet.Cells[D_row + 5, 3, D_row + 5, 4].Merge = true; // C15 ถึง D15
                     worksheet.Cells[D_row + 5, 3].Value = "COST MATERIAL";
-                    worksheet.Cells[D_row + 5, 5].Value = _ViewceMastSubHistorySum.shCKjMat.ToString();
-                    worksheet.Cells[D_row + 5, 6].Value = _ViewceMastSubHistorySum.shCSmMat.ToString();
-                    worksheet.Cells[D_row + 5, 7].Value = _ViewceMastSubHistorySum.shCMcMat.ToString();
+                    worksheet.Cells[D_row + 5, 5].Value = _ViewceMastSubHistorySum.shCKjMat.ToString("N0");
+                    worksheet.Cells[D_row + 5, 6].Value = _ViewceMastSubHistorySum.shCSmMat.ToString("N0");
+                    worksheet.Cells[D_row + 5, 7].Value = _ViewceMastSubHistorySum.shCMcMat.ToString("N0");
+
+                    if (_ViewceMastSubHistorySum.shCKjMat < 0) { SetNegativeCellStyle(worksheet.Cells[D_row + 5, 5]); }
+                    if (_ViewceMastSubHistorySum.shCSmMat < 0) { SetNegativeCellStyle(worksheet.Cells[D_row + 5, 6]); }
+                    if (_ViewceMastSubHistorySum.shCMcMat < 0) { SetNegativeCellStyle(worksheet.Cells[D_row + 5, 7]); }
+
+
 
                     worksheet.Cells[D_row + 6, 3, D_row + 6, 4].Merge = true; // C15 ถึง D15
                     worksheet.Cells[D_row + 6, 3].Value = "COST COFFICIENT";
-                    worksheet.Cells[D_row + 6, 5].Value = _ViewceMastSubHistorySum.shCKjCofficient.ToString();
+                    worksheet.Cells[D_row + 6, 5].Value = _ViewceMastSubHistorySum.shCKjCofficient.ToString("N0");
                     worksheet.Cells[D_row + 6, 6].Value = "";
-                    worksheet.Cells[D_row + 6, 7].Value = _ViewceMastSubHistorySum.shCMcCofficient.ToString();
+                    worksheet.Cells[D_row + 6, 7].Value = _ViewceMastSubHistorySum.shCMcCofficient.ToString("N0");
+
+                    if (_ViewceMastSubHistorySum.shCKjCofficient < 0) { SetNegativeCellStyle(worksheet.Cells[D_row + 6, 5]); }
+                    if (_ViewceMastSubHistorySum.shCMcCofficient < 0) { SetNegativeCellStyle(worksheet.Cells[D_row + 6, 6]); }
+
 
                     worksheet.Cells[D_row + 7, 3, D_row + 7, 4].Merge = true; // C15 ถึง D15
                     worksheet.Cells[D_row + 7, 3].Value = "COST WORKING TIME";
-                    worksheet.Cells[D_row + 7, 5].Value = _ViewceMastSubHistorySum.shCKjWorkingTime.ToString();
-                    worksheet.Cells[D_row + 7, 6].Value = _ViewceMastSubHistorySum.shCSmWorkingTime.ToString();
-                    worksheet.Cells[D_row + 7, 7].Value = _ViewceMastSubHistorySum.shCMcWorkingTime.ToString();
+                    worksheet.Cells[D_row + 7, 5].Value = _ViewceMastSubHistorySum.shCKjWorkingTime.ToString("N0");
+                    worksheet.Cells[D_row + 7, 6].Value = _ViewceMastSubHistorySum.shCSmWorkingTime.ToString("N0");
+                    worksheet.Cells[D_row + 7, 7].Value = _ViewceMastSubHistorySum.shCMcWorkingTime.ToString("N0");
+
+                    if (_ViewceMastSubHistorySum.shCKjWorkingTime < 0) { SetNegativeCellStyle(worksheet.Cells[D_row + 7, 5]); }
+                    if (_ViewceMastSubHistorySum.shCSmWorkingTime < 0) { SetNegativeCellStyle(worksheet.Cells[D_row + 7, 6]); }
+                    if (_ViewceMastSubHistorySum.shCMcWorkingTime < 0) { SetNegativeCellStyle(worksheet.Cells[D_row + 7, 7]); }
+
+
+
 
                     worksheet.Cells[D_row + 8, 3, D_row + 8, 4].Merge = true; // C15 ถึง D15
                     worksheet.Cells[D_row + 8, 3].Value = "TOTAL COST";
-                    worksheet.Cells[D_row + 8, 5].Value = _ViewceMastSubHistorySum.shCKjTotal.ToString();
+                    worksheet.Cells[D_row + 8, 5].Value = _ViewceMastSubHistorySum.shCKjTotal.ToString("N0");
                     worksheet.Cells[D_row + 8, 6].Value = "";
-                    worksheet.Cells[D_row + 8, 7].Value = _ViewceMastSubHistorySum.shCMcTotal.ToString();
+                    worksheet.Cells[D_row + 8, 7].Value = _ViewceMastSubHistorySum.shCMcTotal.ToString("N0");
+
+                    if (_ViewceMastSubHistorySum.shCKjTotal < 0) { SetNegativeCellStyle(worksheet.Cells[D_row + 8, 5]); }
+                    if (_ViewceMastSubHistorySum.shCMcTotal < 0) { SetNegativeCellStyle(worksheet.Cells[D_row + 8, 7]); }
+
 
 
                     var tableRange = worksheet.Cells[D_row + 3, 3, D_row + 8, 7];
@@ -896,59 +1168,59 @@ namespace CostEstimate.Controllers.SubHistorysum
                     worksheet2.Cells["C5"].Value = "Customer Name :";
                     worksheet2.Cells["C5"].Style.Font.Size = 30;
                     worksheet2.Cells["C5"].Style.Font.Bold = true;
-                    worksheet2.Cells["D5"].Value = _ViewceMastSubMakerRequest.smCustomerName;
-                    worksheet2.Cells["D5"].Style.Font.Size = 30;
-
-                    worksheet2.Cells["E5"].Value = "Mold No. & Name :";
+                    worksheet2.Cells["E5"].Value = _ViewceMastSubMakerRequest.smCustomerName;
                     worksheet2.Cells["E5"].Style.Font.Size = 30;
-                    worksheet2.Cells["E5"].Style.Font.Bold = true;
-                    worksheet2.Cells["F5"].Value = _ViewceMastSubMakerRequest.smMoldName;
-                    worksheet2.Cells["F5"].Style.Font.Size = 30;
 
-                    worksheet2.Cells["G5"].Value = "Model Name :";
+                    worksheet2.Cells["G5"].Value = "Mold No. & Name :";
                     worksheet2.Cells["G5"].Style.Font.Size = 30;
                     worksheet2.Cells["G5"].Style.Font.Bold = true;
-                    worksheet2.Cells["H5"].Value = _ViewceMastSubMakerRequest.smMoldName;
-                    worksheet2.Cells["H5"].Style.Font.Size = 30;
+                    worksheet2.Cells["I5"].Value = _ViewceMastSubMakerRequest.smMoldName;
+                    worksheet2.Cells["I5"].Style.Font.Size = 30;
+
+                    worksheet2.Cells["K5"].Value = "Model Name :";
+                    worksheet2.Cells["K5"].Style.Font.Size = 30;
+                    worksheet2.Cells["K5"].Style.Font.Bold = true;
+                    worksheet2.Cells["M5"].Value = _ViewceMastSubMakerRequest.smMoldName;
+                    worksheet2.Cells["M5"].Style.Font.Size = 30;
 
 
                     //row 2
                     worksheet2.Cells["C6"].Value = "Function :";
                     worksheet2.Cells["C6"].Style.Font.Size = 30;
                     worksheet2.Cells["C6"].Style.Font.Bold = true;
-                    worksheet2.Cells["D6"].Value = _ViewceMastSubMakerRequest.smFunction;
-                    worksheet2.Cells["D6"].Style.Font.Size = 30;
-
-                    worksheet2.Cells["E6"].Value = "Lot No :";
+                    worksheet2.Cells["E6"].Value = _ViewceMastSubMakerRequest.smFunction;
                     worksheet2.Cells["E6"].Style.Font.Size = 30;
-                    worksheet2.Cells["E6"].Style.Font.Bold = true;
-                    worksheet2.Cells["F6"].Value = _ViewceMastSubMakerRequest.smLotNo;
-                    worksheet2.Cells["F6"].Style.Font.Size = 30;
 
-                    worksheet2.Cells["G6"].Value = "Development Stage :";
+                    worksheet2.Cells["G6"].Value = "Lot No :";
                     worksheet2.Cells["G6"].Style.Font.Size = 30;
                     worksheet2.Cells["G6"].Style.Font.Bold = true;
-                    worksheet2.Cells["H6"].Value = _ViewceMastSubMakerRequest.smDevelopmentStage;
-                    worksheet2.Cells["H6"].Style.Font.Size = 30;
+                    worksheet2.Cells["I6"].Value = _ViewceMastSubMakerRequest.smLotNo;
+                    worksheet2.Cells["I6"].Style.Font.Size = 30;
+
+                    worksheet2.Cells["K6"].Value = "Development Stage :";
+                    worksheet2.Cells["K6"].Style.Font.Size = 30;
+                    worksheet2.Cells["K6"].Style.Font.Bold = true;
+                    worksheet2.Cells["M6"].Value = _ViewceMastSubMakerRequest.smDevelopmentStage;
+                    worksheet2.Cells["M6"].Style.Font.Size = 30;
 
                     //row 3
                     worksheet2.Cells["C7"].Value = "Revision :";
                     worksheet2.Cells["C7"].Style.Font.Size = 30;
                     worksheet2.Cells["C7"].Style.Font.Bold = true;
-                    worksheet2.Cells["D7"].Value = _ViewceMastSubMakerRequest.smRevision;
-                    worksheet2.Cells["D7"].Style.Font.Size = 30;
-
-                    worksheet2.Cells["E7"].Value = "Cavity No. :";
+                    worksheet2.Cells["E7"].Value = _ViewceMastSubMakerRequest.smRevision;
                     worksheet2.Cells["E7"].Style.Font.Size = 30;
-                    worksheet2.Cells["E7"].Style.Font.Bold = true;
-                    worksheet2.Cells["F7"].Value = _ViewceMastSubMakerRequest.smCavityNo;
-                    worksheet2.Cells["F7"].Style.Font.Size = 30;
 
-                    worksheet2.Cells["G7"].Value = "Date Issue :";
+                    worksheet2.Cells["G7"].Value = "Cavity No. :";
                     worksheet2.Cells["G7"].Style.Font.Size = 30;
                     worksheet2.Cells["G7"].Style.Font.Bold = true;
-                    worksheet2.Cells["H7"].Value = _ViewceMastSubHistorySum.shIssueBy;
-                    worksheet2.Cells["H7"].Style.Font.Size = 30;
+                    worksheet2.Cells["I7"].Value = _ViewceMastSubMakerRequest.smCavityNo;
+                    worksheet2.Cells["I7"].Style.Font.Size = 30;
+
+                    worksheet2.Cells["K7"].Value = "Date Issue :";
+                    worksheet2.Cells["K7"].Style.Font.Size = 30;
+                    worksheet2.Cells["K7"].Style.Font.Bold = true;
+                    worksheet2.Cells["M7"].Value = _ViewceMastSubHistorySum.shIssueBy;
+                    worksheet2.Cells["M7"].Style.Font.Size = 30;
 
 
 
@@ -974,6 +1246,11 @@ namespace CostEstimate.Controllers.SubHistorysum
                         worksheet2.Cells[W2_row, W2_col].Value = row.glDocNo;
                         worksheet2.Cells[W2_row + 1, W2_colD].Value = "(MAN)";
                         worksheet2.Cells[W2_row + 1, W2_colD + 1].Value = "(TOTAL)";
+
+                        worksheet2.Cells[W2_row, W2_col].Style.Font.Size = 28;
+                        worksheet2.Cells[W2_row + 1, W2_col].Style.Font.Size = 28;
+                        worksheet2.Cells[W2_row + 1, W2_col + 1].Style.Font.Size = 28;
+
 
                         SetAlignCenter(worksheet2.Cells[W2_row, W2_col]);
                         SetAlignCenter(worksheet2.Cells[W2_row + 1, W2_col]);
@@ -1002,8 +1279,8 @@ namespace CostEstimate.Controllers.SubHistorysum
                                 double vWtMan = item.dsWT_Man;
                                 double vWtAuto = item.dsWT_Auto;
 
-                                worksheet2.Cells[W2_rowW, W2_colD].Value = vWtMan.ToString();
-                                worksheet2.Cells[W2_rowW, W2_colD + 1].Value = vWtAuto.ToString();
+                                worksheet2.Cells[W2_rowW, W2_colD].Value = vWtMan.ToString("N0");
+                                worksheet2.Cells[W2_rowW, W2_colD + 1].Value = vWtAuto.ToString("N0");
 
 
                                 SetAlignCenter(worksheet2.Cells[W2_rowW, W2_colD]);
@@ -1028,8 +1305,8 @@ namespace CostEstimate.Controllers.SubHistorysum
                                 W2_rowW += 1;
                                 W2_rowWSum += 1;
                             }
-                            worksheet2.Cells[W2_rowW, W2_colD].Value = sumWTMan.ToString();
-                            worksheet2.Cells[W2_rowW, W2_colD + 1].Value = sumWTAuto.ToString();
+                            worksheet2.Cells[W2_rowW, W2_colD].Value = sumWTMan.ToString("N0");
+                            worksheet2.Cells[W2_rowW, W2_colD + 1].Value = sumWTAuto.ToString("N0");
 
                             worksheet2.Cells[W2_rowW, W2_colD].Style.Font.Bold = true;
                             worksheet2.Cells[W2_rowW, W2_colD + 1].Style.Font.Bold = true;
@@ -1057,12 +1334,12 @@ namespace CostEstimate.Controllers.SubHistorysum
                             //worksheet2.Cells[W2_rowW, W2_colW].Value = "TOTAL ";
                         }
                         sumPWTCostSUB = (sumPWTProcessD - sumPWTManNc) * 1000;
-                        worksheet2.Cells[W2_rowWSum, W2_colD].Value = sumPWTProcessD.ToString();
+                        worksheet2.Cells[W2_rowWSum, W2_colD].Value = sumPWTProcessD.ToString("N0");
                         worksheet2.Cells[W2_rowWSum, W2_colD].Style.Font.Bold = true;
 
 
-                        worksheet2.Cells[W2_rowWSum + 1, W2_colD].Value = "COST SUB MAKER";
-                        worksheet2.Cells[W2_rowWSum + 1, W2_colD + 1].Value = sumPWTCostSUB.ToString();
+                        worksheet2.Cells[W2_rowWSum + 1, W2_colD].Value = "";
+                        worksheet2.Cells[W2_rowWSum + 1, W2_colD + 1].Value = sumPWTCostSUB.ToString("N0");
 
                         SetAlignCenter(worksheet2.Cells[W2_rowWSum, W2_colD]);
                         SetBorder(worksheet2.Cells[W2_rowWSum, W2_colD]);
@@ -1098,7 +1375,7 @@ namespace CostEstimate.Controllers.SubHistorysum
                     worksheet2.Cells[worksheet2.Dimension.Address].AutoFitColumns();
                     for (int col = 3; col <= W2_colD; col++)
                     {
-                        worksheet2.Column(col).Width = 48;
+                        worksheet2.Column(col).Width = 25;
                     }
 
 
@@ -1135,6 +1412,14 @@ namespace CostEstimate.Controllers.SubHistorysum
         {
             cell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             cell.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+        }
+        public static void SetNegativeCellStyle(ExcelRange cell)
+        {
+            cell.Style.Font.Color.SetColor(Color.Red); // ตัวหนังสือสีแดง
+            cell.Style.Font.Bold = true; // ตัวหนา
+
+            //cell.Style.Fill.PatternType = ExcelFillStyle.Solid; // ให้มีพื้นหลัง
+
         }
 
     }

@@ -61,8 +61,24 @@ namespace CostEstimate.Controllers.NewMoldOther
             SelectList _TypeofRequestBy = new SelectList(_listRequestBy);
             ViewBag.TypeofRequestBy = _TypeofRequestBy;
 
+            @class._ListViewceHistoryApproved = new List<ViewceHistoryApproved>();
+
             @class._ViewceMastModifyRequest = new ViewceMastModifyRequest();
             @class._ListceMastFlowApprove = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "2").ToList();
+
+            List<string> _listTypeofCavity = _MK._ViewceMastType.Where(x => x.mtType.Contains("Cavity") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+            SelectList _TypeofCavity = new SelectList(_listTypeofCavity);
+            ViewBag.TypeofCavity = _TypeofCavity;
+
+            //List<string> _listEvent = _MK._ViewceMastType.Where(x => x.mtType.Contains("Event") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+            //SelectList _TypeofEvent = new SelectList(_listEvent);
+            //ViewBag.TypeofEvent = _TypeofEvent;
+
+
+
+
+            // @class._ViewceMastModifyRequest = _MK._ViewceMastModifyRequest.Where(x => x.mfCENo == "CE-M-25-07-030").FirstOrDefault();
+
             return View(@class);
         }
 
@@ -73,7 +89,8 @@ namespace CostEstimate.Controllers.NewMoldOther
         {
             //Class @class ,
             string partialUrl = "";
-            int v_step = @classs._ViewceMastModifyRequest != null ? @classs._ViewceMastModifyRequest.mfStep : 0;
+            // int v_step = @classs._ViewceMastModifyRequest != null ? @classs._ViewceMastModifyRequest.mfStep : 0;
+            int v_step = 2;
             string v_issue = @classs._ViewceMastModifyRequest != null ? @classs._ViewceMastModifyRequest.mfEmpCodeRequest : "";
             string v_DocNo = @classs._ViewceMastModifyRequest != null ? @classs._ViewceMastModifyRequest.mfCENo : "";
             List<ViewceHistoryApproved> _listHistory = new List<ViewceHistoryApproved>();
@@ -139,10 +156,33 @@ namespace CostEstimate.Controllers.NewMoldOther
         }
         public ActionResult SendMail(Class @class, int s_step, string s_issue, string mpNo)
         {
-           ViewBag.vDate = DateTime.Now.ToString("yyyy/MM/dd") + " " + DateTime.Now.ToString("HH:mm:ss");
-            //string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
+            ViewBag.vDate = DateTime.Now.ToString("yyyy/MM/dd") + " " + DateTime.Now.ToString("HH:mm:ss");
+            string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
 
-            //@class._ViewceHistoryApproved = new ViewceHistoryApproved();
+            @class._ViewceHistoryApproved = new ViewceHistoryApproved();
+            @class._ListViewceHistoryApproved = new List<ViewceHistoryApproved>();
+            var v_emailFrom = _IT.rpEmails.Where(x => x.emEmpcode == _UserId).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
+
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    @class._ListViewceHistoryApproved.Add(new ViewceHistoryApproved
+            //    {
+            //        htNo = 0,
+            //        htDocNo = "",
+            //        htStep = 2,
+            //        htStatus = "Approve",
+            //        htFrom = v_emailFrom,
+            //        htTo = "",
+            //        htCC="",
+            //        htDate = DateTime.Now.ToString("yyyy/MM/dd"),
+            //        htTime = "",
+            //        htRemark ="",
+            //    });
+            //}
+
+
+
+
             //var v_emailFrom = _IT.rpEmails.Where(x => x.emEmpcode == _UserId).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
             //if (mpNo != null && mpNo != "")
             //{
@@ -187,10 +227,97 @@ namespace CostEstimate.Controllers.NewMoldOther
 
             ////step 4 fix ST dept check
 
-            //@class._ViewceHistoryApproved.htFrom = v_emailFrom;
-            //@class._ViewceHistoryApproved.htStatus = "Approve";
+            @class._ViewceHistoryApproved.htFrom = v_emailFrom;
+            @class._ViewceHistoryApproved.htStatus = "Approve";
             //ViewBag.step = s_step;
-            return PartialView("SendMail", @class);
+            if (s_step == 2)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    @class._ListViewceHistoryApproved.Add(new ViewceHistoryApproved
+                    {
+                        htNo = 0,
+                        htDocNo = "",
+                        htStep = 2,
+                        htStatus = "Approve",
+                        htFrom = v_emailFrom,
+                        htTo = "",
+                        htCC = "",
+                        htDate = DateTime.Now.ToString("yyyy/MM/dd"),
+                        htTime = "",
+                        htRemark = "",
+                    });
+                }
+                return PartialView("SendMail_step2", @class);
+            }
+            else
+            {
+                return PartialView("SendMail", @class);
+            }
+
+        }
+
+        public ActionResult SearchMold_Ledger_Number(string term)
+        {
+
+            return Json(
+                        _MOLD._ViewLLLedger
+                            .Where(p => p.LGLegNo.Contains(term))
+                            .Select(p =>
+                                p.LGLegNo + "" +
+                                p.LGTypeCode + "|" +
+                                p.LGCustomer + "|" +
+                                p.LGMoldNo + "|" + p.LGMoldName + "|" +
+                                "0"
+                            )
+                            .ToList()
+                        );
+
+        }
+
+        public ActionResult SearchCustomer(string term)
+        {
+
+            return Json(
+                        _MK._ViewceMastType
+                            .Where(p => p.mtName.Contains(term) && p.mtProgram == "MoldOther" && p.mtType == "Customer")
+                            .Select(p => p.mtName
+                            )
+                            .ToList()
+                        );
+
+        }
+        public ActionResult SearchFuntion(string term)
+        {
+
+            return Json(
+                        _MK._ViewceMastType
+                            .Where(p => p.mtName.Contains(term) && p.mtProgram == "MoldOther" && p.mtType == "Function")
+                            .Select(p => p.mtName
+                            )
+                            .ToList()
+                        );
+
+        }
+        public ActionResult SearchModel(string term)
+        {
+
+            return Json(
+                        _MK._ViewceMastModel
+                            .Where(p => p.mmModelName.Contains(term) && p.mmType == "MoldOther")
+                            .Select(p => p.mmModelName
+                            )
+                            .ToList()
+                        );
+
+        }
+
+        [HttpPost]
+        public JsonResult chkSaveData(Class @class, List<IFormFile> files, string _ceItemModifyRequest)
+        {
+            string config = "S";
+            string msg = "Send Mail & Save File Already";
+            return Json(new { c1 = config, c2 = msg });
         }
 
 

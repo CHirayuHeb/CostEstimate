@@ -1,0 +1,306 @@
+﻿@using System.Security.Claims;
+@model CostEstimate.Models.Common.Class
+@{
+    string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+@{
+    Layout = null;
+}
+@*New Request*@
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<div>
+
+    @*@Html.HiddenFor(m => m.htEmpCode, new { id = "docno" })
+        @Html.HiddenFor(m => m.htStep, new { id = "step" })
+        @Html.HiddenFor(m => m.htTo, new { id = "EmailTo" })*@
+
+    <div class="modal-header" style="margin-top:1px">
+        <h5 class="modal-title">
+            @*<input asp-for="htStep" type="text" class="
+                     " id="txtstep" style="display:none" />
+                <input asp-for="htDateIssue" type="text" class="form-control" id="txtstep" style="display:none" />*@
+            <span style="font-weight: bold; font-size: 16px;">
+                ส่งคำขออนุมัติเอกสาร​ -->
+            </span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="p-2-modify" style="width: 100%; border: 1px grey; padding-top: 3px;font-size:8px">
+        @{
+            var ListSubject = new List<string> { "WORKING TIME", "MATERIAL", "TOOL & GR", "INFORMATION SPEC MOLD" };
+        }
+
+        @for (int i = 0; i < Model._ListViewceHistoryApproved.Count(); i++)
+        {
+
+        }
+
+
+        <div class="row">
+            @for (int i = 0; i < Model._ListViewceHistoryApproved.Count(); i++)
+            {
+
+                <div class="col-50">
+                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px;margin-bottom:5px">
+                        @ListSubject[i]
+                    </div>
+                    <div class="input-group ig-property">
+                        <span class="input-group-text w-25" style="font-size: 13px;">From.</span>
+                        <input type="text" class="form-control" id=@($"txtFrom{i}") asp-for="_ListViewceHistoryApproved[i].htFrom" readonly style="font-size: 13px;" />
+                    </div>
+                    <div class="input-group ig-property">
+                        <span class="input-group-text w-25" style="font-size: 13px;">
+                            To
+                        </span>
+                        <input type="text" class="form-control" id=@($"searchInputTO{i}") asp-for="_ListViewceHistoryApproved[i].htTo" required style="font-size: 13px;" readonly="@(ViewBag.step == 6  ?  "readonly" : null)" />
+
+                    </div>
+                    <div class="input-group ig-property">
+                        <span class="input-group-text w-25" style="font-size: 13px;">CC.</span>
+                        <textarea class="form-control" id=@($"searchInputCC{i}") rows="4" cols="50" asp-for="_ListViewceHistoryApproved[i].htCC" required style="font-size: 13px;"></textarea>
+                    </div>
+                    <div class="input-group ig-property">
+                        <span class="input-group-text w-25" style="font-size: 13px;">Remark</span>
+                        <textarea class="form-control" id=@($"Remark{i}") rows="2" cols="50" asp-for="_ListViewceHistoryApproved[i].htRemark" style="font-size: 13px;"></textarea>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div style="margin:5px">
+            <span style=" font-size: 13px;">วันที่ : @ViewBag.vDate</span>
+        </div>
+        <div class="d-flex justify-content-center" style="width: 100%; text-align: center; padding-top: 5px; padding-bottom: 5px;">
+            <div class="p-1-modify" style="width: 100%; border: 1px grey;   ">
+                <div class="form-check form-check-inline" style="@(ViewBag.step == 7 ? "display: none;" : "")">
+                    @Html.RadioButtonFor(m => m._ListViewceHistoryApproved[0].htStatus, "Approve", new { @class = "", id = "StatusApp", onclick = "CheckDis('Approve')", required = "required", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Approve</label><br />
+                </div>
+                <div class="form-check form-check-inline " style="@(ViewBag.step == 0 || (ViewBag.step <8 && ViewBag.step>3 ) ? "display: none;" : "")">
+                    @Html.RadioButtonFor(m => m._ListViewceHistoryApproved[0].htStatus, "Disapprove", new { @class = "", id = "StatusApp", onclick = "CheckDis('Disapprove')", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Disapprove</label><br />
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+    <div class="modal-footer" style="width: 100%;">
+
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="Menubar_MoldOther_savesendMail('@Url.Action("chkSaveData", "NewMoldOther")')" >Send mail</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+    </div>
+
+
+
+</div>
+
+
+
+<script type="text/javascript">
+
+
+
+$(function () {
+            function split(val) {
+                return val.split(/,\s*/);
+            }
+            function extractLast(term) {
+                return split(term).pop();
+            }
+
+            $("#searchInputCC")
+          // don't navigate away from the field on tab when selecting an item
+          .on("keydown", function (event) {
+              if (event.keyCode === $.ui.keyCode.TAB &&
+                  $(this).autocomplete("instance").menu.active) {
+                  event.preventDefault();
+              }
+          })
+            .autocomplete({
+                minLength: 0,
+                source: function (request, response) {
+                    $.getJSON('@Url.Action("Search", "New")', {
+                        term: extractLast(request.term)
+                    }, response);
+                },
+                focus: function () {
+                    // prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    const email365 = ui.item.value.split("|")[1];
+                    //let email365 = myArray[0];
+                    console.log("test" + email365);
+
+                    var terms = split(this.value);
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+
+                    //terms.push(ui.item.value);
+                    terms.push(email365);
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join(",");
+                    return false;
+                }
+                });
+
+
+            $("#searchInputCCDept")
+          // don't navigate away from the field on tab when selecting an item
+          .on("keydown", function (event) {
+              if (event.keyCode === $.ui.keyCode.TAB &&
+                  $(this).autocomplete("instance").menu.active) {
+                  event.preventDefault();
+              }
+          })
+            .autocomplete({
+                minLength: 0,
+                source: function (request, response) {
+                    $.getJSON('@Url.Action("Search", "New")', {
+                        term: extractLast(request.term)
+                    }, response);
+                },
+                focus: function () {
+                    // prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    const email365 = ui.item.value.split("|")[1];
+                    //let email365 = myArray[0];
+                    console.log("test" + email365);
+
+                    var terms = split(this.value);
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+
+                    //terms.push(ui.item.value);
+                    terms.push(email365);
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join(",");
+                    return false;
+                }
+            });
+
+             $("#searchInputTO")
+          // don't navigate away from the field on tab when selecting an item
+                 .on("keydown", function (event) {
+                     console.log("OK");
+              if (event.keyCode === $.ui.keyCode.TAB &&
+                  $(this).autocomplete("instance").menu.active) {
+                  event.preventDefault();
+              }
+          })
+            .autocomplete({
+                minLength: 1,
+                source: function (request, response) {
+                    $.getJSON('@Url.Action("Search", "New")', {
+                        term: extractLast(request.term)
+                    }, response);
+                },
+                focus: function () {
+                    // prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    const email365 = ui.item.value.split("|")[1];
+                    //let email365 = myArray[0];
+                    console.log("test" + email365);
+
+                    var terms = split(this.value);
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+
+                    //terms.push(ui.item.value);
+                    terms.push(email365);
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join("");
+                    return false;
+                }
+            });
+
+    //WORKING TIME
+    setupAutocompleteTextbox("#searchInputTO0", '@Url.Action("Search", "New")', '');
+    setupAutocompleteTextbox("#searchInputCC0", '@Url.Action("Search", "New")', 'CC');
+
+    //MATERIAL
+    setupAutocompleteTextbox("#searchInputTO1", '@Url.Action("Search", "New")', '');
+    setupAutocompleteTextbox("#searchInputCC1", '@Url.Action("Search", "New")', 'CC');
+
+    //TOOL & GR
+    setupAutocompleteTextbox("#searchInputTO2", '@Url.Action("Search", "New")', '');
+    setupAutocompleteTextbox("#searchInputCC2", '@Url.Action("Search", "New")', 'CC');
+
+    //INFORMATION SPEC MOLD
+    setupAutocompleteTextbox("#searchInputTO3", '@Url.Action("Search", "New")', '');
+    setupAutocompleteTextbox("#searchInputCC3", '@Url.Action("Search", "New")', 'CC');
+
+
+
+
+    })
+
+    function setupAutocompleteTextbox(selector, searchUrl,vCC) {
+        $(selector)
+            .on("keydown", function (event) {
+                console.log("OK");
+                if (event.keyCode === $.ui.keyCode.TAB &&
+                    $(this).autocomplete("instance") ?.menu.active) {
+                    event.preventDefault();
+                }
+            })
+            .autocomplete({
+                minLength: 1,
+                source: function (request, response) {
+                    $.getJSON(searchUrl, {
+                        term: extractLast(request.term)
+                    }, response);
+                },
+                focus: function () {
+                    return false;
+                },
+                select: function (event, ui) {
+                    const email365 = ui.item.value.split("|")[1];
+                    var terms = split(this.value);
+                    terms.pop();
+                    terms.push(email365);
+                    terms.push("");
+
+                    if (vCC == "CC") {
+                        this.value = terms.join(",");
+                    } else {
+                        this.value = terms.join("");
+                    }
+                    return false;
+                }
+            });
+    }
+
+    function split(val) {
+        return val.split(/,\s*/);
+    }
+    function extractLast(term) {
+        return split(term).pop();
+    }
+
+
+
+</script>

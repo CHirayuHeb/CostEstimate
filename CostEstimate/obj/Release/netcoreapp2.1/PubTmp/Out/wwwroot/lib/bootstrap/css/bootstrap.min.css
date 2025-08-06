@@ -5872,6 +5872,11 @@ textarea.form-control-lg {
         --bs-modal-width: 900px
     }
 }
+@media (min-width:1000px) {
+    .modal-lxl {
+        --bs-modal-width: 1000px
+    }
+}
 
 .modal-fullscreen {
     width: 100vw;

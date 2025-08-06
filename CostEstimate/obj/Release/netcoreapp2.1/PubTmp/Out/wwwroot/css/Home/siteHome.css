@@ -558,10 +558,10 @@ col-100 {
 }
 
     .tbgreen td, .tbgreen th {
-        border: 0.5px solid #718a43; /*    #D2B48C  #FFEBCD*/
+        border: 0.5px solid #c8e693; /*    #D2B48C  #FFEBCD*/
         padding-left: 5px;
         padding-right: 5px;
-        padding-top: 3px;
+        padding-top: 5px;
         padding-bottom: 3px;
         /*padding: 8px;*/
     }
@@ -583,6 +583,7 @@ col-100 {
         /*vertical-align: baseline;*/
         text-align: center;
         vertical-align: middle;
+     
     }
 
     .tbgreen thead th {

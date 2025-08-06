@@ -45,6 +45,18 @@
     <Content Update="Views\NewMoldModify\_PartialNewMoldSummary.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\NewMoldOtherMT\_PartialStepFlowOtherRequest.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\NewMoldOtherWK\SendMail.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\NewMoldOtherWK\_PartialStepFlowOtherRequest.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\NewMoldOther\SendMail.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\New\_PartialDisplayQuotationTHSarabun.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

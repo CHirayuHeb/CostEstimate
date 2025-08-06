@@ -1,0 +1,179 @@
+﻿@using System.Security.Claims;
+@model CostEstimate.Models.Common.Class;
+@using CostEstimate.Models.Common;
+@*@model IEnumerable<IGrouping<string, CostEstimate.Models.Table.MK.ViewceMastProcess>>*@
+@{
+    string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+    string _admin = GlobalVariable.perAdmin.ToUpper();
+
+}
+
+
+<div class="" style="border:0px solid gray;margin-top:10px;padding:2px;">
+    <div class="grid-item fw-800 center " style="text-align:left;font-size:14px;margin-bottom:10px;">
+        Process Detail.
+    </div>
+    <div class="table-containerHM" style="margin:-4px;height:100%;border:0.5px solid gray;">
+
+        @for (int k = 1; k <= 8; k++)
+        {
+        <div class="table-group" data-index="@k">
+            <table class="tbgreen" style="max-width:350px;min-width:200px">
+                <tr>
+                    <th rowspan="2">@k</th>
+                    <th colspan="2">WORKING TIME</th>
+                </tr>
+                <tr>
+                    <th>(MAN)</th>
+                    <th>(TOTAL)</th>
+                </tr>
+
+                @for (int i = 0; i < @Model._ListViewceSubWorkingTimeRequestItem.Count(); i++)
+                {
+                    <tr>
+                        <td width="70px">
+                            <span>@Model._ListViewceSubWorkingTimeRequestItem[i].wriProcessName</span>
+                            <input type="text" class="form-control left input-process" style="width:100%;height:80%;font-size:10px;display:none" autocomplete="off" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriGroupName" readonly>
+                            <input type="text" class="form-control left input-process" style="width:100%;height:80%;font-size:10px;display:none" autocomplete="off" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriProcessName" readonly>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control left input-man" style="width:100%;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control left input-auto" style="width:100%;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <th></th>
+                    <th>TOTAL</th>
+                    <th>REMAIN</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                        <input type="number" class="form-control input-total" style="width:100%;height:80%;font-size:10px;background-color:lightgray" autocomplete="off" readonly>
+                    </th>
+                    <th>
+                        <input type="number" class="form-control input-remain" style="width:100%;height:80%;font-size:10px;background-color:lightgray" autocomplete="off" readonly>
+                    </th>
+                </tr>
+            </table>
+            <div style="margin-top:10px">
+                <table class="tbgreen" style="max-width:400px;min-width:200px">
+                    <tr>
+                        <th colspan="2">
+                            Size Product
+                        </th>
+
+                    </tr>
+                    <tr>
+                        <td width="50%">X</td>
+                        <td>
+                            <input type="number" class="form-control left input-x" style="width:100%;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Y</td>
+                        <td>
+                            <input type="number" class="form-control left input-y" style="width:100%;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Z</td>
+                        <td>
+                            <input type="number" class="form-control left input-z" style="width:100%;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="text" class="form-control left input-size" style="width:100%;height:80%;font-size:10px;background-color:lightgray" autocomplete="off" readonly>
+                        </td>
+                    </tr>
+
+
+
+                </table>
+            </div>
+        </div>
+
+        }
+
+
+
+        }
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tableGroups = document.querySelectorAll('.table-group');
+
+        tableGroups.forEach(group => {
+            const manInputs = group.querySelectorAll('.input-man');
+            const autoInputs = group.querySelectorAll('.input-auto');
+            const totalInput = group.querySelector('.input-total');
+            const remainInput = group.querySelector('.input-remain');
+
+            const xInput = group.querySelector('.input-x');
+            const yInput = group.querySelector('.input-y');
+            const zInput = group.querySelector('.input-z');
+            const sumInput = group.querySelector('.input-size');
+
+            // ฟังก์ชันรวมและแสดงผล
+            function updateSums() {
+                let sumMan = 0;
+                let sumAuto = 0;
+
+                manInputs.forEach(inp => {
+                    let val = parseFloat(inp.value);
+                    if (!isNaN(val)) sumMan += val;
+                });
+
+                autoInputs.forEach(inp => {
+                    let val = parseFloat(inp.value);
+                    if (!isNaN(val)) sumAuto += val;
+                });
+
+
+                const x = parseFloat(xInput.value) || 0;
+                const y = parseFloat(yInput.value) || 0;
+                const z = parseFloat(zInput.value) || 0;
+                const sumxyz = x + y + z;
+                console.log("sumxyz" + sumxyz);
+                if (sumxyz < 30) {
+                    if (sumInput) sumInput.value = "LL";
+                }
+                else {
+                    if (sumInput) sumInput.value = "L";
+                }
+                //else if (sumxyz > 60 && sumxyz<80) {
+                //}
+
+                // if (sumInput) sumInput.value = x + y + z;
+
+                //if (sumInput) sumInput.value = xInput.value + yInput.value + zInput.value;
+
+                if (totalInput) totalInput.value = sumMan + sumAuto;
+                if (remainInput) remainInput.value = sumMan + sumAuto;
+            }
+
+            // === เรียกตอนโหลดครั้งแรก ===
+            updateSums();
+
+            // === เรียกทุกครั้งที่มีการกรอก ===
+            [...manInputs, ...autoInputs, xInput, yInput, zInput].forEach(input => {
+                input.addEventListener('input', updateSums);
+            });
+        });
+    });
+
+
+
+</script>

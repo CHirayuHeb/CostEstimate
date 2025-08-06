@@ -280,8 +280,8 @@ function sumProcess() {
     let vCKMat = parseFloat($("#i_HissubshCKjMat").val()) || 0;
     let vSmMat = parseFloat($("#i_HissubshCSmMat").val()) || 0;
 
-    $("#i_HissubshCMcMat").val((vCKMat + vSmMat).toFixed(2));
-
+    //$("#i_HissubshCMcMat").val((vCKMat + vSmMat).toFixed(2));
+    $("#i_HissubshCMcMat").val((vCKMat + vSmMat));
 
 
 

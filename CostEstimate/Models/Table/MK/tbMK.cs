@@ -594,16 +594,16 @@ namespace CostEstimate.Models.Table.MK
         [Key]
         public string shDocNo { get; set; }
         public string shLotNo { get; set; }
-        public double shCKjMat { get; set; } 
+        public double shCKjMat { get; set; }
         public double shCKjCofficient { get; set; }
-        public double shCKjWorkingTime { get; set; } 
-        public double shCKjTotal { get; set; } 
-        public double shCSmMat { get; set; } 
-        public double shCSmCofficient { get; set; } 
-        public double shCSmWorkingTime { get; set; } 
+        public double shCKjWorkingTime { get; set; }
+        public double shCKjTotal { get; set; }
+        public double shCSmMat { get; set; }
+        public double shCSmCofficient { get; set; }
+        public double shCSmWorkingTime { get; set; }
         public double shCSmTotal { get; set; }
         public double shCMcMat { get; set; }
-        public double shCMcCofficient { get; set; } 
+        public double shCMcCofficient { get; set; }
         public double shCMcWorkingTime { get; set; }
         public double shCMcTotal { get; set; }
         public bool shStatus { get; set; } = false;
@@ -635,6 +635,29 @@ namespace CostEstimate.Models.Table.MK
     {
         public string GroupName { get; set; }
         public List<ViewceMastSubDetailHistorySum> DetailSubMakerRequest { get; set; }
+    }
+
+
+    //mold other 
+    public class ViewceSubWorkingTimeRequestItem
+    {
+        [Key]
+        
+        public string wriDocnomain { get; set; }
+        public int wriRunno { get; set; }
+        public string wriPartName { get; set; }
+        public string wriCusName​ { get; set; }
+        public string wriCavityNo { get; set; }
+        public string wriTypeCavity { get; set; }
+        public string wriGroupName { get; set; }
+        public string wriProcessName { get; set; }
+        public double wriWT_Man { get; set; }
+        public double wriWT_Auto { get; set; }
+        public bool wriEnable_WTMan { get; set; }
+        public bool wriEnable_WTAuto { get; set; }
+        public double wriTotal { get; set; }
+        public double wriRemain { get; set; }
+
     }
 
 }
