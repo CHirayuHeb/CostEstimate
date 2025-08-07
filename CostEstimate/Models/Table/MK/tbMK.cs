@@ -659,5 +659,10 @@ namespace CostEstimate.Models.Table.MK
         public double wriRemain { get; set; }
 
     }
+    public class GroupViewceSubWorkingTimeRequestItem
+    {
+        public string GroupName { get; set; }
+        public List<ViewceSubWorkingTimeRequestItem> WorkingTimeRequestItem { get; set; }
+    }
 
 }

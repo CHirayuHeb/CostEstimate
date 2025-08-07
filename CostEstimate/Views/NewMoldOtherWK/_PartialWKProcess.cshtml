@@ -22,92 +22,102 @@
 
         @for (int k = 1; k <= 8; k++)
         {
-        <div class="table-group" data-index="@k">
-            <table class="tbgreen" style="max-width:350px;min-width:200px">
-                <tr>
-                    <th rowspan="2">@k</th>
-                    <th colspan="2">WORKING TIME</th>
-                </tr>
-                <tr>
-                    <th>(MAN)</th>
-                    <th>(TOTAL)</th>
-                </tr>
-
-                @for (int i = 0; i < @Model._ListViewceSubWorkingTimeRequestItem.Count(); i++)
-                {
+            <div class="table-group" data-index="@k">
+                <table class="tbgreen" style="max-width:350px;min-width:200px">
                     <tr>
-                        <td width="70px">
-                            <span>@Model._ListViewceSubWorkingTimeRequestItem[i].wriProcessName</span>
-                            <input type="text" class="form-control left input-process" style="width:100%;height:80%;font-size:10px;display:none" autocomplete="off" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriGroupName" readonly>
-                            <input type="text" class="form-control left input-process" style="width:100%;height:80%;font-size:10px;display:none" autocomplete="off" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriProcessName" readonly>
-                        </td>
-                        <td>
-                            <input type="number" class="form-control left input-man" style="width:100%;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">
-                        </td>
-                        <td>
-                            <input type="number" class="form-control left input-auto" style="width:100%;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">
-                        </td>
+                        <th rowspan="2">@k</th>
+                        <th colspan="2">WORKING TIME</th>
                     </tr>
-                }
-                <tr>
-                    <th></th>
-                    <th>TOTAL</th>
-                    <th>REMAIN</th>
-                </tr>
-                <tr>
-                    <th></th>
-                    <th>
-                        <input type="number" class="form-control input-total" style="width:100%;height:80%;font-size:10px;background-color:lightgray" autocomplete="off" readonly>
-                    </th>
-                    <th>
-                        <input type="number" class="form-control input-remain" style="width:100%;height:80%;font-size:10px;background-color:lightgray" autocomplete="off" readonly>
-                    </th>
-                </tr>
-            </table>
-            <div style="margin-top:10px">
-                <table class="tbgreen" style="max-width:400px;min-width:200px">
                     <tr>
-                        <th colspan="2">
-                            Size Product
+                        <th>(MAN)</th>
+                        <th>(AUTO)</th>
+                    </tr>
+
+                    @for (int i = 0; i < @Model._ListViewceSubWorkingTimeRequestItem.Count(); i++)
+                    {
+                        <tr>
+                            <td width="70px">
+                                <span>@Model._ListViewceSubWorkingTimeRequestItem[i].wriProcessName</span>
+                                <input type="text" class="form-control left input-process" style="width:100%;height:80%;font-size:10px;display:none" autocomplete="off" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriGroupName" readonly>
+                                <input type="text" class="form-control left input-process" style="width:100%;height:80%;font-size:10px;display:none" autocomplete="off" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriProcessName" readonly>
+                            </td>
+                            <td>
+                                <input asp-for="_ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTMan" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTMan" type="text" />
+                                <input asp-for="_ListViewceSubWorkingTimeRequestItem[i].wriWT_Man" class="form-control center input-man" autocomplete="off" style="@(Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTMan == false ? "width:100%;height:80%;font-size:10px;background-color:darkgrey" : "width:100%;height:80%;font-size:10px;background-color:yellow")" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriWT_Man" type="number" readonly="@(Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTMan == false ? "readonly" : null)" min="0" />
+                             
+
+                            </td>
+                            <td>
+                                <input asp-for="_ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTAuto" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTAuto" type="text" />
+                               <input asp-for="_ListViewceSubWorkingTimeRequestItem[i].wriWT_Auto" class="form-control center input-auto" autocomplete="off" style="@(Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTAuto == false ? "width:100%;height:80%;font-size:10px;background-color:darkgrey" : "width:100%;height:80%;font-size:10px;background-color:yellow")" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriWT_Auto" type="number" readonly="@(Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTAuto == false ? "readonly" : null)" min="0" />
+
+
+                                @*<input type="number" class="form-control left input-auto" style="width:100%;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">*@
+
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <th></th>
+                        <th>TOTAL</th>
+                        <th>REMAIN</th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>
+                            <input type="number" class="form-control input-total" style="width:100%;height:80%;font-size:10px;background-color:lightgray" autocomplete="off" readonly>
                         </th>
-
+                        <th>
+                            <input type="number" class="form-control input-remain" style="width:100%;height:80%;font-size:10px;background-color:lightgray" autocomplete="off" readonly>
+                        </th>
                     </tr>
-                    <tr>
-                        <td width="50%">X</td>
-                        <td>
-                            <input type="number" class="form-control left input-x" style="width:100%;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Y</td>
-                        <td>
-                            <input type="number" class="form-control left input-y" style="width:100%;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Z</td>
-                        <td>
-                            <input type="number" class="form-control left input-z" style="width:100%;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>
-                            <input type="text" class="form-control left input-size" style="width:100%;height:80%;font-size:10px;background-color:lightgray" autocomplete="off" readonly>
-                        </td>
-                    </tr>
-
-
-
                 </table>
+                <div style="margin-top:10px">
+                    <table class="tbgreen" style="max-width:400px;min-width:200px">
+                        <tr>
+                            <th colspan="2" >
+                                Size Product
+                            </th>
+
+                        </tr>
+                        <tr>
+                            <td width="50%">X</td>
+                            <td>
+                                <input type="number" class="form-control left input-x" style="width:100%;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Y</td>
+                            <td>
+                                <input type="number" class="form-control left input-y" style="width:100%;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Z</td>
+                            <td>
+                                <input type="number" class="form-control left input-z" style="width:100%;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                @Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfIssueDept, (SelectList)ViewBag.TypeofSizeProduct, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMoldOtherWK", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
+
+                                <input type="text" class="form-control left input-size" style="width:100%;height:80%;font-size:10px;background-color:lightgray;display:none" autocomplete="off" readonly>
+                            </td>
+                        </tr>
+
+
+
+                    </table>
+                </div>
             </div>
-        </div>
 
         }
 
 
 
-        }
+
     </div>
 </div>
 

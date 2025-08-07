@@ -282,10 +282,10 @@
 
 
         //total working time process
-      
 
 
-  //total working time process
+
+        //total working time process
         const el1 = document.getElementById('dsWT_Man DESIGN');
         const input1 = parseFloat(el1 ? el1.value : 0) || 0;
         const el2 = document.getElementById('dsWT_Auto NC.');
@@ -380,21 +380,23 @@
 
         //add for sumary
         const selectedValue = $("#i_NewMold_Type").val();
-        if ( selectedValue.toLowerCase().includes("mold")) {
+        if (selectedValue.toLowerCase().includes("mold")) {
             const input = document.querySelector('#tbDetailMoldProcessDetail input.WT_Man.W\\.');
+            const inputWL = document.querySelector('#tbDetailMoldProcessDetail input.WT_Man.W\\(L\\)\\.');
             const value = input ? input.value : null;
+            const valueWL = inputWL ? inputWL.value : null;
 
-            if (value > 0) {
-               // console.log("เลือก Mold value > 0   = " + selectedValue);
+            if (value > 0 || valueWL > 0) {
+                // console.log("เลือก Mold value > 0   = " + selectedValue);
                 $("#i_NewMoldRateUnit").val("1.15");
             }
             else {
-               // console.log("เลือก Mold value < 0   = " + selectedValue);
+                // console.log("เลือก Mold value < 0   = " + selectedValue);
                 $("#i_NewMoldRateUnit").val("1.10");
             }
 
         } else {
-           // console.log("เลือก Not Mold  = " + selectedValue);
+            // console.log("เลือก Not Mold  = " + selectedValue);
             $("#i_NewMoldRateUnit").val("1.0");
 
             //สำหรับงานที่ถูกเลือกเป็น MODIFICATION
@@ -415,7 +417,7 @@
 
         //    const input = document.querySelector('#tbDetailMoldProcessDetail input.WT_Man.W\\.');
         //    const value = input ? input.value : null;
-          
+
         //    if (value > 0) {
         //        $("#i_NewMoldRateUnit").val("1.15");
         //    }
@@ -950,7 +952,7 @@
         //console.log("sumF18_F20 " + sumF18_F20);
 
         const sumTool = parseFloat((sumWT_auto_Man - parseFloat(sumWT_Man_NC) - parseFloat(sumF18_F20)) * 100).toFixed(2);
-       // console.log("sum Tool :  " + sumTool);
+        // console.log("sum Tool :  " + sumTool);
         $("#i_NewMold_MTTool").val(sumTool); // เคลียร์ค่า
 
     }
@@ -968,7 +970,7 @@
             });
         }
 
-       // console.log('Total:', sum);
+        // console.log('Total:', sum);
         const mtToolValue = parseFloat($("#i_NewMold_MTTool").val()) || 0;
         const total = mtToolValue + sum;
 

@@ -121,7 +121,9 @@
             <div class="col-40 " style="">
             </div>
             <div class="col-50 " style="">
-                <input type="text" class="form-control left" style="width:90%;font-size:12px" autocomplete="off" id="i_New_RemarkOther" asp-for="_ViewceMastSubMakerRequest.smRemarkOther">
+                @*<input type="text" class="form-control left" style="width:90%;font-size:12px" autocomplete="off" id="i_New_RemarkOther" asp-for="_ViewceMastSubMakerRequest.smRemarkOther">*@
+                @Html.TextAreaFor(model => model._ViewceMastSubMakerRequest.smRemarkOther, new { @class = "form-control left", rows = 2, @id = "i_New_RemarkOther", @style = "width:100%;field-sizing: content;font-size:12px;", maxlength = "255" })
+
 
             </div>
             <div class="col-5 " style="">

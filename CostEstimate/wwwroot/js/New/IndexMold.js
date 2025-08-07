@@ -56,10 +56,12 @@ $("#i_NewMold_Type").on("click", function () {
     //console.log("indexMold.js ✅ เลือก selectedValue แล้วเด้อ!  = " + selectedValue);
     if (selectedValue.toLowerCase().includes("mold")) {
         const input = document.querySelector('#tbDetailMoldProcessDetail input.WT_Man.W\\.');
+        const inputWL = document.querySelector('#tbDetailMoldProcessDetail input.WT_Man.W\\(L\\)\\.');
         const value = input ? input.value : null;
+        const valueWL = inputWL ? inputWL.value : null;
         //console.log("#tbDetailMoldProcessDetail tr.GM\\. input#WT_Man\\ W\\. : == " + value);
 
-        if (value > 0) {
+        if (value > 0 || valueWL > 0) {
             $("#i_NewMoldRateUnit").val("1.15");
         }
         else {

@@ -61,8 +61,13 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
             @class._ListceMastFlowApprove = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "4").ToList();
 
 
+            List<string> _listSizeProduct = _MK._ViewceMastType.Where(x => x.mtType.Contains("SizeProduct") && x.mtProgram.Contains("MoldOtherWK")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+            SelectList _TypeofSizeProduct = new SelectList(_listSizeProduct);
+            ViewBag.TypeofSizeProduct = _TypeofSizeProduct;
+
+
             @class._ListViewceSubWorkingTimeRequestItem = new List<ViewceSubWorkingTimeRequestItem>();
-            @class._ListceMastProcess = _MK._ViewceMastProcess.Where(x => x.mpType == "MoldOther").OrderBy(x => x.mpGroupName).ThenBy(x => x.mpProcessName).ToList();
+            @class._ListceMastProcess = _MK._ViewceMastProcess.Where(x => x.mpType == "MoldOtherWK").OrderBy(x=>x.mpNo).ToList();
             for (int i = 0; i < @class._ListceMastProcess.Count(); i++)
             {
                 @class._ListViewceSubWorkingTimeRequestItem.Add(new ViewceSubWorkingTimeRequestItem
@@ -83,6 +88,14 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                     wriRemain = 0,
                 });
             }
+
+            @class._ListGroupViewceSubWorkingTimeRequestItem = new List<GroupViewceSubWorkingTimeRequestItem>();
+            @class._ListGroupViewceSubWorkingTimeRequestItem = @class._ListViewceSubWorkingTimeRequestItem.GroupBy(p => p.wriGroupName).Select(g => new GroupViewceSubWorkingTimeRequestItem
+            {
+                GroupName = g.Key.Trim(),
+                WorkingTimeRequestItem = g.ToList()
+            }
+            ).ToList();
 
 
 

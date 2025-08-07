@@ -83,11 +83,11 @@
 
                         </td>
                         <td>
-                            <input type="number"  asp-for="_ViewceMastModifyRequest.mfCostUntilSH" class="form-control " style="width:100%;font-size:12px;text-align:right;background-color:#b1fab1;border:0px solid white" autocomplete="off" readonly id="i_NewMoldUntilSHcost">
+                            <input type="number" asp-for="_ViewceMastModifyRequest.mfCostUntilSH" class="form-control " style="width:100%;font-size:12px;text-align:right;background-color:#b1fab1;border:0px solid white" autocomplete="off" readonly id="i_NewMoldUntilSHcost">
 
                         </td>
                         <td>
-                            <input type="number"  asp-for="_ViewceMastModifyRequest.mfMatCost" class="form-control " style="width:100%;font-size:12px;text-align:right;background-color:#b1fab1;border:0px solid white" autocomplete="off" readonly id="i_NewMoldMaterail_cost">
+                            <input type="number" asp-for="_ViewceMastModifyRequest.mfMatCost" class="form-control " style="width:100%;font-size:12px;text-align:right;background-color:#b1fab1;border:0px solid white" autocomplete="off" readonly id="i_NewMoldMaterail_cost">
 
                         </td>
                         <td>
@@ -103,7 +103,7 @@
                             TOTAL ESTIMATE COST
                         </td>
                         <td>
-                            <input type="number"  asp-for="_ViewceMastModifyRequest.mfTotalESTCost" class="form-control " style="width:100%;font-size:12px;text-align:right;background-color:#b1fab1;border:0px solid white" id="i_NewMoldTotalEstimate_cost" autocomplete="off" readonly>
+                            <input type="number" asp-for="_ViewceMastModifyRequest.mfTotalESTCost" class="form-control " style="width:100%;font-size:12px;text-align:right;background-color:#b1fab1;border:0px solid white" id="i_NewMoldTotalEstimate_cost" autocomplete="off" readonly>
 
                         </td>
                         <td>
@@ -138,23 +138,25 @@
 
 <script>
     function FuntionTotalProCost() {
-       // console.log("FuntionTotalProCost===================> ");
+        // console.log("FuntionTotalProCost===================> ");
 
         //add for sumary
         const selectedValue = $("#i_NewMold_Type").val();
         if (selectedValue && selectedValue.toLowerCase().includes("mold")) {
             const input = document.querySelector('#tbDetailMoldProcessDetail input.WT_Man.W\\.');
+            const inputWL = document.querySelector('#tbDetailMoldProcessDetail input.WT_Man.W\\(L\\)\\.');
             const value = input ? input.value : null;
+            const valueWL = inputWL ? inputWL.value : null;
             // console.log("#tbDetailMoldProcessDetail tr.GM\\. input#WT_Man\\ W\\. : == " + value);
 
-            if (value > 0) {
+            if (value > 0 || valueWL > 0) {
                 $("#i_NewMoldRateUnit").val("1.15");
             }
             else {
                 $("#i_NewMoldRateUnit").val("1.10");
             }
 
-          
+
         } else {
 
             //- แต่ถ้าเลือกงาน CLAIM MAKER

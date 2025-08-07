@@ -201,6 +201,10 @@ namespace CostEstimate.Models.Common
         //mold other
         public ViewceSubWorkingTimeRequestItem _ViewceSubWorkingTimeRequestItem { get; set; }
         public List<ViewceSubWorkingTimeRequestItem> _ListViewceSubWorkingTimeRequestItem { get; set; }
+        public GroupViewceSubWorkingTimeRequestItem _GroupViewceSubWorkingTimeRequestItem { get; set; }
+        public List<GroupViewceSubWorkingTimeRequestItem> _ListGroupViewceSubWorkingTimeRequestItem { get; set; }
+
+
 
     }
 

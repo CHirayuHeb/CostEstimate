@@ -4146,67 +4146,29 @@ function Menubar_DeleteMHourChage(mhid, action) {
 //Mold Other
 function Menubar_MoldOther_sendmail(getID, action) {
     let vmsg = "";
-    //if (document.getElementById("i_NewMold_ReferenceNo").value == "") {
-    //    vmsg = "กรุณากรอกข้อมูล Reference No !!!";
-    //    document.getElementById("i_NewMold_ReferenceNo").focus();
-    //} else if (document.getElementById("i_NewMold_LotNo").value == "") {
-    //    vmsg = "กรุณากรอกข้อมูล Lot No !!!";
-    //    document.getElementById("i_NewMold_LotNo").focus();
-    //} else if (document.getElementById("i_NewMold_CustomerName").value == "") {
-    //    vmsg = "กรุณากรอกข้อมูล Customer Name !!!";
-    //    document.getElementById("i_NewMold_CustomerName").focus();
-    //} else if (document.getElementById("i_NewMold_MoldName").value == "") {
-    //    vmsg = "กรุณากรอกข้อมูล Mold Name !!!";
-    //    document.getElementById("i_NewMold_MoldName").focus();
-    //} else if (document.getElementById("i_NewMold_ModelName").value == "") {
-    //    vmsg = "กรุณากรอกข้อมูล Model Name !!!";
-    //    document.getElementById("i_NewMold_ModelName").focus();
-    //} else if (document.getElementById("i_NewMold_CavityNo").value == "") {
-    //    vmsg = "กรุณากรอกข้อมูล Cavity No !!!";
-    //    document.getElementById("i_NewMold_CavityNo").focus();
-    //} else if (document.getElementById("i_NewMold_Function").value == "") {
-    //    vmsg = "กรุณากรอกข้อมูล Function !!!";
-    //    document.getElementById("i_NewMold_Function").focus();
-    //} else if (document.getElementById("i_NewMold_RequestBy").value == "") {
-    //    vmsg = "กรุณากรอกข้อมูล Request By !!!";
-    //    document.getElementById("i_NewMold_RequestBy").focus();
-    //} else if (document.getElementById("i_NewMold_MoldMass").value == "") {
-    //    vmsg = "กรุณากรอกข้อมูล Mold Mass !!!";
-    //    document.getElementById("i_NewMold_MoldMass").focus();
-    //} else if (document.getElementById("i_NewMold_TypeCavity").value == "") {
-    //    vmsg = "กรุณากรอกข้อมูล Type Cavity !!!";
-    //    document.getElementById("i_NewMold_TypeCavity").focus();
-    //} else if (document.getElementById("i_NewMold_LeadTime").value == "") {
-    //    vmsg = "กรุณากรอกข้อมูล Lead Time !!!";
-    //    document.getElementById("i_NewMold_LeadTime").focus();
-    //} else if (document.getElementById("i_NewMold_EstimateCost").value == "") {
-    //    vmsg = "กรุณากรอกข้อมูล Estimate Cost !!!";
-    //    document.getElementById("i_NewMold_EstimateCost").focus();
-    //} else if (document.getElementById("i_NewMold_MKPriceCost").value == "") {
-    //    vmsg = "กรุณากรอกข้อมูล MK Price Cost !!!";
-    //    document.getElementById("i_NewMold_MKPriceCost").focus();
-    //} else if (document.getElementById("i_NewMold_ResultCost").value == "") {
-    //    vmsg = "กรุณากรอกข้อมูล Result Cost !!!";
-    //    document.getElementById("i_NewMold_ResultCost").focus();
-    //} else if (document.getElementById("i_NewMold_IssueRate").value == "") {
-    //    vmsg = "กรุณากรอกข้อมูล Issue Rate !!!";
-    //    document.getElementById("i_NewMold_IssueRate").focus();
-    //} else if (document.getElementById("i_NewMold_CostRate").value == "") {
-    //    vmsg = "กรุณากรอกข้อมูล Cost Rate !!!";
-    //    document.getElementById("i_NewMold_CostRate").focus();
-    //} else if (document.getElementById("i_NewMold_CostRateType").value == "") {
-    //    vmsg = "กรุณากรอกข้อมูล Cost Rate Type !!!";
-    //    document.getElementById("i_NewMold_CostRateType").focus();
-    //} else if (document.getElementById("i_NewMold_Type").value == "") {
-    //    vmsg = "กรุณากรอกข้อมูล Mold Type !!!";
-    //    document.getElementById("i_NewMold_Type").focus();
-    //    //} else if (document.getElementById("i_NewMold_mfProcess").value == "") {
-    //    //    vmsg = "กรุณากรอกข้อมูล MF Process !!!";
-    //    //    document.getElementById("i_NewMold_mfProcess").focus();
-    //} else if (document.getElementById("i_NewMold_Detail").value == "") {
-    //    vmsg = "กรุณากรอกข้อมูล Detail !!!";
-    //    document.getElementById("i_NewMold_Detail").focus();
-    //}
+    if (document.getElementById("i_NewOther_CusName").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Customer Name !!!";
+        document.getElementById("i_NewOther_CusName").focus();
+    } else if (document.getElementById("i_NewOther_Function").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Function !!!";
+        document.getElementById("i_NewOther_Function").focus();
+    } else if (document.getElementById("i_NewOther_ModelName").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Model Name !!!";
+        document.getElementById("i_NewOther_ModelName").focus();
+    } else if (document.getElementById("i_NewOther_Event").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Event !!!";
+        document.getElementById("i_NewOther_Event").focus();
+    } else if (document.getElementById("i_NewOther_MoldGo").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Model Go !!!";
+        document.getElementById("i_NewOther_MoldGo").focus();
+    } else if (document.getElementById("i_NewOther_Try1").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Try 1 !!!";
+        document.getElementById("i_NewOther_Try1").focus();
+    } else if (document.getElementById("i_NewOther_MoldMass").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Mold Mass !!!";
+        document.getElementById("i_NewOther_MoldMass").focus();
+    }
+ 
 
     //let table1 = document.getElementById('tbDetailMoldProcessDetail');
     //let rows1 = table1.getElementsByTagName('tr');

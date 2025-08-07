@@ -4146,6 +4146,7 @@ function Menubar_DeleteMHourChage(mhid, action) {
 //Mold Other
 function Menubar_MoldOther_sendmail(getID, action) {
     let vmsg = "";
+    const rows = document.querySelectorAll("#tableBodyItem tr"); //table id material body
     if (document.getElementById("i_NewOther_CusName").value == "") {
         vmsg = "กรุณากรอกข้อมูล Customer Name !!!";
         document.getElementById("i_NewOther_CusName").focus();
@@ -4158,7 +4159,8 @@ function Menubar_MoldOther_sendmail(getID, action) {
     } else if (document.getElementById("i_NewOther_Event").value == "") {
         vmsg = "กรุณากรอกข้อมูล Event !!!";
         document.getElementById("i_NewOther_Event").focus();
-    } else if (document.getElementById("i_NewOther_MoldGo").value == "") {
+    }
+    else if (document.getElementById("i_NewOther_MoldGo").value == "") {
         vmsg = "กรุณากรอกข้อมูล Model Go !!!";
         document.getElementById("i_NewOther_MoldGo").focus();
     } else if (document.getElementById("i_NewOther_Try1").value == "") {
@@ -4167,8 +4169,17 @@ function Menubar_MoldOther_sendmail(getID, action) {
     } else if (document.getElementById("i_NewOther_MoldMass").value == "") {
         vmsg = "กรุณากรอกข้อมูล Mold Mass !!!";
         document.getElementById("i_NewOther_MoldMass").focus();
+    } else if (document.getElementById("i_NewOther_MoldMass").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Mold Mass !!!";
+        document.getElementById("i_NewOther_MoldMass").focus();
+    } else if (rows.length == 0) {
+        vmsg = "กรุณาเพิ่ม Part name !!!";
+        document.getElementById("btnAddPartName").focus();
     }
- 
+
+
+
+
 
     //let table1 = document.getElementById('tbDetailMoldProcessDetail');
     //let rows1 = table1.getElementsByTagName('tr');
@@ -4189,7 +4200,12 @@ function Menubar_MoldOther_sendmail(getID, action) {
     //const formattedDate = `${dd}/${mm}/${yyyy}`;
 
 
-    const rows = document.querySelectorAll("#tableBodyItem tr"); //table id material body
+    //const rows = document.querySelectorAll("#tableBodyItem tr"); //table id material body
+    //if (rows.length == 0) {
+    //    vmsg = "กรุณาเพิ่ม Part name !!!";
+    //    document.getElementById("btnAddPartName").focus();
+    //}
+
     //table matrerail body
     ceMastMoldOtherRequestItem = [];
     rows.forEach((row, index) => {
@@ -4470,7 +4486,7 @@ function Menubar_MoldOther_savesendMail(action) {
                     text: config.c2,
                 }).then((result) => {
                     if (result.isConfirmed) {
-                   
+
                     }
                 });
 

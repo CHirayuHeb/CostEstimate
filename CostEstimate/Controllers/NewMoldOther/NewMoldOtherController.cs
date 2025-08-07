@@ -311,6 +311,20 @@ namespace CostEstimate.Controllers.NewMoldOther
                         );
 
         }
+        public ActionResult SearchEvent(string term)
+        {
+
+            var listEvent = Enumerable.Range(1, 99)
+                             .Select(i => $"Q{i}")
+                             .ToList();
+            
+
+            return Json(listEvent
+                            .Where(q => q.Contains(term, StringComparison.OrdinalIgnoreCase))
+                            .ToList()
+                            );
+
+        }
 
         [HttpPost]
         public JsonResult chkSaveData(Class @class, List<IFormFile> files, string _ceItemModifyRequest)
