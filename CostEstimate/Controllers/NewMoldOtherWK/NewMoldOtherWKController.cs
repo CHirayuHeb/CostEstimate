@@ -80,7 +80,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                     wriTypeCavity = "",
                     wriGroupName = @class._ListceMastProcess[i].mpGroupName.Trim(),
                     wriProcessName = @class._ListceMastProcess[i].mpProcessName.Trim(),
-                    wriWT_Man = 0,
+                    wriWT_Man = i,
                     wriWT_Auto = 0,
                     wriEnable_WTMan = @class._ListceMastProcess[i].mpEnable_WTMan,
                     wriEnable_WTAuto = @class._ListceMastProcess[i].mpEnable_WTAuto,

@@ -54,9 +54,14 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
         }
 
         [Authorize("Checked")]
-        public IActionResult Index()
+        public IActionResult Index(Class @class)
         {
-            return View();
+            @class._listAttachment = new List<ViewAttachment>();
+            @class._ViewceMastModifyRequest = new ViewceMastModifyRequest();
+            @class._ListceMastFlowApprove = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "7").ToList();
+
+
+            return View(@class);
         }
     }
 }

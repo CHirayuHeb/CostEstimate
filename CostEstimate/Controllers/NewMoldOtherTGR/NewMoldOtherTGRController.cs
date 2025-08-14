@@ -55,7 +55,13 @@ namespace CostEstimate.Controllers.NewMoldOtherTGR
         [Authorize("Checked")]
         public IActionResult Index(Class @class)
         {
+            @class._listAttachment = new List<ViewAttachment>();
+            @class._ViewceMastModifyRequest = new ViewceMastModifyRequest();
+            @class._ListceMastFlowApprove = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "6").ToList();
+
+
             return View(@class);
+
         }
     }
 }

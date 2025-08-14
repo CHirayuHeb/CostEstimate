@@ -13337,23 +13337,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\t0015142\\.nuget\\packages\\": {},
+    "C:\\Users\\ths015142\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\t0015142\\OneDrive - STANLEY ELECTRIC CO., LTD\\Desktop\\Work\\MVC Project\\CostEstimate\\CostEstimate\\CostEstimate.csproj",
+      "projectUniqueName": "C:\\Users\\ths015142\\OneDrive - STANLEY ELECTRIC CO., LTD\\Desktop\\Work\\MVC Project\\CostEstimate\\CostEstimate\\CostEstimate.csproj",
       "projectName": "CostEstimate",
-      "projectPath": "C:\\Users\\t0015142\\OneDrive - STANLEY ELECTRIC CO., LTD\\Desktop\\Work\\MVC Project\\CostEstimate\\CostEstimate\\CostEstimate.csproj",
-      "packagesPath": "C:\\Users\\t0015142\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\t0015142\\OneDrive - STANLEY ELECTRIC CO., LTD\\Desktop\\Work\\MVC Project\\CostEstimate\\CostEstimate\\obj\\",
+      "projectPath": "C:\\Users\\ths015142\\OneDrive - STANLEY ELECTRIC CO., LTD\\Desktop\\Work\\MVC Project\\CostEstimate\\CostEstimate\\CostEstimate.csproj",
+      "packagesPath": "C:\\Users\\ths015142\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ths015142\\OneDrive - STANLEY ELECTRIC CO., LTD\\Desktop\\Work\\MVC Project\\CostEstimate\\CostEstimate\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\t0015142\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ths015142\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

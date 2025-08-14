@@ -1,0 +1,42 @@
+﻿@model CostEstimate.Models.Common.Class;
+@{
+    //string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+@*Attach file*@
+<div class="row center">
+    <div class="col-5 " style="">
+
+    </div>
+    <div class="col-90 " style="border:0.5px solid gray;padding:10px">
+        <div class="row center">
+            <div class="col-20 " style="">
+                <div class="grid-item fw-800 center" style="text-align:left;text-decoration: underline;font-size:13px">Attach file</div>
+            </div>
+            <div class="col-80 " style="text-align:left">
+                <input name="files" type="file" id="files" multiple="" class="button btnGray " style="width:300px">
+                <button type="button" class="button notification" style="width:auto; height:28px;background-color:#7286D3" data-bs-dismiss="modal" id="btnfileMold">
+                    <img src="~/images/open-folder.png" style="width:25px;height:25px;margin-left:0px;text-align:left">
+                    @*<span class="badge">2</span>*@
+                    เปิดไฟล์แนบ @Model._listAttachment.Count() ไฟล์
+                    @if (@Model._listAttachment.Count() > 0)
+                    {
+                        <span class="badge">@Model._listAttachment.Count()</span>
+                    }
+                    @*<span class="badge">0</span>*@
+                </button>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-5 " style="">
+
+    </div>
+</div>

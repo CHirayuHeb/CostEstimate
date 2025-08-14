@@ -18,172 +18,170 @@
     <div class="grid-item fw-800 center " style="text-align:left;font-size:14px;margin-bottom:10px;">
         Process Detail.
     </div>
-    <div class="table-containerHM" style="margin:-4px;height:100%;border:0.5px solid gray;">
 
-        @for (int k = 1; k <= 8; k++)
-        {
-            <div class="table-group" data-index="@k">
-                <table class="tbgreen" style="max-width:350px;min-width:200px">
-                    <tr>
-                        <th rowspan="2">@k</th>
-                        <th colspan="2">WORKING TIME</th>
-                    </tr>
-                    <tr>
-                        <th>(MAN)</th>
-                        <th>(AUTO)</th>
-                    </tr>
 
+
+    @for (int k = 0; k <= 5; k++)
+    {
+        <div class="table-group table-containerHM " style="margin:auto" data-index="@k">
+            <table class="tbgreen" style="width:100%;margin-right:10px">
+                <tr>
+                    <th style="width:200px" rowspan="2">
+                        <span style="display:inline-block; width:150px;">
+                            Part namedddddd
+                        </span>
+
+                    </th>
+                    @for (int p = 0; p < @Model._ListViewceSubWorkingTimeRequestItem.Count(); p++)
+                    {
+                        <th colspan="2" rowspan="@(Model._ListViewceSubWorkingTimeRequestItem[p].wriEnable_WTAuto == false ? 2 : 1)">
+                            <span>@Model._ListViewceSubWorkingTimeRequestItem[p].wriProcessName</span>
+                        </th>
+
+                    }
+                    <th rowspan="2">TOTAL</th>
+                    <th rowspan="2">REMAIN</th>
+                </tr>
+
+                <tr>
+                    @for (int p = 0; p < @Model._ListViewceSubWorkingTimeRequestItem.Count(); p++)
+                    {
+                        if (@Model._ListViewceSubWorkingTimeRequestItem[p].wriEnable_WTAuto == true)
+                        {
+                            <td>MAN</td>
+                            <td>AUTO</td>
+                        }
+
+                    }
+
+                </tr>
+                <tr>
+                    <td style="text-align:left;padding:7px;">
+                        <span style="display:inline-block; width:150px;">
+                            Cavity No. : Auto
+                        </span>
+                        <span style="display:inline-block; width:150px;">
+                            Type of Cavity : Auto
+                        </span>
+
+                      
+                    </td>
                     @for (int i = 0; i < @Model._ListViewceSubWorkingTimeRequestItem.Count(); i++)
                     {
-                        <tr>
-                            <td width="70px">
-                                <span>@Model._ListViewceSubWorkingTimeRequestItem[i].wriProcessName</span>
-                                <input type="text" class="form-control left input-process" style="width:100%;height:80%;font-size:10px;display:none" autocomplete="off" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriGroupName" readonly>
-                                <input type="text" class="form-control left input-process" style="width:100%;height:80%;font-size:10px;display:none" autocomplete="off" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriProcessName" readonly>
+                        if (@Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTAuto == false)
+                        {
+                            <td colspan="2">
+                                <input asp-for="_ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTMan" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTMan" type="text" />
+                                <input asp-for="_ListViewceSubWorkingTimeRequestItem[i].wriWT_Man" class="form-control center input-man" autocomplete="off" style="@(Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTMan == false ? "width:100px;height:80%;font-size:10px;background-color:darkgrey" : "width:100px;height:80%;font-size:10px;background-color:yellow")" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriWT_Man" type="number" readonly="@(Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTMan == false ? "readonly" : null)" min="0" />
+
+                                <input asp-for="_ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTAuto" class="form-control center" autocomplete="off" style="display:none;width:100%;height:80%;font-size:10px;display:none" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTAuto" type="text" />
+                                <input asp-for="_ListViewceSubWorkingTimeRequestItem[i].wriWT_Auto" class="form-control center input-auto" autocomplete="off" style="display:none;@(Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTAuto == false ? "width:100px;height:80%;font-size:10px;background-color:darkgrey" : "width:100px;height:80%;font-size:10px;background-color:yellow")" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriWT_Auto" type="number" readonly="@(Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTAuto == false ? "readonly" : null)" min="0" />
+
                             </td>
+                        }
+                        else
+                        {
                             <td>
                                 <input asp-for="_ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTMan" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTMan" type="text" />
-                                <input asp-for="_ListViewceSubWorkingTimeRequestItem[i].wriWT_Man" class="form-control center input-man" autocomplete="off" style="@(Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTMan == false ? "width:100%;height:80%;font-size:10px;background-color:darkgrey" : "width:100%;height:80%;font-size:10px;background-color:yellow")" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriWT_Man" type="number" readonly="@(Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTMan == false ? "readonly" : null)" min="0" />
-                             
-
+                                <input asp-for="_ListViewceSubWorkingTimeRequestItem[i].wriWT_Man" class="form-control center input-man" autocomplete="off" style="@(Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTMan == false ? "width:100px;height:80%;font-size:10px;background-color:darkgrey" : "width:100px;height:80%;font-size:10px;background-color:yellow")" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriWT_Man" type="number" readonly="@(Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTMan == false ? "readonly" : null)" min="0" />
                             </td>
                             <td>
                                 <input asp-for="_ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTAuto" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTAuto" type="text" />
-                               <input asp-for="_ListViewceSubWorkingTimeRequestItem[i].wriWT_Auto" class="form-control center input-auto" autocomplete="off" style="@(Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTAuto == false ? "width:100%;height:80%;font-size:10px;background-color:darkgrey" : "width:100%;height:80%;font-size:10px;background-color:yellow")" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriWT_Auto" type="number" readonly="@(Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTAuto == false ? "readonly" : null)" min="0" />
-
-
-                                @*<input type="number" class="form-control left input-auto" style="width:100%;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">*@
-
+                                <input asp-for="_ListViewceSubWorkingTimeRequestItem[i].wriWT_Auto" class="form-control center input-auto" autocomplete="off" style="@(Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTAuto == false ? "width:100px;height:80%;font-size:10px;background-color:darkgrey" : "width:100px;height:80%;font-size:10px;background-color:yellow")" value="@Model._ListViewceSubWorkingTimeRequestItem[i].wriWT_Auto" type="number" readonly="@(Model._ListViewceSubWorkingTimeRequestItem[i].wriEnable_WTAuto == false ? "readonly" : null)" min="0" />
                             </td>
-                        </tr>
+                        }
+
+
                     }
-                    <tr>
-                        <th></th>
-                        <th>TOTAL</th>
-                        <th>REMAIN</th>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th>
-                            <input type="number" class="form-control input-total" style="width:100%;height:80%;font-size:10px;background-color:lightgray" autocomplete="off" readonly>
-                        </th>
-                        <th>
-                            <input type="number" class="form-control input-remain" style="width:100%;height:80%;font-size:10px;background-color:lightgray" autocomplete="off" readonly>
-                        </th>
-                    </tr>
-                </table>
-                <div style="margin-top:10px">
-                    <table class="tbgreen" style="max-width:400px;min-width:200px">
-                        <tr>
-                            <th colspan="2" >
-                                Size Product
-                            </th>
+                    <th>
+                        <input type="number" class="form-control input-total txt-right" style="width:100px;height:80%;font-size:10px;background-color:lightgray" autocomplete="off" readonly>
+                    </th>
+                    <th>
+                        <input type="number" class="form-control input-remain txt-right" style="width:100px;height:80%;font-size:10px;background-color:lightgray" autocomplete="off" readonly>
+                    </th>
+                </tr>
+            </table>
 
-                        </tr>
-                        <tr>
-                            <td width="50%">X</td>
-                            <td>
-                                <input type="number" class="form-control left input-x" style="width:100%;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Y</td>
-                            <td>
-                                <input type="number" class="form-control left input-y" style="width:100%;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Z</td>
-                            <td>
-                                <input type="number" class="form-control left input-z" style="width:100%;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>
-                                @Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfIssueDept, (SelectList)ViewBag.TypeofSizeProduct, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMoldOtherWK", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
+            <table class="tbgreen">
+                <tr>
+                    <th rowspan="2">
+                        <span style="display:inline-block; width:80px;">
+                            Size Product
+                        </span>
+                    </th>
+                    <th>X</th>
+                    <th>Y</th>
+                    <th>Z</th>
+                    <td rowspan="2" >
+                        @Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfIssueDept, (SelectList)ViewBag.TypeofSizeProduct, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMoldOtherWK", autocomplete = "off", @style = "width:100px;font-size:12px;background-color:yellow;height:80%;" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="number" class="form-control left input-x" style="width:80px;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">
+                    </td>
+                    <td>
+                        <input type="number" class="form-control left input-y" style="width:80px;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">
+                    </td>
+                    <td>
+                        <input type="number" class="form-control left input-z" style="width:80px;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@k">
+                    </td>
 
-                                <input type="text" class="form-control left input-size" style="width:100%;height:80%;font-size:10px;background-color:lightgray;display:none" autocomplete="off" readonly>
-                            </td>
-                        </tr>
-
-
-
-                    </table>
-                </div>
-            </div>
-
-        }
+                </tr>
 
 
 
 
-    </div>
+
+            </table>
+
+
+        </div>
+
+
+    }
+
+
+
+
+
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const tableGroups = document.querySelectorAll('.table-group');
+    function calcRowTotals() {
+        // หาทุกแถวในตาราง (ยกเว้น header)
+        const rows = document.querySelectorAll(".tbgreen tr");
 
-        tableGroups.forEach(group => {
-            const manInputs = group.querySelectorAll('.input-man');
-            const autoInputs = group.querySelectorAll('.input-auto');
-            const totalInput = group.querySelector('.input-total');
-            const remainInput = group.querySelector('.input-remain');
+        rows.forEach(row => {
+            const manInputs = row.querySelectorAll(".input-man");
+            const autoInputs = row.querySelectorAll(".input-auto");
+            const totalInput = row.querySelector(".input-total");
+            const remainInput = row.querySelector(".input-remain");
 
-            const xInput = group.querySelector('.input-x');
-            const yInput = group.querySelector('.input-y');
-            const zInput = group.querySelector('.input-z');
-            const sumInput = group.querySelector('.input-size');
 
-            // ฟังก์ชันรวมและแสดงผล
-            function updateSums() {
-                let sumMan = 0;
-                let sumAuto = 0;
+            if (totalInput) {
+                // ฟังก์ชันคำนวณรวมในแถว
+                const updateTotal = () => {
+                    let sum = 0;
+                    [...manInputs, ...autoInputs].forEach(inp => {
+                        let val = parseFloat(inp.value) || 0;
+                        sum += val;
+                    });
+                    totalInput.value = sum;
+                    remainInput.value = sum;
+                };
 
-                manInputs.forEach(inp => {
-                    let val = parseFloat(inp.value);
-                    if (!isNaN(val)) sumMan += val;
+                // ผูก event ให้คำนวณใหม่เมื่อกรอกค่า
+                [...manInputs, ...autoInputs].forEach(input => {
+                    input.addEventListener("input", updateTotal);
                 });
 
-                autoInputs.forEach(inp => {
-                    let val = parseFloat(inp.value);
-                    if (!isNaN(val)) sumAuto += val;
-                });
-
-
-                const x = parseFloat(xInput.value) || 0;
-                const y = parseFloat(yInput.value) || 0;
-                const z = parseFloat(zInput.value) || 0;
-                const sumxyz = x + y + z;
-                console.log("sumxyz" + sumxyz);
-                if (sumxyz < 30) {
-                    if (sumInput) sumInput.value = "LL";
-                }
-                else {
-                    if (sumInput) sumInput.value = "L";
-                }
-                //else if (sumxyz > 60 && sumxyz<80) {
-                //}
-
-                // if (sumInput) sumInput.value = x + y + z;
-
-                //if (sumInput) sumInput.value = xInput.value + yInput.value + zInput.value;
-
-                if (totalInput) totalInput.value = sumMan + sumAuto;
-                if (remainInput) remainInput.value = sumMan + sumAuto;
+                // คำนวณครั้งแรกตอนโหลดหน้า
+                updateTotal();
             }
-
-            // === เรียกตอนโหลดครั้งแรก ===
-            updateSums();
-
-            // === เรียกทุกครั้งที่มีการกรอก ===
-            [...manInputs, ...autoInputs, xInput, yInput, zInput].forEach(input => {
-                input.addEventListener('input', updateSums);
-            });
         });
-    });
+    }
 
-
-
+    // เรียกฟังก์ชันตอนโหลดหน้า
+    document.addEventListener("DOMContentLoaded", calcRowTotals);
 </script>

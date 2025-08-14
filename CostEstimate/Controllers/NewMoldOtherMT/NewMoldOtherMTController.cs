@@ -58,7 +58,7 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
         {
             @class._listAttachment = new List<ViewAttachment>();
             @class._ViewceMastModifyRequest = new ViewceMastModifyRequest();
-            @class._ListceMastFlowApprove = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "4").ToList();
+            @class._ListceMastFlowApprove = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "5").ToList();
 
 
             return View(@class);

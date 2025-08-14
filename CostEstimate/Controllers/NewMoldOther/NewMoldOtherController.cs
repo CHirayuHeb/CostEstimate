@@ -230,10 +230,16 @@ namespace CostEstimate.Controllers.NewMoldOther
             @class._ViewceHistoryApproved.htFrom = v_emailFrom;
             @class._ViewceHistoryApproved.htStatus = "Approve";
             //ViewBag.step = s_step;
+            string v_empCodeTo, v_emailTo;
+
             if (s_step == 2)
             {
-                for (int i = 0; i < 4; i++)
+                //flow 4 working time
+                //flow 5 
+                for (int i = 4; i < 8; i++) 
                 {
+                    v_empCodeTo = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == 0 && x.mfFlowNo == i.ToString()) != null ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == 0 && x.mfFlowNo == i.ToString()).Select(x => x.mfTo).FirstOrDefault() : "";
+                    v_emailTo = _IT.rpEmails.Where(x => x.emEmpcode == v_empCodeTo).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
                     @class._ListViewceHistoryApproved.Add(new ViewceHistoryApproved
                     {
                         htNo = 0,
@@ -241,7 +247,7 @@ namespace CostEstimate.Controllers.NewMoldOther
                         htStep = 2,
                         htStatus = "Approve",
                         htFrom = v_emailFrom,
-                        htTo = "",
+                        htTo = v_emailTo,
                         htCC = "",
                         htDate = DateTime.Now.ToString("yyyy/MM/dd"),
                         htTime = "",
@@ -317,7 +323,7 @@ namespace CostEstimate.Controllers.NewMoldOther
             var listEvent = Enumerable.Range(1, 99)
                              .Select(i => $"Q{i}")
                              .ToList();
-            
+
 
             return Json(listEvent
                             .Where(q => q.Contains(term, StringComparison.OrdinalIgnoreCase))

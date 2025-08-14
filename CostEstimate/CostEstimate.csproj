@@ -48,6 +48,21 @@
     <Content Update="Views\NewMoldOtherMT\_PartialStepFlowOtherRequest.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\NewMoldOtherMT\_PartialMTAttachFile.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\NewMoldOtherSM\_PartialStepFlowOtherRequest.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\NewMoldOtherSM\_PartialSMAttachFile.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\NewMoldOtherTGR\_PartialTGRAttachFile.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\NewMoldOtherTGR\_PartialStepFlowOtherRequest.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\NewMoldOtherWK\SendMail.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

@@ -4181,30 +4181,6 @@ function Menubar_MoldOther_sendmail(getID, action) {
 
 
 
-    //let table1 = document.getElementById('tbDetailMoldProcessDetail');
-    //let rows1 = table1.getElementsByTagName('tr');
-
-
-    //if (rows1.length < 3) { // Check if there is more than just the header row
-    //    msg = "กรุณากรอกข้อมูล Model Name ให้ถูกต้อง !!!";
-    //    document.getElementById("i_NewMold_ModelName").focus();
-    //    console.log("The table has more than 0 rows.");
-    //}
-
-
-    //const today = new Date();
-    //const dd = String(today.getDate()).padStart(2, '0');
-    //const mm = String(today.getMonth() + 1).padStart(2, '0'); // เดือนเริ่มจาก 0
-    //const yyyy = today.getFullYear();
-
-    //const formattedDate = `${dd}/${mm}/${yyyy}`;
-
-
-    //const rows = document.querySelectorAll("#tableBodyItem tr"); //table id material body
-    //if (rows.length == 0) {
-    //    vmsg = "กรุณาเพิ่ม Part name !!!";
-    //    document.getElementById("btnAddPartName").focus();
-    //}
 
     //table matrerail body
     ceMastMoldOtherRequestItem = [];

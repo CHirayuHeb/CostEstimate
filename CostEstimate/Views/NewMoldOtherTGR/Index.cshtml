@@ -35,21 +35,60 @@
                 </div>
                 <div class="col-40 center" style="text-align:right;">
 
-                    @*<button class="button btnBlue" style="margin-right:20px;width:auto; @(Model._ViewceMastModifyRequest.mfStep > 1 ? "" : "display:none")"
-                                onclick="Menubar_PrintMoldQUOTATION('@Url.Action("PrintMoldQUOTATION","NewMoldModify")','@Model._ViewceMastModifyRequest.mfCENo')">
-                            <img src="~/images/printer.png" style="width:33px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                            REPORT
-                        </button>*@
-                    @*<button class="button" style="width:auto" onclick="Menubar_MoldOthersendmail('','@Url.Action("History","NewMoldOther")')">
-                            <img src="~/images/direct.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                            SEND
-                        </button>
-                        <button class="button btnGray" style="width:auto ; @(Model._ViewceMastModifyRequest.mfStep == 6 ? "pointer-events: none;" : "")"
-                                onclick="Menubar_MoldsaveDraft('@Url.Action("SaveDraft","NewMoldModify")','@Url.Action("SaveCeDetailSub","NewMoldModify")')">
-                            <img src="~/images/savedaft.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                            SAVE DAFT
-                        </button>*@
+                    <button class="button btnBlue" style="margin-right:20px;width:auto; @(Model._ViewceMastModifyRequest.mfStep > 1 ? "" : "display:none")"
+                            onclick="Menubar_PrintMoldQUOTATION('@Url.Action("PrintMoldQUOTATION","NewMoldModify")','@Model._ViewceMastModifyRequest.mfCENo')">
+                        <img src="~/images/printer.png" style="width:33px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                        REPORT
+                    </button>
+                    <button class="button" style="width:auto" onclick="Menubar_MoldOtherWKsendmail('','@Url.Action("History","NewMoldOtherWK")')">
+                        <img src="~/images/direct.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                        SEND
+                    </button>
+                    <button class="button btnGray" style="width:auto ; @(Model._ViewceMastModifyRequest.mfStep == 6 ? "pointer-events: none;" : "")"
+                            onclick="Menubar_MoldsaveDraft('@Url.Action("SaveDraft","NewMoldModify")','@Url.Action("SaveCeDetailSub","NewMoldModify")')">
+                        <img src="~/images/savedaft.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                        SAVE DAFT
+                    </button>
                 </div>
+            </div>
+
+            <div>
+                <form id="formMoldOWKRequest" name="formMoldOWKRequest">
+                    <div style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:5px;border-radius:2px;">
+                        <div class="row center">
+                            <div class="col-15 " style="">
+                            </div>
+                            <div class="col-70 " style="">
+                                @await Html.PartialAsync("_PartialStepFlowOtherRequest.cshtml", Model)
+                            </div>
+                            <div class="col-15 " style="">
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div id="divNewOther" style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:5px;border-radius:2px;">
+
+
+                    
+                   
+
+                        <div style="margin-top:10px">
+                            @await Html.PartialAsync("_PartialTGRAttachFile", Model)
+
+                        </div>
+                        <div class="modal modal-lg fade" id="myModalMoldWKSendmail" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content ">
+                                    <div class="modal-body" id="myModalBodySendMold">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
