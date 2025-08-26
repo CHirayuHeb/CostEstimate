@@ -219,6 +219,25 @@ function GoNewMoldRevision(smDocumentNo, smRevision) {
     //let url = "New?smLotNo=" + smLotNo + "&smOrderNo=" + smOrderNo + "&smRevision=" + smRevision;
     GoSideMenu(url);
 }
+
+function GoNewMoldOtherRequest(id, Rev) {
+    //smLotNo
+    //smOrderNo
+    //smRevision NewMoldModify
+    let url = "NewMoldOther?id=" + id + "&Rev=" + Rev;
+    //let url = "New?smLotNo=" + smLotNo + "&smOrderNo=" + smOrderNo + "&smRevision=" + smRevision;
+    GoSideMenu(url);
+}
+function GoNewMoldOtherWKRequest(id, Rev) {
+    //smLotNo
+    //smOrderNo
+    //smRevision NewMoldModify
+    let url = "NewMoldOtherWK?Docno=" + id;
+    //let url = "New?smLotNo=" + smLotNo + "&smOrderNo=" + smOrderNo + "&smRevision=" + smRevision;
+    GoSideMenu(url);
+}
+
+
 function GoSideMenu(controller) {
     displayLoading();
     //console.time();
@@ -266,10 +285,14 @@ function GoSideMenu(controller) {
 
 
 function PositionY(menu) {
-    if (menu.search("New") > -1 && menu.search("NewMoldModify") == -1 && menu.search("NewMoldOther") == -1) {
-        menu = "New";
-    } else if (menu.search("NewMoldModify") > -1) {
-        menu = "NewMoldModify";
+    //if (menu.search("New") > -1 && menu.search("NewMoldModify") == -1 && menu.search("NewMoldOther") == -1) {
+    //    menu = "New";
+    //} else if (menu.search("NewMoldModify") > -1) {
+    //    menu = "NewMoldModify";
+    //}
+    //else
+    if (menu.search("NewMoldOther") > -1) {
+        menu = "NewMoldOther";
     }
     let PY = 0;
     let opacity;
@@ -1226,6 +1249,61 @@ function CheckDis(status) {
 
     });
 }
+
+
+function CheckDisstep2(status) {
+    $(document).ready(function () {
+        var checkStatusDis = status;
+        var step = $('#step').val();
+        console.log("step ==> " + step);
+        if (checkStatusDis == 'Disapprove' || checkStatusDis == 'Cancel') {
+            $('#searchInputTO0').attr("disabled", "disabled");
+            $('#searchInputTO1').attr("disabled", "disabled");
+            $('#searchInputTO2').attr("disabled", "disabled");
+            $('#searchInputTO3').attr("disabled", "disabled");
+
+            $('#searchInputCC1').attr("disabled", "disabled");
+            $('#searchInputCC2').attr("disabled", "disabled");
+            $('#searchInputCC3').attr("disabled", "disabled");
+
+
+            $('#Remark1').attr("disabled", "disabled");
+            $('#Remark2').attr("disabled", "disabled");
+            $('#Remark3').attr("disabled", "disabled");
+            //$('#searchInputTO3').attr("disabled", "disabled");
+
+            //document.getElementById("searchInputTO").value = "";
+            //$('#EmailTo').removeAttr("name");
+        }
+        else {
+            $('#searchInputTO0').removeAttr('disabled', 'disabled');
+            $('#searchInputTO1').removeAttr('disabled', 'disabled');
+            $('#searchInputTO2').removeAttr('disabled', 'disabled');
+            $('#searchInputTO3').removeAttr('disabled', 'disabled');
+
+
+            //$('#searchInputCC0').removeAttr('disabled', 'disabled');
+            $('#searchInputCC1').removeAttr('disabled', 'disabled');
+            $('#searchInputCC2').removeAttr('disabled', 'disabled');
+            $('#searchInputCC3').removeAttr('disabled', 'disabled');
+
+            $('#Remark1').removeAttr('disabled', 'disabled');
+            $('#Remark2').removeAttr('disabled', 'disabled');
+            $('#Remark3').removeAttr('disabled', 'disabled');
+
+            Remark0
+
+           // $('#EmailTo').removeAttr("name");
+            //if (step == 4) {
+            //    console.log(step);
+            //    document.getElementById("searchInputTO").value = $('#EmailTo').val();
+            //}
+
+        }
+
+    });
+}
+
 function Menubar_save_sendMail(action) {
     console.log("Menubar_save_sendMail");
 
@@ -1394,7 +1472,7 @@ function Menubar_ExportExcel(action) {
 
 }
 function DeleteFileUser(id, vname, action) {
-    var getID = document.getElementById("i_NewMold_DocumentNo").value; //txtMIssueID
+    var getID = document.getElementById("i_NewOther_DocumentNo").value; //txtMIssueID
 
 
     //action, vForm, vTeam, vSubject, vSrNo
@@ -1422,7 +1500,8 @@ function DeleteFileUser(id, vname, action) {
                         .then((result) => {
                             //GoSideMenu("Home");
                             // GoNewRequest(getID)
-                            GoNewMoldRequest(getID)
+                            GoNewMoldOtherRequest(getID, "");
+                            //GoNewMoldRequest(getID)
                             //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
                         });
 
@@ -4144,8 +4223,33 @@ function Menubar_DeleteMHourChage(mhid, action) {
 
 
 //Mold Other
-function Menubar_MoldOther_sendmail(getID, action) {
+function Menubar_MoldOther_saveDraft(action) {
+
+    const form1 = document.forms.namedItem("formOtherData1");
+    let viewModel1 = new FormData(form1);  // form header
+
+    $.each(form1, function (index, input) {
+        viewModel1.append(input.name, input.value);
+    });
+
+    //form header form Mat Detail, Summary ,email
+    // สร้าง FormData ใหม่เพื่อรวมทั้งสองอัน
+    let headerFormData = new FormData();
+    // ใส่ข้อมูลจาก viewModel1
+    viewModel1.forEach((value, key) => {
+        headerFormData.append(key, value);
+    });
+
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // เดือนเริ่มจาก 0
+    const yyyy = today.getFullYear();
+    const formattedDate = `${dd}/${mm}/${yyyy}`;
+
+    // const rows = document.querySelectorAll("#tableBodyItem tr"); //table id material body
+    //table matrerail body
     let vmsg = "";
+    let vstep = document.getElementById("step").value;
     const rows = document.querySelectorAll("#tableBodyItem tr"); //table id material body
     if (document.getElementById("i_NewOther_CusName").value == "") {
         vmsg = "กรุณากรอกข้อมูล Customer Name !!!";
@@ -4159,8 +4263,7 @@ function Menubar_MoldOther_sendmail(getID, action) {
     } else if (document.getElementById("i_NewOther_Event").value == "") {
         vmsg = "กรุณากรอกข้อมูล Event !!!";
         document.getElementById("i_NewOther_Event").focus();
-    }
-    else if (document.getElementById("i_NewOther_MoldGo").value == "") {
+    } else if (document.getElementById("i_NewOther_MoldGo").value == "") {
         vmsg = "กรุณากรอกข้อมูล Model Go !!!";
         document.getElementById("i_NewOther_MoldGo").focus();
     } else if (document.getElementById("i_NewOther_Try1").value == "") {
@@ -4172,63 +4275,188 @@ function Menubar_MoldOther_sendmail(getID, action) {
     } else if (document.getElementById("i_NewOther_MoldMass").value == "") {
         vmsg = "กรุณากรอกข้อมูล Mold Mass !!!";
         document.getElementById("i_NewOther_MoldMass").focus();
-    } else if (rows.length == 0) {
+    } else if (rows.length == 0 && vstep == 1) {
         vmsg = "กรุณาเพิ่ม Part name !!!";
         document.getElementById("btnAddPartName").focus();
+    }
+    ceItemPartName = [];
+    if (vstep == 1) {
+        rows.forEach((row, index) => {
+            const itemPartNoInput = row.querySelector(".vPartName");
+            const itemPartNo = itemPartNoInput.value.trim();
+
+            const itemTypeCavityNoInput = row.querySelector(".vTypeCavity");
+            const itemTypeCavity = itemTypeCavityNoInput.options[itemTypeCavityNoInput.selectedIndex].text.trim();
+
+            //const itemCavityNoInput = row.querySelector(".vCavityNo");
+            //const itemCavityNo = itemCavityNoInput.value.trim();
+
+            //alert(itemTypeCavity);
+            if (!itemPartNo) {
+                alert(`กรุณากรอกชื่อ Part Name (บรรทัดที่ ${index + 1})`);
+                itemPartNoInput.focus(); // optional: focus ช่องนั้น
+                throw new Error("Part Name is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
+            }
+
+            if (itemTypeCavity.includes("กรุณาเลือก")) {
+                alert(`กรุณาเลือก Type of Cavity (บรรทัดที่ ${index + 1})`);
+                itemTypeCavityNoInput.focus(); // optional: focus ช่องนั้น
+                throw new Error("Type of Cavity.​ is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
+            }
+
+            ceItemPartName.push({
+                ipDocumentNo: "",
+                ipRunNo: index + 1, // ✅ เริ่มจาก 1
+                ipPartName: row.querySelector(".vPartName").value.trim(),
+                ipCavityNo: parseInt(row.querySelector(".vCavityNo").value) || 0,
+                ipTypeCavity: itemTypeCavityNoInput.options[itemTypeCavityNoInput.selectedIndex].text.trim(),   //row.querySelector(".vTypeCavity").value.trim(),
+            });
+        });
+
+    }
+    headerFormData.append("_ceItemPartName", JSON.stringify(ceItemPartName));
+
+
+    //1.check send mail
+    //2.save form
+    //3.send mail
+    //4.save item
+    if (vmsg != "") {
+        swal.fire({
+            title: 'แจ้งเตือน',
+            icon: 'warning',
+            text: vmsg,
+        })
+            .then((result) => {
+
+            });
+    }
+    else {
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: headerFormData,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                swal.fire({
+                    html: '<h5>Loading...</h5>',
+                    showConfirmButton: false,
+                    onRender: function () {
+                        // there will only ever be one sweet alert open.
+                        //$('.swal2-content').prepend(sweet_loader);
+                    }
+                });
+            },
+            success: async function (config) {
+                // alert(config.c1);
+                if (config.c1 == "S") {
+                    //await $("#myModalSendMold").modal("hide");
+                    swal.fire({
+                        title: 'SUCCESS',
+                        icon: 'success',
+                        text: config.c2,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            GoSideMenu("SearchMoldOther");
+                        }
+                    });
+                }
+                else if (config.c1 == "E") {
+                    //$("#loaderDiv").hide();
+                    //await $("#myModal1").modal("hide");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ERROR',
+                        text: config.c2,
+                    })
+                        .then((result) => {
+                            //$("#myModalSendMold").modal("show");
+                        });
+
+                }
+                else if (config.c1 == "P") {
+                    //$("#loaderDiv").hide();
+                    //await $("#myModal1").modal("hide");
+                    // await $("#myModalSendMold").modal("hide");
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'warning',
+                        text: config.c2,
+                    })
+                        .then((result) => {
+                            //$("#myModal1").modal("show");
+                        });
+
+                }
+
+            }
+        });
     }
 
 
 
 
-
-    //let table1 = document.getElementById('tbDetailMoldProcessDetail');
-    //let rows1 = table1.getElementsByTagName('tr');
-
-
-    //if (rows1.length < 3) { // Check if there is more than just the header row
-    //    msg = "กรุณากรอกข้อมูล Model Name ให้ถูกต้อง !!!";
-    //    document.getElementById("i_NewMold_ModelName").focus();
-    //    console.log("The table has more than 0 rows.");
-    //}
-
-
-    //const today = new Date();
-    //const dd = String(today.getDate()).padStart(2, '0');
-    //const mm = String(today.getMonth() + 1).padStart(2, '0'); // เดือนเริ่มจาก 0
-    //const yyyy = today.getFullYear();
-
-    //const formattedDate = `${dd}/${mm}/${yyyy}`;
-
-
-    //const rows = document.querySelectorAll("#tableBodyItem tr"); //table id material body
-    //if (rows.length == 0) {
+}
+function Menubar_MoldOther_sendmail(getID, action) {
+    let vmsg = "";
+    let vstep = document.getElementById("step").value;
+    const rows = document.querySelectorAll("#tableBodyItem tr"); //table id material body
+    if (document.getElementById("i_NewOther_CusName").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Customer Name !!!";
+        document.getElementById("i_NewOther_CusName").focus();
+    } else if (document.getElementById("i_NewOther_Function").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Function !!!";
+        document.getElementById("i_NewOther_Function").focus();
+    } else if (document.getElementById("i_NewOther_ModelName").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Model Name !!!";
+        document.getElementById("i_NewOther_ModelName").focus();
+    } else if (document.getElementById("i_NewOther_Event").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Event !!!";
+        document.getElementById("i_NewOther_Event").focus();
+    } else if (document.getElementById("i_NewOther_MoldGo").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Model Go !!!";
+        document.getElementById("i_NewOther_MoldGo").focus();
+    } else if (document.getElementById("i_NewOther_Try1").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Try 1 !!!";
+        document.getElementById("i_NewOther_Try1").focus();
+    } else if (document.getElementById("i_NewOther_MoldMass").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Mold Mass !!!";
+        document.getElementById("i_NewOther_MoldMass").focus();
+    } else if (document.getElementById("i_NewOther_MoldMass").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Mold Mass !!!";
+        document.getElementById("i_NewOther_MoldMass").focus();
+    }
+    //else if (rows.length == 0 && vstep == 1) {
     //    vmsg = "กรุณาเพิ่ม Part name !!!";
     //    document.getElementById("btnAddPartName").focus();
     //}
 
+
+
     //table matrerail body
-    ceMastMoldOtherRequestItem = [];
-    rows.forEach((row, index) => {
+    ceItemPartName = [];
+    if (vstep == 1) {
+        rows.forEach((row, index) => {
+            const itemPartNoInput = row.querySelector(".vPartName");
+            const itemPartNo = itemPartNoInput.value.trim();
+            if (!itemPartNo) {
+                alert(`กรุณากรอกชื่อ Item (บรรทัดที่ ${index + 1})`);
+                itemPartNoInput.focus(); // optional: focus ช่องนั้น
+                throw new Error("Part Name is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
+            }
+            //ceMoldOtherRequestPart.push({
+            //    mpDocNo: "",
+            //    mpRunNo: index + 1, // ✅ เริ่มจาก 1
+            //    mpPartName: row.querySelector(".vPartName").value.trim(),
+            //    mpCavityNo: parseInt(row.querySelector(".vCavityNo").value) || 0,
+            //    mpTypeCavity: row.querySelector(".vTypeCavity").value.trim(),
+            //    moiIssueDate: formattedDate.toString()
+            //});
+        });
+    }
 
-        const itemPartNoInput = row.querySelector(".vPartNo");
-        const itemPartNo = itemPartNoInput.value.trim();
 
-        if (!itemPartNo) {
-            alert(`กรุณากรอกชื่อ Item (บรรทัดที่ ${index + 1})`);
-            itemPartNoInput.focus(); // optional: focus ช่องนั้น
-            throw new Error("PartNo is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
-        }
-
-        //ceMastMoldOtherRequestItem.push({
-        //    moiDocnomain: "",
-        //    moiRunno: index + 1, // ✅ เริ่มจาก 1
-        //    moiPartName: row.querySelector(".vPartNo").value.trim(),
-        //    moiCusName: row.querySelector(".vCustomerName").value.trim(),
-        //    moiCavityNo: parseInt(row.querySelector(".vCavityNo").value) || 0,
-        //    moiTypeCavity: row.querySelector(".vTypeCavity").value.trim(),
-        //    moiIssueDate: formattedDate.toString()
-        //});
-    });
 
 
 
@@ -4245,20 +4473,11 @@ function Menubar_MoldOther_sendmail(getID, action) {
     }
     else {
         const form1 = document.forms.namedItem("formOtherData1");
-        //const form2 = document.forms.namedItem("formMoldData2");
-        //const form3 = document.forms.namedItem("formMoldData3");
         let viewModel1 = new FormData(form1);
-        //let viewModel2 = new FormData(form2);
-        //let viewModel3 = new FormData(form3);
-
 
         $.each(form1, function (index, input) {
             viewModel1.append(input.name, input.value);
         });
-        //$.each(form3, function (index, input) {
-        //    viewModel3.append(input.name, input.value);
-        //});
-
 
         // สร้าง FormData ใหม่เพื่อรวมทั้งสองอัน
         let combinedFormData = new FormData();
@@ -4285,354 +4504,6 @@ function Menubar_MoldOther_sendmail(getID, action) {
             contentType: false,
             success: function (data) {
                 console.log("fsendMoldMail");
-                var htmls = "";
-                //if (data.status == "hasHistory") {
-                //    htmls = " <div class='panel panel-default property'>"
-                //    // console.log(data.listHistory.length);
-                //    $.each(data.listHistory, function (i, item) {
-                //        //console.log('test' + item.htTo); console.log(data.listHistory[0].htTo);
-                //        console.log("OK")
-                //        htmls += "     <div class='panel-heading panel-heading-custom property' tabindex = '0' >"
-                //        htmls += "         <h4 class='panel-title faq-title-range collapsed' data-bs-toggle='collapse' data-bs-target='#Ans" + item.htStep + "' aria-expanded='false' aria-controls='collapseExample'>"
-                //        htmls += "             <label style='font-size: 13px;'>Step : "
-                //        if (item.htStep == 0) {
-                //            htmls += item.htStep
-                //        }
-                //        else {
-                //            htmls += (item.htStep + 1)
-                //        }
-
-                //        htmls += "  </label > <label class='lbV'></label>"
-                //        htmls += "         </h4>"
-                //        htmls += "     </div >"
-                //        htmls += "     <div class='panel-collapse collapse' style = 'overflow: auto;' id = 'Ans" + item.htStep + "' > "
-
-                //        htmls += "         <div class='panel-body'>"
-                //        htmls += "             <div style='font-size: x-small; clear: both; width: 100%; tetx-align: left; font-weight: bold;'>"
-                //        htmls += "                 <label> " + item.htDate + " :: " + item.htTime + " น.</label>"
-
-                //        htmls += "             </div>"
-                //        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
-                //        htmls += "                 <label>FROM : </label></br>"
-                //        htmls += "                 <label>" + item.htFrom + "</label > "
-                //        htmls += "             </div>"
-                //        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
-                //        htmls += "                 <label>TO : </label></br>"
-                //        htmls += "                 <label>" + item.htTo + "</label>"
-                //        htmls += "             </div>"
-                //        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
-                //        if (item.htCC == null) { item.htCC = "" }
-                //        else { item.htCC = item.htCC }
-                //        htmls += "                 <label>CC : </label>"
-                //        htmls += "                 <label>" + item.htCC + "</label>"
-                //        htmls += "             </div>"
-                //        htmls += "             <div style='font-size: x-small; float: right; width: 20%; tetx-align: left;'>"
-                //        if (item.htRemark == null) { item.htRemark = "" }
-                //        else { item.htRemark = item.htRemark }
-                //        htmls += "                 <label>Remark : </label>"
-                //        htmls += "                 <label>" + item.htRemark + "</label>"
-                //        htmls += "             </div>"
-                //        htmls += "             <div style='font-size: x-small; float: right; width: 20%; tetx-align: left;'>"
-                //        htmls += "                 <label>Status : </label>"
-                //        if (item.htStatus == null) { item.htStatus = "" }
-                //        else {
-                //            item.htStatus = item.htStatus
-                //            if (item.htStatus == "Finished") {
-                //                htmls += "                 <label><span style='color: green;'>" + item.htStatus + "</span></label>"
-                //            } else {
-                //                htmls += "                 <label><span style='color: darkkhaki;'>" + item.htStatus + "</span></label>"
-                //            }
-                //        }
-
-                //        htmls += "             </div>"
-                //        htmls += "         </div>"
-                //        htmls += "     </div>"
-
-                //    });
-                //    htmls += "</div>"
-                //}
-                //else {
-                //    htmls = " <div class='panel panel-default property'>"
-                //    htmls += "     <div class='panel-heading panel-heading-custom property' tabindex = '0' >"
-                //    htmls += " <label><span style='color: blue;'>ไม่มีประวัติการส่งอีเมล์</span></label>"
-                //    htmls += "</div>"
-                //    htmls += "</div>"
-                //}
-
-                //var url = data.partial + "&vform=" + vform;
-
-                //var url = data.partial + mydata;
-                var url = data.partial;
-                //console.log("url" + url);
-                $("#myModalBodySendMold").load(url, function () {
-                    //$('#divHistory').html(htmls);
-                    $("#myModalSendMold").modal("show");
-                })
-
-            }
-        });
-    }
-
-
-}
-function Menubar_MoldOther_savesendMail(action) {
-    console.log("call Menubar Mold Other save sendMail");
-    //const rows = document.querySelectorAll("#tableBody tr"); //table id material body
-    //var vmsg = ""
-    const form1 = document.forms.namedItem("formOtherData1"); // form header
-    //const form2 = document.forms.namedItem("formMoldData2"); // form Process Detail.
-    //const form3 = document.forms.namedItem("formMoldData3"); // form Mat Detail, Summary ,email
-
-
-    let viewModel1 = new FormData(form1);  // form header
-    //let viewModel2 = new FormData(form2);  // form Process Detail.
-    //let viewModel3 = new FormData(form3);  // form Mat Detail, Summary ,email
-
-
-
-    $.each(form1, function (index, input) {
-        viewModel1.append(input.name, input.value);
-    });
-    //$.each(form2, function (index, input) {
-    //    viewModel2.append(input.name, input.value);
-    //});
-    //$.each(form3, function (index, input) {
-    //    viewModel3.append(input.name, input.value);
-    //});
-
-
-    //form header form Mat Detail, Summary ,email
-    // สร้าง FormData ใหม่เพื่อรวมทั้งสองอัน
-    let headerFormData = new FormData();
-    // ใส่ข้อมูลจาก viewModel1
-    viewModel1.forEach((value, key) => {
-        headerFormData.append(key, value);
-    });
-    // ใส่ข้อมูลจาก viewModel3
-    //viewModel3.forEach((value, key) => {
-    //    headerFormData.append(key, value);
-    //});
-
-
-
-    //tab Process
-    //$.each(form2, function (index, input) {
-    //    viewModel2.append(input.name, input.value);
-    //});
-
-
-
-    //table matrerail body
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); // เดือนเริ่มจาก 0
-    const yyyy = today.getFullYear();
-    const formattedDate = `${dd}/${mm}/${yyyy}`;
-
-    const rows = document.querySelectorAll("#tableBodyItem tr"); //table id material body
-    //table matrerail body
-    ceMastMoldOtherRequestItem = [];
-    rows.forEach((row, index) => {
-
-        const itemPartNoInput = row.querySelector(".vPartNo");
-        const itemPartNo = itemPartNoInput.value.trim();
-
-        if (!itemPartNo) {
-            alert(`กรุณากรอกชื่อ Item (บรรทัดที่ ${index + 1})`);
-            itemPartNoInput.focus(); // optional: focus ช่องนั้น
-            throw new Error("PartNo is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
-        }
-
-        ceMastMoldOtherRequestItem.push({
-            moiDocnomain: "",
-            moiRunno: index + 1, // ✅ เริ่มจาก 1
-            moiPartName: row.querySelector(".vPartNo").value.trim(),
-            moiCusName: row.querySelector(".vCustomerName").value.trim(),
-            moiCavityNo: parseInt(row.querySelector(".vCavityNo").value) || 0,
-            moiTypeCavity: row.querySelector(".vTypeCavity").value.trim(),
-            moiIssueDate: formattedDate.toString()
-        });
-    });
-
-    //headerFormData.append("_ceItemModifyRequest", JSON.stringify(_listViewceItemModifyRequest));
-
-    //1.check send mail
-    //2.save form
-    //3.send mail
-    //4.save item
-    $.ajax({
-        type: "POST",
-        url: action,
-        data: headerFormData,
-        processData: false,
-        contentType: false,
-        beforeSend: function () {
-            swal.fire({
-                html: '<h5>Loading...</h5>',
-                showConfirmButton: false,
-                onRender: function () {
-                    // there will only ever be one sweet alert open.
-                    //$('.swal2-content').prepend(sweet_loader);
-                }
-            });
-        },
-        success: async function (config) {
-            // alert(config.c1);
-            if (config.c1 == "S") {
-                await $("#myModalSendMold").modal("hide");
-                swal.fire({
-                    title: 'SUCCESS',
-                    icon: 'success',
-                    text: config.c2,
-                }).then((result) => {
-                    if (result.isConfirmed) {
-
-                    }
-                });
-
-                //await $("#myModalSendMold").modal("hide");
-                //var v_RonDoc = config.c3;
-                //var v_lotNo = config.c_lotNo;
-                //var v_RefNo = config.c_RefNo;
-                //var v_RevNo = config.c_RevNo;
-
-                //viewModel2.append("_runNo", v_RonDoc);
-                //viewModel2.append("_LotNo", v_lotNo);
-                //viewModel2.append("_RefNo", v_RefNo);
-                //viewModel2.append("_RevNo", v_RevNo);
-
-                //$.ajax({
-                //    type: "POST",
-                //    url: action2,//'@Url.Action("SaveCeItem","NewMoldModify")', //action,
-                //    data: viewModel2,
-                //    processData: false,
-                //    contentType: false,
-                //    beforeSend: function () {
-                //        swal.fire({
-                //            html: '<h5>Loading...</h5>',
-                //            showConfirmButton: false,
-                //            onRender: function () {
-                //                // there will only ever be one sweet alert open.
-                //                //$('.swal2-content').prepend(sweet_loader);
-                //            }
-                //        });
-                //    },
-                //    success: async function (config) {
-                //        swal.fire({
-                //            title: 'SUCCESS',
-                //            icon: 'success',
-                //            text: config.c2,
-                //        }).then((result) => {
-                //            if (result.isConfirmed) {
-                //                //console.log("config.c3" + config.c3);
-                //                GoSideMenu("SearchMold");
-                //                //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
-                //            }
-                //        });
-
-
-                //    },
-                //    error: function (xhr, status, err) {
-                //        Swal.close(); // <<== ให้ปิด Loading ตอน error
-                //        Swal.fire({
-                //            icon: "error",
-                //            title: "error",
-                //            text: "An error occurred while saving. Please try again.",
-                //        });
-                //    }
-                //});
-            }
-            else if (config.c1 == "E") {
-                //$("#loaderDiv").hide();
-                //await $("#myModal1").modal("hide");
-                Swal.fire({
-                    icon: 'error',
-                    title: 'ERROR',
-                    text: config.c2,
-                })
-                    .then((result) => {
-                        $("#myModalSendMold").modal("show");
-                    });
-
-            }
-            else if (config.c1 == "P") {
-                //$("#loaderDiv").hide();
-                //await $("#myModal1").modal("hide");
-                await $("#myModalSendMold").modal("hide");
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'warning',
-                    text: config.c2,
-                })
-                    .then((result) => {
-                        //$("#myModal1").modal("show");
-                    });
-
-            }
-
-        }
-    });
-
-}
-
-//Mold other Working
-function Menubar_MoldOtherWKsendmail(getID, action) {
-
-    let vmsg = "";
-    if (vmsg != "") {
-        swal.fire({
-            title: 'แจ้งเตือน',
-            icon: 'warning',
-            text: vmsg,
-        })
-            .then((result) => {
-
-            });
-    }
-    else {
-        const form1 = document.forms.namedItem("formMoldOWKRequest");
-        let viewModel1 = new FormData(form1);
-
-
-
-        $.each(form1, function (index, input) {
-            viewModel1.append(input.name, input.value);
-        });
-        //$.each(form3, function (index, input) {
-        //    viewModel3.append(input.name, input.value);
-        //});
-
-
-        // สร้าง FormData ใหม่เพื่อรวมทั้งสองอัน
-        let combinedFormData = new FormData();
-        // ใส่ข้อมูลจาก viewModel1
-        viewModel1.forEach((value, key) => {
-            combinedFormData.append(key, value);
-        });
-        //// ใส่ข้อมูลจาก viewModel2
-        //viewModel3.forEach((value, key) => {
-        //    combinedFormData.append(key, value);
-        //});
-
-
-        //tab mat
-        //$.each(form2, function (index, input) {
-        //    viewModel2.append(input.name, input.value);
-        //});
-
-
-
-
-
-
-        $.ajax({
-            type: 'post',
-            url: action,
-            data: combinedFormData,
-            processData: false,
-            contentType: false,
-            success: function (data) {
-
                 var htmls = "";
                 if (data.status == "hasHistory") {
                     htmls = " <div class='panel panel-default property'>"
@@ -4712,7 +4583,479 @@ function Menubar_MoldOtherWKsendmail(getID, action) {
                 //var url = data.partial + mydata;
                 var url = data.partial;
                 //console.log("url" + url);
+                $("#myModalBodySendMold").load(url, function () {
+                    $('#divHistory').html(htmls);
+                    $("#myModalSendMold").modal("show");
+                })
 
+            }
+        });
+    }
+
+
+}
+function Menubar_MoldOther_savesendMail(action) {
+
+    let isChecked = document.getElementById("StatusApp").checked;
+    console.log(isChecked); // true = เลือกแล้ว, false = ยังไม่ได้เลือก
+
+
+    console.log("call Menubar Mold Other save sendMail");
+
+    const form1 = document.forms.namedItem("formOtherData1");
+
+
+    let viewModel1 = new FormData(form1);  // form header
+
+    $.each(form1, function (index, input) {
+        viewModel1.append(input.name, input.value);
+    });
+
+    //form header form Mat Detail, Summary ,email
+    // สร้าง FormData ใหม่เพื่อรวมทั้งสองอัน
+    let headerFormData = new FormData();
+    // ใส่ข้อมูลจาก viewModel1
+    viewModel1.forEach((value, key) => {
+        headerFormData.append(key, value);
+    });
+    // ใส่ข้อมูลจาก viewModel3
+    //viewModel3.forEach((value, key) => {
+    //    headerFormData.append(key, value);
+    //});
+
+
+
+    //tab Process
+    //$.each(form2, function (index, input) {
+    //    viewModel2.append(input.name, input.value);
+    //});
+
+
+
+    //table matrerail body
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // เดือนเริ่มจาก 0
+    const yyyy = today.getFullYear();
+    const formattedDate = `${dd}/${mm}/${yyyy}`;
+
+    const rows = document.querySelectorAll("#tableBodyItem tr"); //table id material body
+    //table matrerail body
+    let vmsg = "";
+    let vstep = document.getElementById("step").value;
+    if (rows.length == 0 && vstep == 1 && isChecked == true) {
+        vmsg = "กรุณาเพิ่ม Part name !!!";
+        document.getElementById("btnAddPartName").focus();
+    }
+    ceItemPartName = [];
+    if (vstep == 1 && isChecked == true) {
+        rows.forEach((row, index) => {
+            const itemPartNoInput = row.querySelector(".vPartName");
+            const itemPartNo = itemPartNoInput.value.trim();
+
+            const itemTypeCavityNoInput = row.querySelector(".vTypeCavity");
+            const itemTypeCavity = itemTypeCavityNoInput.options[itemTypeCavityNoInput.selectedIndex].text.trim();
+
+            //const itemCavityNoInput = row.querySelector(".vCavityNo");
+            //const itemCavityNo = itemCavityNoInput.value.trim();
+
+            //alert(itemTypeCavity);
+            if (!itemPartNo) {
+                alert(`กรุณากรอกชื่อ Part Name (บรรทัดที่ ${index + 1})`);
+                itemPartNoInput.focus(); // optional: focus ช่องนั้น
+                throw new Error("Part Name is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
+            }
+
+            if (itemTypeCavity.includes("กรุณาเลือก")) {
+                alert(`กรุณาเลือก Type of Cavity (บรรทัดที่ ${index + 1})`);
+                itemTypeCavityNoInput.focus(); // optional: focus ช่องนั้น
+                throw new Error("Type of Cavity.​ is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
+            }
+
+            ceItemPartName.push({
+                ipDocumentNo: "",
+                ipRunNo: index + 1, // ✅ เริ่มจาก 1
+                ipPartName: row.querySelector(".vPartName").value.trim(),
+                ipCavityNo: parseInt(row.querySelector(".vCavityNo").value) || 0,
+                ipTypeCavity: itemTypeCavityNoInput.options[itemTypeCavityNoInput.selectedIndex].text.trim(),   //row.querySelector(".vTypeCavity").value.trim(),
+            });
+        });
+
+    }
+    headerFormData.append("_ceItemPartName", JSON.stringify(ceItemPartName));
+
+
+    //1.check send mail
+    //2.save form
+    //3.send mail
+    //4.save item
+    if (vmsg != "") {
+        swal.fire({
+            title: 'แจ้งเตือน',
+            icon: 'warning',
+            text: vmsg,
+        })
+            .then((result) => {
+
+            });
+    }
+    else {
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: headerFormData,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                swal.fire({
+                    html: '<h5>Loading...</h5>',
+                    showConfirmButton: false,
+                    onRender: function () {
+                        // there will only ever be one sweet alert open.
+                        //$('.swal2-content').prepend(sweet_loader);
+                    }
+                });
+            },
+            success: async function (config) {
+                // alert(config.c1);
+                if (config.c1 == "S") {
+                    await $("#myModalSendMold").modal("hide");
+                    swal.fire({
+                        title: 'SUCCESS',
+                        icon: 'success',
+                        text: config.c2,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            GoSideMenu("SearchMoldOther");
+                        }
+                    });
+                }
+                else if (config.c1 == "E") {
+                    //$("#loaderDiv").hide();
+                    //await $("#myModal1").modal("hide");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ERROR',
+                        text: config.c2,
+                    })
+                        .then((result) => {
+                            $("#myModalSendMold").modal("show");
+                        });
+
+                }
+                else if (config.c1 == "P") {
+                    //$("#loaderDiv").hide();
+                    //await $("#myModal1").modal("hide");
+                    await $("#myModalSendMold").modal("hide");
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'warning',
+                        text: config.c2,
+                    })
+                        .then((result) => {
+                            //$("#myModal1").modal("show");
+                        });
+
+                }
+
+            }
+        });
+    }
+
+
+
+
+}
+
+//Mold other Working
+function Menubar_MoldOtherWKsaveDraft(action, action2) {
+    var getID = document.getElementById("i_NewOtherWK_DocumentNo").value; //txtMIssueID
+    const form1 = document.forms.namedItem("formMoldOWKRequest");
+    let viewModel1 = new FormData(form1);
+
+
+    _ItemWorkingTimePartName = [];
+    _ItemWorkingTimeSizeProduct = [];
+
+
+    const groupDivs = document.querySelectorAll('.table-groupPartName');
+
+    groupDivs.forEach(div => {
+        // console.log("111111");
+        const tableItemName = div.querySelector('table.ItemName'); // ดึง table ภายใน
+        const rowsTr = tableItemName.querySelectorAll('tr#trbodyItemName');
+        //if (!tableItemName) return; // ถ้าไม่มี table ข้ามไป
+        rowsTr.forEach((tr, rowIndex) => {
+            //console.log("22222");
+            //    // ดึงทุก td ของ tr นี้
+            const tds = tr.querySelectorAll('td');
+            const inputtotal = tr.querySelector('input.input-total');
+            console.log("✅ เจอ input inputtotal: " + inputtotal.value.trim());
+            tds.forEach((td, tdIndex) => {
+                const inputDocumentNo = td.querySelector('input.input-DocumentNo');
+                const inputPartName = td.querySelector('input.input-PartName');
+                const inputCavityNo = td.querySelector('input.input-CavityNo');
+                const inputTypeCavity = td.querySelector('input.input-TypeCavity');
+                const inputNoProcess = td.querySelector('input.input-NoProcess');
+                const inputGroupName = td.querySelector('input.input-GroupName');
+                const inputProcessName = td.querySelector('input.input-ProcessName');
+                //const inputNoProcess = td.querySelector('input.input-NoProcess');
+                const inputMan = td.querySelector('input.input-man');
+                const inputAuto = td.querySelector('input.input-auto');
+                const inputEnableman = td.querySelector('input.input-Enableman');
+                const inputEnableAuto = td.querySelector('input.input-EnableAuto');
+                if (inputAuto && inputMan) {
+                    if (inputAuto.value.trim() !== "") {
+                        console.log("✅ เจอ input: " + inputAuto.value.trim() + ": " + inputMan.value.trim());
+                        console.log("✅ เจอ input: " + inputEnableman.value + ": " + inputEnableAuto.value);
+                        _ItemWorkingTimePartName.push({
+                            wpDocumentNoSub: inputDocumentNo.value.trim(),
+                            wpRunNo: 0, //int
+                            wpPartName: inputPartName.value.trim(),
+                            wpCavityNo: inputCavityNo.value.trim(),
+                            wpTypeCavity: inputTypeCavity.value.trim(),
+                            wpNoProcess: 0, //int
+                            wpGroupName: inputGroupName.value.trim(),
+                            wpProcessName: inputProcessName.value.trim(),
+                            wpWT_Man: parseInt(inputMan.value.trim()) || 0,//double
+                            wpWT_Auto: parseInt(inputAuto.value.trim()) || 0,//double
+                            wpEnable_WTMan: inputEnableman.value,//bit
+                            wpEnable_WTAuto: inputEnableAuto.value,//bit
+                            wpTotal: parseInt(inputtotal.value) || 0,//double
+                            wpIssueDate: "",
+                        });
+
+
+
+
+                    }
+                }
+
+            });
+
+        });
+
+
+
+
+        const table = div.querySelector('table.ItemSize'); // ดึง table ภายใน
+        if (!table) return; // ถ้าไม่มี table ข้ามไป
+
+        const itemTypeCavity = table.querySelector('.input-size');
+        const itemValuesTypeCavity = itemTypeCavity.value.trim();
+        console.log("itemTypeCavity==> " + itemTypeCavity);
+        if (itemValuesTypeCavity == "") {
+            alert(`กรุณาเลือก Type of Cavity`);
+            itemTypeCavity.focus(); // optional: focus ช่องนั้น
+            throw new Error("Type of Cavity.​ is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
+        }
+
+        _ItemWorkingTimeSizeProduct.push({
+            wsDocumentNoSub: table.querySelector('.input-DocumentNo').value.trim(),
+            wsRunNo: 0,
+            wsPartName: table.querySelector('.input-PartName').value.trim(),
+            wsCavityNo: table.querySelector('.input-CavityNo').value.trim(),
+            wsTypeCavity: table.querySelector('.input-TypeCavity').value.trim(),
+            wsSize: table.querySelector('.input-size').value.trim(),
+            wsSizeProductX: parseInt(table.querySelector('.input-x').value) || 0,
+            wsSizeProductY: parseInt(table.querySelector('.input-y').value) || 0,
+            wsSizeProductz: parseInt(table.querySelector('.input-z').value) || 0,
+        });
+
+
+
+    });
+
+    viewModel1.append("_ItemWorkingTimePartName", JSON.stringify(_ItemWorkingTimePartName));
+    viewModel1.append("_ItemWorkingTimeSizeProduct", JSON.stringify(_ItemWorkingTimeSizeProduct));
+
+    $.ajax({
+        type: "POST",
+        url: action,
+        data: viewModel1,
+        processData: false,
+        contentType: false,
+        beforeSend: function () {
+            swal.fire({
+                html: '<h5>Loading...</h5>',
+                showConfirmButton: false,
+                onRender: function () {
+                    // there will only ever be one sweet alert open.
+                    //$('.swal2-content').prepend(sweet_loader);
+                }
+            });
+        },
+        success: async function (config) {
+            // alert(config.c1);
+            if (config.c1 == "S") {
+                //await $("#myModalMoldWKSendmail").modal("hide");
+                swal.fire({
+                    title: 'SUCCESS',
+                    icon: 'success',
+                    text: config.c2,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //console.log("config.c3" + config.c3);
+                        GoNewMoldOtherWKRequest(getID, "");
+                        //GoSideMenu("SearchMoldOther");
+                        //GoSideMenu("SearchMold");
+                        //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                    }
+                });
+            }
+            else if (config.c1 == "E") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        //$("#myModalMoldWKSendmail").modal("show");
+                    });
+
+            }
+            else if (config.c1 == "P") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                //await $("#myModalMoldWKSendmail").modal("hide");
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'warning',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        //$("#myModal1").modal("show");
+                    });
+
+            }
+
+        }
+    });
+
+
+
+
+
+}
+function Menubar_MoldOtherWKsendmail(getID, action) {
+    console.log("Menubar_MoldOtherWKsendmail");
+    let vmsg = "";
+    if (vmsg != "") {
+        swal.fire({
+            title: 'แจ้งเตือน',
+            icon: 'warning',
+            text: vmsg,
+        })
+            .then((result) => {
+
+            });
+    }
+    else {
+        // console.log("Menubar_MoldOtherWKsendmail==>1");
+        //const form1 = document.forms.namedItem("formMoldOWKRequest");
+        //let viewModel1 = new FormData(form1);
+        //$.each(form1, function (index, input) {
+        //    viewModel1.append(input.name, input.value);
+        //});
+
+        let formElement = document.getElementById("formMoldOWKRequest");
+        let viewModel1 = new FormData(formElement);
+
+
+        //viewModel1.forEach((value, key) => {
+        //    combinedFormData.append(key, value);
+        //});
+
+        $.ajax({
+            type: 'post',
+            url: action,
+            data: viewModel1,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+
+                var htmls = "";
+                if (data.status == "hasHistory") {
+                    htmls = " <div class='panel panel-default property'>"
+                    // console.log(data.listHistory.length);
+                    $.each(data.listHistory, function (i, item) {
+                        //console.log('test' + item.htTo); console.log(data.listHistory[0].htTo);
+                        console.log("OK")
+                        htmls += "     <div class='panel-heading panel-heading-custom property' tabindex = '0' >"
+                        htmls += "         <h4 class='panel-title faq-title-range collapsed' data-bs-toggle='collapse' data-bs-target='#Ans" + item.htStep + "' aria-expanded='false' aria-controls='collapseExample'>"
+                        htmls += "             <label style='font-size: 13px;'>Step : "
+
+
+                        htmls += item.htStep;
+                        //if (item.htStep == 0) {
+                        //    htmls += item.htStep;
+                        //}
+                        //else {
+                        //    // htmls += (i + 1);
+                        //    htmls += (item.htStep + 1)
+                        //}
+
+                        htmls += "  </label > <label class='lbV'></label>"
+                        htmls += "         </h4>"
+                        htmls += "     </div >"
+                        htmls += "     <div class='panel-collapse collapse' style = 'overflow: auto;' id = 'Ans" + item.htStep + "' > "
+
+                        htmls += "         <div class='panel-body'>"
+                        htmls += "             <div style='font-size: x-small; clear: both; width: 100%; tetx-align: left; font-weight: bold;'>"
+                        htmls += "                 <label> " + item.htDate + " :: " + item.htTime + " น.</label>"
+
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
+                        htmls += "                 <label>FROM : </label></br>"
+                        htmls += "                 <label>" + item.htFrom + "</label > "
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
+                        htmls += "                 <label>TO : </label></br>"
+                        htmls += "                 <label>" + item.htTo + "</label>"
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
+                        if (item.htCC == null) { item.htCC = "" }
+                        else { item.htCC = item.htCC }
+                        htmls += "                 <label>CC : </label>"
+                        htmls += "                 <label>" + item.htCC + "</label>"
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: right; width: 20%; tetx-align: left;'>"
+                        if (item.htRemark == null) { item.htRemark = "" }
+                        else { item.htRemark = item.htRemark }
+                        htmls += "                 <label>Remark : </label>"
+                        htmls += "                 <label>" + item.htRemark + "</label>"
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: right; width: 20%; tetx-align: left;'>"
+                        htmls += "                 <label>Status : </label>"
+                        if (item.htStatus == null) { item.htStatus = "" }
+                        else {
+                            item.htStatus = item.htStatus
+                            if (item.htStatus == "Finished") {
+                                htmls += "                 <label><span style='color: green;'>" + item.htStatus + "</span></label>"
+                            } else {
+                                htmls += "                 <label><span style='color: darkkhaki;'>" + item.htStatus + "</span></label>"
+                            }
+                        }
+
+                        htmls += "             </div>"
+                        htmls += "         </div>"
+                        htmls += "     </div>"
+
+                    });
+                    htmls += "</div>"
+                }
+                else {
+                    htmls = " <div class='panel panel-default property'>"
+                    htmls += "     <div class='panel-heading panel-heading-custom property' tabindex = '0' >"
+                    htmls += " <label><span style='color: blue;'>ไม่มีประวัติการส่งอีเมล์</span></label>"
+                    htmls += "</div>"
+                    htmls += "</div>"
+                }
+
+                var url = data.partial;
+             
                 $("#myModalBodySendMold").load(url, function () {
                     $('#divHistory').html(htmls);
                     $("#myModalMoldWKSendmail").modal("show");
@@ -4721,8 +5064,217 @@ function Menubar_MoldOtherWKsendmail(getID, action) {
             }
         });
     }
+}
+function Menubar_MoldOtherWKsavesendMailData(action, action2) {
 
 
+    const form1 = document.forms.namedItem("formMoldOWKRequest");
+    let viewModel1 = new FormData(form1);
+
+
+    _ItemWorkingTimePartName = [];
+    _ItemWorkingTimeSizeProduct = [];
+
+
+    const groupDivs = document.querySelectorAll('.table-groupPartName');
+
+    groupDivs.forEach(div => {
+        // console.log("111111");
+        const tableItemName = div.querySelector('table.ItemName'); // ดึง table ภายใน
+        const rowsTr = tableItemName.querySelectorAll('tr#trbodyItemName');
+        //if (!tableItemName) return; // ถ้าไม่มี table ข้ามไป
+        rowsTr.forEach((tr, rowIndex) => {
+            //console.log("22222");
+            //    // ดึงทุก td ของ tr นี้
+            const tds = tr.querySelectorAll('td');
+            const inputtotal = tr.querySelector('input.input-total');
+            console.log("✅ เจอ input inputtotal: " + inputtotal.value.trim());
+            tds.forEach((td, tdIndex) => {
+                const inputDocumentNo = td.querySelector('input.input-DocumentNo');
+                const inputPartName = td.querySelector('input.input-PartName');
+                const inputCavityNo = td.querySelector('input.input-CavityNo');
+                const inputTypeCavity = td.querySelector('input.input-TypeCavity');
+                const inputNoProcess = td.querySelector('input.input-NoProcess');
+                const inputGroupName = td.querySelector('input.input-GroupName');
+                const inputProcessName = td.querySelector('input.input-ProcessName');
+                //const inputNoProcess = td.querySelector('input.input-NoProcess');
+                const inputMan = td.querySelector('input.input-man');
+                const inputAuto = td.querySelector('input.input-auto');
+                const inputEnableman = td.querySelector('input.input-Enableman');
+                const inputEnableAuto = td.querySelector('input.input-EnableAuto');
+                if (inputAuto && inputMan) {
+                    if (inputAuto.value.trim() !== "") {
+                        console.log("✅ เจอ input: " + inputAuto.value.trim() + ": " + inputMan.value.trim());
+                        console.log("✅ เจอ input: " + inputEnableman.value + ": " + inputEnableAuto.value);
+                        _ItemWorkingTimePartName.push({
+                            wpDocumentNoSub: inputDocumentNo.value.trim(),
+                            wpRunNo: 0, //int
+                            wpPartName: inputPartName.value.trim(),
+                            wpCavityNo: inputCavityNo.value.trim(),
+                            wpTypeCavity: inputTypeCavity.value.trim(),
+                            wpNoProcess: 0, //int
+                            wpGroupName: inputGroupName.value.trim(),
+                            wpProcessName: inputProcessName.value.trim(),
+                            wpWT_Man: parseInt(inputMan.value.trim()) || 0,//double
+                            wpWT_Auto: parseInt(inputAuto.value.trim()) || 0,//double
+                            wpEnable_WTMan: inputEnableman.value,//bit
+                            wpEnable_WTAuto: inputEnableAuto.value,//bit
+                            wpTotal: parseInt(inputtotal) || 0,//double
+                            wpIssueDate: "",
+                        });
+
+
+
+
+                    }
+                }
+
+            });
+
+        });
+
+
+
+
+        const table = div.querySelector('table.ItemSize'); // ดึง table ภายใน
+        if (!table) return; // ถ้าไม่มี table ข้ามไป
+
+        const itemTypeCavity = table.querySelector('.input-size');
+        const itemValuesTypeCavity = itemTypeCavity.value.trim();
+        console.log("itemTypeCavity==> " + itemTypeCavity);
+        if (itemValuesTypeCavity == "") {
+            alert(`กรุณาเลือก Type of Cavity`);
+            itemTypeCavity.focus(); // optional: focus ช่องนั้น
+            throw new Error("Type of Cavity.​ is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
+        }
+
+        _ItemWorkingTimeSizeProduct.push({
+            wsDocumentNoSub: table.querySelector('.input-DocumentNo').value.trim(),
+            wsRunNo: 0,
+            wsPartName: table.querySelector('.input-PartName').value.trim(),
+            wsCavityNo: table.querySelector('.input-CavityNo').value.trim(),
+            wsTypeCavity: table.querySelector('.input-TypeCavity').value.trim(),
+            wsSize: table.querySelector('.input-size').value.trim(),
+            wsSizeProductX: parseInt(table.querySelector('.input-x').value) || 0,
+            wsSizeProductY: parseInt(table.querySelector('.input-y').value) || 0,
+            wsSizeProductz: parseInt(table.querySelector('.input-z').value) || 0,
+        });
+
+
+
+    });
+
+    viewModel1.append("_ItemWorkingTimePartName", JSON.stringify(_ItemWorkingTimePartName));
+    viewModel1.append("_ItemWorkingTimeSizeProduct", JSON.stringify(_ItemWorkingTimeSizeProduct));
+
+    //1.check send mail
+    //2.save form
+    //3.send mail
+    //4.save item
+    $.ajax({
+        type: "POST",
+        url: action,
+        data: viewModel1,
+        processData: false,
+        contentType: false,
+        beforeSend: function () {
+            swal.fire({
+                html: '<h5>Loading...</h5>',
+                showConfirmButton: false,
+                onRender: function () {
+                    // there will only ever be one sweet alert open.
+                    //$('.swal2-content').prepend(sweet_loader);
+                }
+            });
+        },
+        success: async function (config) {
+            // alert(config.c1);
+            if (config.c1 == "S") {
+                await $("#myModalMoldWKSendmail").modal("hide");
+                swal.fire({
+                    title: 'SUCCESS',
+                    icon: 'success',
+                    text: config.c2,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //console.log("config.c3" + config.c3);
+                        GoSideMenu("SearchMoldOther");
+                        //GoSideMenu("SearchMold");
+                        //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                    }
+                });
+            }
+            else if (config.c1 == "E") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        $("#myModalMoldWKSendmail").modal("show");
+                    });
+
+            }
+            else if (config.c1 == "P") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                await $("#myModalMoldWKSendmail").modal("hide");
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'warning',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        //$("#myModal1").modal("show");
+                    });
+
+            }
+
+        }
+    });
+
+}
+function DeleteFileUserWK(id, vname, action) {
+    var getID = document.getElementById("i_NewOtherWK_DocumentNo").value; //txtMIssueID
+    //action, vForm, vTeam, vSubject, vSrNo
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure delete File?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { id: id, vname: vname },
+                success: function (res) {
+                    swal.fire({
+                        title: 'แจ้งเตือน',
+                        icon: res.res,
+                        text: res.res,
+                    })
+                        .then((result) => {
+                            //GoSideMenu("Home");
+                            // GoNewRequest(getID)
+                            GoNewMoldOtherWKRequest(getID, "");
+                            //GoNewMoldRequest(getID)
+                            //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                        });
+
+
+
+                }
+            });
+        } else {
+            //console.log('Cancel');
+            return false;
+        }
+    });
 }
 
 

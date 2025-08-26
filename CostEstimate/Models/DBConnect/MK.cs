@@ -50,6 +50,36 @@ namespace CostEstimate.Models.DBConnect
             {
                 entity.HasKey(k => new { k.sdDocNo, k.sdRunNo, k.sdLotNo });
             });
+            modelBuilder.Entity<ViewceItemPartName>(entity =>
+            {
+                entity.HasKey(k => new { k.ipDocumentNo, k.ipPartName, k.ipCavityNo, k.ipTypeCavity });
+            });
+            modelBuilder.Entity<ViewceMastWorkingTimeRequest>(entity =>
+            {
+                entity.HasKey(k => new { k.wrDocumentNo, k.wrDocumentNoSub });
+            });
+            modelBuilder.Entity<ViewceMastMaterialRequest>(entity =>
+            {
+                entity.HasKey(k => new { k.mrDocumentNo, k.mrDocumentNoSub });
+            });
+            modelBuilder.Entity<ViewceMastToolGRRequest>(entity =>
+            {
+                entity.HasKey(k => new { k.trDocumentNo, k.trDocumentNoSub });
+            });
+
+            modelBuilder.Entity<ViewceMastInforSpacMoldRequest>(entity =>
+            {
+                entity.HasKey(k => new { k.irDocumentNo, k.irDocumentNoSub });
+            });
+            modelBuilder.Entity<ViewceItemWorkingTimePartName>(entity =>
+            {
+                entity.HasKey(k => new { k.wpDocumentNoSub, k.wpRunNo, k.wpPartName, k.wpCavityNo, k.wpTypeCavity });
+            });
+            modelBuilder.Entity<ViewceItemWorkingTimeSizeProduct>(entity =>
+            {
+                entity.HasKey(k => new { k.wsDocumentNoSub, k.wsPartName, k.wsCavityNo, k.wsTypeCavity });
+            });
+
         }
 
         public DbSet<ViewLoginPgm> _ViewLoginPgm { get; set; }
@@ -85,7 +115,24 @@ namespace CostEstimate.Models.DBConnect
         public DbSet<ViewceMastSubDetailHistorySum> _ViewceMastSubDetailHistorySum { get; set; } //for report history sum 
 
 
+        //mold Other
+        public DbSet<ViewceMastMoldOtherRequest> _ViewceMastMoldOtherRequest { get; set; }
+        public DbSet<ViewceItemPartName> _ViewceItemPartName { get; set; }
 
+        //working time
+        public DbSet<ViewceMastWorkingTimeRequest> _ViewceMastWorkingTimeRequest { get; set; }
+        public DbSet<ViewceItemWorkingTimePartName> _ViewceItemWorkingTimePartName { get; set; }
+        public DbSet<ViewceItemWorkingTimeSizeProduct> _ViewceItemWorkingTimeSizeProduct { get; set; }
+        
+
+        //material
+        public DbSet<ViewceMastMaterialRequest> _ViewceMastMaterialRequest { get; set; }
+
+        //Tool & GR
+        public DbSet<ViewceMastToolGRRequest> _ViewceMastToolGRRequest { get; set; }
+
+        //information spac
+        public DbSet<ViewceMastInforSpacMoldRequest> _ViewceMastInforSpacMoldRequest { get; set; }
 
 
         //public DbSet<GroupedResult> _GroupedResult { get; set; }

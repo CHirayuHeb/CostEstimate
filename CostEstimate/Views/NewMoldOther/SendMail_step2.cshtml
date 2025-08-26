@@ -37,11 +37,7 @@
             var ListSubject = new List<string> { "WORKING TIME", "MATERIAL", "TOOL & GR", "INFORMATION SPEC MOLD" };
         }
 
-        @for (int i = 0; i < Model._ListViewceHistoryApproved.Count(); i++)
-        {
-
-        }
-
+        
 
         <div class="row">
             @for (int i = 0; i < Model._ListViewceHistoryApproved.Count(); i++)
@@ -59,7 +55,29 @@
                         <span class="input-group-text w-25" style="font-size: 13px;">
                             To
                         </span>
-                        <input type="text" class="form-control" id=@($"searchInputTO{i}") asp-for="_ListViewceHistoryApproved[i].htTo" required style="font-size: 13px;" readonly="@(ViewBag.step == 6  ?  "readonly" : null)" />
+
+
+                        @*<input type="text" class="form-control" id=@($"searchInputTO{i}") asp-for="_ListViewceHistoryApproved[i].htTo" required style="font-size: 13px;" readonly="@(ViewBag.step == 6  ?  "readonly" : null)" />*@
+                        @if (i == 0)
+                        {
+                            @Html.DropDownListFor(m => m._ListViewceHistoryApproved[i].htTo, (SelectList)ViewBag._listName0, "กรุณาเลือก", new { @class = "form-control", id = ($"searchInputTO{i}"), autocomplete = "off", @style = "width:60%;font-size:12px;height:80%;" })
+
+                        }
+                        else if (i == 1)
+                        {
+                            @Html.DropDownListFor(m => m._ListViewceHistoryApproved[i].htTo, (SelectList)ViewBag._listName1, "กรุณาเลือก", new { @class = "form-control", id = ($"searchInputTO{i}"), autocomplete = "off", @style = "width:60%;font-size:12px;height:80%;" })
+
+                        }
+                        else if (i == 2)
+                        {
+                            @Html.DropDownListFor(m => m._ListViewceHistoryApproved[i].htTo, (SelectList)ViewBag._listName2, "กรุณาเลือก", new { @class = "form-control", id = ($"searchInputTO{i}"), autocomplete = "off", @style = "width:60%;font-size:12px;height:80%;" })
+
+                        }
+                        else if (i == 3)
+                        {
+                            @Html.DropDownListFor(m => m._ListViewceHistoryApproved[i].htTo, (SelectList)ViewBag._listName3, "กรุณาเลือก", new { @class = "form-control", id = ($"searchInputTO{i}"), autocomplete = "off", @style = "width:60%;font-size:12px;height:80%;" })
+
+                        }
 
                     </div>
                     <div class="input-group ig-property">
@@ -80,10 +98,10 @@
         <div class="d-flex justify-content-center" style="width: 100%; text-align: center; padding-top: 5px; padding-bottom: 5px;">
             <div class="p-1-modify" style="width: 100%; border: 1px grey;   ">
                 <div class="form-check form-check-inline" style="@(ViewBag.step == 7 ? "display: none;" : "")">
-                    @Html.RadioButtonFor(m => m._ListViewceHistoryApproved[0].htStatus, "Approve", new { @class = "", id = "StatusApp", onclick = "CheckDis('Approve')", required = "required", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Approve</label><br />
+                    @Html.RadioButtonFor(m => m._ListViewceHistoryApproved[0].htStatus, "Approve", new { @class = "", id = "StatusApp", onclick = "CheckDisstep2('Approve')", required = "required", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Approve</label><br />
                 </div>
                 <div class="form-check form-check-inline " style="@(ViewBag.step == 0 || (ViewBag.step <8 && ViewBag.step>3 ) ? "display: none;" : "")">
-                    @Html.RadioButtonFor(m => m._ListViewceHistoryApproved[0].htStatus, "Disapprove", new { @class = "", id = "StatusApp", onclick = "CheckDis('Disapprove')", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Disapprove</label><br />
+                    @Html.RadioButtonFor(m => m._ListViewceHistoryApproved[0].htStatus, "Disapprove", new { @class = "", id = "StatusApp", onclick = "CheckDisstep2('Disapprove')", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Disapprove</label><br />
                 </div>
             </div>
         </div>
@@ -92,13 +110,31 @@
 
     </div>
 
-
+    <div class=" panel-group ir fadeInUp animated wowload animated" style=" animation-name: fadeInUp; margin-bottom: 5px;">
+        <div class="panel panel-default property">
+            <div class=" panel-heading panel-heading-custom property" tabindex="0">
+                <br />
+                <h4 class="panel-title faq-title-range collapsed" data-bs-toggle="collapse" data-bs-target="#History"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    <label style="font-size:15px;font-weight:800">
+                        History
+                    </label>
+                    <label class="lbV">
+                    </label>
+                </h4>
+            </div>
+            <div class="panel-collapse collapse" id="History" style="overflow-y: scroll; max-height: 200px;">
+                <div id="divHistory" class="panel-body">
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
     <div class="modal-footer" style="width: 100%;">
 
-        <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="Menubar_MoldOther_savesendMail('@Url.Action("chkSaveData", "NewMoldOther")')" >Send mail</button>
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="Menubar_MoldOther_savesendMail('@Url.Action("chkSaveData", "NewMoldOther")')">Send mail</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 
     </div>

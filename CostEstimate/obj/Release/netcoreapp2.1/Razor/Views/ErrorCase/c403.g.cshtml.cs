@@ -49,7 +49,7 @@ using CostEstimate;
             WriteLiteral("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n");
             EndContext();
             BeginContext(156, 1351, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "b1cfd609d37c4f3d8f71cccc5089fd12", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "9091a5172c08475a9cb9f4610f314584", async() => {
                 BeginContext(162, 1338, true);
                 WriteLiteral(@"
     <meta http-equiv=""Content-Type"" content=""text/html; charset=iso-8859-1"" />
@@ -128,7 +128,7 @@ using CostEstimate;
             WriteLiteral("\r\n");
             EndContext();
             BeginContext(1509, 379, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "8bcd585f37fb42ba81f6914958c171b0", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "a2fe2d89ba494f0cb9d807900738969b", async() => {
                 BeginContext(1515, 366, true);
                 WriteLiteral(@"
     <div id=""header""><h6>Server Error</h6></div>

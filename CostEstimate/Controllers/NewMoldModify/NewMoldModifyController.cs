@@ -1176,7 +1176,15 @@ _MOLD._ViewLLLedger
                 }
                 catch (Exception ex)
                 {
-                    dbContextTransaction.Rollback();
+                   // dbContextTransaction.Rollback();
+                    try
+                    {
+                        dbContextTransaction.Rollback();
+                    }
+                    catch
+                    {
+                        // ignore ถ้า transaction ปิดไปแล้ว
+                    }
                     v_status = "E";
                     v_msg = "Error Save History: " + ex.Message;
                 }
@@ -1470,7 +1478,15 @@ _MOLD._ViewLLLedger
                 }
                 catch (Exception ex)
                 {
-                    dbContextTransaction.Rollback();
+                   // dbContextTransaction.Rollback();
+                    try
+                    {
+                        dbContextTransaction.Rollback();
+                    }
+                    catch
+                    {
+                        // ignore ถ้า transaction ปิดไปแล้ว
+                    }
                     v_status = "E";
                     // v_msg = "Error" + ex.InnerException?.InnerException?.Message;
                     v_msg = "Error Save: " + ex.InnerException.Message;
@@ -1552,7 +1568,15 @@ _MOLD._ViewLLLedger
                             v_status = "E";
                             v_error = e.Message;
                             v_msg = "Error Save file :" + e.Message;
-                            dbContextTransaction.Rollback();
+                            //dbContextTransaction.Rollback();
+                            try
+                            {
+                                dbContextTransaction.Rollback();
+                            }
+                            catch
+                            {
+                                // ignore ถ้า transaction ปิดไปแล้ว
+                            }
                         }
                     }
 
@@ -1723,7 +1747,15 @@ _MOLD._ViewLLLedger
 
                 catch (Exception ex)
                 {
-                    dbContextTransaction.Rollback();
+                   // dbContextTransaction.Rollback();
+                    try
+                    {
+                        dbContextTransaction.Rollback();
+                    }
+                    catch
+                    {
+                        // ignore ถ้า transaction ปิดไปแล้ว
+                    }
                     //v_status = "E";
                     //// v_msg = "Error" + ex.InnerException?.InnerException?.Message;
                     //v_msg = "Error Save: " + ex.InnerException.Message;
@@ -2359,12 +2391,21 @@ _MOLD._ViewLLLedger
                 }
                 catch (Exception ex)
                 {
-                    dbContextTransaction.Rollback();
+                   // dbContextTransaction.Rollback();
+                    try
+                    {
+                        dbContextTransaction.Rollback();
+                    }
+                    catch
+                    {
+                        // ignore ถ้า transaction ปิดไปแล้ว
+                    }
                     v_status = "E";
                     // v_msg = "Error" + ex.InnerException?.InnerException?.Message;
                     v_msg = "Error Save: " + ex.InnerException.Message;
                 }
             }
+
 
             string[] returnVal = { v_status, v_msg };
             return returnVal;
@@ -2425,7 +2466,15 @@ _MOLD._ViewLLLedger
 
                 catch (Exception ex)
                 {
-                    dbContextTransaction.Rollback();
+                   // dbContextTransaction.Rollback();
+                    try
+                    {
+                        dbContextTransaction.Rollback();
+                    }
+                    catch
+                    {
+                        // ignore ถ้า transaction ปิดไปแล้ว
+                    }
                     //v_status = "E";
                     //// v_msg = "Error" + ex.InnerException?.InnerException?.Message;
                     //v_msg = "Error Save: " + ex.InnerException.Message;

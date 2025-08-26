@@ -54,7 +54,7 @@ namespace CostEstimate.Controllers.SearchMold
                 //int pageSize = 10; // จำนวนรายการที่จะแสดงต่อหน้า
                 //int pageNumber = (page ?? 1); // หน้าเริ่มต้นคือหน้า 1 ถ้าไม่มีการระบุ
 
-                List<ViewceMastFlowApprove> _ViewceMastFlowApprove = _MK._ViewceMastFlowApprove.OrderBy(x => x.mfStep).Distinct().ToList();
+                List<ViewceMastFlowApprove> _ViewceMastFlowApprove = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "2").OrderBy(x => x.mfStep).Distinct().ToList();
                 SelectList formStatus = new SelectList(_ViewceMastFlowApprove.Select(s => s.mfSubject).Distinct());
                 ViewBag.vbformStatus = formStatus;
 
@@ -215,7 +215,7 @@ namespace CostEstimate.Controllers.SearchMold
         }
 
 
-
+        [HttpPost]
         public IActionResult btnExportExcel(Class @class)
         {
             string slipMat = DateTime.Now.ToString("yyyyMMdd:HHmmss");
@@ -224,7 +224,14 @@ namespace CostEstimate.Controllers.SearchMold
 
             //@class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.ToList();
             @class._ListViewceMastModifyRequest = _MK._ViewceMastModifyRequest.OrderByDescending(x => x.mfCENo).ToList();
+            @class._ListViewceMastModifyRequest.ForEach(item =>
+            {
+                var day = item.mfIssueDate.Substring(0, 2);
+                var month = item.mfIssueDate.Substring(3, 2);
+                var year = item.mfIssueDate.Substring(6, 4);
 
+                item.mfIssueDate = $"{year}/{month}/{day}";
+            });
             if (@class._ViewSearchData != null)
             {
                 if (@class._ViewSearchData.v_OrderNo != null && @class._ViewSearchData.v_OrderNo != "") //mfRefNo 

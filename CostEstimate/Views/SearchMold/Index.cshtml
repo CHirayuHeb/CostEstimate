@@ -14,9 +14,9 @@
             <div class="col-70 ">
             </div>
             <div class="col-15" style="text-align:right">
-              
+
             </div>
-         
+
             <div class="col-15" style="text-align:right">
                 <button class="button btnBrown " style="width:auto" onclick="GoSideMenuNewRequest('NewMoldModify')">
                     <img src="~/images/tool.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;font-size:10px" />
@@ -32,6 +32,7 @@
                 <div style="width:100%;">
                     <div id="divSearchMain" style="margin-inline: auto;border: 0px solid #a39e9e; background-color: aliceblue;padding:15px;border-radius:2px;">
                         <div style="text-align:right">
+                            @*formaction="@Url.Action("btnExportExcel", "SearchMold")"*@
                             <button type="submit"
                                     formaction="@Url.Action("btnExportExcel", "SearchMold")"
                                     formmethod="post"

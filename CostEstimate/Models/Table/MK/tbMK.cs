@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -639,10 +640,176 @@ namespace CostEstimate.Models.Table.MK
 
 
     //mold other 
+    [Table("ceMastMoldOtherRequest")]
+    public class ViewceMastMoldOtherRequest
+    {
+        [Key]
+        public string mrDocmentNo { get; set; }
+        public int mrRevision { get; set; }
+        public string mrCustomerName { get; set; }
+        public string mrFunction { get; set; }
+        public string mrModelName { get; set; }
+        public string mrEvent { get; set; }
+        public string mrMoldGo { get; set; }
+        public string mrTry1 { get; set; }
+        public string mrMoldMass { get; set; }
+        public string mrIssueDate { get; set; }
+        public int mrStep { get; set; }
+        public string mrStatus { get; set; }
+        public string mrEmpCodeRequest { get; set; }
+        public string mrNameRequest { get; set; }
+        public string mrEmpCodeApprove { get; set; }
+        public string mrNameApprove { get; set; }
+        public int mrFlowNo { get; set; } = 3;
+
+
+
+
+    }
+    [Table("ceItemPartName")]
+    public class ViewceItemPartName
+    {
+        [Key]
+        public string ipDocumentNo { get; set; }
+        public int ipRunNo { get; set; }
+        public string ipPartName { get; set; }
+        public double ipCavityNo { get; set; }
+        public string ipTypeCavity { get; set; }
+
+
+    }
+
+    [Table("ceMastWorkingTimeRequest")]
+    public class ViewceMastWorkingTimeRequest
+    {
+        [Key]
+        public string wrDocumentNo { get; set; }
+        public string wrDocumentNoSub { get; set; }
+        public string wrIssueDate { get; set; }
+        public int wrStep { get; set; }
+        public string wrStatus { get; set; }
+        public string wrEmpCodeRequest { get; set; }
+        public string wrNameRequest { get; set; }
+        public string wrEmpCodeApprove { get; set; }
+        public string wrNameApprove { get; set; }
+        public int wrFlowNo { get; set; } = 4;
+    }
+
+    [Table("ceItemWorkingTimePartName")]
+    public class ViewceItemWorkingTimePartName
+    {
+        [Key]
+        public string wpDocumentNoSub { get; set; }
+        public int wpRunNo { get; set; }
+        public string wpPartName { get; set; }
+        public double wpCavityNo { get; set; }
+        public string wpTypeCavity { get; set; }
+        public int wpNoProcess { get; set; }
+        public string wpGroupName { get; set; }
+        public string wpProcessName { get; set; }
+        public double wpWT_Man { get; set; }
+        public double wpWT_Auto { get; set; }
+        public bool wpEnable_WTMan { get; set; }
+        public bool wpEnable_WTAuto { get; set; }
+        public double wpTotal { get; set; }
+        public string wpIssueDate { get; set; }
+    }
+
+    public class GroupPartName
+    {
+
+        public string wpPartName { get; set; }
+        public double wpCavityNo { get; set; }
+        public string wpTypeCavity { get; set; }
+        public List<GroupViewceItemWorkingTimePartName> _GroupViewceItemWorkingTimePartName { get; set; }
+        public List<ViewceItemWorkingTimeSizeProduct> _GroupViewItemWorkingTimeSizeProduct { get; set; }
+    }
+
+    public class GroupViewceItemWorkingTimePartName
+    {
+        public string GroupName { get; set; }
+        public List<ViewceItemWorkingTimePartName> _ViewceItemWorkingTimePartName { get; set; }
+    }
+    [Table("ceItemWorkingTimeSizeProduct")]
+    public class ViewceItemWorkingTimeSizeProduct
+    {
+        [Key]
+        public string wsDocumentNoSub { get; set; }
+        public int wsRunNo { get; set; }
+        public string wsPartName { get; set; }
+        public double wsCavityNo { get; set; }
+        public string wsTypeCavity { get; set; }
+        public string wsSize { get; set; }
+        public double wsSizeProductX { get; set; }
+        public double wsSizeProductY { get; set; }
+        public double wsSizeProductz { get; set; }
+    }
+    public class GroupViewItemWorkingTimeSizeProduct
+    {
+        public string wsDocumentNoSub { get; set; }
+        public string wpPartName { get; set; }
+        public double wpCavityNo { get; set; }
+        public string wpTypeCavity { get; set; }
+        public List<ViewceItemWorkingTimeSizeProduct> _ViewceItemWorkingTimeSizeProduct { get; set; }
+    }
+
+
+    [Table("ceMastMaterialRequest")]
+    public class ViewceMastMaterialRequest
+    {
+        [Key]
+        public string mrDocumentNo { get; set; }
+        public string mrDocumentNoSub { get; set; }
+        public string mrIssueDate { get; set; }
+        public int mrStep { get; set; }
+        public string mrStatus { get; set; }
+        public string mrEmpCodeRequest { get; set; }
+        public string mrNameRequest { get; set; }
+        public string mrEmpCodeApprove { get; set; }
+        public string mrNameApprove { get; set; }
+        public int mrFlowNo { get; set; } = 5;
+    }
+
+    [Table("ceMastToolGRRequest")]
+    public class ViewceMastToolGRRequest
+    {
+        [Key]
+        public string trDocumentNo { get; set; }
+        public string trDocumentNoSub { get; set; }
+        public string trIssueDate { get; set; }
+        public int trStep { get; set; }
+        public string trStatus { get; set; }
+        public string trEmpCodeRequest { get; set; }
+        public string trNameRequest { get; set; }
+        public string trEmpCodeApprove { get; set; }
+        public string trNameApprove { get; set; }
+        public int trFlowNo { get; set; } = 6;
+    }
+
+    [Table("ceMastInforSpacMoldRequest")]
+    public class ViewceMastInforSpacMoldRequest
+    {
+        [Key]
+        public string irDocumentNoSub { get; set; }
+        public string irDocumentNo { get; set; }
+        public string irIssueDate { get; set; }
+        public int irStep { get; set; }
+        public string irStatus { get; set; }
+        public string irEmpCodeRequest { get; set; }
+        public string irNameRequest { get; set; }
+        public string irEmpCodeApprove { get; set; }
+        public string irNameApprove { get; set; }
+        public int irFlowNo { get; set; } = 7;
+    }
+
+
+
+
+
     public class ViewceSubWorkingTimeRequestItem
     {
         [Key]
-        
+
         public string wriDocnomain { get; set; }
         public int wriRunno { get; set; }
         public string wriPartName { get; set; }

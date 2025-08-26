@@ -27,6 +27,7 @@ using PagedList;
 
 namespace CostEstimate.Controllers.Search
 {
+
     public class SearchController : Controller
     {
 
@@ -93,11 +94,11 @@ namespace CostEstimate.Controllers.Search
                 //int pageSize = 10; // จำนวนรายการที่จะแสดงต่อหน้า
                 //int pageNumber = (page ?? 1); // หน้าเริ่มต้นคือหน้า 1 ถ้าไม่มีการระบุ
 
-                List<ViewceMastFlowApprove> _ViewceMastFlowApprove = _MK._ViewceMastFlowApprove.OrderBy(x => x.mfStep).Distinct().ToList();
+                List<ViewceMastFlowApprove> _ViewceMastFlowApprove = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "1").OrderBy(x => x.mfStep).Distinct().ToList();
                 SelectList formStatus = new SelectList(_ViewceMastFlowApprove.Select(s => s.mfSubject).Distinct());
                 ViewBag.vbformStatus = formStatus;
 
-                //<List>ViewceMastSubMakerRequest
+                //<List>ViewceMastSubMakerRequest1
 
                 @class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.OrderByDescending(x => x.smDocumentNo).ToList();
 
@@ -246,7 +247,7 @@ namespace CostEstimate.Controllers.Search
             return View(@class);
         }
 
-
+        [HttpPost]
         public IActionResult btnExportExcel(Class @class)
         {
             string slipMat = DateTime.Now.ToString("yyyyMMdd:HHmmss");
@@ -254,6 +255,15 @@ namespace CostEstimate.Controllers.Search
             string fileName = "Export(" + slipMat + ").xlsx";
 
             @class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.ToList();
+            @class._ListceMastSubMakerRequest.ForEach(item =>
+            {
+                var day = item.smIssueDate.Substring(0, 2);
+                var month = item.smIssueDate.Substring(3, 2);
+                var year = item.smIssueDate.Substring(6, 4);
+
+                item.smIssueDate = year + "/" + month + "/" + day;
+            });
+
             if (@class._ViewSearchData != null)
             {
                 if (@class._ViewSearchData.v_OrderNo != null && @class._ViewSearchData.v_OrderNo != "")

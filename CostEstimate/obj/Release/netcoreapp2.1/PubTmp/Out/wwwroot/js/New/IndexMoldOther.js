@@ -81,7 +81,13 @@ console.log(today); // ผลลัพธ์: 2025/02/19
 //});
 // });
 
+//New Mold Other
+$("#btnfileMoldOther").click(function () {
+    $("#myModalNewMoldOther").modal("show");
+});
 
 
 
-
+$("#btnfileMoldOtherWK").click(function () {
+    $("#myModalNewMoldOtherWK").modal("show");
+});

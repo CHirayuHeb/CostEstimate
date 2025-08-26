@@ -46,6 +46,11 @@ namespace CostEstimate.Controllers.SearchMoldOther
         [Authorize("Checked")]
         public IActionResult Index(Class @class)
         {
+            @class._ListViewceMastMoldOtherRequest = new List<ViewceMastMoldOtherRequest>();
+            @class._ListViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.OrderByDescending(x => x.mrDocmentNo).ToList();
+
+           
+
             return View(@class);
         }
         public IActionResult btnExportExcel(Class @class)

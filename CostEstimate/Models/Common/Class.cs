@@ -17,6 +17,7 @@ namespace CostEstimate.Models.Common
         public Error _Error { get; set; }
         public string param { get; set; }
         public string paramtype { get; set; }
+        public string Moldtype { get; set; }
 
         public string paramCostNo { get; set; }
         public string paramCostDes { get; set; }
@@ -35,7 +36,7 @@ namespace CostEstimate.Models.Common
 
         public ViewSearchHisSum _ViewSearchHisSum { get; set; } //for search history sum 09/07/2025
 
-        
+
 
 
         public List<ViewceMastSubMakerRequest> _ListceMastSubMakerRequest { get; set; }
@@ -193,12 +194,42 @@ namespace CostEstimate.Models.Common
         public List<GroupViewceDetailSubMakerRequestHissum> _ListGroupViewceDetailSubMakerRequestHissum { get; set; }
 
         public ViewceMastSubHistorySum _ViewceMastSubHistorySum { get; set; }
-        public List<ViewceMastSubDetailHistorySum> _ListViewceMastSubDetailHistorySum  { get; set; }
+        public List<ViewceMastSubDetailHistorySum> _ListViewceMastSubDetailHistorySum { get; set; }
         public GroupDetailSubMakerRequestHissum GroupDetailSubMakerRequestHissum { get; set; }
         public List<GroupDetailSubMakerRequestHissum> _ListGroupDetailSubMakerRequestHissum { get; set; }
 
 
         //mold other
+        public ViewceMastMoldOtherRequest _ViewceMastMoldOtherRequest { get; set; }
+        public List<ViewceMastMoldOtherRequest> _ListViewceMastMoldOtherRequest { get; set; }
+        public ViewceItemPartName _ViewceItemPartName { get; set; }
+        public List<ViewceItemPartName> _ListViewceItemPartName { get; set; }
+
+
+        //working time
+        public ViewceMastWorkingTimeRequest _ViewceMastWorkingTimeRequest { get; set; }
+        public List<ViewceMastWorkingTimeRequest> _ListViewceMastWorkingTimeRequest { get; set; }
+        public ViewceItemWorkingTimePartName _ViewceItemWorkingTimePartName { get; set; }
+        public List<ViewceItemWorkingTimePartName> _ListViewceItemWorkingTimePartName { get; set; }
+        public GroupPartName _GroupPartName { get; set; }
+        public List<GroupPartName> _ListGroupPartName { get; set; }
+        public GroupViewceItemWorkingTimePartName _GroupViewceItemWorkingTimePartName { get; set; }
+        public List<GroupViewceItemWorkingTimePartName> _ListGroupViewceItemWorkingTimePartName { get; set; }
+        public ViewceItemWorkingTimeSizeProduct _ViewceItemWorkingTimeSizeProduct { get; set; }
+        public List<ViewceItemWorkingTimeSizeProduct> _ListViewceItemWorkingTimeSizeProduct { get; set; }
+
+
+        //material
+        public ViewceMastMaterialRequest _ViewceMastMaterialRequest { get; set; }
+
+        //Tool & GR
+        public ViewceMastToolGRRequest _ViewceMastToolGRRequest { get; set; }
+
+        //information spac
+        public ViewceMastInforSpacMoldRequest _ViewceMastInforSpacMoldRequest { get; set; }
+
+
+
         public ViewceSubWorkingTimeRequestItem _ViewceSubWorkingTimeRequestItem { get; set; }
         public List<ViewceSubWorkingTimeRequestItem> _ListViewceSubWorkingTimeRequestItem { get; set; }
         public GroupViewceSubWorkingTimeRequestItem _GroupViewceSubWorkingTimeRequestItem { get; set; }

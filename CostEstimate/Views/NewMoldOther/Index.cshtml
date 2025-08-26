@@ -21,29 +21,29 @@
     <div id="DisplayContent" class="content-box">
         <div style="" class="content-text">
             <br />
-            <div class="row center" style="padding:5px;background-color:#9bbd5e;margin-bottom:5px;border:0px solid #b4f739;margin:5px">
-                <div class="col-60 " style="text-align:left">
-                    <span style="text-align:left;font-size:24px;padding-top:8px;padding-bottom:8px;font-weight:600">
-                        <span style="color:green">MOLD OTHER </span> REQUEST SHEET DETAIL.
+            <div class="row center" style="padding:5px; background-color:#6fa54f; margin-bottom:5px; border-radius:5px;">
+                <div class="col-60" style="text-align:left">
+                    <span style="font-size:24px; font-weight:600; color:#ffffff; line-height:1.4;">
+                        <span style="color:#b3e07d">MOLD OTHER</span> REQUEST SHEET DETAIL.
                     </span>
+                    <span style="font-size:22px; font-weight:600; color:white; line-height:1.4; margin-top:10px; display:block;">
 
-                    @*<div class="grid-item fw-800  " style="text-align:left;font-size:24px;padding-top:8px;padding-bottom:8px"> <span style="color:green">MOLD OTHER </span> REQUEST SHEET DETAIL.</div>*@
-
+                    </span>
                 </div>
                 <div class="col-40 center" style="text-align:right;">
 
-                    <button class="button btnBlue" style="margin-right:20px;width:auto; @(Model._ViewceMastModifyRequest.mfStep > 1 ? "" : "display:none")"
-                            onclick="Menubar_PrintMoldQUOTATION('@Url.Action("PrintMoldQUOTATION","NewMoldModify")','@Model._ViewceMastModifyRequest.mfCENo')">
+                    @*<button class="button btnBlue" style="margin-right:20px;width:auto; @(Model._ViewceMastMoldOtherRequest.rfStep > 8 ? "" : "display:none")"
+                            onclick="Menubar_PrintMoldQUOTATION('@Url.Action("PrintMoldQUOTATION", "NewMoldModify")','@Model._ViewceMastModifyRequest.mfCENo')">
                         <img src="~/images/printer.png" style="width:33px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
                         REPORT
-                    </button>
-                    <button class="button" style="width:auto" onclick="Menubar_MoldOther_sendmail('','@Url.Action("History","NewMoldOther")')">
+                    </button>*@
+                    <button class="button" style="width:auto" onclick="Menubar_MoldOther_sendmail('','@Url.Action("History", "NewMoldOther")')">
                         <img src="~/images/direct.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
                         SEND
                     </button>
 
-                    <button class="button btnGray" style="width:auto ; @(Model._ViewceMastModifyRequest.mfStep == 6 ? "pointer-events: none;" : "")"
-                            onclick="Menubar_MoldsaveDraft('@Url.Action("SaveDraft","NewMoldModify")','@Url.Action("SaveCeDetailSub","NewMoldModify")')">
+                    <button class="button btnGray" style="width:auto ; @(Model._ViewceMastMoldOtherRequest.mrStep == 8 ? "pointer-events: none;" : "")"
+                            onclick="Menubar_MoldOther_saveDraft('@Url.Action("SaveDraft", "NewMoldOther")')">
                         <img src="~/images/savedaft.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
                         SAVE DAFT
                     </button>
@@ -51,6 +51,16 @@
             </div>
             <div style="width:100%;">
                 <form id="formOtherRequest1" name="formOtherData1">
+
+                    @Html.HiddenFor(m => m._ViewceMastMoldOtherRequest.mrStep, new { id = "step" })
+                    @Html.HiddenFor(m => m._ViewceMastMoldOtherRequest.mrStatus, new { id = "Status" })
+                    @Html.HiddenFor(m => m._ViewceMastMoldOtherRequest.mrEmpCodeRequest, new { id = "EmpCodeRequest" })
+                    @Html.HiddenFor(m => m._ViewceMastMoldOtherRequest.mrNameRequest, new { id = "NameRequest" })
+                    @Html.HiddenFor(m => m._ViewceMastMoldOtherRequest.mrEmpCodeApprove, new { id = "EmpCodeApprove" })
+                    @Html.HiddenFor(m => m._ViewceMastMoldOtherRequest.mrNameApprove, new { id = "NameApprove" })
+                    @Html.HiddenFor(m => m._ViewceMastMoldOtherRequest.mrFlowNo, new { id = "mrFlowNo" })
+
+
                     <div id="divNewOther" style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:10px;border-radius:2px;">
 
                         <div class="row center">
@@ -71,14 +81,14 @@
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Customer Name.</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_CusName">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_CusName" asp-for="_ViewceMastMoldOtherRequest.mrCustomerName">
                                 </div>
 
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Document No.</div>
                                 </div>
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_DocumentNo" readonly>
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_DocumentNo" asp-for="_ViewceMastMoldOtherRequest.mrDocmentNo" readonly>
 
                                 </div>
 
@@ -95,14 +105,14 @@
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Function</div>
                                 </div>
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_Function" maxlength="20">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_Function" maxlength="20" asp-for="_ViewceMastMoldOtherRequest.mrFunction">
 
                                 </div>
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Revision.</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_Rev" readonly>
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_Rev" readonly asp-for="_ViewceMastMoldOtherRequest.mrRevision">
                                 </div>
                                 <div class="col-5 " style="">
                                 </div>
@@ -118,7 +128,7 @@
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
                                     @*@Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfIssueDept, (SelectList)ViewBag.TypeofRequestBy, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_RequestBy", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })*@
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_ModelName">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_ModelName" asp-for="_ViewceMastMoldOtherRequest.mrModelName">
 
                                 </div>
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
@@ -126,7 +136,7 @@
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
                                     @*@Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfType, (SelectList)ViewBag.TypeofEvent, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMoldOther_Event", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })*@
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_Event" maxlength="3">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_Event" maxlength="3" asp-for="_ViewceMastMoldOtherRequest.mrEvent">
 
                                 </div>
                                 <div class="col-5 " style="">
@@ -141,14 +151,14 @@
                                     <div class="grid-item fw-800 center  " style="text-align:left;font-size:12px">Mold Go.</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueFrom" id="i_NewOther_MoldGo">
+                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px;background-color:yellow" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrMoldGo" id="i_NewOther_MoldGo">
 
                                 </div>
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Try 1.</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueFrom" id="i_NewOther_Try1">
+                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px;background-color:yellow" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrTry1" id="i_NewOther_Try1">
                                 </div>
                                 <div class="col-5 " style="">
                                 </div>
@@ -163,13 +173,13 @@
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Mold Mass</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueFrom" id="i_NewOther_MoldMass">
+                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px;background-color:yellow" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrMoldMass" id="i_NewOther_MoldMass">
                                 </div>
-                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Date Issue</div>
+                                <div class="col-20 " style=" display: flex;align-items: center;">
+                                    @*<div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Date Issue</div>*@
                                 </div>
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_ReferenceNo" asp-for="_ViewceMastModifyRequest.mfIssueDate" value="@(Model._ViewceMastModifyRequest.mfIssueDate == null ? DateTime.Now.ToString("dd/MM/yyyy") : Model._ViewceMastModifyRequest.mfIssueDate)" readonly>
+                                    @*<input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_ReferenceNo" asp-for="_ViewceMastModifyRequest.mfIssueDate" value="@(Model._ViewceMastModifyRequest.mfIssueDate == null ? DateTime.Now.ToString("dd/MM/yyyy") : Model._ViewceMastModifyRequest.mfIssueDate)" readonly>*@
 
                                 </div>
                                 <div class="col-5 " style="">
@@ -177,34 +187,39 @@
                             </div>
                         </div>
 
-                        <div class="row center">
-                            <div class="col-5"></div>
-                            <div class="col-90">
-                                <hr />
-                            </div>
-                            <div class="col-5"></div>
-                        </div>
-
+                        <hr />
                         <div class="grid-item fw-800 center " style="text-align:left;font-size:13px">Part Name</div>
                         <div class="row center">
-                            <div class="col-10 " style="">
+                            <div class="row center">
+                                <div class="col-5 " style="">
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Date Issue</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_ReferenceNo" asp-for="_ViewceMastMoldOtherRequest.mrIssueDate" value="@(Model._ViewceMastMoldOtherRequest.mrIssueDate == null && Model._ViewceMastMoldOtherRequest.mrStep == 1 ? DateTime.Now.ToString("dd/MM/yyyy") : Model._ViewceMastMoldOtherRequest.mrIssueDate)" readonly>
+                                </div>
+                                <div class="col-20 " style=" display: flex;align-items: center;">
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
 
-                            </div>
-                            <div class="col-70 " style=" display: flex;align-items: center;">
-                            </div>
-                            <div class="col-15" style=" display: flex;align-items: center; ">
-                            </div>
-                            <div class="col-5 " style="">
-                                <input type='button' class='button btnOrange' value='➕' style="width:auto;height:30px;vertical-align: sub;" onclick="btnaddPartName()" id="btnAddPartName">
-                                <select id="template_TypeCavity" style="display:none">
-                                    <option value="">กรุณาเลือก</option>
-                                    @foreach (var item in (SelectList)ViewBag.TypeofCavity)
-                                    {
-                                        <option value="@item.Value">@item.Text</option>
-                                    }
-                                </select>
+                                </div>
+
+                                <div class="col-5 " style="">
+                                    <input type='button' class='button btnOrange' value='➕' style="width:auto;height:30px;vertical-align: sub; @(Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "cursor:not-allowed" : "")" onclick="btnaddPartName()" id="btnAddPartName" @(Model._ViewceMastMoldOtherRequest.mrStep == 1 ? "" : "disabled='disabled'" ) />
+                                    <select id="template_TypeCavity" style="display:none">
+                                        <option value="">กรุณาเลือก</option>
+                                        @foreach (var item in (SelectList)ViewBag.TypeofCavity)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    </select>
+                                </div>
                             </div>
                         </div>
+
+
+
 
                         <div class="row center">
                             <div class="col-5 " style="">
@@ -220,7 +235,31 @@
                                         <th style="text-align:center">View Report​</th>
                                         <th style="text-align:center">Delete</th>
                                     </tr>
-                                    <tbody id="tableBodyItem"></tbody>
+                                    <tbody id="tableBodyItem">
+                                        @{
+                                            var row = 0;
+                                        }
+                                        @for (int i = 0; i < Model._ListViewceItemPartName.Count(); i++)
+                                        {
+                                            <tr>
+                                                <td>@(row += 1)</td>
+                                                <td><input type='text' class='vPartName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipPartName"></td>
+                                                <td><input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipCavityNo">
+                                                <td>
+                                                    @Html.DropDownListFor(m => m._ListViewceItemPartName[i].ipTypeCavity, (SelectList)ViewBag.TypeofCavity, "กรุณาเลือก", new { @class = "form-control vTypeCavity", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
+                                                </td>
+                                                <td width='70px'><img src='~/images/petition.png' alt='icon' class='imgM' /></td>
+                                                <td align='Center'>
+                                                    <input type="button"
+                                                           class="RemoveRow"
+                                                           value="&#x274C"
+                                                           style="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "cursor:not-allowed" : "cursor:pointer")"
+                                                           @(Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "disabled='disabled'" : "") />
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
 
                                 </table>
                             </div>
@@ -230,11 +269,7 @@
 
 
                         </div>
-                        <br />
-
-
-
-                        <br />
+                        <hr />
                         <div class="grid-item fw-800 center " style="text-align:left;font-size:13px">ITEM</div>
                         <div class="row center">
                             <div class="col-5 " style="">
@@ -246,6 +281,7 @@
                                     <tr>
                                         <th style="text-align:center">No.​</th>
                                         <th style="text-align:center">Document Type​</th>
+                                        <th style="text-align:center">Document No​</th>
                                         <th style="text-align:center">Waiting Approve​</th>
                                         <th style="text-align:center">Status​</th>
                                         <th style="text-align:center" width="70px">More​</th>
@@ -256,12 +292,44 @@
                                             <td>
                                                 WORKING TIME
                                             </td>
-                                            <td>1</td>
-                                            <td>1</td>
+                                            <td>@Html.DisplayFor(m => m._ViewceMastWorkingTimeRequest.wrDocumentNoSub)</td>
+                                            <td>@Html.DisplayFor(m => m._ViewceMastWorkingTimeRequest.wrEmpCodeApprove) :@Html.DisplayFor(m => m._ViewceMastWorkingTimeRequest.wrNameApprove) </td>
+                                            <td style="text-align:center">
+                                                @if (!string.IsNullOrEmpty(Model._ViewceMastWorkingTimeRequest?.wrStatus))
+                                                {
+                                                    @if (Model._ViewceMastWorkingTimeRequest.wrStep == 0 && Model._ViewceMastWorkingTimeRequest.wrStatus.Contains("Disapprove"))
+                                                    {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                                    else if (Model._ViewceMastWorkingTimeRequest.wrStep == 0)
+                                                    {
+                                                        <img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />
+                                                    }
+                                                    else if (Model._ViewceMastWorkingTimeRequest.wrStep == 1)
+                                                    { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                                    else if (Model._ViewceMastWorkingTimeRequest.wrStep == 2)
+                                                    { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    else if (Model._ViewceMastWorkingTimeRequest.wrStep == 3)
+                                                    { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    else if (Model._ViewceMastWorkingTimeRequest.wrStep == 4)
+                                                    { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                                }
+                                            </td>
                                             <td class="center">
-                                                <a href="@Url.Action("Index", "NewMoldOtherWK",new {Docno = Model._ViewceMastModifyRequest.mfStep})" target="_blank" style="font-size:15px;text-decoration: none;">
+                                                @if (!string.IsNullOrEmpty(Model._ViewceMastWorkingTimeRequest?.wrDocumentNo))
+                                                {
+                                                    <a href="@Url.Action("Index", "NewMoldOtherWK", new { Docno = Model._ViewceMastWorkingTimeRequest.wrDocumentNo })"
+                                                       target="_blank"
+                                                       style="font-size:15px;text-decoration:none;">
+                                                        <img src="~/images/searchWK.png" alt="icon" class="imgM" />
+                                                    </a>
+                                                }
+                                                else
+                                                {
                                                     <img src="~/images/searchWK.png" alt="icon" class="imgM" />
-                                                </a>
+                                                }
+
+                                                @*<a href="@Url.Action("Index", "NewMoldOtherWK",new {Docno = Model._ViewceMastWorkingTimeRequest.wrDocumentNo})" target="_blank" style="font-size:15px;text-decoration: none;">
+                                                        <img src="~/images/searchWK.png" alt="icon" class="imgM" />
+                                                    </a>*@
                                             </td>
                                         </tr>
                                         <tr>
@@ -269,8 +337,31 @@
                                             <td>
                                                 MATERIAL
                                             </td>
-                                            <td>1</td>
-                                            <td>1</td>
+                                            <td> @Html.DisplayFor(m => m._ViewceMastMaterialRequest.mrDocumentNoSub)</td>
+                                            <td>@Html.DisplayFor(m => m._ViewceMastMaterialRequest.mrEmpCodeApprove) :@Html.DisplayFor(m => m._ViewceMastMaterialRequest.mrNameApprove) </td>
+
+                                            <td style="text-align:center">
+                                                @if (!string.IsNullOrEmpty(Model._ViewceMastMaterialRequest?.mrStatus))
+                                                {
+                                                    @if (Model._ViewceMastMaterialRequest.mrStep == 0 && Model._ViewceMastMaterialRequest.mrStatus.Contains("Disapprove"))
+                                                    {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                                    else if (Model._ViewceMastMaterialRequest.mrStep == 0)
+                                                    {
+                                                        <img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />
+                                                    }
+                                                    else if (Model._ViewceMastMaterialRequest.mrStep == 1)
+                                                    { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                                    else if (Model._ViewceMastMaterialRequest.mrStep == 2)
+                                                    { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    else if (Model._ViewceMastMaterialRequest.mrStep == 3)
+                                                    { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    else if (Model._ViewceMastMaterialRequest.mrStep == 4)
+                                                    { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                                }
+
+
+
+                                            </td>
                                             <td class="center">
                                                 <a href="@Url.Action("Index", "NewMoldOtherMT")" target="_blank" style="font-size:12px;text-decoration: none;">
                                                     <img src="~/images/searchWK.png" alt="icon" class="imgM" />
@@ -280,8 +371,28 @@
                                         <tr>
                                             <td>3</td>
                                             <td>TOOL & GR</td>
-                                            <td>1</td>
-                                            <td>1</td>
+                                            <td>@Html.DisplayFor(m => m._ViewceMastToolGRRequest.trDocumentNoSub)</td>
+                                            <td>@Html.DisplayFor(m => m._ViewceMastToolGRRequest.trEmpCodeApprove) :@Html.DisplayFor(m => m._ViewceMastToolGRRequest.trNameApprove) </td>
+                                            <td style="text-align:center">
+                                                @if (!string.IsNullOrEmpty(Model._ViewceMastToolGRRequest?.trStatus))
+                                                {
+                                                    @if (Model._ViewceMastToolGRRequest.trStep == 0 && Model._ViewceMastToolGRRequest.trStatus.Contains("Disapprove"))
+                                                    {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                                    else if (Model._ViewceMastToolGRRequest.trStep == 0)
+                                                    {<img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />}
+                                                    else if (Model._ViewceMastToolGRRequest.trStep == 1)
+                                                    { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                                    else if (Model._ViewceMastToolGRRequest.trStep == 2)
+                                                    { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    else if (Model._ViewceMastToolGRRequest.trStep == 3)
+                                                    { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    else if (Model._ViewceMastToolGRRequest.trStep == 4)
+                                                    { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
+
+                                                }
+
+
+                                            </td>
                                             <td class="center">
                                                 <a href="@Url.Action("Index", "NewMoldOtherTGR")" target="_blank" style="font-size:12px;text-decoration: none;">
                                                     <img src="~/images/searchWK.png" alt="icon" class="imgM" />
@@ -291,8 +402,29 @@
                                         <tr>
                                             <td>4</td>
                                             <td>INFORMATION SPEC MOLD</td>
-                                            <td>1</td>
-                                            <td>1</td>
+                                            <td>@Html.DisplayFor(m => m._ViewceMastInforSpacMoldRequest.irDocumentNoSub)</td>
+                                            <td>@Html.DisplayFor(m => m._ViewceMastInforSpacMoldRequest.irEmpCodeApprove) :@Html.DisplayFor(m => m._ViewceMastInforSpacMoldRequest.irNameApprove) </td>
+                                            <td style="text-align:center">
+                                                @if (!string.IsNullOrEmpty(Model._ViewceMastInforSpacMoldRequest?.irStatus))
+                                                {
+                                                    @if (Model._ViewceMastInforSpacMoldRequest.irStep == 0 && Model._ViewceMastInforSpacMoldRequest.irStatus.Contains("Disapprove"))
+                                                    {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                                    else if (Model._ViewceMastInforSpacMoldRequest.irStep == 0)
+                                                    {
+                                                        <img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />
+                                                    }
+                                                    else if (Model._ViewceMastInforSpacMoldRequest.irStep == 1)
+                                                    { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                                    else if (Model._ViewceMastInforSpacMoldRequest.irStep == 2)
+                                                    { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    else if (Model._ViewceMastToolGRRequest.trStep == 3)
+                                                    { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                    else if (Model._ViewceMastInforSpacMoldRequest.irStep == 4)
+                                                    { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                                }
+
+
+                                            </td>
                                             <td class="center">
                                                 <a href="@Url.Action("Index", "NewMoldOtherSM")" target="_blank" style="font-size:12px;text-decoration: none;">
                                                     <img src="~/images/searchWK.png" alt="icon" class="imgM" />
@@ -303,8 +435,7 @@
 
                                 </table>
 
-
-                                </a><br />
+                                <br />
                                 <br />
                             </div>
                             <div class="col-5 " style="">
@@ -313,10 +444,10 @@
                     </div>
 
 
-                
+
 
                     @*//send mail step 2*@
-                    <div class="modal modal-sxl fade" id="myModalSendMold" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
+                    <div class="modal modal-sxl fade" id="myModalSendMold" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content ">
                                 <div class="modal-body" id="myModalBodySendMold">
@@ -326,17 +457,111 @@
                         </div>
                     </div>
 
+                    <div style="margin-top:10px">
+                        @await Html.PartialAsync("_PartialOtherAttachFile", Model)
 
+                    </div>
 
 
                 </form>
+                <!-- Modal openfile user-->
+                <div class="modal modal fade" id="myModalNewMoldOther" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body" id="myModalBodyNewMoldOther">
+                                <div class="modal-header" style="margin-top:1px">
+                                    <h5 class="modal-title">
+                                        <span style="font-weight: bold; font-size: 16px;"><img src="~/images/folders.png" height="35px" width="35px" style="vertical-align:middle" />  เอกสาร​ทั้งหมดของผู้ร้องขอ  @Model._listAttachment.Count() ไฟล์</span>
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class=" panel-group ir fadeInUp animated wowload animated" style="visibility: visible; animation-name: fadeInUp; margin-bottom: 5px; ">
+                                    <div class="panel panel-default property">
+                                        <div class=" panel-heading panel-heading-custom property" tabindex="0">
+                                            <br>
+                                            <h4 class="panel-title faq-title-range" data-bs-toggle="collapse" data-bs-target="#History" aria-expanded="true" aria-controls="collapseExample">
+                                                <label style="font-size:15px;font-weight:800">
+                                                    ไฟล์แนบ
+                                                </label>
+                                                <label class="lbV">
+                                                </label>
+                                            </h4>
+                                        </div>
+                                        <div class="panel-collapse collapse show" id="History" style="overflow-y: scroll; max-height: 200px;">
+                                            @*<div id="divHistory" class="panel-body">
+                                                </div>*@
+                                            <div class="panel-body">
+                                                <table class="summarys">
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>Name File</th>
+                                                        <th style="width:50px">Delete</th>
+                                                    </tr>
 
+
+                                                    @if (@Model._listAttachment != null)
+                                                    {
+
+                                                        var row1 = 0;
+                                                        @foreach (var item in @Model._listAttachment)
+                                                        {
+                                                            <tr>
+                                                                <td> <label>@(row1 += 1)</label></td>
+                                                                <td>
+
+                                                                    <a href="@Url.Action("openFile", "New", new { pathFile = @item.fnFilename })" class="btn-image" target="_blank" style="padding-left:5px;text-decoration:auto;">
+                                                                        @item.fnFilename
+                                                                    </a>
+                                                                </td>
+                                                                <td style="text-align:center">
+
+                                                                    @*@if (@_UserId == @Model._ViewceMastMoldOtherRequest.mrEmpCodeApprove && @Model._ViewceMastMoldOtherRequest.mrStep < 6)
+                                                                    {
+                                                                        <input type="button" style="font-size:14px" value="&#x274C" onclick="DeleteFileUser('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","NewMoldOther")')">
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input type="button" style="font-size:14px" value="&#x274C" disabled>
+                                                                    }*@
+                                                                    <input type="button"
+                                                                           style="font-size:14px"
+                                                                           value="&#x274C"
+                                                                           onclick="DeleteFileUser('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","NewMoldOther")')"
+                                                                           @( (_UserId == Model._ViewceMastMoldOtherRequest.mrEmpCodeApprove && Model._ViewceMastMoldOtherRequest.mrStep < 8) ? "" : "disabled") />
+
+                                                                </td>
+                                                            </tr>
+
+
+                                                            @*<input type="button" value="&#x274C">*@
+
+                                                        }
+
+                                                    }
+                                                </table>
+                                            </div>
+
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                @*<div class="modal-footer" style="width: 100%;">
+
+                                        <button type="button" class="button btnRed" data-bs-dismiss="modal" style="width:80px;height:30px">Close</button>
+
+                                    </div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
     </div>
 </div>
-</div>
+
 <script type="text/javascript">
     $(function () {
         function split(val) {
@@ -635,15 +860,15 @@
     function btnaddPartName() {
          var imgSrc = '@Url.Content("~/images/petition.png")';
 
-
         var htmls = "";
         var rowCount = document.getElementById('tableBodyItem').rows.length;
         var rowi = rowCount + 1;
         htmls += "<tr>";
         htmls += " <td>" + rowi + "</td>";
-        htmls += " <td><input type='text' class='vPartNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow ;' value =''  ></td>";
-       // htmls += " <td><input type='text' class='vCustomerName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow ;' value =''  ></td>";
-        htmls += " <td><input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow ;' value ='0' min='0'   ></td>";
+        htmls += " <td><input type='text' class='vPartName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow ;' value =''></td>";
+       // htmls += " <td><input type='text' class='vCustomerName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;display:None' value =''  ></td>";
+        htmls += " <td><input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow ;' value ='0' min='0'>";
+        htmls +=" <input type='text' class='vCustomerName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;display:None' value =''></td > ";
         htmls += "<td>" + document.getElementById("template_TypeCavity").outerHTML.replace('template_TypeCavity', 'i_NewMold_TypeCavity').replace('style="display:none"', 'class="vTypeCavity form-control" style="width:100%;font-size:10px;background-color:yellow;"') + "</td>";
         htmls += " <td width='70px'><img src='" + imgSrc + "' alt='icon' class='imgM' /></td>";
         htmls += "<td align='Center'><input type='button' class='RemoveRow' value='&#x274C'></td>";

@@ -5,6 +5,10 @@
     <ApplicationIcon></ApplicationIcon>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="wwwroot\lib\js\datepicker\**" />
     <Content Remove="wwwroot\lib\js\datepicker\**" />
@@ -70,6 +74,9 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\NewMoldOther\SendMail.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\NewMoldOther\_PartialOtherAttachFile.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\New\_PartialDisplayQuotationTHSarabun.cshtml">

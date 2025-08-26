@@ -76,7 +76,7 @@ using CostEstimate;
 #line default
 #line hidden
             BeginContext(676, 56, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "18115e44150542ab93a337a7d30e3810", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "e12c071fa9a74f54af51f4dbe590ecc5", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -103,7 +103,7 @@ using CostEstimate;
                     <div class=""grid-item fw-800  "" style=""text-align:left;font-size:24px;padding-top:8px""><span style=""color:#e88f4f"">MASTER CHARGE RATE​</span><span style=""color:black""> REQUEST SHEET</span> ");
             EndContext();
             BeginContext(1430, 89, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "e95526bde459435f8b9b7e24ee4874ea", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "5148c88d131f475a91c36998631e030d", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -136,7 +136,7 @@ WriteAttributeValue("", 1722, Url.Action("SearchMastHourChage","AddMHourChage"),
             WriteLiteral(">\r\n                        ");
             EndContext();
             BeginContext(1802, 136, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "b72dea0353b14e37ae3aa62d999e149d", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "0bb7d232831348e78bef9265e92bfa62", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -319,7 +319,7 @@ WriteAttributeValue("", 4781, Url.Action("DeleteMastHourChage","AddMHourChage"),
                                     <span style=""font-weight: bold; font-size: 16px;"">");
             EndContext();
             BeginContext(5839, 88, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "36bc538a670d448191b6b0ff6db9a228", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "d03cc81b39ee4f219cc118a0ad8ecd88", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -350,7 +350,7 @@ WriteAttributeValue("", 4781, Url.Action("DeleteMastHourChage","AddMHourChage"),
             WriteLiteral("                                    ");
             EndContext();
             BeginContext(6536, 61, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "49d5de50df0f4eaf8fce30530225abb5", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "9f232eb0361e4673820e7342ca52686b", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();

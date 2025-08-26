@@ -33,7 +33,7 @@ namespace CostEstimate.Controllers.Account
             _Cache = cacheController;
             _MK = MK;
         }
-        public IActionResult Index(string DocumentNo,string DocType)
+        public IActionResult Index(string DocumentNo, string DocType, string subType)
         {
             //string domain = Environment.UserDomainName;
             //string user = Environment.UserName;
@@ -44,6 +44,19 @@ namespace CostEstimate.Controllers.Account
                 @class.param = DocumentNo;
             if (DocType != null)
                 @class.paramtype = DocType;
+            if (subType != null)
+                @class.Moldtype = subType;
+            //try
+            //{
+            //    subType = subType.Length > 2 ? subType.Substring(0, subType.Length - 2) : subType;
+            //    @class.Moldtype = subType;
+            //}
+            //catch (Exception ex)
+            //{
+
+            //}
+
+
 
             if (remember != null)
             {
@@ -82,6 +95,32 @@ namespace CostEstimate.Controllers.Account
                                 else if (@class.paramtype == "SubMarker")
                                 {
                                     return RedirectToAction("Index", "New", new { smDocumentNo = @class.param });
+                                }
+                                else if (@class.paramtype == "MoldOther") //MoldOther
+                                {
+                                    if (@class.Moldtype != null)
+                                    {
+                                        if (@class.Moldtype == "W") //working time
+                                        {
+                                            return RedirectToAction("Index", "NewMoldOtherWK", new { Docno = @class.param });
+                                        }
+                                        else if (@class.Moldtype == "M") //Material
+                                        {
+                                            return RedirectToAction("Index", "NewMoldOtherWK", new { Docno = @class.param });
+                                        }
+                                        else if (@class.Moldtype == "T") //Tool GR
+                                        {
+                                            return RedirectToAction("Index", "NewMoldOtherWK", new { Docno = @class.param });
+                                        }
+                                        else //if(@class.Moldtype == "I") //Information Spac
+                                        {
+                                            return RedirectToAction("Index", "NewMoldOther", new { Docno = @class.param });
+                                        }
+
+                                    }
+                                    return RedirectToAction("Index", "NewMoldOther", new { id = @class.param });
+
+
                                 }
                                 else // other
                                 {
@@ -127,7 +166,7 @@ namespace CostEstimate.Controllers.Account
                 @class._Error.validation = ex.Message;
                 return View("Index", @class);
             }
-          
+
 
         }
 
@@ -199,15 +238,15 @@ namespace CostEstimate.Controllers.Account
                         ExpiresUtc = DateTime.UtcNow.AddMinutes(30)
                     }); //true is remember login
 
-    //            await HttpContext.SignInAsync(
-    //CookieAuthenticationDefaults.AuthenticationScheme,
-    //new ClaimsPrincipal(identity),
-    //new AuthenticationProperties
-    //{
-    //    IsPersistent = true,
-    //    AllowRefresh = true, // ✅ อนุญาตให้ session ถูกยืดอายุ
-    //    ExpiresUtc = DateTime.UtcNow.AddMinutes(30)
-    //});
+                //            await HttpContext.SignInAsync(
+                //CookieAuthenticationDefaults.AuthenticationScheme,
+                //new ClaimsPrincipal(identity),
+                //new AuthenticationProperties
+                //{
+                //    IsPersistent = true,
+                //    AllowRefresh = true, // ✅ อนุญาตให้ session ถูกยืดอายุ
+                //    ExpiresUtc = DateTime.UtcNow.AddMinutes(30)
+                //});
 
 
 
@@ -286,6 +325,32 @@ namespace CostEstimate.Controllers.Account
                         else if (@class.paramtype == "SubMarker")
                         {
                             return RedirectToAction("Index", "New", new { smDocumentNo = @class.param });
+                        }
+                        else if (@class.paramtype == "MoldOther") //MoldOther
+                        {
+                            if (@class.Moldtype != null)
+                            {
+                                if (@class.Moldtype == "W") //working time
+                                {
+                                    return RedirectToAction("Index", "NewMoldOtherWK", new { Docno = @class.param });
+                                }
+                                else if (@class.Moldtype == "M") //Material
+                                {
+                                    return RedirectToAction("Index", "NewMoldOtherWK", new { Docno = @class.param });
+                                }
+                                else if (@class.Moldtype == "T") //Tool GR
+                                {
+                                    return RedirectToAction("Index", "NewMoldOtherWK", new { Docno = @class.param });
+                                }
+                                else //if(@class.Moldtype == "I") //Information Spac
+                                {
+                                    return RedirectToAction("Index", "NewMoldOther", new { Docno = @class.param });
+                                }
+
+                            }
+                            return RedirectToAction("Index", "NewMoldOther", new { id = @class.param });
+
+
                         }
                         else // other
                         {

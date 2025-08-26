@@ -53,9 +53,9 @@ namespace CostEstimate.Controllers.Approval
         public IActionResult Index(Class @class)
         {
             string EmpCode = User.Claims.FirstOrDefault(s => s.Type == "EmpCode").Value?.ToString();
-            @class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smEmpCodeApprove == EmpCode && x.smStep != 7 ).OrderBy(x => x.smStep).ThenBy(x => x.smIssueDate).ToList();
+            @class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smEmpCodeApprove == EmpCode && x.smStep != 7).OrderBy(x => x.smStep).ThenBy(x => x.smIssueDate).ToList();
 
-            List<ViewceMastFlowApprove> _ViewceMastFlowApprove = _MK._ViewceMastFlowApprove.OrderBy(x => x.mfStep).Distinct().ToList();
+            List<ViewceMastFlowApprove> _ViewceMastFlowApprove = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "1").OrderBy(x => x.mfStep).Distinct().ToList();
             SelectList formStatus = new SelectList(_ViewceMastFlowApprove.Select(s => s.mfSubject).Distinct());
             ViewBag.vbformStatus = formStatus;
 
@@ -72,7 +72,7 @@ namespace CostEstimate.Controllers.Approval
             return View(@class);
         }
 
-     
-     
+
+
     }
 }

@@ -20,21 +20,18 @@
     <div id="DisplayContent" class="content-box">
         <div style="" class="content-text">
             <br />
-            <div class="row center" style="padding:5px;background-color:#9bbd5e;margin-bottom:5px;border:0px solid #b4f739;margin:5px">
-                <div class="col-60 " style="text-align:left">
-                    <span style="text-align:left;font-size:24px;padding-top:8px;padding-bottom:15px;font-weight:600">
-                        <span style="color:green">MOLD OTHER </span> REQUEST SHEET DETAIL.
-                    </span><br />
-                    <span style="text-align:left;font-size:22px;padding-top:20px;padding-bottom:8px;font-weight:600;color:#3D405B">
+            @*TOOL & GR*@
+            <div class="row center" style="padding:5px; background-color:#6fa54f; margin-bottom:5px; border-radius:5px;">
+                <div class="col-60" style="text-align:left">
+                    <span style="font-size:24px; font-weight:600; color:#ffffff; line-height:1.4;">
+                        <span style="color:#b3e07d">MOLD OTHER</span> REQUEST SHEET DETAIL.
+                    </span>
+                 
+                    <span style="font-size:22px; font-weight:600; color:palegoldenrod; line-height:1.4; margin-top:10px; display:block;">
                         TOOL & GR
                     </span>
-
-                    @*<div class="grid-item fw-800  " style="text-align:left;font-size:24px;padding-top:8px;padding-bottom:8px"> <span style="color:green">MOLD OTHER </span> REQUEST SHEET DETAIL.</div>*@
-                    @*<div class="grid-item fw-800  " style="text-align:left;font-size:24px;padding-top:8px;padding-bottom:8px;color:	#3D405B">TOOL & GR</div>*@
-
                 </div>
                 <div class="col-40 center" style="text-align:right;">
-
                     <button class="button btnBlue" style="margin-right:20px;width:auto; @(Model._ViewceMastModifyRequest.mfStep > 1 ? "" : "display:none")"
                             onclick="Menubar_PrintMoldQUOTATION('@Url.Action("PrintMoldQUOTATION","NewMoldModify")','@Model._ViewceMastModifyRequest.mfCENo')">
                         <img src="~/images/printer.png" style="width:33px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
@@ -68,10 +65,52 @@
                     </div>
 
                     <div id="divNewOther" style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:5px;border-radius:2px;">
+                        <div class="row center">
+                            <div class="col-5 " style="">
+                            </div>
+                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Cutomer Name.</div>
+
+                            </div>
+                            <div class="col-25" style=" display: flex;align-items: center; ">
+                                <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_CusName">
+                            </div>
+                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Document No</div>
+
+                            </div>
+                            <div class="col-25 " style=" display: flex;align-items: center; ">
+                                <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_DocumentNo" readonly>
+
+                            </div>
+
+                            <div class="col-5 " style="">
+                            </div>
+                        </div>
+                        <div class="row center">
+                            <div class="col-5 " style="">
+                            </div>
+                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Model Name.</div>
+                            </div>
+                            <div class="col-25" style=" display: flex;align-items: center; ">
+                                <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_CusName">
+                            </div>
+                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Funtion.</div>
+                            </div>
+                            <div class="col-25 " style=" display: flex;align-items: center; ">
+                                <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_DocumentNo" readonly>
+
+                            </div>
+
+                            <div class="col-5 " style="">
+                            </div>
+                        </div>
 
 
-                    
-                   
+
+
 
                         <div style="margin-top:10px">
                             @await Html.PartialAsync("_PartialTGRAttachFile", Model)

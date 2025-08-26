@@ -21,10 +21,7 @@
                 <div class="grid-item fw-800 center" style="text-align:left;text-decoration: underline;font-size:13px">Attach file</div>
             </div>
             <div class="col-80 " style="text-align:left">
-                <input name="files" type="file" id="files" multiple="" class="button btnGray " style="width:auto; @(Model._ViewceMastModifyRequest.mfStep == 6
-                                                                            || (Model._ViewceMastModifyRequest.mfStep == 0 && (Model._ViewceMastModifyRequest.mfEmpCodeRequest != null && Model._ViewceMastModifyRequest.mfEmpCodeRequest != "") && Model._ViewceMastModifyRequest.mfEmpCodeRequest != _UserId )
-                                                                            || (Model._ViewceMastModifyRequest.mfStep > 0 && (Model._ViewceMastModifyRequest.mfEmpCodeApprove != null && Model._ViewceMastModifyRequest.mfEmpCodeApprove != "") && Model._ViewceMastModifyRequest.mfEmpCodeApprove != _UserId )
-                                                                            ? "pointer-events: none;" : "")">
+                <input name="files" type="file" id="files" multiple="" class="button btnGray " style="width:auto; ">
                 <button type="button" class="button notification" style="width:auto; height:28px;background-color:#7286D3" data-bs-dismiss="modal" id="btnfileMold">
                     <img src="~/images/open-folder.png" style="width:25px;height:25px;margin-left:0px;text-align:left">
                     @*<span class="badge">2</span>*@

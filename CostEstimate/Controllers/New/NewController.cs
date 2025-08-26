@@ -795,7 +795,16 @@ namespace CostEstimate.Controllers.New
                 }
                 catch (Exception ex)
                 {
-                    dbContextTransaction.Rollback();
+                    try
+                    {
+                        dbContextTransaction.Rollback();
+                    }
+                    catch
+                    {
+                        // ignore ถ้า transaction ปิดไปแล้ว
+                    }
+
+                    //dbContextTransaction.Rollback();
                     v_status = "E";
                     v_msg = "Error Save History: " + ex.Message;
                 }
@@ -1068,10 +1077,24 @@ namespace CostEstimate.Controllers.New
                 }
                 catch (Exception ex)
                 {
-                    dbContextTransaction.Rollback();
+                   // dbContextTransaction.Rollback();
+
+                    try
+                    {
+                        dbContextTransaction.Rollback();
+                    }
+                    catch
+                    {
+                        // ignore ถ้า transaction ปิดไปแล้ว
+                    }
                     v_status = "E";
                     // v_msg = "Error" + ex.InnerException?.InnerException?.Message;
                     v_msg = "Error Save: " + ex.InnerException.Message;
+                    //UnderlyingTransaction
+                   
+
+
+
                 }
             }
 
@@ -1323,7 +1346,15 @@ namespace CostEstimate.Controllers.New
                             v_status = "E";
                             v_error = e.Message;
                             v_msg = "Error Save file :" + e.Message;
-                            dbContextTransaction.Rollback();
+                            //dbContextTransaction.Rollback();
+                            try
+                            {
+                                dbContextTransaction.Rollback();
+                            }
+                            catch
+                            {
+                                // ignore ถ้า transaction ปิดไปแล้ว
+                            }
                         }
                     }
 
@@ -1487,7 +1518,18 @@ namespace CostEstimate.Controllers.New
 
                 catch (Exception ex)
                 {
-                    dbContextTransaction.Rollback();
+                    try
+                    {
+                        dbContextTransaction.Rollback();
+                    }
+                    catch
+                    {
+                        // ignore ถ้า transaction ปิดไปแล้ว
+                    }
+
+
+
+                    //dbContextTransaction.Rollback();
                     config = "E";
                     msg = "Something is wrong !!!!! : " + ex.Message;
                     return Json(new { c1 = config, c2 = msg });
