@@ -37,45 +37,250 @@
                     <img src="~/images/printer.png" style="width:33px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
                     REPORT
                 </button>*@
-                    @*<button class="button" style="width:auto" onclick="Menubar_MoldOthersendmail('','@Url.Action("History","NewMoldOther")')">
-                    <img src="~/images/direct.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                    SEND
-                </button>
-                <button class="button btnGray" style="width:auto ; @(Model._ViewceMastModifyRequest.mfStep == 6 ? "pointer-events: none;" : "")"
-                        onclick="Menubar_MoldsaveDraft('@Url.Action("SaveDraft","NewMoldModify")','@Url.Action("SaveCeDetailSub","NewMoldModify")')">
-                    <img src="~/images/savedaft.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                    SAVE DAFT
-                </button>*@
+                    <button class="button" style="width:auto" onclick="Menubar_MoldOtherMTsendmail('','@Url.Action("History","NewMoldOtherMT")')">
+                        <img src="~/images/direct.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                        SEND
+                    </button>
+                    <button class="button btnGray" style="width:auto ; @(Model._ViewceMastMaterialRequest.mrStep == 6 ? "pointer-events: none;" : "")"
+                            onclick="Menubar_MoldOtherMTsaveDraft('@Url.Action("SaveDraft","NewMoldOtherMT")')">
+                        <img src="~/images/savedaft.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                        SAVE DAFT
+                    </button>
                 </div>
             </div>
-            <div style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:5px;border-radius:2px;">
-                <div class="row center">
-                    <div class="col-15 " style="">
-                    </div>
-                    <div class="col-70 " style="">
-                        @await Html.PartialAsync("_PartialStepFlowOtherRequest.cshtml", Model)
-                    </div>
-                    <div class="col-15 " style="">
+            <form id="formMoldOMTRequest" name="formMoldOMTRequest" enctype="multipart/form-data">
+                @Html.HiddenFor(m => m._ViewceMastMaterialRequest.mrStep, new { id = "step" })
+                @Html.HiddenFor(m => m._ViewceMastMaterialRequest.mrStatus, new { id = "Status" })
+                @Html.HiddenFor(m => m._ViewceMastMaterialRequest.mrEmpCodeRequest, new { id = "EmpCodeRequest" })
+                @Html.HiddenFor(m => m._ViewceMastMaterialRequest.mrNameRequest, new { id = "NameRequest" })
+                @Html.HiddenFor(m => m._ViewceMastMaterialRequest.mrEmpCodeApprove, new { id = "EmpCodeApprove" })
+                @Html.HiddenFor(m => m._ViewceMastMaterialRequest.mrNameApprove, new { id = "NameApprove" })
+                @Html.HiddenFor(m => m._ViewceMastMaterialRequest.mrFlowNo, new { id = "mrFlowNo" })
+
+
+                <div style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:5px;border-radius:2px;">
+                    <div class="row center">
+                        <div class="col-15 " style="">
+                        </div>
+                        <div class="col-70 " style="">
+                            @await Html.PartialAsync("_PartialStepFlowOtherRequest.cshtml", Model)
+                        </div>
+                        <div class="col-15 " style="">
+                        </div>
+
                     </div>
 
+
+                    <div class="row center">
+                        <div class="col-5 " style="">
+                        </div>
+                        <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                            <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Cutomer Name.</div>
+
+                        </div>
+                        <div class="col-25" style=" display: flex;align-items: center; ">
+                            <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOtherWK_CusName" asp-for="_ViewceMastMoldOtherRequest.mrCustomerName" readonly>
+                        </div>
+                        <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                            <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Document No</div>
+
+                        </div>
+                        <div class="col-25 " style=" display: flex;align-items: center; ">
+                            <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOtherMT_DocumentNoSub" readonly asp-for="_ViewceMastMaterialRequest.mrDocumentNoSub">
+                            <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray;display:none" autocomplete="off" id="i_NewOtherMT_DocumentNo" readonly asp-for="_ViewceMastMaterialRequest.mrDocumentNo">
+                        </div>
+
+                        <div class="col-5 " style="">
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-5 " style="">
+                        </div>
+                        <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                            <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Function</div>
+                        </div>
+                        <div class="col-25 " style=" display: flex;align-items: center; ">
+                            <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOtherWK_Function" maxlength="20" asp-for="_ViewceMastMoldOtherRequest.mrFunction" readonly>
+
+                        </div>
+                        <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                            <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Revision.</div>
+                        </div>
+                        <div class="col-25" style=" display: flex;align-items: center; ">
+                            <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOtherWK_Rev" readonly asp-for="_ViewceMastMoldOtherRequest.mrRevision">
+                        </div>
+                        <div class="col-5 " style="">
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-5 " style="">
+                        </div>
+                        <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                            <div class="grid-item fw-800 center  " style="text-align:left;font-size:12px">Model Name</div>
+                        </div>
+                        <div class="col-25" style=" display: flex;align-items: center; ">
+                            @*@Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfIssueDept, (SelectList)ViewBag.TypeofRequestBy, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_RequestBy", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })*@
+                            <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOtherWK_ModelName" asp-for="_ViewceMastMoldOtherRequest.mrModelName" readonly>
+
+                        </div>
+                        <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                            <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Event.</div>
+                        </div>
+                        <div class="col-25" style=" display: flex;align-items: center; ">
+                            @*@Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfType, (SelectList)ViewBag.TypeofEvent, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMoldOther_Event", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })*@
+                            <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOtherWK_Event" maxlength="3" asp-for="_ViewceMastMoldOtherRequest.mrEvent" readonly>
+
+                        </div>
+                        <div class="col-5 " style="">
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-5 " style="">
+                        </div>
+                        <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                            <div class="grid-item fw-800 center  " style="text-align:left;font-size:12px">Mold Go.</div>
+                        </div>
+                        <div class="col-25" style=" display: flex;align-items: center; ">
+                            <input type="text" class="input-with-image   form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrMoldGo" id="i_NewOtherWK_MoldGo" readonly>
+
+                        </div>
+                        <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                            <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Try 1.</div>
+                        </div>
+                        <div class="col-25" style=" display: flex;align-items: center; ">
+                            <input type="text" class="input-with-image   form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrTry1" id="i_NewOtherWK_Try1" readonly>
+                        </div>
+                        <div class="col-5 " style="">
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-5 " style="">
+                        </div>
+                        <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                            <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Mold Mass</div>
+                        </div>
+                        <div class="col-25" style=" display: flex;align-items: center; ">
+                            <input type="text" class="input-with-image   form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrMoldMass" id="i_NewOtherWK_MoldMass" readonly>
+                        </div>
+                        <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                            <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Type</div>
+                        </div>
+                        <div class="col-25 " style=" display: flex;align-items: center; ">
+                            <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOtherWK_Type" asp-for="_ViewceMastMoldOtherRequest.mrType" readonly>
+
+                        </div>
+                        <div class="col-5 " style="">
+                        </div>
+                    </div>
+                    <br />
+                    <div class=" center">
+                        @await Html.PartialAsync("_PartialMTPartName", Model)
+                    </div>
+                    <div style="margin-top:10px">
+                        @await Html.PartialAsync("_PartialMTAttachFile", Model)
+                    </div>
                 </div>
-            </div>
-            <div id="divNewOther" style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:5px;border-radius:2px;">
 
-
-
-
-
-                <div style="margin-top:10px">
-                    @await Html.PartialAsync("_PartialMTAttachFile", Model)
-
-                </div>
-                <div class="modal modal-lg fade" id="myModalMoldWKSendmail" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal modal-lg fade" id="myModalMoldMTSendmail" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content ">
-                            <div class="modal-body" id="myModalBodySendMold">
+                            <div class="modal-body" id="myModalBodyMT">
 
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </form>
+            <div class="modal modal fade" id="myModalNewMoldOtherMT" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body" id="myModalBodyNewMoldOther">
+                            <div class="modal-header" style="margin-top:1px">
+                                <h5 class="modal-title">
+                                    <span style="font-weight: bold; font-size: 16px;"><img src="~/images/folders.png" height="35px" width="35px" style="vertical-align:middle" />  เอกสาร​ทั้งหมดของผู้ร้องขอ  @Model._listAttachment.Count() ไฟล์</span>
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class=" panel-group ir fadeInUp animated wowload animated" style="visibility: visible; animation-name: fadeInUp; margin-bottom: 5px; ">
+                                <div class="panel panel-default property">
+                                    <div class=" panel-heading panel-heading-custom property" tabindex="0">
+                                        <br>
+                                        <h4 class="panel-title faq-title-range" data-bs-toggle="collapse" data-bs-target="#History" aria-expanded="true" aria-controls="collapseExample">
+                                            <label style="font-size:15px;font-weight:800">
+                                                ไฟล์แนบ
+                                            </label>
+                                            <label class="lbV">
+                                            </label>
+                                        </h4>
+                                    </div>
+                                    <div class="panel-collapse collapse show" id="History" style="overflow-y: scroll; max-height: 200px;">
+                                        @*<div id="divHistory" class="panel-body">
+                                    </div>*@
+                                        <div class="panel-body">
+                                            <table class="summarys">
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Name File</th>
+                                                    <th style="width:50px">Delete</th>
+                                                </tr>
+
+
+                                                @if (@Model._listAttachment != null)
+                                                {
+
+                                                    var row1 = 0;
+                                                    @foreach (var item in @Model._listAttachment)
+                                                    {
+                                                        <tr>
+                                                            <td> <label>@(row1 += 1)</label></td>
+                                                            <td>
+
+                                                                <a href="@Url.Action("openFile", "New", new { pathFile = @item.fnFilename })" class="btn-image" target="_blank" style="padding-left:5px;text-decoration:auto;">
+                                                                    @item.fnFilename
+                                                                </a>
+                                                            </td>
+                                                            <td style="text-align:center">
+
+                                                                @*@if (@_UserId == @Model._ViewceMastMoldOtherRequest.mrEmpCodeApprove && @Model._ViewceMastMoldOtherRequest.mrStep < 6)
+                                                            {
+                                                                <input type="button" style="font-size:14px" value="&#x274C" onclick="DeleteFileUser('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","NewMoldOther")')">
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="button" style="font-size:14px" value="&#x274C" disabled>
+                                                            }*@
+                                                                <input type="button"
+                                                                       style="font-size:14px"
+                                                                       value="&#x274C"
+                                                                       onclick="DeleteFileUserMT('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","NewMoldOtherMT")')"
+                                                                       @( (_UserId == Model._ViewceMastMaterialRequest.mrEmpCodeApprove && Model._ViewceMastMaterialRequest.mrStep < 4) ? "" : "disabled") />
+
+                                                            </td>
+                                                        </tr>
+
+
+                                                        @*<input type="button" value="&#x274C">*@
+
+                                                    }
+
+                                                }
+                                            </table>
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            @*<div class="modal-footer" style="width: 100%;">
+
+                            <button type="button" class="button btnRed" data-bs-dismiss="modal" style="width:80px;height:30px">Close</button>
+
+                        </div>*@
                         </div>
                     </div>
                 </div>

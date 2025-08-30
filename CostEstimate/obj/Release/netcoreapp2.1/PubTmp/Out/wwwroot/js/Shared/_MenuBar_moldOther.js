@@ -4306,7 +4306,7 @@ function Menubar_MoldOther_saveDraft(action) {
 
             ceItemPartName.push({
                 ipDocumentNo: "",
-                ipRunNo: index + 1, // ✅ เริ่มจาก 1
+                ipRunNo: row.querySelector(".vRunNo").value.trim(), //   index + 1, // ✅ เริ่มจาก 1
                 ipPartName: row.querySelector(".vPartName").value.trim(),
                 ipCavityNo: parseInt(row.querySelector(".vCavityNo").value) || 0,
                 ipTypeCavity: itemTypeCavityNoInput.options[itemTypeCavityNoInput.selectedIndex].text.trim(),   //row.querySelector(".vTypeCavity").value.trim(),
@@ -4674,7 +4674,7 @@ function Menubar_MoldOther_savesendMail(action) {
 
             ceItemPartName.push({
                 ipDocumentNo: "",
-                ipRunNo: index + 1, // ✅ เริ่มจาก 1
+                ipRunNo: row.querySelector(".vRunNo").value.trim(),// index + 1, // ✅ เริ่มจาก 1
                 ipPartName: row.querySelector(".vPartName").value.trim(),
                 ipCavityNo: parseInt(row.querySelector(".vCavityNo").value) || 0,
                 ipTypeCavity: itemTypeCavityNoInput.options[itemTypeCavityNoInput.selectedIndex].text.trim(),   //row.querySelector(".vTypeCavity").value.trim(),
@@ -4814,7 +4814,7 @@ function Menubar_MoldOtherWKsaveDraft(action, action2) {
                             wpPartName: inputPartName.value.trim(),
                             wpCavityNo: inputCavityNo.value.trim(),
                             wpTypeCavity: inputTypeCavity.value.trim(),
-                            wpNoProcess: 0, //int
+                            wpNoProcess: inputNoProcess.value.trim(), //int
                             wpGroupName: inputGroupName.value.trim(),
                             wpProcessName: inputProcessName.value.trim(),
                             wpWT_Man: parseInt(inputMan.value.trim()) || 0,//double
@@ -4852,7 +4852,7 @@ function Menubar_MoldOtherWKsaveDraft(action, action2) {
 
         _ItemWorkingTimeSizeProduct.push({
             wsDocumentNoSub: table.querySelector('.input-DocumentNo').value.trim(),
-            wsRunNo: 0,
+            wsRunNo: table.querySelector('.input-RunNo').value.trim(),
             wsPartName: table.querySelector('.input-PartName').value.trim(),
             wsCavityNo: table.querySelector('.input-CavityNo').value.trim(),
             wsTypeCavity: table.querySelector('.input-TypeCavity').value.trim(),
@@ -5097,7 +5097,7 @@ function Menubar_MoldOtherWKsavesendMailData(action, action2) {
                 const inputNoProcess = td.querySelector('input.input-NoProcess');
                 const inputGroupName = td.querySelector('input.input-GroupName');
                 const inputProcessName = td.querySelector('input.input-ProcessName');
-                //const inputNoProcess = td.querySelector('input.input-NoProcess');
+               // const inputNoProcess = td.querySelector('input.input-NoProcess');
                 const inputMan = td.querySelector('input.input-man');
                 const inputAuto = td.querySelector('input.input-auto');
                 const inputEnableman = td.querySelector('input.input-Enableman');
@@ -5112,7 +5112,7 @@ function Menubar_MoldOtherWKsavesendMailData(action, action2) {
                             wpPartName: inputPartName.value.trim(),
                             wpCavityNo: inputCavityNo.value.trim(),
                             wpTypeCavity: inputTypeCavity.value.trim(),
-                            wpNoProcess: 0, //int
+                            wpNoProcess: inputNoProcess.value.trim()||0, //int
                             wpGroupName: inputGroupName.value.trim(),
                             wpProcessName: inputProcessName.value.trim(),
                             wpWT_Man: parseInt(inputMan.value.trim()) || 0,//double
@@ -5150,7 +5150,7 @@ function Menubar_MoldOtherWKsavesendMailData(action, action2) {
 
         _ItemWorkingTimeSizeProduct.push({
             wsDocumentNoSub: table.querySelector('.input-DocumentNo').value.trim(),
-            wsRunNo: 0,
+            wsRunNo: table.querySelector('.input-RunNo').value.trim(),
             wsPartName: table.querySelector('.input-PartName').value.trim(),
             wsCavityNo: table.querySelector('.input-CavityNo').value.trim(),
             wsTypeCavity: table.querySelector('.input-TypeCavity').value.trim(),

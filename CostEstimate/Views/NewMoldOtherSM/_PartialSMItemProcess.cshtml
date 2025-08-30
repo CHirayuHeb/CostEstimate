@@ -1,0 +1,24 @@
+﻿@using System.Security.Claims;
+@model CostEstimate.Models.Common.Class;
+@using CostEstimate.Models.Common;
+@{
+    string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+    string _admin = GlobalVariable.perAdmin.ToUpper();
+
+}
+<div class="" style="border:0px solid gray;margin-top:10px;padding:2px;">
+    <div class="grid-item fw-800 center " style="text-align:left;font-size:14px;margin-bottom:10px;">
+        INFORMATION SPEC MOLD
+        <span style="color:saddlebrown">
+            ทั้งหมด
+            @*@Model._ListViewceItemToolGRRequestPartName.Count()*@
+            Part
+        </span>
+    </div>
+</div>
+

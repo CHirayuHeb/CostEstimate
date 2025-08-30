@@ -28,6 +28,11 @@ using System.IO;
 using MimeKit;
 using MailKit.Net.Smtp;
 
+using System.Data;
+using System.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Storage;
+
+
 namespace CostEstimate.Controllers.NewMoldOtherWK
 {
     public class NewMoldOtherWKController : Controller
@@ -82,83 +87,139 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                 @class._ListViewceItemWorkingTimePartName = _MK._ViewceItemWorkingTimePartName.Where(x => x.wpDocumentNoSub == @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub).ToList();
 
                 @class._ListViewceItemPartName = _MK._ViewceItemPartName.Where(x => x.ipDocumentNo == Docno).OrderBy(x => x.ipRunNo).ToList();
-                @class._ListViewceItemWorkingTimeSizeProduct = _MK._ViewceItemWorkingTimeSizeProduct.Where(x => x.wsDocumentNoSub == @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub).ToList();
-                if (@class._ListViewceItemWorkingTimePartName.Count() == 0)
-                {
-                    for (int j = 0; j < @class._ListViewceItemPartName.Count(); j++)
-                    {
-                        for (int i = 0; i < @class._ListceMastProcess.Count(); i++)
-                        {
-                            @class._ListViewceItemWorkingTimePartName.Add(new ViewceItemWorkingTimePartName
-                            {
-                                wpDocumentNoSub = @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub,
-                                wpRunNo = i + 1,
-                                wpPartName = @class._ListViewceItemPartName[j].ipPartName,
-                                wpCavityNo = @class._ListViewceItemPartName[j].ipCavityNo,
-                                wpTypeCavity = @class._ListViewceItemPartName[j].ipTypeCavity,
-                                wpNoProcess = @class._ListViewceItemPartName[j].ipRunNo,
-                                wpGroupName = @class._ListceMastProcess[i].mpGroupName.Trim(),
-                                wpProcessName = @class._ListceMastProcess[i].mpProcessName.Trim(),
-                                wpWT_Man = 0,
-                                wpWT_Auto = 0,
-                                wpEnable_WTMan = @class._ListceMastProcess[i].mpEnable_WTMan,
-                                wpEnable_WTAuto = @class._ListceMastProcess[i].mpEnable_WTAuto,
-                                wpTotal = 0,
-                                wpIssueDate = @class._ListceMastProcess[i].mpProcessName.Trim(),
-                            });
-                        }
+                //@class._ListViewceItemWorkingTimeSizeProduct = _MK._ViewceItemWorkingTimeSizeProduct.Where(x => x.wsDocumentNoSub == @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub).ToList();
 
-                        @class._ListViewceItemWorkingTimeSizeProduct.Add(new ViewceItemWorkingTimeSizeProduct
+                for (int j = 0; j < @class._ListViewceItemPartName.Count(); j++)
+                {
+                    for (int i = 0; i < @class._ListceMastProcess.Count(); i++)
+                    {
+                        var _ViewceItemPartName = _MK._ViewceItemWorkingTimePartName.Where(x => x.wpDocumentNoSub == @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub &&
+                                                                                      x.wpNoProcess == @class._ListViewceItemPartName[j].ipRunNo &&
+                                                                                      x.wpGroupName == @class._ListceMastProcess[i].mpGroupName &&
+                                                                                      x.wpProcessName == @class._ListceMastProcess[i].mpProcessName
+                                                                                //wpPartName wpCavityNo wpTypeCavity ไม่ได้ ต้องจับ  ipRunNo อย่างเดียวเพราะว่าเขาบอกมันจะเปลี่ยนแน่นอน
+                                                                                ).OrderBy(x => x.wpRunNo).FirstOrDefault();
+                        @class._ListViewceItemWorkingTimePartName.Add(new ViewceItemWorkingTimePartName
                         {
-                            wsDocumentNoSub = @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub,
-                            wsRunNo = j + 1,
-                            wsPartName = @class._ListViewceItemPartName[j].ipPartName,
-                            wsCavityNo = @class._ListViewceItemPartName[j].ipCavityNo,
-                            wsTypeCavity = @class._ListViewceItemPartName[j].ipTypeCavity,
-                            wsSize = "",
-                            wsSizeProductX = 0,
-                            wsSizeProductY = 0,
-                            wsSizeProductz = 0,
+                            wpDocumentNoSub = @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub,
+                            wpRunNo = i + 1,
+                            wpPartName = @class._ListViewceItemPartName[j].ipPartName,
+                            wpCavityNo = @class._ListViewceItemPartName[j].ipCavityNo,
+                            wpTypeCavity = @class._ListViewceItemPartName[j].ipTypeCavity,
+                            wpNoProcess = @class._ListViewceItemPartName[j].ipRunNo,
+                            wpGroupName = @class._ListceMastProcess[i].mpGroupName.Trim(),
+                            wpProcessName = @class._ListceMastProcess[i].mpProcessName.Trim(),
+                            wpWT_Man = _ViewceItemPartName != null ? _ViewceItemPartName.wpWT_Man : 0,
+                            wpWT_Auto = _ViewceItemPartName != null ? _ViewceItemPartName.wpWT_Auto : 0,
+                            wpEnable_WTMan = _ViewceItemPartName != null ? _ViewceItemPartName.wpEnable_WTMan : @class._ListceMastProcess[i].mpEnable_WTMan,
+                            wpEnable_WTAuto = _ViewceItemPartName != null ? _ViewceItemPartName.wpEnable_WTAuto : @class._ListceMastProcess[i].mpEnable_WTAuto,
+                            wpTotal = _ViewceItemPartName != null ? _ViewceItemPartName.wpTotal : 0,
+                            wpIssueDate = _ViewceItemPartName != null ? _ViewceItemPartName.wpIssueDate : "",// @class._ListceMastProcess[i].mpProcessName.Trim(),
                         });
 
+
+
+
                     }
+
                 }
+
+
+                for (int j = 0; j < @class._ListViewceItemPartName.Count(); j++)
+                {
+                    var _ceItemWorkingTimeSizeProduct = _MK._ViewceItemWorkingTimeSizeProduct.Where(x => x.wsDocumentNoSub == @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub && x.wsRunNo == @class._ListViewceItemPartName[j].ipRunNo).FirstOrDefault();
+                    @class._ListViewceItemWorkingTimeSizeProduct.Add(new ViewceItemWorkingTimeSizeProduct
+                    {
+                        wsDocumentNoSub = @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub,
+                        wsRunNo = @class._ListViewceItemPartName[j].ipRunNo,
+                        wsPartName = @class._ListViewceItemPartName[j].ipPartName,
+                        wsCavityNo = @class._ListViewceItemPartName[j].ipCavityNo,
+                        wsTypeCavity = @class._ListViewceItemPartName[j].ipTypeCavity,
+                        wsSize = _ceItemWorkingTimeSizeProduct != null ? _ceItemWorkingTimeSizeProduct.wsSize : "",
+                        wsSizeProductX = _ceItemWorkingTimeSizeProduct != null ? _ceItemWorkingTimeSizeProduct.wsSizeProductX : 0,
+                        wsSizeProductY = _ceItemWorkingTimeSizeProduct != null ? _ceItemWorkingTimeSizeProduct.wsSizeProductY : 0,
+                        wsSizeProductz = _ceItemWorkingTimeSizeProduct != null ? _ceItemWorkingTimeSizeProduct.wsSizeProductz : 0,
+                    });
+
+                }
+
+
+                //if (@class._ListViewceItemWorkingTimePartName.Count() == 0)
+                //{
+                //    for (int j = 0; j < @class._ListViewceItemPartName.Count(); j++)
+                //    {
+                //        for (int i = 0; i < @class._ListceMastProcess.Count(); i++)
+                //        {
+                //            @class._ListViewceItemWorkingTimePartName.Add(new ViewceItemWorkingTimePartName
+                //            {
+                //                wpDocumentNoSub = @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub,
+                //                wpRunNo = i + 1,
+                //                wpPartName = @class._ListViewceItemPartName[j].ipPartName,
+                //                wpCavityNo = @class._ListViewceItemPartName[j].ipCavityNo,
+                //                wpTypeCavity = @class._ListViewceItemPartName[j].ipTypeCavity,
+                //                wpNoProcess = @class._ListViewceItemPartName[j].ipRunNo,
+                //                wpGroupName = @class._ListceMastProcess[i].mpGroupName.Trim(),
+                //                wpProcessName = @class._ListceMastProcess[i].mpProcessName.Trim(),
+                //                wpWT_Man = 0,
+                //                wpWT_Auto = 0,
+                //                wpEnable_WTMan = @class._ListceMastProcess[i].mpEnable_WTMan,
+                //                wpEnable_WTAuto = @class._ListceMastProcess[i].mpEnable_WTAuto,
+                //                wpTotal = 0,
+                //                wpIssueDate = "",// @class._ListceMastProcess[i].mpProcessName.Trim(),
+                //            });
+                //        }
+
+                //        @class._ListViewceItemWorkingTimeSizeProduct.Add(new ViewceItemWorkingTimeSizeProduct
+                //        {
+                //            wsDocumentNoSub = @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub,
+                //            wsRunNo = j + 1,
+                //            wsPartName = @class._ListViewceItemPartName[j].ipPartName,
+                //            wsCavityNo = @class._ListViewceItemPartName[j].ipCavityNo,
+                //            wsTypeCavity = @class._ListViewceItemPartName[j].ipTypeCavity,
+                //            wsSize = "",
+                //            wsSizeProductX = 0,
+                //            wsSizeProductY = 0,
+                //            wsSizeProductz = 0,
+                //        });
+
+                //    }
+                //}
                 //add group  ipPartName ipCavityNo ipTypeCavity
                 @class._ListGroupPartName = @class._ListViewceItemWorkingTimePartName.GroupBy(x => new { x.wpPartName, x.wpCavityNo, x.wpTypeCavity })
-                                .Select(g => new GroupPartName
-                                {
-                                    wpPartName = g.Key.wpPartName,
-                                    wpCavityNo = g.Key.wpCavityNo,
-                                    wpTypeCavity = g.Key.wpTypeCavity,
+                            .Select(g => new GroupPartName
+                            {
+                                wpPartName = g.Key.wpPartName,
+                                wpCavityNo = g.Key.wpCavityNo,
+                                wpTypeCavity = g.Key.wpTypeCavity,
 
-                                    _GroupViewceItemWorkingTimePartName = g
-                                        .GroupBy(x => x.wpGroupName)
-                                        .Select(gg => new GroupViewceItemWorkingTimePartName
-                                        {
-                                            GroupName = gg.Key,
-                                            _ViewceItemWorkingTimePartName = gg.ToList()
-                                        }).ToList(),
-                                    _GroupViewItemWorkingTimeSizeProduct = @class._ListViewceItemWorkingTimeSizeProduct.Where(
-                                                                            x => x.wsDocumentNoSub == @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub
-                                                                                  && x.wsPartName == g.Key.wpPartName
-                                                                                  && x.wsCavityNo == g.Key.wpCavityNo
-                                                                                  && x.wsTypeCavity == g.Key.wpTypeCavity
-                                                                                    ).Select(y => new ViewceItemWorkingTimeSizeProduct
-                                                                                    {
-                                                                                        wsDocumentNoSub = y.wsDocumentNoSub,
-                                                                                        wsRunNo = y.wsRunNo,
-                                                                                        wsPartName = y.wsPartName,
-                                                                                        wsCavityNo = y.wsCavityNo,
-                                                                                        wsTypeCavity = y.wsTypeCavity,
-                                                                                        wsSize = y.wsSize,
-                                                                                        wsSizeProductX = y.wsSizeProductX,
-                                                                                        wsSizeProductY = y.wsSizeProductY,
-                                                                                        wsSizeProductz = y.wsSizeProductz
-                                                                                    }).ToList(),
+                                _GroupViewceItemWorkingTimePartName = g
+                                    .GroupBy(x => x.wpGroupName)
+                                    .Select(gg => new GroupViewceItemWorkingTimePartName
+                                    {
+                                        GroupName = gg.Key,
+                                        _ViewceItemWorkingTimePartName = gg.ToList()
+                                    }).ToList(),
+                                _GroupViewItemWorkingTimeSizeProduct = @class._ListViewceItemWorkingTimeSizeProduct.Where(
+                                                                        x => x.wsDocumentNoSub == @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub
+                                                                              && x.wsPartName == g.Key.wpPartName
+                                                                              && x.wsCavityNo == g.Key.wpCavityNo
+                                                                              && x.wsTypeCavity == g.Key.wpTypeCavity
+                                                                                ).Select(y => new ViewceItemWorkingTimeSizeProduct
+                                                                                {
+                                                                                    wsDocumentNoSub = y.wsDocumentNoSub,
+                                                                                    wsRunNo = y.wsRunNo,
+                                                                                    wsPartName = y.wsPartName,
+                                                                                    wsCavityNo = y.wsCavityNo,
+                                                                                    wsTypeCavity = y.wsTypeCavity,
+                                                                                    wsSize = y.wsSize,
+                                                                                    wsSizeProductX = y.wsSizeProductX,
+                                                                                    wsSizeProductY = y.wsSizeProductY,
+                                                                                    wsSizeProductz = y.wsSizeProductz
+                                                                                }).ToList(),
 
 
-                                })
-                                .ToList();
+                            })
+                            .ToList();
 
 
                 @class._listAttachment = _IT.Attachment.Where(x => x.fnNo == @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub).ToList();
@@ -216,7 +277,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
             List<ViewceHistoryApproved> _listHistory = new List<ViewceHistoryApproved>();
             //_listHistory = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == v_DocNo).OrderBy(x => x.htStep).ToList();
 
-            _listHistory = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == v_DocNo).OrderBy(x => x.htStep).ThenBy(x => x.htDate).ThenBy(x => x.htTime).ThenBy(x => x.htStep).ToList();
+            _listHistory = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == v_DocNo).OrderBy(x => x.htDate).ThenBy(x => x.htTime).ThenBy(x => x.htStep).ToList();
             if (_listHistory.Count() > 0)
             {
                 for (int j = 0; j < _listHistory.Count(); j++)
@@ -271,6 +332,24 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                : _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "4") != null
                     ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "4").Select(x => x.mfTo).FirstOrDefault()
                     : "";
+
+            string v_listemailTo;
+
+            v_empCodeTo = v_empCodeTo != null ? v_empCodeTo.Split(",").Count() > 0 ? v_empCodeTo.Split(",")[0] : v_empCodeTo : "";
+
+
+            //string  v_listempCodeTo = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == 0 && x.mfFlowNo == "4") != null ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == 0 && x.mfFlowNo == == "4").Select(x => x.mfTo).FirstOrDefault() : "";
+            //string[] s_empCodeTo = v_listempCodeTo.Split(",");
+            //List<string> _listNameTo = new List<string>();
+            //for (int l = 0; l < s_empCodeTo.Count(); l++)
+            //{
+            //    v_listemailTo = _IT.rpEmails.Where(x => x.emEmpcode == s_empCodeTo[l].ToString()).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
+            //    _listNameTo.Add(v_listemailTo);
+            //}
+
+
+
+
 
             var v_nameTo = _IT.rpEmails.Where(x => x.emEmpcode == v_empCodeTo).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
             string v_empCodeCC = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "4") != null ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "4").Select(x => x.mfCC).FirstOrDefault() : "";
@@ -380,7 +459,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                     }
 
                     //save
-                    chkSave = Save(@class, i_Step, files,"S");
+                    chkSave = Save(@class, i_Step, files, "S");
                     if (chkSave[0] == "E")
                     {
                         config = chkSave[0];
@@ -457,27 +536,36 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
             {
                 if (chkData != null)
                 {
-                    //check operator //check create user
-                    if (chkData.wrStep == 0 && _UserId == chkData.wrEmpCodeRequest)
+                    if (chkData.wrStep != 4)
                     {
-                        status_per = "S";
-                        message_per = "You have permission ";
-                    }
-                    else if (_UserId == chkData.wrEmpCodeApprove)
-                    {
-                        status_per = "S";
-                        message_per = "You have permission ";
-                    }
-                    else if (chkData.wrStep == 4 && _Permiss.ToUpper() == "ADMIN")
-                    {
-                        status_per = "S";
-                        message_per = "You have permission ";
+                        //check operator //check create user
+                        if (chkData.wrStep == 0 && _UserId == chkData.wrEmpCodeRequest)
+                        {
+                            status_per = "S";
+                            message_per = "You have permission ";
+                        }
+                        else if (_UserId == chkData.wrEmpCodeApprove)
+                        {
+                            status_per = "S";
+                            message_per = "You have permission ";
+                        }
+                        else if (chkData.wrStep == 4 && _Permiss.ToUpper() == "ADMIN")
+                        {
+                            status_per = "S";
+                            message_per = "You have permission ";
+                        }
+                        else
+                        {
+                            status_per = "P";
+                            message_per = "You don't have permission to access";
+                        }
                     }
                     else
                     {
                         status_per = "P";
                         message_per = "You don't have permission to access";
                     }
+
                 }
                 else
                 {
@@ -513,7 +601,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                     string empApprove = @class._ViewceHistoryApproved != null ? _IT.rpEmails.Where(w => w.emName_M365 == @class._ViewceHistoryApproved.htTo).Select(x => x.emEmpcode).First() : @class._ViewceMastWorkingTimeRequest.wrEmpCodeApprove;
                     string NickNameApprove = empApprove != null ? _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == empApprove).Select(x => x.NICKNAME).First() : @class._ViewceMastWorkingTimeRequest.wrNameApprove;
 
-
+                    vstep = vstep == 9 ? vstep = 0 : vstep;
                     //save ceMastWorkingTimeRequest
                     ViewceMastWorkingTimeRequest _ceMastWorkingTimeRequest = new ViewceMastWorkingTimeRequest();
                     if (savetype == "S")
@@ -539,27 +627,98 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                         _MK._ViewceItemWorkingTimePartName.RemoveRange(itemWK);
                         _MK.SaveChanges();
                     }
-                    for (int i = 0; i < @class._ListViewceItemWorkingTimePartName.Count(); i++)
+                    //for (int i = 0; i < @class._ListViewceItemWorkingTimePartName.Count(); i++)
+                    //{
+                    //    var _ceItemWorkingTimePartName = new ViewceItemWorkingTimePartName()
+                    //    {
+                    //        wpDocumentNoSub = vDocNo,
+                    //        wpRunNo = i + 1,
+                    //        wpPartName = @class._ListViewceItemWorkingTimePartName[i].wpPartName,
+                    //        wpCavityNo = @class._ListViewceItemWorkingTimePartName[i].wpCavityNo,
+                    //        wpTypeCavity = @class._ListViewceItemWorkingTimePartName[i].wpTypeCavity,
+                    //        wpNoProcess = @class._ListViewceItemWorkingTimePartName[i].wpNoProcess,
+                    //        wpGroupName = @class._ListViewceItemWorkingTimePartName[i].wpGroupName,
+                    //        wpProcessName = @class._ListViewceItemWorkingTimePartName[i].wpProcessName,
+                    //        wpWT_Man = @class._ListViewceItemWorkingTimePartName[i].wpWT_Man,
+                    //        wpWT_Auto = @class._ListViewceItemWorkingTimePartName[i].wpWT_Auto,
+                    //        wpEnable_WTMan = @class._ListViewceItemWorkingTimePartName[i].wpEnable_WTMan,
+                    //        wpEnable_WTAuto = @class._ListViewceItemWorkingTimePartName[i].wpEnable_WTAuto,
+                    //        wpTotal = @class._ListViewceItemWorkingTimePartName[i].wpTotal,
+                    //        wpIssueDate = DateTime.Now.ToString("yyyyMMdd HH:mm:ss"),
+                    //    };
+                    //    _MK._ViewceItemWorkingTimePartName.AddAsync(_ceItemWorkingTimePartName);
+                    //}
+
+
+                    //SqlBulk insert
+                    var connection = (SqlConnection)_MK.Database.GetDbConnection();
+                    if (connection.State != ConnectionState.Open)
+                        connection.Open();
+                    // ใช้ Transaction เดิมของ EF
+                    using (var bulkCopy = new SqlBulkCopy(connection, SqlBulkCopyOptions.Default, (SqlTransaction)dbContextTransaction.GetDbTransaction()))
                     {
-                        var _ceItemWorkingTimePartName = new ViewceItemWorkingTimePartName()
+                        bulkCopy.DestinationTableName = "ceItemWorkingTimePartName";
+                        bulkCopy.BatchSize = 5000;
+                        bulkCopy.BulkCopyTimeout = 0;
+
+                        DataTable dt = new DataTable();
+                        dt.Columns.Add("wpDocumentNoSub", typeof(string));
+                        dt.Columns.Add("wpRunNo", typeof(int));
+                        dt.Columns.Add("wpPartName", typeof(string));
+                        dt.Columns.Add("wpCavityNo", typeof(double));
+                        dt.Columns.Add("wpTypeCavity", typeof(string));
+                        dt.Columns.Add("wpNoProcess", typeof(int));
+                        dt.Columns.Add("wpGroupName", typeof(string));
+                        dt.Columns.Add("wpProcessName", typeof(string));
+                        dt.Columns.Add("wpWT_Man", typeof(double));
+                        dt.Columns.Add("wpWT_Auto", typeof(double));
+                        dt.Columns.Add("wpEnable_WTMan", typeof(bool));
+                        dt.Columns.Add("wpEnable_WTAuto", typeof(bool));
+                        dt.Columns.Add("wpTotal", typeof(double));
+                        dt.Columns.Add("wpIssueDate", typeof(string));
+
+                        for (int i = 0; i < @class._ListViewceItemWorkingTimePartName.Count; i++)
                         {
-                            wpDocumentNoSub = vDocNo,
-                            wpRunNo = i + 1,
-                            wpPartName = @class._ListViewceItemWorkingTimePartName[i].wpPartName,
-                            wpCavityNo = @class._ListViewceItemWorkingTimePartName[i].wpCavityNo,
-                            wpTypeCavity = @class._ListViewceItemWorkingTimePartName[i].wpTypeCavity,
-                            wpNoProcess = @class._ListViewceItemWorkingTimePartName[i].wpNoProcess,
-                            wpGroupName = @class._ListViewceItemWorkingTimePartName[i].wpGroupName,
-                            wpProcessName = @class._ListViewceItemWorkingTimePartName[i].wpProcessName,
-                            wpWT_Man = @class._ListViewceItemWorkingTimePartName[i].wpWT_Man,
-                            wpWT_Auto = @class._ListViewceItemWorkingTimePartName[i].wpWT_Auto,
-                            wpEnable_WTMan = @class._ListViewceItemWorkingTimePartName[i].wpEnable_WTMan,
-                            wpEnable_WTAuto = @class._ListViewceItemWorkingTimePartName[i].wpEnable_WTAuto,
-                            wpTotal = @class._ListViewceItemWorkingTimePartName[i].wpTotal,
-                            wpIssueDate = DateTime.Now.ToString("yyyyMMdd HH:mm:ss"),
-                        };
-                        _MK._ViewceItemWorkingTimePartName.AddAsync(_ceItemWorkingTimePartName);
+                            var item = @class._ListViewceItemWorkingTimePartName[i];
+                            dt.Rows.Add(
+                                vDocNo,
+                                i + 1,
+                                item.wpPartName,
+                                item.wpCavityNo,
+                                item.wpTypeCavity,
+                                item.wpNoProcess,
+                                item.wpGroupName,
+                                item.wpProcessName,
+                                item.wpWT_Man,
+                                item.wpWT_Auto,
+                                item.wpEnable_WTMan,
+                                item.wpEnable_WTAuto,
+                                item.wpTotal,
+                                DateTime.Now.ToString("yyyyMMdd HH:mm:ss")
+                            );
+                        }
+
+                        // Mapping (กรณีชื่อคอลัมน์ตรง DB อยู่แล้ว อาจไม่ต้องใส่ก็ได้)
+                        bulkCopy.ColumnMappings.Add("wpDocumentNoSub", "wpDocumentNoSub");
+                        bulkCopy.ColumnMappings.Add("wpRunNo", "wpRunNo");
+                        bulkCopy.ColumnMappings.Add("wpPartName", "wpPartName");
+                        bulkCopy.ColumnMappings.Add("wpCavityNo", "wpCavityNo");
+                        bulkCopy.ColumnMappings.Add("wpTypeCavity", "wpTypeCavity");
+                        bulkCopy.ColumnMappings.Add("wpNoProcess", "wpNoProcess");
+                        bulkCopy.ColumnMappings.Add("wpGroupName", "wpGroupName");
+                        bulkCopy.ColumnMappings.Add("wpProcessName", "wpProcessName");
+                        bulkCopy.ColumnMappings.Add("wpWT_Man", "wpWT_Man");
+                        bulkCopy.ColumnMappings.Add("wpWT_Auto", "wpWT_Auto");
+                        bulkCopy.ColumnMappings.Add("wpEnable_WTMan", "wpEnable_WTMan");
+                        bulkCopy.ColumnMappings.Add("wpEnable_WTAuto", "wpEnable_WTAuto");
+                        bulkCopy.ColumnMappings.Add("wpTotal", "wpTotal");
+                        bulkCopy.ColumnMappings.Add("wpIssueDate", "wpIssueDate");
+
+                        bulkCopy.WriteToServer(dt);
                     }
+
+
+
                     //save ceItemWorkingTimeSizeProduct
                     var itemSize = _MK._ViewceItemWorkingTimeSizeProduct.Where(p => p.wsDocumentNoSub == vDocNo).ToList();
                     if (itemSize.Count > 0)
@@ -572,7 +731,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                         var _ceItemWorkingTimeSizeProduct = new ViewceItemWorkingTimeSizeProduct()
                         {
                             wsDocumentNoSub = vDocNo,
-                            wsRunNo = i + 1,
+                            wsRunNo = @class._ListViewceItemWorkingTimeSizeProduct[i].wsRunNo,
                             wsPartName = @class._ListViewceItemWorkingTimeSizeProduct[i].wsPartName,
                             wsCavityNo = @class._ListViewceItemWorkingTimeSizeProduct[i].wsCavityNo,
                             wsTypeCavity = @class._ListViewceItemWorkingTimeSizeProduct[i].wsTypeCavity,
@@ -583,8 +742,6 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                         };
                         _MK._ViewceItemWorkingTimeSizeProduct.AddAsync(_ceItemWorkingTimeSizeProduct);
                     }
-
-
 
                     _MK.SaveChanges();
                     dbContextTransaction.Commit();
@@ -804,7 +961,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
 
 
                 string _smStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == vstep && x.mfFlowNo == "4").Select(x => x.mfSubject).First();
-                vstep = vstep == 9 ? vstep = 0 : vstep;
+                vstep = vstep == 8 ? vstep = 0 : vstep;
 
                 var email = new MimeMessage();
                 ViewrpEmail fromEmailFrom = _IT.rpEmails.Where(w => w.emName_M365 == @class._ViewceHistoryApproved.htFrom).FirstOrDefault();
@@ -840,7 +997,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                         }
                     }
                 }
-                var varifyUrl = "http://thsweb/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=MoldOther&subType=I";
+                var varifyUrl = "http://thsweb/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=MoldOther&subType=W";
                 //var varifyUrl = "http://thsweb/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=MoldOther";// + getSrNo[0].ToString();
                 var bodyBuilder = new BodyBuilder();
                 //var image = bodyBuilder.LinkedResources.Add(@"E:\01_My Document\02_Project\_2023\1. PartTransferUnbalance\PartTransferUnbalance\wwwroot\images\btn\OK.png");
@@ -950,7 +1107,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                     @class._ListViewceItemWorkingTimeSizeProduct = JsonConvert.DeserializeObject<List<ViewceItemWorkingTimeSizeProduct>>(_ItemWorkingTimeSizeProduct);
                 }
 
-                chkSave = Save(@class, i_Step, files,"D");
+                chkSave = Save(@class, i_Step, files, "D");
                 if (chkSave[0] == "E")
                 {
                     config = chkSave[0];
@@ -961,7 +1118,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                 {
                     config = chkSave[0];
                     msg = "Save Data success ";
-                   // msg = chkSave[1];
+                    // msg = chkSave[1];
                 }
 
             }
@@ -973,5 +1130,8 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
             }
             return Json(new { c1 = config, c2 = msg });
         }
+
+
+
     }
 }

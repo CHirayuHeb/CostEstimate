@@ -84,7 +84,7 @@ namespace CostEstimate.Controllers.NewMoldOther
             if (id != null)
             {
                 @class._ViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == id).FirstOrDefault();
-                @class._ListViewceItemPartName = _MK._ViewceItemPartName.Where(x => x.ipDocumentNo == id).ToList();
+                @class._ListViewceItemPartName = _MK._ViewceItemPartName.Where(x => x.ipDocumentNo == id).OrderBy(x => x.ipRunNo).ToList();
 
                 //table sub
                 @class._ViewceMastWorkingTimeRequest = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNo == id).FirstOrDefault();
@@ -157,7 +157,7 @@ namespace CostEstimate.Controllers.NewMoldOther
                         }
 
 
-                        return Json(new { status = "hasHistory", listHistory = _listHistory, partial = partialUrl });
+                        return Json(new { status = _listHistory.Count() > 0 ? "hasHistory" : "empty", listHistory = _listHistory, partial = partialUrl });
                     }
                 }
 
@@ -308,6 +308,19 @@ namespace CostEstimate.Controllers.NewMoldOther
                             .Where(q => q.Contains(term, StringComparison.OrdinalIgnoreCase))
                             .ToList()
                             );
+
+        }
+
+        public ActionResult SearchType(string term)
+        {
+
+            return Json(
+                        _MK._ViewceMastType
+                            .Where(p => p.mtName.Contains(term) && p.mtProgram == "MoldOther" && p.mtType == "Type")
+                            .Select(p => p.mtName
+                            )
+                            .ToList()
+                        );
 
         }
 
@@ -676,6 +689,7 @@ namespace CostEstimate.Controllers.NewMoldOther
                         _ViewceMastMoldOtherRequest.mrMoldGo = @class._ViewceMastMoldOtherRequest.mrMoldGo;
                         _ViewceMastMoldOtherRequest.mrTry1 = @class._ViewceMastMoldOtherRequest.mrTry1;
                         _ViewceMastMoldOtherRequest.mrMoldMass = @class._ViewceMastMoldOtherRequest.mrMoldMass;
+                        _ViewceMastMoldOtherRequest.mrType = @class._ViewceMastMoldOtherRequest.mrType;
                         _ViewceMastMoldOtherRequest.mrIssueDate = @class._ViewceMastMoldOtherRequest.mrIssueDate;
                         _ViewceMastMoldOtherRequest.mrStep = vstep;
                         _ViewceMastMoldOtherRequest.mrStatus = _smStatus;
@@ -704,27 +718,80 @@ namespace CostEstimate.Controllers.NewMoldOther
                         //infor spac
                         {
 
+                            //var itemItemPartName = _MK._ViewceItemPartName.Where(p => p.ipDocumentNo == RunDoc).ToList();
+                            //if (itemItemPartName.Count > 0)
+                            //{
+                            //    _MK._ViewceItemPartName.RemoveRange(itemItemPartName);
+                            //    _MK.SaveChanges();
+
+                            //    if (@class._ListViewceItemPartName.Count > 0)
+                            //    {
+
+                            //        for (int i = 0; i < @class._ListViewceItemPartName.Count(); i++)
+                            //        {
+                            //            ViewceItemPartName _ViewceItemPartName = new ViewceItemPartName();
+                            //            _ViewceItemPartName.ipDocumentNo = RunDoc;
+                            //            _ViewceItemPartName.ipRunNo = @class._ListViewceItemPartName[i].ipRunNo;
+                            //            _ViewceItemPartName.ipPartName = @class._ListViewceItemPartName[i].ipPartName;
+                            //            _ViewceItemPartName.ipCavityNo = @class._ListViewceItemPartName[i].ipCavityNo;
+                            //            _ViewceItemPartName.ipTypeCavity = @class._ListViewceItemPartName[i].ipTypeCavity;
+                            //            _MK._ViewceItemPartName.AddAsync(_ViewceItemPartName);
+                            //            _MK.SaveChanges();
+                            //        }
+                            //    }
+
+                            //}
+                            //else
+                            //{
+                            //    if (@class._ListViewceItemPartName.Count > 0)
+                            //    {
+
+                            //        for (int i = 0; i < @class._ListViewceItemPartName.Count(); i++)
+                            //        {
+                            //            ViewceItemPartName _ViewceItemPartName = new ViewceItemPartName();
+                            //            _ViewceItemPartName.ipDocumentNo = RunDoc;
+                            //            _ViewceItemPartName.ipRunNo = i + 1;// @class._ListViewceItemPartName[i].ipRunNo;
+                            //            _ViewceItemPartName.ipPartName = @class._ListViewceItemPartName[i].ipPartName;
+                            //            _ViewceItemPartName.ipCavityNo = @class._ListViewceItemPartName[i].ipCavityNo;
+                            //            _ViewceItemPartName.ipTypeCavity = @class._ListViewceItemPartName[i].ipTypeCavity;
+                            //            _MK._ViewceItemPartName.AddAsync(_ViewceItemPartName);
+                            //            _MK.SaveChanges();
+                            //        }
+                            //    }
+                            //}
+
                             var itemItemPartName = _MK._ViewceItemPartName.Where(p => p.ipDocumentNo == RunDoc).ToList();
-                            if (itemItemPartName.Count > 0)
+
+                            if (itemItemPartName.Any())
                             {
                                 _MK._ViewceItemPartName.RemoveRange(itemItemPartName);
                                 _MK.SaveChanges();
                             }
-                            if (@class._ListViewceItemPartName.Count > 0)
-                            {
 
-                                for (int i = 0; i < @class._ListViewceItemPartName.Count(); i++)
+                            if (@class._ListViewceItemPartName.Any())
+                            {
+                                for (int i = 0; i < @class._ListViewceItemPartName.Count; i++)
                                 {
-                                    ViewceItemPartName _ViewceItemPartName = new ViewceItemPartName();
-                                    _ViewceItemPartName.ipDocumentNo = RunDoc;
-                                    _ViewceItemPartName.ipRunNo = i + 1;
-                                    _ViewceItemPartName.ipPartName = @class._ListViewceItemPartName[i].ipPartName;
-                                    _ViewceItemPartName.ipCavityNo = @class._ListViewceItemPartName[i].ipCavityNo;
-                                    _ViewceItemPartName.ipTypeCavity = @class._ListViewceItemPartName[i].ipTypeCavity;
+                                    var part = @class._ListViewceItemPartName[i];
+                                    var _ViewceItemPartName = new ViewceItemPartName
+                                    {
+                                        ipDocumentNo = RunDoc,
+                                        ipRunNo = itemItemPartName.Any() ? part.ipRunNo : i + 1,
+                                        ipPartName = part.ipPartName,
+                                        ipCavityNo = part.ipCavityNo,
+                                        ipTypeCavity = part.ipTypeCavity
+                                    };
                                     _MK._ViewceItemPartName.AddAsync(_ViewceItemPartName);
                                     _MK.SaveChanges();
+
+
+                                    //_MK._ViewceItemPartName.Add(_ViewceItemPartName);
                                 }
+                                //  _MK.SaveChanges();
                             }
+
+
+
                             //working time 0 flow 4
                             //Material 1 flow 5
                             //tool & gr 2 flow 6
@@ -758,22 +825,26 @@ namespace CostEstimate.Controllers.NewMoldOther
                                         NickNameSubApprove = empSubApprove != null ? _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == empSubApprove).Select(x => x.NICKNAME).First() : "";
 
                                         var _ceMastWorkingTimeRequest = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNo == RunDoc).FirstOrDefault();
-                                        if (_ceMastWorkingTimeRequest == null)
+                                        if (_ceMastWorkingTimeRequest != null)
                                         {
-                                            ViewceMastWorkingTimeRequest _ViewceMastWorkingTimeRequest = new ViewceMastWorkingTimeRequest();
-                                            _ViewceMastWorkingTimeRequest.wrDocumentNo = RunDoc;
-                                            _ViewceMastWorkingTimeRequest.wrDocumentNoSub = RunDoc + "-W";
-                                            _ViewceMastWorkingTimeRequest.wrIssueDate = IssueBy;
-                                            _ViewceMastWorkingTimeRequest.wrStep = 1;//vstep;// 1;
-                                            _ViewceMastWorkingTimeRequest.wrStatus = _smsubStatus;
-                                            _ViewceMastWorkingTimeRequest.wrEmpCodeRequest = empSubIssue;
-                                            _ViewceMastWorkingTimeRequest.wrNameRequest = NickNameSubIssue;
-                                            _ViewceMastWorkingTimeRequest.wrEmpCodeApprove = empSubApprove;
-                                            _ViewceMastWorkingTimeRequest.wrNameApprove = NickNameSubApprove;
-                                            _ViewceMastWorkingTimeRequest.wrFlowNo = i + 4;
-                                            _MK._ViewceMastWorkingTimeRequest.AddAsync(_ViewceMastWorkingTimeRequest);
+                                            _MK._ViewceMastWorkingTimeRequest.Remove(_ceMastWorkingTimeRequest);
                                             _MK.SaveChanges();
                                         }
+
+                                        ViewceMastWorkingTimeRequest _ViewceMastWorkingTimeRequest = new ViewceMastWorkingTimeRequest();
+                                        _ViewceMastWorkingTimeRequest.wrDocumentNo = RunDoc;
+                                        _ViewceMastWorkingTimeRequest.wrDocumentNoSub = RunDoc + "-W";
+                                        _ViewceMastWorkingTimeRequest.wrIssueDate = IssueBy;
+                                        _ViewceMastWorkingTimeRequest.wrStep = 1;//vstep;// 1;
+                                        _ViewceMastWorkingTimeRequest.wrStatus = _smsubStatus;
+                                        _ViewceMastWorkingTimeRequest.wrEmpCodeRequest = empSubIssue;
+                                        _ViewceMastWorkingTimeRequest.wrNameRequest = NickNameSubIssue;
+                                        _ViewceMastWorkingTimeRequest.wrEmpCodeApprove = empSubApprove;
+                                        _ViewceMastWorkingTimeRequest.wrNameApprove = NickNameSubApprove;
+                                        _ViewceMastWorkingTimeRequest.wrFlowNo = i + 4;
+                                        _MK._ViewceMastWorkingTimeRequest.AddAsync(_ViewceMastWorkingTimeRequest);
+                                        _MK.SaveChanges();
+
 
                                     }
                                     else if (i == 1)
@@ -786,22 +857,26 @@ namespace CostEstimate.Controllers.NewMoldOther
                                         NickNameSubApprove = empSubApprove != null ? _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == empSubApprove).Select(x => x.NICKNAME).First() : "";
 
                                         var _ceMastMaterialRequest = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == RunDoc).FirstOrDefault();
-                                        if (_ceMastMaterialRequest == null)
+                                        if (_ceMastMaterialRequest != null)
                                         {
-                                            ViewceMastMaterialRequest _ViewceMastMaterialRequest = new ViewceMastMaterialRequest();
-                                            _ViewceMastMaterialRequest.mrDocumentNo = RunDoc;
-                                            _ViewceMastMaterialRequest.mrDocumentNoSub = RunDoc + "-M";
-                                            _ViewceMastMaterialRequest.mrIssueDate = IssueBy;
-                                            _ViewceMastMaterialRequest.mrStep = 1;//vstep;// 1;
-                                            _ViewceMastMaterialRequest.mrStatus = _smsubStatus;
-                                            _ViewceMastMaterialRequest.mrEmpCodeRequest = empSubIssue;
-                                            _ViewceMastMaterialRequest.mrNameRequest = NickNameSubIssue;
-                                            _ViewceMastMaterialRequest.mrEmpCodeApprove = empSubApprove;
-                                            _ViewceMastMaterialRequest.mrNameApprove = NickNameSubApprove;
-                                            _ViewceMastMaterialRequest.mrFlowNo = i + 4;
-                                            _MK._ViewceMastMaterialRequest.AddAsync(_ViewceMastMaterialRequest);
+                                            _MK._ViewceMastMaterialRequest.Remove(_ceMastMaterialRequest);
                                             _MK.SaveChanges();
                                         }
+
+                                        ViewceMastMaterialRequest _ViewceMastMaterialRequest = new ViewceMastMaterialRequest();
+                                        _ViewceMastMaterialRequest.mrDocumentNo = RunDoc;
+                                        _ViewceMastMaterialRequest.mrDocumentNoSub = RunDoc + "-M";
+                                        _ViewceMastMaterialRequest.mrIssueDate = IssueBy;
+                                        _ViewceMastMaterialRequest.mrStep = 1;//vstep;// 1;
+                                        _ViewceMastMaterialRequest.mrStatus = _smsubStatus;
+                                        _ViewceMastMaterialRequest.mrEmpCodeRequest = empSubIssue;
+                                        _ViewceMastMaterialRequest.mrNameRequest = NickNameSubIssue;
+                                        _ViewceMastMaterialRequest.mrEmpCodeApprove = empSubApprove;
+                                        _ViewceMastMaterialRequest.mrNameApprove = NickNameSubApprove;
+                                        _ViewceMastMaterialRequest.mrFlowNo = i + 4;
+                                        _MK._ViewceMastMaterialRequest.AddAsync(_ViewceMastMaterialRequest);
+                                        _MK.SaveChanges();
+
 
 
                                     }
@@ -815,23 +890,27 @@ namespace CostEstimate.Controllers.NewMoldOther
                                         NickNameSubApprove = empSubApprove != null ? _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == empSubApprove).Select(x => x.NICKNAME).First() : "";
 
                                         var _ceMastToolGRRequest = _MK._ViewceMastToolGRRequest.Where(x => x.trDocumentNo == RunDoc).FirstOrDefault();
-                                        if (_ceMastToolGRRequest == null)
+                                        if (_ceMastToolGRRequest != null)
                                         {
-                                            ViewceMastToolGRRequest _ViewceMastToolGRRequest = new ViewceMastToolGRRequest();
-                                            _ViewceMastToolGRRequest.trDocumentNo = RunDoc;
-                                            _ViewceMastToolGRRequest.trDocumentNoSub = RunDoc + "-T";
-                                            _ViewceMastToolGRRequest.trIssueDate = IssueBy;
-                                            _ViewceMastToolGRRequest.trStep = 1;//vstep;//1;
-                                            _ViewceMastToolGRRequest.trStatus = _smsubStatus;
-                                            _ViewceMastToolGRRequest.trEmpCodeRequest = empSubIssue;
-                                            _ViewceMastToolGRRequest.trNameRequest = NickNameSubIssue;
-                                            _ViewceMastToolGRRequest.trEmpCodeApprove = empSubApprove;
-                                            _ViewceMastToolGRRequest.trNameApprove = NickNameSubApprove;
-                                            _ViewceMastToolGRRequest.trFlowNo = i + 4;
-                                            _MK._ViewceMastToolGRRequest.AddAsync(_ViewceMastToolGRRequest);
+                                            _MK._ViewceMastToolGRRequest.Remove(_ceMastToolGRRequest);
                                             _MK.SaveChanges();
                                         }
 
+                                        //if (_ceMastToolGRRequest == null)
+                                        //{ }
+                                        ViewceMastToolGRRequest _ViewceMastToolGRRequest = new ViewceMastToolGRRequest();
+                                        _ViewceMastToolGRRequest.trDocumentNo = RunDoc;
+                                        _ViewceMastToolGRRequest.trDocumentNoSub = RunDoc + "-T";
+                                        _ViewceMastToolGRRequest.trIssueDate = IssueBy;
+                                        _ViewceMastToolGRRequest.trStep = 1;//vstep;//1;
+                                        _ViewceMastToolGRRequest.trStatus = _smsubStatus;
+                                        _ViewceMastToolGRRequest.trEmpCodeRequest = empSubIssue;
+                                        _ViewceMastToolGRRequest.trNameRequest = NickNameSubIssue;
+                                        _ViewceMastToolGRRequest.trEmpCodeApprove = empSubApprove;
+                                        _ViewceMastToolGRRequest.trNameApprove = NickNameSubApprove;
+                                        _ViewceMastToolGRRequest.trFlowNo = i + 4;
+                                        _MK._ViewceMastToolGRRequest.AddAsync(_ViewceMastToolGRRequest);
+                                        _MK.SaveChanges();
 
                                     }
                                     else if (i == 3)
@@ -844,22 +923,27 @@ namespace CostEstimate.Controllers.NewMoldOther
                                         NickNameSubApprove = empSubApprove != null ? _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == empSubApprove).Select(x => x.NICKNAME).First() : "";
 
                                         var _ceMastInforSpacMoldRequest = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == RunDoc).FirstOrDefault();
-                                        if (_ceMastInforSpacMoldRequest == null)
+                                        if (_ceMastInforSpacMoldRequest != null)
                                         {
-                                            ViewceMastInforSpacMoldRequest _ViewceMastInforSpacMoldRequest = new ViewceMastInforSpacMoldRequest();
-                                            _ViewceMastInforSpacMoldRequest.irDocumentNo = RunDoc;
-                                            _ViewceMastInforSpacMoldRequest.irDocumentNoSub = RunDoc + "-I";
-                                            _ViewceMastInforSpacMoldRequest.irIssueDate = IssueBy;
-                                            _ViewceMastInforSpacMoldRequest.irStep = 1;//vstep;// 1;
-                                            _ViewceMastInforSpacMoldRequest.irStatus = _smsubStatus;
-                                            _ViewceMastInforSpacMoldRequest.irEmpCodeRequest = empSubIssue;
-                                            _ViewceMastInforSpacMoldRequest.irNameRequest = NickNameSubIssue;
-                                            _ViewceMastInforSpacMoldRequest.irEmpCodeApprove = empSubApprove;
-                                            _ViewceMastInforSpacMoldRequest.irNameApprove = NickNameSubApprove;
-                                            _ViewceMastInforSpacMoldRequest.irFlowNo = i + 4;
-                                            _MK._ViewceMastInforSpacMoldRequest.AddAsync(_ViewceMastInforSpacMoldRequest);
+                                            _MK._ViewceMastInforSpacMoldRequest.Remove(_ceMastInforSpacMoldRequest);
                                             _MK.SaveChanges();
                                         }
+                                        //if (_ceMastInforSpacMoldRequest == null)
+                                        //{ }
+                                        ViewceMastInforSpacMoldRequest _ViewceMastInforSpacMoldRequest = new ViewceMastInforSpacMoldRequest();
+                                        _ViewceMastInforSpacMoldRequest.irDocumentNo = RunDoc;
+                                        _ViewceMastInforSpacMoldRequest.irDocumentNoSub = RunDoc + "-I";
+                                        _ViewceMastInforSpacMoldRequest.irIssueDate = IssueBy;
+                                        _ViewceMastInforSpacMoldRequest.irStep = 1;//vstep;// 1;
+                                        _ViewceMastInforSpacMoldRequest.irStatus = _smsubStatus;
+                                        _ViewceMastInforSpacMoldRequest.irEmpCodeRequest = empSubIssue;
+                                        _ViewceMastInforSpacMoldRequest.irNameRequest = NickNameSubIssue;
+                                        _ViewceMastInforSpacMoldRequest.irEmpCodeApprove = empSubApprove;
+                                        _ViewceMastInforSpacMoldRequest.irNameApprove = NickNameSubApprove;
+                                        _ViewceMastInforSpacMoldRequest.irFlowNo = i + 4;
+                                        _MK._ViewceMastInforSpacMoldRequest.AddAsync(_ViewceMastInforSpacMoldRequest);
+                                        _MK.SaveChanges();
+
 
                                     }
 
@@ -892,6 +976,7 @@ namespace CostEstimate.Controllers.NewMoldOther
                         vOtherRequest.mrMoldGo = @class._ViewceMastMoldOtherRequest.mrMoldGo;
                         vOtherRequest.mrTry1 = @class._ViewceMastMoldOtherRequest.mrTry1;
                         vOtherRequest.mrMoldMass = @class._ViewceMastMoldOtherRequest.mrMoldMass;
+                        vOtherRequest.mrType = @class._ViewceMastMoldOtherRequest.mrType;
                         vOtherRequest.mrIssueDate = vstep == 0 ? "" : @class._ViewceMastMoldOtherRequest.mrIssueDate;
                         vOtherRequest.mrStep = vstep;
                         vOtherRequest.mrStatus = _smStatus;
@@ -1070,9 +1155,9 @@ namespace CostEstimate.Controllers.NewMoldOther
 
                 }
 
-                if (@class._ViewceMastMoldOtherRequest.mrStep == 1 && vstep !=0)
+                if (@class._ViewceMastMoldOtherRequest.mrStep == 1 && vstep != 0)
                 {
-                    
+
                     for (int i = 0; i < @class._ListViewceHistoryApproved.Count(); i++)
                     {
                         MimeMessage email = new MimeMessage();
@@ -1264,6 +1349,7 @@ namespace CostEstimate.Controllers.NewMoldOther
 
                         for (int j = 0; j < @class._ListViewceHistoryApproved.Count(); j++)
                         {
+                            vEmpCodeCCemail = "";
                             if (@class._ListViewceHistoryApproved[j].htCC != null)
                             {
                                 ViewrpEmail fromEmailCC = new ViewrpEmail();
@@ -1284,20 +1370,21 @@ namespace CostEstimate.Controllers.NewMoldOther
                                         }
                                     }
                                 }
-
-                                ViewceHistoryApproved _ViewceHistoryApproved = new ViewceHistoryApproved();
-                                _ViewceHistoryApproved.htDocNo = RunDoc + "-" + _listType[j];// getSrNo[0].ToString();
-                                _ViewceHistoryApproved.htStep = 1;//0;// vstep;
-                                _ViewceHistoryApproved.htStatus = @class._ListViewceHistoryApproved[0].htStatus;
-                                _ViewceHistoryApproved.htFrom = @class._ListViewceHistoryApproved[j].htFrom;
-                                _ViewceHistoryApproved.htTo = @class._ListViewceHistoryApproved[j].htTo;
-                                _ViewceHistoryApproved.htCC = vEmpCodeCCemail;//@class._ViewceHistoryApproved.htCC;
-                                _ViewceHistoryApproved.htDate = DateTime.Now.ToString("yyyy/MM/dd");
-                                _ViewceHistoryApproved.htTime = DateTime.Now.ToString("HH:mm:ss");
-                                _ViewceHistoryApproved.htRemark = @class._ListViewceHistoryApproved[j].htRemark;
-                                _MK._ViewceHistoryApproved.AddAsync(_ViewceHistoryApproved);
-
                             }
+
+                            ViewceHistoryApproved _ViewceHistoryApproved = new ViewceHistoryApproved();
+                            _ViewceHistoryApproved.htDocNo = RunDoc + "-" + _listType[j];// getSrNo[0].ToString();
+                            _ViewceHistoryApproved.htStep = 1;//0;// vstep;
+                            _ViewceHistoryApproved.htStatus = @class._ListViewceHistoryApproved[0].htStatus;
+                            _ViewceHistoryApproved.htFrom = @class._ListViewceHistoryApproved[j].htFrom;
+                            _ViewceHistoryApproved.htTo = @class._ListViewceHistoryApproved[j].htTo;
+                            _ViewceHistoryApproved.htCC = vEmpCodeCCemail;//@class._ViewceHistoryApproved.htCC;
+                            _ViewceHistoryApproved.htDate = DateTime.Now.ToString("yyyy/MM/dd");
+                            _ViewceHistoryApproved.htTime = DateTime.Now.ToString("HH:mm:ss");
+                            _ViewceHistoryApproved.htRemark = @class._ListViewceHistoryApproved[j].htRemark;
+                            _MK._ViewceHistoryApproved.AddAsync(_ViewceHistoryApproved);
+
+
 
                         }
                         _MK.SaveChanges();

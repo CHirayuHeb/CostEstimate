@@ -91,3 +91,12 @@ $("#btnfileMoldOther").click(function () {
 $("#btnfileMoldOtherWK").click(function () {
     $("#myModalNewMoldOtherWK").modal("show");
 });
+
+
+$("#btnfileMoldOtherMT").click(function () {
+    $("#myModalNewMoldOtherMT").modal("show");
+});
+
+$("#btnfileMoldOtherTGR").click(function () {
+    $("#myModalNewMoldOtherTGR").modal("show");
+});

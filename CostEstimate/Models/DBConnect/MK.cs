@@ -79,6 +79,22 @@ namespace CostEstimate.Models.DBConnect
             {
                 entity.HasKey(k => new { k.wsDocumentNoSub, k.wsPartName, k.wsCavityNo, k.wsTypeCavity });
             });
+            modelBuilder.Entity<ViewceItemMaterialRequestPartName>(entity =>
+            {
+                entity.HasKey(k => new {k.mpDocumentNoSub, k.mpRunNo,k.mpPartName, k.mpCavityNo, k.mpTypeCavity
+                });
+            });
+            modelBuilder.Entity<ViewceItemToolGRRequestPartName>(entity =>
+            {
+                entity.HasKey(k => new {
+                    k.tpDocumentNoSub,
+                    k.tpRunNo,
+                    k.tpPartName,
+                    k.tpCavityNo,
+                    k.tpTypeCavity
+                });
+            });
+            
 
         }
 
@@ -123,13 +139,16 @@ namespace CostEstimate.Models.DBConnect
         public DbSet<ViewceMastWorkingTimeRequest> _ViewceMastWorkingTimeRequest { get; set; }
         public DbSet<ViewceItemWorkingTimePartName> _ViewceItemWorkingTimePartName { get; set; }
         public DbSet<ViewceItemWorkingTimeSizeProduct> _ViewceItemWorkingTimeSizeProduct { get; set; }
-        
+
 
         //material
         public DbSet<ViewceMastMaterialRequest> _ViewceMastMaterialRequest { get; set; }
+        public DbSet<ViewceItemMaterialRequestPartName> _ViewceItemMaterialRequestPartName { get; set; }
 
         //Tool & GR
         public DbSet<ViewceMastToolGRRequest> _ViewceMastToolGRRequest { get; set; }
+        public DbSet<ViewceItemToolGRRequestPartName> _ViewceItemToolGRRequestPartName { get; set; }
+        
 
         //information spac
         public DbSet<ViewceMastInforSpacMoldRequest> _ViewceMastInforSpacMoldRequest { get; set; }

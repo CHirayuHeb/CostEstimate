@@ -652,6 +652,7 @@ namespace CostEstimate.Models.Table.MK
         public string mrEvent { get; set; }
         public string mrMoldGo { get; set; }
         public string mrTry1 { get; set; }
+        public string mrType { get; set; }
         public string mrMoldMass { get; set; }
         public string mrIssueDate { get; set; }
         public int mrStep { get; set; }
@@ -686,7 +687,7 @@ namespace CostEstimate.Models.Table.MK
         public string wrDocumentNo { get; set; }
         public string wrDocumentNoSub { get; set; }
         public string wrIssueDate { get; set; }
-        public int wrStep { get; set; }
+        public int wrStep { get; set; } = 0;
         public string wrStatus { get; set; }
         public string wrEmpCodeRequest { get; set; }
         public string wrNameRequest { get; set; }
@@ -761,7 +762,7 @@ namespace CostEstimate.Models.Table.MK
         public string mrDocumentNo { get; set; }
         public string mrDocumentNoSub { get; set; }
         public string mrIssueDate { get; set; }
-        public int mrStep { get; set; }
+        public int mrStep { get; set; } = 0;
         public string mrStatus { get; set; }
         public string mrEmpCodeRequest { get; set; }
         public string mrNameRequest { get; set; }
@@ -770,6 +771,38 @@ namespace CostEstimate.Models.Table.MK
         public int mrFlowNo { get; set; } = 5;
     }
 
+
+    [Table("ceItemMaterialRequestPartName")]
+    public class ViewceItemMaterialRequestPartName
+    {
+        [Key]
+        //public string mrDocumentNo { get; set; }
+        public string mpDocumentNoSub { get; set; }
+        public int mpRunNo { get; set; }
+        public string mpPartName { get; set; }
+        public double mpCavityNo { get; set; }
+        public string mpTypeCavity { get; set; }
+        public int mpNoProcess { get; set; }
+        public int mpNo { get; set; }
+        public string mpItem { get; set; }
+        public double mpPCS { get; set; }
+        public double mpAmount { get; set; }
+        public double mpTotal { get; set; }
+        public string mpIssueDate { get; set; }
+
+
+    }
+
+    public class GroupViewceItemMaterialRequestPartName
+    {
+        public string mpPartName { get; set; }
+        public double mpCavityNo { get; set; }
+        public string mpTypeCavity { get; set; }
+        public int mpNoProcess { get; set; }
+        public List<ViewceItemMaterialRequestPartName> ItemMaterialRequestPartName { get; set; }
+    }
+
+
     [Table("ceMastToolGRRequest")]
     public class ViewceMastToolGRRequest
     {
@@ -777,7 +810,7 @@ namespace CostEstimate.Models.Table.MK
         public string trDocumentNo { get; set; }
         public string trDocumentNoSub { get; set; }
         public string trIssueDate { get; set; }
-        public int trStep { get; set; }
+        public int trStep { get; set; } = 0;
         public string trStatus { get; set; }
         public string trEmpCodeRequest { get; set; }
         public string trNameRequest { get; set; }
@@ -785,6 +818,24 @@ namespace CostEstimate.Models.Table.MK
         public string trNameApprove { get; set; }
         public int trFlowNo { get; set; } = 6;
     }
+    [Table("ceItemToolGRRequestPartName")]
+    public class ViewceItemToolGRRequestPartName
+    {
+        [Key]
+        public string tpDocumentNoSub { get; set; }
+        public int tpRunNo { get; set; }
+        public string tpPartName { get; set; }
+        public double tpCavityNo { get; set; }
+        public string tpTypeCavity { get; set; }
+        public int mpNoProcess { get; set; }
+        public double tpToolCost { get; set; }
+        public double tpGrCost { get; set; }
+        public string tpIssueDate { get; set; }
+
+    }
+
+
+
 
     [Table("ceMastInforSpacMoldRequest")]
     public class ViewceMastInforSpacMoldRequest
@@ -793,7 +844,7 @@ namespace CostEstimate.Models.Table.MK
         public string irDocumentNoSub { get; set; }
         public string irDocumentNo { get; set; }
         public string irIssueDate { get; set; }
-        public int irStep { get; set; }
+        public int irStep { get; set; } = 0;
         public string irStatus { get; set; }
         public string irEmpCodeRequest { get; set; }
         public string irNameRequest { get; set; }

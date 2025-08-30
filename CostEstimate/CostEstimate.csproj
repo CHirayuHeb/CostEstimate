@@ -49,6 +49,9 @@
     <Content Update="Views\NewMoldModify\_PartialNewMoldSummary.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\NewMoldOtherMT\SendMail.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\NewMoldOtherMT\_PartialStepFlowOtherRequest.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
@@ -59,6 +62,9 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\NewMoldOtherSM\_PartialSMAttachFile.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\NewMoldOtherTGR\SendMail.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\NewMoldOtherTGR\_PartialTGRAttachFile.cshtml">

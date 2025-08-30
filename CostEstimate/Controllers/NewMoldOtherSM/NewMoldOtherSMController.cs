@@ -54,13 +54,22 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
         }
 
         [Authorize("Checked")]
-        public IActionResult Index(Class @class)
+        public IActionResult Index(Class @class, string Docno)
         {
             @class._listAttachment = new List<ViewAttachment>();
             @class._ViewceMastModifyRequest = new ViewceMastModifyRequest();
             @class._ListceMastFlowApprove = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "7").ToList();
 
+            @class._ViewceMastMoldOtherRequest = new ViewceMastMoldOtherRequest();
+            @class._ViewceMastInforSpacMoldRequest = new ViewceMastInforSpacMoldRequest();
+            @class._ListceMastModel = new List<ViewceMastModel>();
 
+            if (Docno != null)
+            {
+                @class._ViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == Docno).FirstOrDefault();
+                @class._ViewceMastInforSpacMoldRequest = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == Docno).FirstOrDefault();
+
+            }
             return View(@class);
         }
     }

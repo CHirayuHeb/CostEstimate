@@ -1,0 +1,143 @@
+﻿@using System.Security.Claims;
+@model CostEstimate.Models.Common.Class;
+@using CostEstimate.Models.Common;
+@*@model IEnumerable<IGrouping<string, CostEstimate.Models.Table.MK.ViewceMastProcess>>*@
+@{
+    string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+    string _admin = GlobalVariable.perAdmin.ToUpper();
+
+}
+<div class="" style="border:0px solid gray;margin-top:10px;padding:2px;">
+    <div class="grid-item fw-800 center " style="text-align:left;font-size:14px;margin-bottom:10px;">
+        Material Detail.
+        <span style="color:#1565C0">ทั้งหมด  @Model._ListGroupViewceItemMaterialRequestPartName.Count() Part</span>
+    </div>
+    <div class="table-groupMatPartName table-containerHM " style="margin:auto">
+        @for (int j = 0; j < Model._ListGroupViewceItemMaterialRequestPartName.Count(); j++)
+        {
+            <table class="tbgreen MatPartName" style="width:100%;margin-right:10px;min-width:350px" data-index="@j">
+                <tr>
+                    <th colspan="2">
+                        <span>PartName</span>
+                    </th>
+                    <td colspan="2" style="width:50%">
+                        <span style="font-size:12px">
+                            <span>@Model._ListGroupViewceItemMaterialRequestPartName[j].mpPartName</span>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <span>CavityNo</span>
+                    </th>
+                    <td colspan="2">
+                        <span style="font-size:12px">
+                            <span>@Model._ListGroupViewceItemMaterialRequestPartName[j].mpCavityNo</span>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <span>TypeCavity</span>
+                    </th>
+                    <td colspan="2">
+                        <span style="font-size:9px">
+                            <span>@Model._ListGroupViewceItemMaterialRequestPartName[j].mpTypeCavity</span>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <span>Issue Date</span>
+                    </th>
+                    <td colspan="2">
+                        <span style="font-size:12px">
+                            @Html.DisplayFor(x => x._ViewceMastMoldOtherRequest.mrIssueDate)
+                        </span>
+
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width:20%; ">NO.</th>
+                    <th>ITEM.</th>
+                    <th>PCS.</th>
+                    <th>AMOUNT.</th>
+                </tr>
+
+                @for (int g = 0; g < Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName.Count(); g++)
+                {
+                    <tr id="trbodyMatPartName">
+                        <td style="text-align:left">
+                            <input class="form-control center input-mpDocumentNoSub" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpDocumentNoSub" type="text" />
+                            <input class="form-control center input-mpRunNo" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpRunNo" type="number" />
+                            <input class="form-control center input-mpPartName" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpPartName" type="text" />
+                            <input class="form-control center input-mpCavityNo" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpCavityNo" type="text" />
+                            <input class="form-control center input-mpTypeCavity" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpTypeCavity" type="text" />
+                            <input class="form-control center input-mpNoProcess" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpNoProcess" type="text" />
+                            <input class="form-control center input-mpIssueDate" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpIssueDate" type="text" />
+
+
+                            <span>@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpNo</span>
+                            <input class="form-control center input-mpNo" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpNo" type="text" />
+                        </td>
+                        <td style="text-align:left">
+                            <span>@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem</span>
+                            <input class="form-control center input-mpItem" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem" type="text" />
+                        </td>
+                        <td>
+                            @*<span>@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpPCS</span>*@
+                            <input class="form-control center input-mpPCS" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:yellow" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpPCS" type="number" />
+                        </td>
+                        <td>
+                            @*<span>@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpAmount</span>*@
+                            <input class="form-control center input-mpAmount" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:yellow" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpAmount" type="number" />
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="3">
+                        TOTAL ( Baht )
+                    </td>
+                    <td>
+                        <input class="form-control center input-mpTotal" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[0].mpTotal" type="number" readonly/>
+                    </td>
+                </tr>
+            </table>
+
+        }
+    </div>
+
+</div>
+<script>
+    function calcRowMTTotals() {
+        console.log("calcRowMTTotals");
+
+        // ฟังก์ชันสำหรับคำนวณรวมในแต่ละ table
+        function calculateTable($table) {
+            var sum = 0;
+            $table.find(".input-mpAmount").each(function () {
+                var val = parseFloat($(this).val()) || 0;
+                sum += val;
+            });
+            $table.find(".input-mpTotal").val(sum);
+        }
+
+        // ผูก event เวลามีการกรอกค่า
+        $(document).on("input", ".input-mpAmount", function () {
+            var $table = $(this).closest("table");
+            calculateTable($table);
+        });
+
+        // 🔹 คำนวณทันทีตอนโหลด (วนทุก table)
+        $("table").each(function () {
+            calculateTable($(this));
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", calcRowMTTotals);
+</script>

@@ -106,11 +106,11 @@ namespace CostEstimate.Controllers.Account
                                         }
                                         else if (@class.Moldtype == "M") //Material
                                         {
-                                            return RedirectToAction("Index", "NewMoldOtherWK", new { Docno = @class.param });
+                                            return RedirectToAction("Index", "NewMoldOtherMT", new { Docno = @class.param });
                                         }
                                         else if (@class.Moldtype == "T") //Tool GR
                                         {
-                                            return RedirectToAction("Index", "NewMoldOtherWK", new { Docno = @class.param });
+                                            return RedirectToAction("Index", "NewMoldOtherTGR", new { Docno = @class.param });
                                         }
                                         else //if(@class.Moldtype == "I") //Information Spac
                                         {
@@ -336,11 +336,11 @@ namespace CostEstimate.Controllers.Account
                                 }
                                 else if (@class.Moldtype == "M") //Material
                                 {
-                                    return RedirectToAction("Index", "NewMoldOtherWK", new { Docno = @class.param });
+                                    return RedirectToAction("Index", "NewMoldOtherMT", new { Docno = @class.param });
                                 }
                                 else if (@class.Moldtype == "T") //Tool GR
                                 {
-                                    return RedirectToAction("Index", "NewMoldOtherWK", new { Docno = @class.param });
+                                    return RedirectToAction("Index", "NewMoldOtherTGR", new { Docno = @class.param });
                                 }
                                 else //if(@class.Moldtype == "I") //Information Spac
                                 {

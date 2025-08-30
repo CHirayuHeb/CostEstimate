@@ -585,7 +585,7 @@ col-100 {
         vertical-align: middle;
      
     }
-
+   
     .tbgreen thead th {
         position: sticky;
         top: 0;
@@ -594,6 +594,51 @@ col-100 {
     }
 
 
+
+
+.tbSoftgreen {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    border-collapse: collapse;
+    width: 100%;
+    overflow-y: auto;
+    /*table-layout: fixed; /* ทำให้การจัดเรียงตารางเป็นแบบตายตัว */ */
+}
+
+    .tbSoftgreen td, .tbSoftgreen th {
+        border: 0.5px solid #c8e693; /*    #D2B48C  #FFEBCD*/
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-top: 5px;
+        padding-bottom: 3px;
+        /*padding: 8px;*/
+    }
+
+    .tbSoftgreen tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .tbSoftgreen tr:hover {
+        background-color: #ddd;
+    }
+
+    .tbSoftgreen th {
+        /*padding-top: 8px;
+        padding-bottom: 8px;*/
+        text-align: left;
+        background-color: #b8d683; /*#FFEBCD;*/
+        color: black;
+        /*vertical-align: baseline;*/
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .tbSoftgreen thead th {
+        position: sticky;
+        top: 0;
+        /*background-color: #007bff;
+        color: white;*/
+    }
 
 
 .img {

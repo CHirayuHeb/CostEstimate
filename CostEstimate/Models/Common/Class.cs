@@ -221,9 +221,18 @@ namespace CostEstimate.Models.Common
 
         //material
         public ViewceMastMaterialRequest _ViewceMastMaterialRequest { get; set; }
+        public ViewceItemMaterialRequestPartName _ViewceItemMaterialRequestPartName { get; set; }
+        public List<ViewceItemMaterialRequestPartName> _ListViewceItemMaterialRequestPartName { get; set; }
+        public GroupViewceItemMaterialRequestPartName _GroupViewceItemMaterialRequestPartName { get; set; }
+        public List<GroupViewceItemMaterialRequestPartName> _ListGroupViewceItemMaterialRequestPartName { get; set; }
+
 
         //Tool & GR
         public ViewceMastToolGRRequest _ViewceMastToolGRRequest { get; set; }
+        public ViewceItemToolGRRequestPartName _ViewceItemToolGRRequestPartName { get; set; }
+        public List<ViewceItemToolGRRequestPartName> _ListViewceItemToolGRRequestPartName { get; set; }
+        
+
 
         //information spac
         public ViewceMastInforSpacMoldRequest _ViewceMastInforSpacMoldRequest { get; set; }
@@ -235,6 +244,9 @@ namespace CostEstimate.Models.Common
         public GroupViewceSubWorkingTimeRequestItem _GroupViewceSubWorkingTimeRequestItem { get; set; }
         public List<GroupViewceSubWorkingTimeRequestItem> _ListGroupViewceSubWorkingTimeRequestItem { get; set; }
 
+
+      
+        
 
 
     }

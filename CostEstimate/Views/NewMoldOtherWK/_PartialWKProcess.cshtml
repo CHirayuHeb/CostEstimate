@@ -16,7 +16,7 @@
 
 <div class="" style="border:0px solid gray;margin-top:10px;padding:2px;">
     <div class="grid-item fw-800 center " style="text-align:left;font-size:14px;margin-bottom:10px;">
-        Process Detail.
+        Process Detail. <span style="color:orange">ทั้งหมด  @Model._ListGroupPartName.Count() Part</span>
     </div>
 
     @for (int k = 0; k < Model._ListGroupPartName.Count(); k++)
@@ -88,27 +88,11 @@
                         <input class="form-control center input-NoProcess" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpNoProcess" type="text" />
                         <input class="form-control center input-GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpGroupName" type="text" />
                         <input class="form-control center input-ProcessName" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpProcessName" type="text" />
-
-
-                        @*<input asp-for="_ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpEnable_WTMan"
-        type="checkbox" />*@
-
-                        @*<input id="abcd" name="abcd" type="checkbox" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpEnable_WTMan" />*@
-                        @*<input type="checkbox"
-                               value="false"
-                               class="form-control center input-Enableman"
-                               @(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpEnable_WTMan ? "checked" : "") />
-                        <input type="checkbox"
-                               value="false"
-                               class="form-control center input-EnableAuto"
-                               @(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpEnable_WTAuto ? "checked" : "") />*@
-                        
                         <input class="form-control center input-Enableman" autocomplete="off" style="display:none;width:100%;height:80%;font-size:10px;" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpEnable_WTMan.ToString()" type="text" />
                         <input class="form-control center input-man" autocomplete="off" style="display:inline-block;width:80px;height:80%;font-size:10px;@(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpEnable_WTMan == false ? "background-color:darkgrey;display:none" : "background-color:yellow")" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpWT_Man" type="number" readonly="@(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpEnable_WTMan == false ? "readonly" : null)" min="0" />
                         <input  class="form-control center input-EnableAuto" autocomplete="off" style="display:none;width:100%;height:80%;font-size:10px;" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpEnable_WTAuto.ToString()" type="text" />
                         <input class="form-control center input-auto" autocomplete="off" style="display:inline-block;width:80px;height:80%;font-size:10px; @(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpEnable_WTAuto == false ? "background-color:darkgrey;display:none" : "background-color:yellow")" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpWT_Auto" type="number" readonly="@(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpEnable_WTAuto == false ? "readonly" : null)" min="0" />
                     </td>
-
 
                         }
 
@@ -139,8 +123,7 @@
                         <input type="text" class="form-control left input-PartName" style="display:none; width:80px;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListGroupPartName[k]._GroupViewItemWorkingTimeSizeProduct[0].wsPartName">
                         <input type="text" class="form-control left input-CavityNo" style="display:none; width:80px;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListGroupPartName[k]._GroupViewItemWorkingTimeSizeProduct[0].wsCavityNo">
                         <input type="text" class="form-control left input-TypeCavity" style="display:none; width:80px;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListGroupPartName[k]._GroupViewItemWorkingTimeSizeProduct[0].wsTypeCavity">
-
-
+                        <input type="text" class="form-control left input-RunNo" style="display:none; width:80px;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListGroupPartName[k]._GroupViewItemWorkingTimeSizeProduct[0].wsRunNo">
                         <input type="number" class="form-control left input-x" style="width:80px;height:80%;font-size:10px;background-color:yellow" autocomplete="off" value="@Model._ListGroupPartName[k]._GroupViewItemWorkingTimeSizeProduct[0].wsSizeProductX">
                     </td>
                     <td>

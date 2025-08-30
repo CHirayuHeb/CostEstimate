@@ -33,10 +33,10 @@
                 <div class="col-40 center" style="text-align:right;">
 
                     @*<button class="button btnBlue" style="margin-right:20px;width:auto; @(Model._ViewceMastMoldOtherRequest.rfStep > 8 ? "" : "display:none")"
-                            onclick="Menubar_PrintMoldQUOTATION('@Url.Action("PrintMoldQUOTATION", "NewMoldModify")','@Model._ViewceMastModifyRequest.mfCENo')">
-                        <img src="~/images/printer.png" style="width:33px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                        REPORT
-                    </button>*@
+                                onclick="Menubar_PrintMoldQUOTATION('@Url.Action("PrintMoldQUOTATION", "NewMoldModify")','@Model._ViewceMastModifyRequest.mfCENo')">
+                            <img src="~/images/printer.png" style="width:33px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                            REPORT
+                        </button>*@
                     <button class="button" style="width:auto" onclick="Menubar_MoldOther_sendmail('','@Url.Action("History", "NewMoldOther")')">
                         <img src="~/images/direct.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
                         SEND
@@ -175,11 +175,11 @@
                                 <div class="col-25" style=" display: flex;align-items: center; ">
                                     <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px;background-color:yellow" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrMoldMass" id="i_NewOther_MoldMass">
                                 </div>
-                                <div class="col-20 " style=" display: flex;align-items: center;">
-                                    @*<div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Date Issue</div>*@
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Type</div>
                                 </div>
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    @*<input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_ReferenceNo" asp-for="_ViewceMastModifyRequest.mfIssueDate" value="@(Model._ViewceMastModifyRequest.mfIssueDate == null ? DateTime.Now.ToString("dd/MM/yyyy") : Model._ViewceMastModifyRequest.mfIssueDate)" readonly>*@
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_Type" asp-for="_ViewceMastMoldOtherRequest.mrType">
 
                                 </div>
                                 <div class="col-5 " style="">
@@ -229,8 +229,8 @@
                                     <tr>
                                         <th style="text-align:center">No.​</th>
                                         <th style="text-align:center">Part Name.​</th>
-                                        @*<th style="text-align:center">Customer Name.​</th>*@
-                                        <th style="text-align:center">Cavity No.​</th>
+                                        <th style="text-align:center;display:none" width='70px'>RunNo​</th>
+                                        <th style="text-align:center" width='100px'>Cavity No.​</th>
                                         <th style="text-align:center">Type of Cavity.​</th>
                                         <th style="text-align:center">View Report​</th>
                                         <th style="text-align:center">Delete</th>
@@ -243,10 +243,15 @@
                                         {
                                             <tr>
                                                 <td>@(row += 1)</td>
-                                                <td><input type='text' class='vPartName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipPartName"></td>
-                                                <td><input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipCavityNo">
+                                                <td  >
+                                                    <input type='text' class='vPartName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipPartName" readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1)">
+                                                </td>
+                                                <td style="display:none"><input type='text' class='vRunNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgrey;' asp-for="_ListViewceItemPartName[i].ipRunNo" readonly></td>
+                                                <td width='100px'>
+                                                    <input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipCavityNo" readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1)">
+                                                    @*<input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;display:none' asp-for="_ListViewceItemPartName[i].ipCavityNo">*@
                                                 <td>
-                                                    @Html.DropDownListFor(m => m._ListViewceItemPartName[i].ipTypeCavity, (SelectList)ViewBag.TypeofCavity, "กรุณาเลือก", new { @class = "form-control vTypeCavity", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
+                                                    @Html.DropDownListFor(m => m._ListViewceItemPartName[i].ipTypeCavity, (SelectList)ViewBag.TypeofCavity, "กรุณาเลือก", new { @class = "form-control vTypeCavity", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;", disabled = Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "disabled" : null })
                                                 </td>
                                                 <td width='70px'><img src='~/images/petition.png' alt='icon' class='imgM' /></td>
                                                 <td align='Center'>
@@ -293,7 +298,14 @@
                                                 WORKING TIME
                                             </td>
                                             <td>@Html.DisplayFor(m => m._ViewceMastWorkingTimeRequest.wrDocumentNoSub)</td>
-                                            <td>@Html.DisplayFor(m => m._ViewceMastWorkingTimeRequest.wrEmpCodeApprove) :@Html.DisplayFor(m => m._ViewceMastWorkingTimeRequest.wrNameApprove) </td>
+                                            <td>
+                                                @if (Model._ViewceMastWorkingTimeRequest?.wrStep != 4)
+                                                {
+                                                    @Html.DisplayFor(m => m._ViewceMastWorkingTimeRequest.wrEmpCodeApprove)
+                                                    <span> : </span>
+                                                    @Html.DisplayFor(m => m._ViewceMastWorkingTimeRequest.wrNameApprove)
+                                                }
+                                            </td>
                                             <td style="text-align:center">
                                                 @if (!string.IsNullOrEmpty(Model._ViewceMastWorkingTimeRequest?.wrStatus))
                                                 {
@@ -324,7 +336,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <img src="~/images/searchWK.png" alt="icon" class="imgM" />
+                                                    <img src="~/images/searchWK.png" alt="icon" class="imgM" style="cursor:not-allowed" />
                                                 }
 
                                                 @*<a href="@Url.Action("Index", "NewMoldOtherWK",new {Docno = Model._ViewceMastWorkingTimeRequest.wrDocumentNo})" target="_blank" style="font-size:15px;text-decoration: none;">
@@ -338,7 +350,14 @@
                                                 MATERIAL
                                             </td>
                                             <td> @Html.DisplayFor(m => m._ViewceMastMaterialRequest.mrDocumentNoSub)</td>
-                                            <td>@Html.DisplayFor(m => m._ViewceMastMaterialRequest.mrEmpCodeApprove) :@Html.DisplayFor(m => m._ViewceMastMaterialRequest.mrNameApprove) </td>
+                                            <td>
+                                                @if (Model._ViewceMastMaterialRequest?.mrStep != 4)
+                                                {
+                                                    @Html.DisplayFor(m => m._ViewceMastMaterialRequest.mrEmpCodeApprove)
+                                                    <span>:</span>
+                                                    @Html.DisplayFor(m => m._ViewceMastMaterialRequest.mrNameApprove)
+                                                }
+                                            </td>
 
                                             <td style="text-align:center">
                                                 @if (!string.IsNullOrEmpty(Model._ViewceMastMaterialRequest?.mrStatus))
@@ -363,16 +382,33 @@
 
                                             </td>
                                             <td class="center">
-                                                <a href="@Url.Action("Index", "NewMoldOtherMT")" target="_blank" style="font-size:12px;text-decoration: none;">
-                                                    <img src="~/images/searchWK.png" alt="icon" class="imgM" />
-                                                </a>
+                                                @if (!string.IsNullOrEmpty(Model._ViewceMastMaterialRequest?.mrDocumentNo))
+                                                {
+                                                    <a href="@Url.Action("Index", "NewMoldOtherMT",new { Docno = Model._ViewceMastMaterialRequest.mrDocumentNo })" target="_blank" style="font-size:12px;text-decoration: none;">
+                                                        <img src="~/images/searchWK.png" alt="icon" class="imgM" />
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/images/searchWK.png" alt="icon" class="imgM" style="cursor:not-allowed" />
+                                                }
+
+
+
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>3</td>
                                             <td>TOOL & GR</td>
                                             <td>@Html.DisplayFor(m => m._ViewceMastToolGRRequest.trDocumentNoSub)</td>
-                                            <td>@Html.DisplayFor(m => m._ViewceMastToolGRRequest.trEmpCodeApprove) :@Html.DisplayFor(m => m._ViewceMastToolGRRequest.trNameApprove) </td>
+                                            <td>
+                                                @if (Model._ViewceMastToolGRRequest?.trStep != 4)
+                                                {
+                                                    @Html.DisplayFor(m => m._ViewceMastToolGRRequest.trEmpCodeApprove)<span>:</span> @Html.DisplayFor(m => m._ViewceMastToolGRRequest.trNameApprove)
+
+
+                                                }
+                                            </td>
                                             <td style="text-align:center">
                                                 @if (!string.IsNullOrEmpty(Model._ViewceMastToolGRRequest?.trStatus))
                                                 {
@@ -394,16 +430,37 @@
 
                                             </td>
                                             <td class="center">
-                                                <a href="@Url.Action("Index", "NewMoldOtherTGR")" target="_blank" style="font-size:12px;text-decoration: none;">
-                                                    <img src="~/images/searchWK.png" alt="icon" class="imgM" />
-                                                </a>
+                                                @if (!string.IsNullOrEmpty(Model._ViewceMastToolGRRequest?.trDocumentNo))
+                                                {
+                                                    <a href="@Url.Action("Index", "NewMoldOtherTGR",new { Docno = Model._ViewceMastToolGRRequest.trDocumentNo })" target="_blank" style="font-size:12px;text-decoration: none;">
+                                                        <img src="~/images/searchWK.png" alt="icon" class="imgM" />
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/images/searchWK.png" alt="icon" class="imgM"  style="cursor:not-allowed"/>
+                                                }
+
+
+
+
+
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>4</td>
                                             <td>INFORMATION SPEC MOLD</td>
                                             <td>@Html.DisplayFor(m => m._ViewceMastInforSpacMoldRequest.irDocumentNoSub)</td>
-                                            <td>@Html.DisplayFor(m => m._ViewceMastInforSpacMoldRequest.irEmpCodeApprove) :@Html.DisplayFor(m => m._ViewceMastInforSpacMoldRequest.irNameApprove) </td>
+                                            <td>
+                                                @if (Model._ViewceMastInforSpacMoldRequest?.irStep != 4)
+                                                {
+                                                    @Html.DisplayFor(m => m._ViewceMastInforSpacMoldRequest.irEmpCodeApprove)
+
+                                                    <span>:</span>@Html.DisplayFor(m => m._ViewceMastInforSpacMoldRequest.irNameApprove)
+                                                }
+
+
+                                            </td>
                                             <td style="text-align:center">
                                                 @if (!string.IsNullOrEmpty(Model._ViewceMastInforSpacMoldRequest?.irStatus))
                                                 {
@@ -426,9 +483,22 @@
 
                                             </td>
                                             <td class="center">
-                                                <a href="@Url.Action("Index", "NewMoldOtherSM")" target="_blank" style="font-size:12px;text-decoration: none;">
+                                                @if (!string.IsNullOrEmpty(Model._ViewceMastInforSpacMoldRequest?.irDocumentNo))
+                                                {
+                                                    <a href="@Url.Action("Index", "NewMoldOtherSM",new { Docno = Model._ViewceMastInforSpacMoldRequest.irDocumentNo })" target="_blank" style="font-size:12px;text-decoration: none;">
+                                                        <img src="~/images/searchWK.png" alt="icon" class="imgM" />
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/images/searchWK.png" alt="icon" class="imgM" style="cursor:not-allowed" />
+                                                }
+
+
+
+                                                @*<a href="@Url.Action("Index", "NewMoldOtherSM")" target="_blank" style="font-size:12px;text-decoration: none;">
                                                     <img src="~/images/searchWK.png" alt="icon" class="imgM" />
-                                                </a>
+                                                </a>*@
                                             </td>
                                         </tr>
                                     </tbody>
@@ -516,13 +586,13 @@
                                                                 <td style="text-align:center">
 
                                                                     @*@if (@_UserId == @Model._ViewceMastMoldOtherRequest.mrEmpCodeApprove && @Model._ViewceMastMoldOtherRequest.mrStep < 6)
-                                                                    {
-                                                                        <input type="button" style="font-size:14px" value="&#x274C" onclick="DeleteFileUser('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","NewMoldOther")')">
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <input type="button" style="font-size:14px" value="&#x274C" disabled>
-                                                                    }*@
+                                                                        {
+                                                                            <input type="button" style="font-size:14px" value="&#x274C" onclick="DeleteFileUser('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","NewMoldOther")')">
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <input type="button" style="font-size:14px" value="&#x274C" disabled>
+                                                                        }*@
                                                                     <input type="button"
                                                                            style="font-size:14px"
                                                                            value="&#x274C"
@@ -848,6 +918,46 @@
             });
 
 
+
+        $("#i_NewOther_Type")
+            //don't navigate away from the field on tab when selecting an item
+            .on("keydown", function (event) {
+                console.log("OK");
+                if (event.keyCode === $.ui.keyCode.TAB &&
+                    $(this).autocomplete("instance").menu.active) {
+                    console.log("OKNewOther_Type");
+                    event.preventDefault();
+                }
+            })
+            .autocomplete({
+                minLength: 1,
+                source: function (request, response) {
+                    $.getJSON('@Url.Action("SearchType", "NewMoldOther")', {
+                        term: extractLast(request.term)
+                    }, response);
+                },
+                focus: function () {
+                    //prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    const vCus = ui.item.value.split("|")[0];
+                    var terms = split(this.value);
+                    //remove the current input
+                    terms.pop();
+                    //add the selected item
+
+                    //terms.push(ui.item.value);
+                    terms.push(vCus);
+                    //terms.push("");
+                    //add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join("");
+                    return false;
+                }
+            });
+
+
     });
 
     $('table').on('click', '.RemoveRow', function () {
@@ -863,11 +973,27 @@
         var htmls = "";
         var rowCount = document.getElementById('tableBodyItem').rows.length;
         var rowi = rowCount + 1;
+
+        // หา tbody
+        const tbody = document.querySelector("#tbMoldOtherItem #tableBodyItem");
+
+        // ดึงค่า input class vRunNo ใน tbody นั้น
+        const values = Array.from(tbody.querySelectorAll(".vRunNo"))
+            .map(input => parseFloat(input.value) || 0);
+
+        // หา max
+        let maxValue = values.length > 0 ? Math.max(...values) : 0;
+        const maxRun = maxValue + 1;
+        console.log("Max value:", maxRun);
+
+
+
         htmls += "<tr>";
         htmls += " <td>" + rowi + "</td>";
         htmls += " <td><input type='text' class='vPartName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow ;' value =''></td>";
-       // htmls += " <td><input type='text' class='vCustomerName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;display:None' value =''  ></td>";
-        htmls += " <td><input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow ;' value ='0' min='0'>";
+        htmls += " <td width='70px'  style='display:none'><input type='text' class='vRunNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgrey;' value ='" + maxRun + "' readonly></td>";
+        // htmls += " <td><input type='text' class='vCustomerName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;display:None' value =''  ></td>";
+        htmls += " <td width='100px'> <input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow ;' value ='0' min='0'>";
         htmls +=" <input type='text' class='vCustomerName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;display:None' value =''></td > ";
         htmls += "<td>" + document.getElementById("template_TypeCavity").outerHTML.replace('template_TypeCavity', 'i_NewMold_TypeCavity').replace('style="display:none"', 'class="vTypeCavity form-control" style="width:100%;font-size:10px;background-color:yellow;"') + "</td>";
         htmls += " <td width='70px'><img src='" + imgSrc + "' alt='icon' class='imgM' /></td>";

@@ -32,7 +32,7 @@
                     </span>
                 </div>
                 <div class="col-40 center" style="text-align:right;">
-                    <button class="button btnBlue" style="margin-right:20px;width:auto; @(Model._ViewceMastModifyRequest.mfStep > 1 ? "" : "display:none")"
+                    @*<button class="button btnBlue" style="margin-right:20px;width:auto; @(Model._ViewceMastModifyRequest.mfStep > 1 ? "" : "display:none")"
                             onclick="Menubar_PrintMoldQUOTATION('@Url.Action("PrintMoldQUOTATION","NewMoldModify")','@Model._ViewceMastModifyRequest.mfCENo')">
                         <img src="~/images/printer.png" style="width:33px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
                         REPORT
@@ -45,12 +45,19 @@
                             onclick="Menubar_MoldsaveDraft('@Url.Action("SaveDraft","NewMoldModify")','@Url.Action("SaveCeDetailSub","NewMoldModify")')">
                         <img src="~/images/savedaft.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
                         SAVE DAFT
-                    </button>
+                    </button>*@
                 </div>
             </div>
 
             <div>
                 <form id="formMoldOWKRequest" name="formMoldOWKRequest">
+                    @Html.HiddenFor(m => m._ViewceMastInforSpacMoldRequest.irStep, new { id = "step" })
+                    @Html.HiddenFor(m => m._ViewceMastInforSpacMoldRequest.irStatus, new { id = "Status" })
+                    @Html.HiddenFor(m => m._ViewceMastInforSpacMoldRequest.irEmpCodeRequest, new { id = "EmpCodeRequest" })
+                    @Html.HiddenFor(m => m._ViewceMastInforSpacMoldRequest.irNameRequest, new { id = "NameRequest" })
+                    @Html.HiddenFor(m => m._ViewceMastInforSpacMoldRequest.irEmpCodeApprove, new { id = "EmpCodeApprove" })
+                    @Html.HiddenFor(m => m._ViewceMastInforSpacMoldRequest.irNameApprove, new { id = "NameApprove" })
+                    @Html.HiddenFor(m => m._ViewceMastInforSpacMoldRequest.irFlowNo, new { id = "mrFlowNo" })
                     <div style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:5px;border-radius:2px;">
                         <div class="row center">
                             <div class="col-15 " style="">
@@ -66,7 +73,108 @@
 
                     <div id="divNewOther" style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:5px;border-radius:2px;">
 
+                        <div class="row center">
+                            <div class="col-5 " style="">
+                            </div>
+                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Cutomer Name.</div>
 
+                            </div>
+                            <div class="col-25" style=" display: flex;align-items: center; ">
+                                <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOtherWK_CusName" asp-for="_ViewceMastMoldOtherRequest.mrCustomerName" readonly>
+                            </div>
+                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Document No</div>
+
+                            </div>
+                            <div class="col-25 " style=" display: flex;align-items: center; ">
+                                <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOtherMT_DocumentNoSub" readonly asp-for="_ViewceMastInforSpacMoldRequest.irDocumentNoSub">
+                                <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray;display:none" autocomplete="off" id="i_NewOtherMT_DocumentNo" readonly asp-for="_ViewceMastInforSpacMoldRequest.irDocumentNo">
+                            </div>
+
+                            <div class="col-5 " style="">
+                            </div>
+                        </div>
+                        <div class="row center">
+                            <div class="col-5 " style="">
+                            </div>
+                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Function</div>
+                            </div>
+                            <div class="col-25 " style=" display: flex;align-items: center; ">
+                                <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOtherWK_Function" maxlength="20" asp-for="_ViewceMastMoldOtherRequest.mrFunction" readonly>
+
+                            </div>
+                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Revision.</div>
+                            </div>
+                            <div class="col-25" style=" display: flex;align-items: center; ">
+                                <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOtherWK_Rev" readonly asp-for="_ViewceMastMoldOtherRequest.mrRevision">
+                            </div>
+                            <div class="col-5 " style="">
+                            </div>
+                        </div>
+                        <div class="row center">
+                            <div class="col-5 " style="">
+                            </div>
+                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                <div class="grid-item fw-800 center  " style="text-align:left;font-size:12px">Model Name</div>
+                            </div>
+                            <div class="col-25" style=" display: flex;align-items: center; ">
+                                @*@Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfIssueDept, (SelectList)ViewBag.TypeofRequestBy, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_RequestBy", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })*@
+                                <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOtherWK_ModelName" asp-for="_ViewceMastMoldOtherRequest.mrModelName" readonly>
+
+                            </div>
+                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Event.</div>
+                            </div>
+                            <div class="col-25" style=" display: flex;align-items: center; ">
+                                @*@Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfType, (SelectList)ViewBag.TypeofEvent, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMoldOther_Event", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })*@
+                                <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOtherWK_Event" maxlength="3" asp-for="_ViewceMastMoldOtherRequest.mrEvent" readonly>
+
+                            </div>
+                            <div class="col-5 " style="">
+                            </div>
+                        </div>
+                        <div class="row center">
+                            <div class="col-5 " style="">
+                            </div>
+                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                <div class="grid-item fw-800 center  " style="text-align:left;font-size:12px">Mold Go.</div>
+                            </div>
+                            <div class="col-25" style=" display: flex;align-items: center; ">
+                                <input type="text" class="input-with-image   form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrMoldGo" id="i_NewOtherWK_MoldGo" readonly>
+
+                            </div>
+                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Try 1.</div>
+                            </div>
+                            <div class="col-25" style=" display: flex;align-items: center; ">
+                                <input type="text" class="input-with-image   form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrTry1" id="i_NewOtherWK_Try1" readonly>
+                            </div>
+                            <div class="col-5 " style="">
+                            </div>
+                        </div>
+                        <div class="row center">
+                            <div class="col-5 " style="">
+                            </div>
+                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Mold Mass</div>
+                            </div>
+                            <div class="col-25" style=" display: flex;align-items: center; ">
+                                <input type="text" class="input-with-image   form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrMoldMass" id="i_NewOtherWK_MoldMass" readonly>
+                            </div>
+                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Type</div>
+                            </div>
+                            <div class="col-25 " style=" display: flex;align-items: center; ">
+                                <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOtherWK_Type" asp-for="_ViewceMastMoldOtherRequest.mrType" readonly>
+
+                            </div>
+                            <div class="col-5 " style="">
+                            </div>
+                        </div>
+                        <br />
 
 
 
