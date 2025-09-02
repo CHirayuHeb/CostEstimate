@@ -771,3 +771,12 @@ col-100 {
     .my-table td {
         padding: 5px;
     }
+
+
+
+/*#divItem:focus {
+    outline: 2px solid red; 
+    box-shadow: 0 0 5px 3px red;
+    transition: box-shadow 0.3s, outline 0.3s;
+}*/
+

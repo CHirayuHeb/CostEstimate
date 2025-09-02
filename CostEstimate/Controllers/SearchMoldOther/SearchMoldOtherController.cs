@@ -46,121 +46,217 @@ namespace CostEstimate.Controllers.SearchMoldOther
         [Authorize("Checked")]
         public IActionResult Index(Class @class)
         {
+            List<ViewceMastMoldOtherRequest> _ListViewceMastMoldOtherRequest = new List<ViewceMastMoldOtherRequest>();
             @class._ListViewceMastMoldOtherRequest = new List<ViewceMastMoldOtherRequest>();
             @class._ListViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.OrderByDescending(x => x.mrDocmentNo).ToList();
 
-           
+            List<ViewceMastFlowApprove> _ViewceMastFlowApprove = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "3").OrderBy(x => x.mfStep).Distinct().ToList();
+            SelectList formStatus = new SelectList(_ViewceMastFlowApprove.Select(s => s.mfSubject).Distinct());
+            ViewBag.vbformStatus = formStatus;
+
+
+            if (@class._ListViewceMastMoldOtherRequest.Where(x => x.mrStep == 2).ToList().Count() > 0)
+            {
+                string status = UpdateStatusDoc(@class._ListViewceMastMoldOtherRequest.Where(x => x.mrStep == 2).ToList());
+            }
+
+            _ListViewceMastMoldOtherRequest = SearchList(@class._ListViewceMastMoldOtherRequest, @class);
+            @class._ListViewceMastMoldOtherRequest = _ListViewceMastMoldOtherRequest;
 
             return View(@class);
         }
-        public IActionResult btnExportExcel(Class @class)
+
+
+        public List<ViewceMastMoldOtherRequest> SearchList(List<ViewceMastMoldOtherRequest> _ViewceMastMoldOtherRequest, Class @class)
         {
-            string slipMat = DateTime.Now.ToString("yyyyMMdd:HHmmss");
-            string TempPath = Path.GetTempFileName();
-            string fileName = "Export(" + slipMat + ").xlsx";
+            @class._ListViewceMastMoldOtherRequest.ForEach(item =>
+            {
+                if (item.mrIssueDate != null && item.mrIssueDate != "")
+                {
+                    var day = item.mrIssueDate.Substring(0, 2);
+                    var month = item.mrIssueDate.Substring(3, 2);
+                    var year = item.mrIssueDate.Substring(6, 4);
 
-            //@class._ListceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.ToList();
-            @class._ListViewceMastModifyRequest = _MK._ViewceMastModifyRequest.OrderByDescending(x => x.mfCENo).ToList();
+                    item.mrIssueDate = $"{year}/{month}/{day}";
+                }
 
+            });
             if (@class._ViewSearchData != null)
             {
-                if (@class._ViewSearchData.v_OrderNo != null && @class._ViewSearchData.v_OrderNo != "") //mfRefNo 
-                {
-                    @class._ListViewceMastModifyRequest = @class._ListViewceMastModifyRequest.Where(x => x.mfRefNo.ToUpper().Contains(@class._ViewSearchData.v_OrderNo.ToUpper())).ToList();
-                }
                 if (@class._ViewSearchData.v_DocumentNo != null && @class._ViewSearchData.v_DocumentNo != "")
                 {
-                    @class._ListViewceMastModifyRequest = @class._ListViewceMastModifyRequest.Where(x => x.mfCENo.ToUpper().Contains(@class._ViewSearchData.v_DocumentNo.ToUpper())).ToList();
-                }
-                if (@class._ViewSearchData.v_status != null)
-                {
-                    //int smstep = _MK._ViewceMastFlowApprove.Where(x => x.mfSubject.Contains(@class._ViewSearchData.v_status)).Select(x => x.mfStep).FirstOrDefault();
-                    @class._ListViewceMastModifyRequest = @class._ListViewceMastModifyRequest.Where(x => x.mfStatus.Contains(@class._ViewSearchData.v_status)).ToList();
-                    // @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smStep == smstep).OrderBy(x => x.smStep).ThenBy(x => x.smIssueDate).ToList();
-
-                }
-                if (@class._ViewSearchData.v_LotNo != null && @class._ViewSearchData.v_LotNo != "")
-                {
-                    @class._ListViewceMastModifyRequest = @class._ListViewceMastModifyRequest.Where(x => x.mfLotNo.ToUpper().Contains(@class._ViewSearchData.v_LotNo.ToUpper())).ToList();
-                }
-                //if (@class._ViewSearchData.v_MoldNo != null && @class._ViewSearchData.v_MoldNo != "")
-                //{
-                //    @class._ListViewceMastModifyRequest = @class._ListViewceMastModifyRequest.Where(x => x.mfMoldNoOrMoldName.ToUpper().Contains(@class._ViewSearchData.v_MoldNo.ToUpper())).ToList();
-                //}
-                if (@class._ViewSearchData.v_MoldMass != null && @class._ViewSearchData.v_MoldMass != "")
-                {
-                    @class._ListViewceMastModifyRequest = @class._ListViewceMastModifyRequest.Where(x => x.mfMoldMass.ToUpper().Contains(@class._ViewSearchData.v_MoldMass.ToUpper())).ToList();
+                    @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo.ToUpper().Contains(@class._ViewSearchData.v_DocumentNo.ToUpper())).ToList();
                 }
                 if (@class._ViewSearchData.v_CusName != null && @class._ViewSearchData.v_CusName != "")
                 {
-                    @class._ListViewceMastModifyRequest = @class._ListViewceMastModifyRequest.Where(x => x.mfCustomerName.ToUpper().Contains(@class._ViewSearchData.v_CusName.ToUpper())).ToList();
-                }
-                if (@class._ViewSearchData.v_MoldName != null && @class._ViewSearchData.v_MoldName != "")
-                {
-                    @class._ListViewceMastModifyRequest = @class._ListViewceMastModifyRequest.Where(x => x.mfMoldNoOrMoldName.ToUpper().Contains(@class._ViewSearchData.v_MoldName.ToUpper())).ToList();
-                }
-                if (@class._ViewSearchData.v_ModelName != null && @class._ViewSearchData.v_ModelName != "")
-                {
-                    @class._ListViewceMastModifyRequest = @class._ListViewceMastModifyRequest.Where(x => x.mfModelName.ToUpper().Contains(@class._ViewSearchData.v_ModelName.ToUpper())).ToList();
-                }
-                if (@class._ViewSearchData.v_CavityNo != null && @class._ViewSearchData.v_CavityNo != "")
-                {
-                    @class._ListViewceMastModifyRequest = @class._ListViewceMastModifyRequest.Where(x => x.mfCavityNo == int.Parse(@class._ViewSearchData.v_CavityNo)).ToList();
+                    @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrCustomerName.ToUpper().Contains(@class._ViewSearchData.v_CusName.ToUpper())).ToList();
                 }
                 if (@class._ViewSearchData.v_Function != null && @class._ViewSearchData.v_Function != "")
                 {
-                    @class._ListViewceMastModifyRequest = @class._ListViewceMastModifyRequest.Where(x => x.mfFunction.ToUpper().Contains(@class._ViewSearchData.v_Function.ToUpper())).ToList();
+                    @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrFunction.ToUpper().Contains(@class._ViewSearchData.v_Function.ToUpper())).ToList();
                 }
-                //if (@class._ViewSearchData.v_DevelopmentStage != null && @class._ViewSearchData.v_DevelopmentStage != "")
-                //{
-                //    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smDevelopmentStage.ToUpper().Contains(@class._ViewSearchData.v_DevelopmentStage.ToUpper())).ToList();
-                //}
+                if (@class._ViewSearchData.v_Revision != null && @class._ViewSearchData.v_Revision != "")
+                {
+                    @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrRevision == int.Parse(@class._ViewSearchData.v_Revision)).ToList();
+                }
+                if (@class._ViewSearchData.v_ModelName != null && @class._ViewSearchData.v_ModelName != "")
+                {
+                    @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrModelName.ToUpper().Contains(@class._ViewSearchData.v_ModelName.ToUpper())).ToList();
+                }
+                if (@class._ViewSearchData.v_Event != null && @class._ViewSearchData.v_Event != "")
+                {
+                    @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrEvent.ToUpper().Contains(@class._ViewSearchData.v_Event.ToUpper())).ToList();
+                }
+                if (@class._ViewSearchData.v_MoldGo != null && @class._ViewSearchData.v_MoldGo != "")
+                {
+                    @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrMoldGo == @class._ViewSearchData.v_MoldGo.ToUpper()).ToList();
+                }
+                if (@class._ViewSearchData.v_Try1 != null && @class._ViewSearchData.v_Try1 != "")
+                {
+                    @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrTry1 == @class._ViewSearchData.v_Try1.ToUpper()).ToList();
+                }
+                if (@class._ViewSearchData.v_MoldMass != null && @class._ViewSearchData.v_MoldMass != "")
+                {
+                    @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrMoldMass == @class._ViewSearchData.v_MoldMass.ToUpper()).ToList();
+                }
+                if (@class._ViewSearchData.v_Type != null && @class._ViewSearchData.v_Type != "")
+                {
+                    @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrType.ToUpper().Contains(@class._ViewSearchData.v_Type.ToUpper())).ToList();
+                }
 
-                ////Material
-                //if (@class._ViewSearchData.v_MaterialOutDateFrom != null && @class._ViewSearchData.v_MaterialOutDateFrom != "")
-                //{
-                //    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smMatOutDate) >= DateTime.Parse(@class._ViewSearchData.v_MaterialOutDateFrom)).ToList();
-                //}
-                //if (@class._ViewSearchData.v_MaterialOutDateTo != null && @class._ViewSearchData.v_MaterialOutDateTo != "")
-                //{
-                //    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smMatOutDate) <= DateTime.Parse(@class._ViewSearchData.v_MaterialOutDateTo)).ToList();
-                //}
-
-                //DaliverryDate
-                //if (@class._ViewSearchData.v_DaliverryDateFrom != null && @class._ViewSearchData.v_DaliverryDateFrom != "")
-                //{
-                //    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smDeliveryDate) >= DateTime.Parse(@class._ViewSearchData.v_DaliverryDateFrom)).ToList();
-                //}
-                //if (@class._ViewSearchData.v_DaliverryDateTo != null && @class._ViewSearchData.v_MaterialOutDateTo != "")
-                //{
-                //    @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => DateTime.Parse(x.smDeliveryDate) <= DateTime.Parse(@class._ViewSearchData.v_DaliverryDateTo)).ToList();
-                //}
-
-                //date issue
-                //date resuest
                 if (@class._ViewSearchData.v_DateIssueFrom != null && @class._ViewSearchData.v_DateIssueFrom != "")
                 {
-                    @class._ListViewceMastModifyRequest = @class._ListViewceMastModifyRequest.Where(x => DateTime.Parse(x.mfIssueDate) >= DateTime.Parse(@class._ViewSearchData.v_DateIssueFrom)).ToList();
+                    @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => DateTime.Parse(x.mrIssueDate) >= DateTime.Parse(@class._ViewSearchData.v_DateIssueFrom)).ToList();
                 }
                 if (@class._ViewSearchData.v_DateIssueTo != null && @class._ViewSearchData.v_DateIssueTo != "")
                 {
-                    @class._ListViewceMastModifyRequest = @class._ListViewceMastModifyRequest.Where(x => DateTime.Parse(x.mfIssueDate) <= DateTime.Parse(@class._ViewSearchData.v_DateIssueTo)).ToList();
+                    @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => DateTime.Parse(x.mrIssueDate) <= DateTime.Parse(@class._ViewSearchData.v_DateIssueTo)).ToList();
                 }
-
-                if (@class._ViewSearchData.v_TypeofCavity != null && @class._ViewSearchData.v_TypeofCavity != "")
+                if (@class._ViewSearchData.v_status != null)
                 {
-                    //@class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smTypeCavity.Contains(@class._ViewSearchData.v_TypeofCavity)).ToList();
+                    @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrStatus.Contains(@class._ViewSearchData.v_status)).ToList();
 
-                    //@class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smTypeCavity != null && x.smTypeCavity.IndexOf(@class._ViewSearchData.v_TypeofCavity, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
-                    @class._ListViewceMastModifyRequest = @class._ListViewceMastModifyRequest.Where(x => x.mfTypeCavity == @class._ViewSearchData.v_TypeofCavity).ToList();
-
-                }
-
-                if (@class._ViewSearchData.v_Revision != null && @class._ViewSearchData.v_Revision != "")
-                {
-                    @class._ListViewceMastModifyRequest = @class._ListViewceMastModifyRequest.Where(x => x.mfRevision.Contains(@class._ViewSearchData.v_Revision)).ToList();
                 }
             }
+
+            return @class._ListViewceMastMoldOtherRequest;
+        }
+
+
+        public string UpdateStatusDoc(List<ViewceMastMoldOtherRequest> _ViewceMastMoldOtherRequests)
+        {
+            string vstatus = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "3" && x.mfStep == 3).Select(x => x.mfSubject).FirstOrDefault();
+            for (int i = 0; i < _ViewceMastMoldOtherRequests.Count(); i++)
+            {
+                string id = _ViewceMastMoldOtherRequests[i].mrDocmentNo;
+                int vstepWK = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNo == id).Select(x => x.wrStep).FirstOrDefault();
+                int vstepMT = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == id).Select(x => x.mrStep).FirstOrDefault();
+                int vstepTGR = _MK._ViewceMastToolGRRequest.Where(x => x.trDocumentNo == id).Select(x => x.trStep).FirstOrDefault();
+                int vstepSP = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == id).Select(x => x.irStep).FirstOrDefault();
+                if (vstepWK == 4 && vstepMT == 4 && vstepTGR == 4 && vstepSP == 4)
+                {
+                    var _ceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == id).FirstOrDefault();
+                    _ceMastMoldOtherRequest.mrStep = 3;
+                    _ceMastMoldOtherRequest.mrStatus = vstatus;
+                    _MK._ViewceMastMoldOtherRequest.Update(_ceMastMoldOtherRequest);
+                    _MK.SaveChanges();
+                }
+            }
+
+
+
+
+
+            return "sucess";
+        }
+
+
+
+        [HttpPost]
+        public IActionResult btnExportExcel(Class @class)
+        {
+            List<ViewceMastMoldOtherRequest> _ListViewceMastMoldOtherRequest = new List<ViewceMastMoldOtherRequest>();
+            string slipMat = DateTime.Now.ToString("yyyyMMdd:HHmmss");
+            string TempPath = Path.GetTempFileName();
+            string fileName = "Export(" + slipMat + ").xlsx";
+            
+            @class._ListViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.OrderByDescending(x => x.mrDocmentNo).ToList();
+            
+            _ListViewceMastMoldOtherRequest = SearchList(@class._ListViewceMastMoldOtherRequest, @class);
+            @class._ListViewceMastMoldOtherRequest = _ListViewceMastMoldOtherRequest;
+
+            //@class._ListViewceMastMoldOtherRequest.ForEach(item =>
+            //{
+            //    if (item.mrIssueDate != null && item.mrIssueDate != "")
+            //    {
+            //        var day = item.mrIssueDate.Substring(0, 2);
+            //        var month = item.mrIssueDate.Substring(3, 2);
+            //        var year = item.mrIssueDate.Substring(6, 4);
+
+            //        item.mrIssueDate = $"{year}/{month}/{day}";
+            //    }
+
+            //});
+
+            
+
+            //if (@class._ViewSearchData != null)
+            //{
+            //    if (@class._ViewSearchData.v_DocumentNo != null && @class._ViewSearchData.v_DocumentNo != "")
+            //    {
+            //        @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo.ToUpper().Contains(@class._ViewSearchData.v_DocumentNo.ToUpper())).ToList();
+            //    }
+            //    if (@class._ViewSearchData.v_CusName != null && @class._ViewSearchData.v_CusName != "")
+            //    {
+            //        @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrCustomerName.ToUpper().Contains(@class._ViewSearchData.v_CusName.ToUpper())).ToList();
+            //    }
+            //    if (@class._ViewSearchData.v_Function != null && @class._ViewSearchData.v_Function != "")
+            //    {
+            //        @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrFunction.ToUpper().Contains(@class._ViewSearchData.v_Function.ToUpper())).ToList();
+            //    }
+            //    if (@class._ViewSearchData.v_Revision != null && @class._ViewSearchData.v_Revision != "")
+            //    {
+            //        @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrRevision == int.Parse(@class._ViewSearchData.v_Revision)).ToList();
+            //    }
+            //    if (@class._ViewSearchData.v_ModelName != null && @class._ViewSearchData.v_ModelName != "")
+            //    {
+            //        @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrModelName.ToUpper().Contains(@class._ViewSearchData.v_ModelName.ToUpper())).ToList();
+            //    }
+            //    if (@class._ViewSearchData.v_Event != null && @class._ViewSearchData.v_Event != "")
+            //    {
+            //        @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrEvent.ToUpper().Contains(@class._ViewSearchData.v_Event.ToUpper())).ToList();
+            //    }
+            //    if (@class._ViewSearchData.v_MoldGo != null && @class._ViewSearchData.v_MoldGo != "")
+            //    {
+            //        @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrMoldGo == @class._ViewSearchData.v_MoldGo.ToUpper()).ToList();
+            //    }
+            //    if (@class._ViewSearchData.v_Try1 != null && @class._ViewSearchData.v_Try1 != "")
+            //    {
+            //        @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrTry1 == @class._ViewSearchData.v_Try1.ToUpper()).ToList();
+            //    }
+            //    if (@class._ViewSearchData.v_MoldMass != null && @class._ViewSearchData.v_MoldMass != "")
+            //    {
+            //        @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrMoldMass == @class._ViewSearchData.v_MoldMass.ToUpper()).ToList();
+            //    }
+            //    if (@class._ViewSearchData.v_Type != null && @class._ViewSearchData.v_Type != "")
+            //    {
+            //        @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrType.ToUpper().Contains(@class._ViewSearchData.v_Type.ToUpper())).ToList();
+            //    }
+
+            //    if (@class._ViewSearchData.v_DateIssueFrom != null && @class._ViewSearchData.v_DateIssueFrom != "")
+            //    {
+            //        @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => DateTime.Parse(x.mrIssueDate) >= DateTime.Parse(@class._ViewSearchData.v_DateIssueFrom)).ToList();
+            //    }
+            //    if (@class._ViewSearchData.v_DateIssueTo != null && @class._ViewSearchData.v_DateIssueTo != "")
+            //    {
+            //        @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => DateTime.Parse(x.mrIssueDate) <= DateTime.Parse(@class._ViewSearchData.v_DateIssueTo)).ToList();
+            //    }
+            //    if (@class._ViewSearchData.v_status != null)
+            //    {
+            //        @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => x.mrStatus.Contains(@class._ViewSearchData.v_status)).ToList();
+
+            //    }
+            //}
             using (ExcelPackage package = new ExcelPackage())
             {
                 var worksheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -168,21 +264,39 @@ namespace CostEstimate.Controllers.SearchMoldOther
                 int startRow = 1;
 
                 // เขียนหัวตาราง (ชื่อ property)
-                var properties = typeof(ViewceMastModifyRequest).GetProperties();
+                //var properties = typeof(ViewceMastModifyRequest).GetProperties();
+                //for (int col = 0; col < properties.Length; col++)
+                //{
+                //    worksheet.Cells[startRow, col + 1].Value = properties[col].Name;
+                //}
+
+                // เขียนข้อมูลจาก list
+                //for (int row = 0; row < @class._ListViewceMastModifyRequest.Count; row++)
+                //{
+                //    for (int col = 0; col < properties.Length; col++)
+                //    {
+                //        var value = properties[col].GetValue(@class._ListViewceMastModifyRequest[row]);
+                //        worksheet.Cells[row + 2, col + 1].Value = value;
+                //    }
+                //}
+
+
+                var properties = typeof(ViewceMastMoldOtherRequest).GetProperties();
                 for (int col = 0; col < properties.Length; col++)
                 {
                     worksheet.Cells[startRow, col + 1].Value = properties[col].Name;
                 }
 
-                // เขียนข้อมูลจาก list
-                for (int row = 0; row < @class._ListViewceMastModifyRequest.Count; row++)
+                for (int row = 0; row < @class._ListViewceMastMoldOtherRequest.Count; row++)
                 {
                     for (int col = 0; col < properties.Length; col++)
                     {
-                        var value = properties[col].GetValue(@class._ListViewceMastModifyRequest[row]);
+                        var value = properties[col].GetValue(@class._ListViewceMastMoldOtherRequest[row]);
                         worksheet.Cells[row + 2, col + 1].Value = value;
                     }
                 }
+
+
 
                 // Auto fit column width
                 worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();

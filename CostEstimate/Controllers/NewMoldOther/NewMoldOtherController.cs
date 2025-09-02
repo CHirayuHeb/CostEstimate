@@ -83,6 +83,15 @@ namespace CostEstimate.Controllers.NewMoldOther
 
             if (id != null)
             {
+                //check status 
+                string chk = "";
+                int vstepmain = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == id).Select(x => x.mrStep).FirstOrDefault();
+                if (vstepmain == 2) //Waiting Checked By WORKING TIME (OPG) , MATERIAL(DG MOLD), TOOL(CAM), INFORMATION(DRG)
+                {
+                    chk = UpdateStatusDoc(id);
+                }
+
+
                 @class._ViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == id).FirstOrDefault();
                 @class._ListViewceItemPartName = _MK._ViewceItemPartName.Where(x => x.ipDocumentNo == id).OrderBy(x => x.ipRunNo).ToList();
 
@@ -96,6 +105,27 @@ namespace CostEstimate.Controllers.NewMoldOther
 
 
             return View(@class);
+        }
+
+        public string UpdateStatusDoc(string id)
+        {
+            string vstatus = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "3" && x.mfStep == 3).Select(x => x.mfSubject).FirstOrDefault();
+
+            int vstepWK = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNo == id).Select(x => x.wrStep).FirstOrDefault();
+            int vstepMT = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == id).Select(x => x.mrStep).FirstOrDefault();
+            int vstepTGR = _MK._ViewceMastToolGRRequest.Where(x => x.trDocumentNo == id).Select(x => x.trStep).FirstOrDefault();
+            int vstepSP = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == id).Select(x => x.irStep).FirstOrDefault();
+            if (vstepWK == 4 && vstepMT == 4 && vstepTGR == 4 && vstepSP == 4)
+            {
+                var _ceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == id).FirstOrDefault();
+                _ceMastMoldOtherRequest.mrStep = 3;
+                _ceMastMoldOtherRequest.mrStatus = vstatus;
+                _MK._ViewceMastMoldOtherRequest.Update(_ceMastMoldOtherRequest);
+                _MK.SaveChanges();
+            }
+
+
+            return "sucess";
         }
 
 
@@ -331,6 +361,7 @@ namespace CostEstimate.Controllers.NewMoldOther
             string msg = "Send Mail & Save File Already";
             string vStatus = "";
             string[] chkPermis;
+            string[] chkStatus;
             string[] chkSave;
             string[] chkSaveHistory;
             string[] chkSaveSendMail;
@@ -348,7 +379,22 @@ namespace CostEstimate.Controllers.NewMoldOther
                     msg = chkPermis[1];
                     return Json(new { c1 = config, c2 = msg });
                 }
+
                 i_Step = @class._ViewceMastMoldOtherRequest != null ? @class._ViewceMastMoldOtherRequest.mrStep : 0;
+
+                //check step 3 when 4 doc done
+                if (i_Step == 2) //Waiting Checked By WORKING TIME (OPG) , MATERIAL(DG MOLD), TOOL(CAM), INFORMATION(DRG)
+                {
+                    chkStatus = chkStatusDoc(@class);
+                    if (chkStatus[0] == "W")
+                    {
+                        config = chkStatus[0];
+                        msg = chkStatus[1];
+                        return Json(new { c1 = config, c2 = msg });
+                    }
+                }
+
+
 
                 //if(@class._ViewceHistoryApproved == null) { @class._ViewceHistoryApproved = new ViewceHistoryApproved(); } //step 2 case disapprove
                 if (i_Step == 1)
@@ -523,6 +569,51 @@ namespace CostEstimate.Controllers.NewMoldOther
             return Json(new { c1 = config, c2 = msg });
         }
 
+        public string[] chkStatusDoc(Class @class)
+        {
+            string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
+            string _Permiss = User.Claims.FirstOrDefault(s => s.Type == "Permission")?.Value;
+            string message_per = "";
+            string status_per = "";
+            try
+            {
+                string vDoc = @class._ViewceMastMoldOtherRequest.mrDocmentNo;
+                int vstepWK = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNo == vDoc).Select(x => x.wrStep).FirstOrDefault();
+                int vstepMT = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == vDoc).Select(x => x.mrStep).FirstOrDefault();
+                int vstepTGR = _MK._ViewceMastToolGRRequest.Where(x => x.trDocumentNo == vDoc).Select(x => x.trStep).FirstOrDefault();
+                int vstepSP = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == vDoc).Select(x => x.irStep).FirstOrDefault();
+
+
+                if (vstepWK == 4 && vstepMT == 4 && vstepTGR == 4 && vstepSP == 4)
+                {
+                    status_per = "S";
+                    message_per = "You have permission ";
+                }
+                else
+                {
+                    //Waiting Checked By WORKING TIME (OPG) , MATERIAL(DG MOLD), TOOL(CAM), INFORMATION(DRG)
+                    status_per = "W";
+                    message_per = "Please complete all WORKING TIME(OPG), MATERIAL(DG MOLD), TOOL(CAM), INFORMATION(DRG) before the next step.";
+                }
+
+
+
+
+
+
+                string[] returnvar = { status_per, message_per };
+                return returnvar;
+            }
+            catch (Exception ex)
+            {
+                string[] returnvar = { status_per, message_per };
+                return returnvar;
+
+            }
+        }
+
+
+
         public string[] chkPermission(Class @class)
         {
             string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
@@ -695,8 +786,8 @@ namespace CostEstimate.Controllers.NewMoldOther
                         _ViewceMastMoldOtherRequest.mrStatus = _smStatus;
                         _ViewceMastMoldOtherRequest.mrEmpCodeRequest = empIssue;
                         _ViewceMastMoldOtherRequest.mrNameRequest = NickNameIssue;
-                        _ViewceMastMoldOtherRequest.mrEmpCodeApprove = empApprove;
-                        _ViewceMastMoldOtherRequest.mrNameApprove = NickNameApprove;
+                        _ViewceMastMoldOtherRequest.mrEmpCodeApprove = savetype == "D" ? "" : empApprove;
+                        _ViewceMastMoldOtherRequest.mrNameApprove = savetype == "D" ? "" : NickNameApprove;
                         _ViewceMastMoldOtherRequest.mrFlowNo = 3;
                         _MK._ViewceMastMoldOtherRequest.AddAsync(_ViewceMastMoldOtherRequest);
 
@@ -1486,12 +1577,14 @@ namespace CostEstimate.Controllers.NewMoldOther
             string msg = "";
 
             string[] chkPermis;
+            string[] chkStatus;
             string[] chkSave;
 
             int i_Step = 0;
             string[] vRunDoc;
             string[] vRunDocNo;
             string[] sRunDoc;
+
             try
             {
                 i_Step = @class._ViewceMastMoldOtherRequest.mrStep;
@@ -1503,6 +1596,19 @@ namespace CostEstimate.Controllers.NewMoldOther
                     msg = chkPermis[1];
                     return Json(new { c1 = config, c2 = msg });
                 }
+
+                if (i_Step == 2) //Waiting Checked By WORKING TIME (OPG) , MATERIAL(DG MOLD), TOOL(CAM), INFORMATION(DRG)
+                {
+                    chkStatus = chkStatusDoc(@class);
+                    if (chkStatus[0] == "W")
+                    {
+                        config = chkStatus[0];
+                        msg = chkStatus[1];
+                        return Json(new { c1 = config, c2 = msg });
+                    }
+                }
+
+
                 //check step 1 
                 if (_ceItemPartName != null)
                 {

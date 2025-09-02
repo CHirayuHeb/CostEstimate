@@ -232,11 +232,18 @@ function GoSideMenu(controller) {
 
 
 function PositionY(menu) {
-    if (menu.search("New") > -1 && menu.search("NewMoldModify") == -1 && menu.search("NewMoldOther") == -1) {
-        menu = "New";
-    } else if (menu.search("NewMoldModify") > -1) {
-        menu = "NewMoldModify";
+    //if (menu.search("New") > -1 && menu.search("NewMoldModify") == -1 && menu.search("NewMoldOther") == -1) {
+    //    menu = "New";
+    //} else if (menu.search("NewMoldModify") > -1) {
+    //    menu = "NewMoldModify";
+    //}
+
+    let idx = menu.indexOf("?");
+    if (idx !== -1) {
+        menu = menu.substring(0, idx);
     }
+    console.log(menu); // 👉 "NewMoldOther"
+
     let PY = 0;
     let opacity;
     switch (menu) {

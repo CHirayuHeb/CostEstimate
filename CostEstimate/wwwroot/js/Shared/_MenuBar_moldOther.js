@@ -252,7 +252,14 @@ function GoNewMoldOtherTGRRequest(id, Rev) {
     //let url = "New?smLotNo=" + smLotNo + "&smOrderNo=" + smOrderNo + "&smRevision=" + smRevision;
     GoSideMenu(url);
 }
-
+function GoNewMoldOtherSMRequest(id, Rev) {
+    //smLotNo
+    //smOrderNo
+    //smRevision NewMoldModify
+    let url = "NewMoldOtherSM?Docno=" + id;
+    //let url = "New?smLotNo=" + smLotNo + "&smOrderNo=" + smOrderNo + "&smRevision=" + smRevision;
+    GoSideMenu(url);
+}
 
 function GoSideMenu(controller) {
     displayLoading();
@@ -4435,6 +4442,21 @@ function Menubar_MoldOther_saveDraft(action) {
                         });
 
                 }
+                else if (config.c1 == "W") {
+                    //$("#loaderDiv").hide();
+                    //await $("#myModal1").modal("hide");
+                   // await $("#myModalMoldWKSendmail").modal("hide");
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'warning',
+                        text: config.c2,
+                    })
+                        .then((result) => {
+                            document.getElementById("divItem").focus();
+                          
+                        });
+
+                }
 
             }
         });
@@ -4803,6 +4825,27 @@ function Menubar_MoldOther_savesendMail(action) {
                         text: config.c2,
                     })
                         .then((result) => {
+                            //$("#myModal1").modal("show");
+                        });
+
+                }
+                else if (config.c1 == "W") {
+                    //$("#loaderDiv").hide();
+                    //await $("#myModal1").modal("hide");
+                    await $("#myModalMoldWKSendmail").modal("hide");
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'warning',
+                        text: config.c2,
+                    })
+                        .then((result) => {
+                            //divItem
+                            document.getElementById("divItem").focus();
+                            //setTimeout(() => {
+                            //    document.getElementById("divItem").style.outline = "none";
+                            //    document.getElementById("divItem").style.boxShadow = "none";
+                            //}, 3000);
+                         //document.getElementById("divItem").focus();
                             //$("#myModal1").modal("show");
                         });
 
@@ -5280,6 +5323,9 @@ function Menubar_MoldOtherWKsavesendMailData(action, action2) {
                     });
 
             }
+         
+
+
 
         }
     });
@@ -5991,3 +6037,238 @@ function DeleteFileUserTGR(id, vname, action) {
         }
     });
 }
+
+//mold Information spac mold
+function Menubar_MoldOtherSMsendmail(getID, action) {
+    console.log("MoldOSM Request");
+    let vmsg = "";
+    if (vmsg != "") {
+        swal.fire({
+            title: 'แจ้งเตือน',
+            icon: 'warning',
+            text: vmsg,
+        })
+            .then((result) => {
+
+            });
+    }
+    else {
+
+        let formElement = document.getElementById("formMoldOSMRequest");
+        let viewModel1 = new FormData(formElement);
+
+
+        $.ajax({
+            type: 'post',
+            url: action,
+            data: viewModel1,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+
+                var htmls = "";
+                if (data.status == "hasHistory") {
+                    htmls = " <div class='panel panel-default property'>"
+                    // console.log(data.listHistory.length);
+                    $.each(data.listHistory, function (i, item) {
+                        //console.log('test' + item.htTo); console.log(data.listHistory[0].htTo);
+                        console.log("OK")
+                        htmls += "     <div class='panel-heading panel-heading-custom property' tabindex = '0' >"
+                        htmls += "         <h4 class='panel-title faq-title-range collapsed' data-bs-toggle='collapse' data-bs-target='#Ans" + item.htStep + "' aria-expanded='false' aria-controls='collapseExample'>"
+                        htmls += "             <label style='font-size: 13px;'>Step : "
+
+
+                        htmls += item.htStep;
+                        //if (item.htStep == 0) {
+                        //    htmls += item.htStep;
+                        //}
+                        //else {
+                        //    // htmls += (i + 1);
+                        //    htmls += (item.htStep + 1)
+                        //}
+
+                        htmls += "  </label > <label class='lbV'></label>"
+                        htmls += "         </h4>"
+                        htmls += "     </div >"
+                        htmls += "     <div class='panel-collapse collapse' style = 'overflow: auto;' id = 'Ans" + item.htStep + "' > "
+
+                        htmls += "         <div class='panel-body'>"
+                        htmls += "             <div style='font-size: x-small; clear: both; width: 100%; tetx-align: left; font-weight: bold;'>"
+                        htmls += "                 <label> " + item.htDate + " :: " + item.htTime + " น.</label>"
+
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
+                        htmls += "                 <label>FROM : </label></br>"
+                        htmls += "                 <label>" + item.htFrom + "</label > "
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
+                        htmls += "                 <label>TO : </label></br>"
+                        htmls += "                 <label>" + item.htTo + "</label>"
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
+                        if (item.htCC == null) { item.htCC = "" }
+                        else { item.htCC = item.htCC }
+                        htmls += "                 <label>CC : </label>"
+                        htmls += "                 <label>" + item.htCC + "</label>"
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: right; width: 20%; tetx-align: left;'>"
+                        if (item.htRemark == null) { item.htRemark = "" }
+                        else { item.htRemark = item.htRemark }
+                        htmls += "                 <label>Remark : </label>"
+                        htmls += "                 <label>" + item.htRemark + "</label>"
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: right; width: 20%; tetx-align: left;'>"
+                        htmls += "                 <label>Status : </label>"
+                        if (item.htStatus == null) { item.htStatus = "" }
+                        else {
+                            item.htStatus = item.htStatus
+                            if (item.htStatus == "Finished") {
+                                htmls += "                 <label><span style='color: green;'>" + item.htStatus + "</span></label>"
+                            } else {
+                                htmls += "                 <label><span style='color: darkkhaki;'>" + item.htStatus + "</span></label>"
+                            }
+                        }
+
+                        htmls += "             </div>"
+                        htmls += "         </div>"
+                        htmls += "     </div>"
+
+                    });
+                    htmls += "</div>"
+                }
+                else {
+                    htmls = " <div class='panel panel-default property'>"
+                    htmls += "     <div class='panel-heading panel-heading-custom property' tabindex = '0' >"
+                    htmls += " <label><span style='color: blue;'>ไม่มีประวัติการส่งอีเมล์</span></label>"
+                    htmls += "</div>"
+                    htmls += "</div>"
+                }
+
+                var url = data.partial;
+
+                $("#myModalBodySendMoldSM").load(url, function () {
+                    $('#divHistory').html(htmls);
+                    $("#myModalMoldSMSendmail").modal("show");
+                })
+
+            }
+        });
+    }
+}
+function Menubar_MoldOtherSMsaveDraft(action) {
+    var getID = document.getElementById("i_NewOtherSM_DocumentNo").value; //txtMIssueID
+    const form1 = document.forms.namedItem("formMoldOSMRequest");
+    let viewModel1 = new FormData(form1);
+
+
+    $.ajax({
+        type: "POST",
+        url: action,
+        data: viewModel1,
+        processData: false,
+        contentType: false,
+        beforeSend: function () {
+            swal.fire({
+                html: '<h5>Loading...</h5>',
+                showConfirmButton: false,
+                onRender: function () {
+                    // there will only ever be one sweet alert open.
+                    //$('.swal2-content').prepend(sweet_loader);
+                }
+            });
+        },
+        success: async function (config) {
+            // alert(config.c1);
+            if (config.c1 == "S") {
+                //await $("#myModalMoldWKSendmail").modal("hide");
+                swal.fire({
+                    title: 'SUCCESS',
+                    icon: 'success',
+                    text: config.c2,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //console.log("config.c3" + config.c3);
+                        GoNewMoldOtherSMRequest(getID, "");
+                        //GoSideMenu("SearchMoldOther");
+                        //GoSideMenu("SearchMold");
+                        //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                    }
+                });
+            }
+            else if (config.c1 == "E") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        //$("#myModalMoldWKSendmail").modal("show");
+                    });
+
+            }
+            else if (config.c1 == "P") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                //await $("#myModalMoldWKSendmail").modal("hide");
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'warning',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        //$("#myModal1").modal("show");
+                    });
+
+            }
+
+        }
+    });
+
+
+
+
+
+}
+function DeleteFileUserSM(id, vname, action) {
+    var getID = document.getElementById("i_NewOtherSM_DocumentNo").value; //txtMIssueID
+    //action, vForm, vTeam, vSubject, vSrNo
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure delete File?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { id: id, vname: vname },
+                success: function (res) {
+                    swal.fire({
+                        title: 'แจ้งเตือน',
+                        icon: res.res,
+                        text: res.res,
+                    })
+                        .then((result) => {
+                            //GoSideMenu("Home");
+                            // GoNewRequest(getID)
+                            GoNewMoldOtherSMRequest(getID, "");
+                            //GoNewMoldRequest(getID)
+                            //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                        });
+
+
+
+                }
+            });
+        } else {
+            //console.log('Cancel');
+            return false;
+        }
+    });
+}
+

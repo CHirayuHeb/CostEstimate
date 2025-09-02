@@ -257,7 +257,10 @@ namespace CostEstimate.Models.Table.MK
 
         public string v_TypeofCavity { get; set; }
         public string v_Revision { get; set; }
-
+        public string v_Event { get; set; }
+        public string v_MoldGo { get; set; }
+        public string v_Try1 { get; set; }
+        public string v_Type { get; set; }
     }
 
     public class ViewNewRequestprocess

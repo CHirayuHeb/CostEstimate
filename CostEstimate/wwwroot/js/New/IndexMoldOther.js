@@ -100,3 +100,7 @@ $("#btnfileMoldOtherMT").click(function () {
 $("#btnfileMoldOtherTGR").click(function () {
     $("#myModalNewMoldOtherTGR").modal("show");
 });
+
+$("#btnfileMoldOtherSM").click(function () {
+    $("#myModalNewMoldOtherSM").modal("show");
+});

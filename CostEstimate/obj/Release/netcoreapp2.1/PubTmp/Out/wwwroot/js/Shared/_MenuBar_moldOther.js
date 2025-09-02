@@ -236,7 +236,30 @@ function GoNewMoldOtherWKRequest(id, Rev) {
     //let url = "New?smLotNo=" + smLotNo + "&smOrderNo=" + smOrderNo + "&smRevision=" + smRevision;
     GoSideMenu(url);
 }
-
+function GoNewMoldOtherMTRequest(id, Rev) {
+    //smLotNo
+    //smOrderNo
+    //smRevision NewMoldModify
+    let url = "NewMoldOtherMT?Docno=" + id;
+    //let url = "New?smLotNo=" + smLotNo + "&smOrderNo=" + smOrderNo + "&smRevision=" + smRevision;
+    GoSideMenu(url);
+}
+function GoNewMoldOtherTGRRequest(id, Rev) {
+    //smLotNo
+    //smOrderNo
+    //smRevision NewMoldModify
+    let url = "NewMoldOtherTGR?Docno=" + id;
+    //let url = "New?smLotNo=" + smLotNo + "&smOrderNo=" + smOrderNo + "&smRevision=" + smRevision;
+    GoSideMenu(url);
+}
+function GoNewMoldOtherSMRequest(id, Rev) {
+    //smLotNo
+    //smOrderNo
+    //smRevision NewMoldModify
+    let url = "NewMoldOtherSM?Docno=" + id;
+    //let url = "New?smLotNo=" + smLotNo + "&smOrderNo=" + smOrderNo + "&smRevision=" + smRevision;
+    GoSideMenu(url);
+}
 
 function GoSideMenu(controller) {
     displayLoading();
@@ -285,18 +308,48 @@ function GoSideMenu(controller) {
 
 
 function PositionY(menu) {
+    let idx = menu.indexOf("?");
+    if (idx !== -1) {
+        menu = menu.substring(0, idx);
+    }
+    console.log(menu); // 👉 "NewMoldOther"
+
+
+
     //if (menu.search("New") > -1 && menu.search("NewMoldModify") == -1 && menu.search("NewMoldOther") == -1) {
     //    menu = "New";
     //} else if (menu.search("NewMoldModify") > -1) {
     //    menu = "NewMoldModify";
     //}
     //else
-    if (menu.search("NewMoldOther") > -1) {
-        menu = "NewMoldOther";
-    }
+    //if (menu.search("NewMoldOther") > -1) {
+    //    menu = "NewMoldOther";
+    //}
     let PY = 0;
     let opacity;
     switch (menu) {
+        case "New":
+            //LoadScript("js/New/Index.js", "NewItem");
+            //LoadScript("js/New/EventMore.js", "EventNewMore");
+            LoadScript("js/Home/Index.js", "Home");
+            LoadScript("js/New/Index.js", "New");
+            LoadScript("js/Home/Hour.js", "EventHomeHour");
+            LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
+            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
+            PY = "52px";
+            //PY = "114px";
+            opacity = "opacity-dot-3";
+            break;
+        case "NewMoldModify":
+            //console.log("New:NewMoldModify");
+            LoadScript("js/Home/Index.js", "Home");
+            LoadScript("js/New/IndexMold.js", "New");
+            LoadScript("js/Home/Hour.js", "EventHomeHour");
+            LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
+            PY = "52px";
+            //PY = "114px";
+            opacity = "opacity-dot-3";
+            break;
         case "PageNotFound":
             LoadScript("js/Home/Index.js", "Home");
             LoadScript("js/New/Index.js", "New");
@@ -1293,7 +1346,7 @@ function CheckDisstep2(status) {
 
             Remark0
 
-           // $('#EmailTo').removeAttr("name");
+            // $('#EmailTo').removeAttr("name");
             //if (step == 4) {
             //    console.log(step);
             //    document.getElementById("searchInputTO").value = $('#EmailTo').val();
@@ -4272,9 +4325,9 @@ function Menubar_MoldOther_saveDraft(action) {
     } else if (document.getElementById("i_NewOther_MoldMass").value == "") {
         vmsg = "กรุณากรอกข้อมูล Mold Mass !!!";
         document.getElementById("i_NewOther_MoldMass").focus();
-    } else if (document.getElementById("i_NewOther_MoldMass").value == "") {
-        vmsg = "กรุณากรอกข้อมูล Mold Mass !!!";
-        document.getElementById("i_NewOther_MoldMass").focus();
+    } else if (document.getElementById("i_NewOther_Type").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Type !!!";
+        document.getElementById("i_NewOther_Type").focus();
     } else if (rows.length == 0 && vstep == 1) {
         vmsg = "กรุณาเพิ่ม Part name !!!";
         document.getElementById("btnAddPartName").focus();
@@ -4426,6 +4479,10 @@ function Menubar_MoldOther_sendmail(getID, action) {
     } else if (document.getElementById("i_NewOther_MoldMass").value == "") {
         vmsg = "กรุณากรอกข้อมูล Mold Mass !!!";
         document.getElementById("i_NewOther_MoldMass").focus();
+    }
+    else if (document.getElementById("i_NewOther_Type").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Type !!!";
+        document.getElementById("i_NewOther_Type").focus();
     }
     //else if (rows.length == 0 && vstep == 1) {
     //    vmsg = "กรุณาเพิ่ม Part name !!!";
@@ -4757,6 +4814,27 @@ function Menubar_MoldOther_savesendMail(action) {
                         });
 
                 }
+                else if (config.c1 == "W") {
+                    //$("#loaderDiv").hide();
+                    //await $("#myModal1").modal("hide");
+                    await $("#myModalMoldWKSendmail").modal("hide");
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'warning',
+                        text: config.c2,
+                    })
+                        .then((result) => {
+                            //divItem
+                            document.getElementById("divItem").focus();
+                            //setTimeout(() => {
+                            //    document.getElementById("divItem").style.outline = "none";
+                            //    document.getElementById("divItem").style.boxShadow = "none";
+                            //}, 3000);
+                         //document.getElementById("divItem").focus();
+                            //$("#myModal1").modal("show");
+                        });
+
+                }
 
             }
         });
@@ -4799,7 +4877,6 @@ function Menubar_MoldOtherWKsaveDraft(action, action2) {
                 const inputNoProcess = td.querySelector('input.input-NoProcess');
                 const inputGroupName = td.querySelector('input.input-GroupName');
                 const inputProcessName = td.querySelector('input.input-ProcessName');
-                //const inputNoProcess = td.querySelector('input.input-NoProcess');
                 const inputMan = td.querySelector('input.input-man');
                 const inputAuto = td.querySelector('input.input-auto');
                 const inputEnableman = td.querySelector('input.input-Enableman');
@@ -5055,7 +5132,7 @@ function Menubar_MoldOtherWKsendmail(getID, action) {
                 }
 
                 var url = data.partial;
-             
+
                 $("#myModalBodySendMold").load(url, function () {
                     $('#divHistory').html(htmls);
                     $("#myModalMoldWKSendmail").modal("show");
@@ -5097,7 +5174,7 @@ function Menubar_MoldOtherWKsavesendMailData(action, action2) {
                 const inputNoProcess = td.querySelector('input.input-NoProcess');
                 const inputGroupName = td.querySelector('input.input-GroupName');
                 const inputProcessName = td.querySelector('input.input-ProcessName');
-               // const inputNoProcess = td.querySelector('input.input-NoProcess');
+                // const inputNoProcess = td.querySelector('input.input-NoProcess');
                 const inputMan = td.querySelector('input.input-man');
                 const inputAuto = td.querySelector('input.input-auto');
                 const inputEnableman = td.querySelector('input.input-Enableman');
@@ -5112,7 +5189,7 @@ function Menubar_MoldOtherWKsavesendMailData(action, action2) {
                             wpPartName: inputPartName.value.trim(),
                             wpCavityNo: inputCavityNo.value.trim(),
                             wpTypeCavity: inputTypeCavity.value.trim(),
-                            wpNoProcess: inputNoProcess.value.trim()||0, //int
+                            wpNoProcess: inputNoProcess.value.trim() || 0, //int
                             wpGroupName: inputGroupName.value.trim(),
                             wpProcessName: inputProcessName.value.trim(),
                             wpWT_Man: parseInt(inputMan.value.trim()) || 0,//double
@@ -5231,6 +5308,9 @@ function Menubar_MoldOtherWKsavesendMailData(action, action2) {
                     });
 
             }
+         
+
+
 
         }
     });
@@ -5278,4 +5358,902 @@ function DeleteFileUserWK(id, vname, action) {
 }
 
 
+//mold other Material
+function Menubar_MoldOtherMTsaveDraft(action) {
+    var getID = document.getElementById("i_NewOtherMT_DocumentNo").value; //txtMIssueID
+    const form1 = document.forms.namedItem("formMoldOMTRequest");
+    let viewModel1 = new FormData(form1);
+
+
+    _ItemMaterialRequestPartName = [];
+    const groupDivs = document.querySelectorAll('table.MatPartName');
+    groupDivs.forEach(div => {
+        const rowsTr = div.querySelectorAll('tr#trbodyMatPartName'); // แก้ id ให้ตรง
+        const totalInput = div.querySelector('input.form-control.center.input-mpTotal');
+
+        rowsTr.forEach(tr => {
+            _ItemMaterialRequestPartName.push({
+                mpDocumentNoSub: tr.querySelector(".input-mpDocumentNoSub").value.trim(),
+                mpRunNo: parseFloat(tr.querySelector(".input-mpRunNo").value.trim()) || 0,
+                mpPartName: tr.querySelector(".input-mpPartName").value.trim(),
+                mpCavityNo: parseFloat(tr.querySelector(".input-mpCavityNo").value.trim()) || 0,
+                mpTypeCavity: tr.querySelector(".input-mpTypeCavity").value.trim(),
+                mpNoProcess: tr.querySelector(".input-mpNoProcess").value.trim(),
+                mpNo: parseFloat(tr.querySelector(".input-mpNo").value.trim()) || 0,
+                mpItem: tr.querySelector(".input-mpItem").value.trim() || 0,
+                mpPCS: parseFloat(tr.querySelector(".input-mpPCS").value.trim()) || 0,
+                mpAmount: parseFloat(tr.querySelector(".input-mpAmount").value.trim()) || 0,
+                mpTotal: totalInput ? parseFloat(totalInput.value.trim()) : 0,
+                mpIssueDate: tr.querySelector(".input-mpIssueDate").value.trim(),
+            });
+        });
+    });
+
+    viewModel1.append("_ItemMaterialRequestPartName", JSON.stringify(_ItemMaterialRequestPartName));
+
+    $.ajax({
+        type: "POST",
+        url: action,
+        data: viewModel1,
+        processData: false,
+        contentType: false,
+        beforeSend: function () {
+            swal.fire({
+                html: '<h5>Loading...</h5>',
+                showConfirmButton: false,
+                onRender: function () {
+                    // there will only ever be one sweet alert open.
+                    //$('.swal2-content').prepend(sweet_loader);
+                }
+            });
+        },
+        success: async function (config) {
+            // alert(config.c1);
+            if (config.c1 == "S") {
+                //await $("#myModalMoldWKSendmail").modal("hide");
+                swal.fire({
+                    title: 'SUCCESS',
+                    icon: 'success',
+                    text: config.c2,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //console.log("config.c3" + config.c3);
+                        GoNewMoldOtherMTRequest(getID, "");
+                        //GoSideMenu("SearchMoldOther");
+                        //GoSideMenu("SearchMold");
+                        //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                    }
+                });
+            }
+            else if (config.c1 == "E") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        //$("#myModalMoldWKSendmail").modal("show");
+                    });
+
+            }
+            else if (config.c1 == "P") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                //await $("#myModalMoldWKSendmail").modal("hide");
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'warning',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        //$("#myModal1").modal("show");
+                    });
+
+            }
+
+        }
+    });
+
+
+
+
+
+}
+function Menubar_MoldOtherMTsendmail(getID, action) {
+    console.log("Menubar_MoldOtherWKsendmail");
+    let vmsg = "";
+    if (vmsg != "") {
+        swal.fire({
+            title: 'แจ้งเตือน',
+            icon: 'warning',
+            text: vmsg,
+        })
+            .then((result) => {
+
+            });
+    }
+    else {
+
+        let formElement = document.getElementById("formMoldOMTRequest");
+        let viewModel1 = new FormData(formElement);
+
+
+        $.ajax({
+            type: 'post',
+            url: action,
+            data: viewModel1,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+
+                var htmls = "";
+                if (data.status == "hasHistory") {
+                    htmls = " <div class='panel panel-default property'>"
+                    // console.log(data.listHistory.length);
+                    $.each(data.listHistory, function (i, item) {
+                        //console.log('test' + item.htTo); console.log(data.listHistory[0].htTo);
+                        console.log("OK")
+                        htmls += "     <div class='panel-heading panel-heading-custom property' tabindex = '0' >"
+                        htmls += "         <h4 class='panel-title faq-title-range collapsed' data-bs-toggle='collapse' data-bs-target='#Ans" + item.htStep + "' aria-expanded='false' aria-controls='collapseExample'>"
+                        htmls += "             <label style='font-size: 13px;'>Step : "
+
+
+                        htmls += item.htStep;
+                        //if (item.htStep == 0) {
+                        //    htmls += item.htStep;
+                        //}
+                        //else {
+                        //    // htmls += (i + 1);
+                        //    htmls += (item.htStep + 1)
+                        //}
+
+                        htmls += "  </label > <label class='lbV'></label>"
+                        htmls += "         </h4>"
+                        htmls += "     </div >"
+                        htmls += "     <div class='panel-collapse collapse' style = 'overflow: auto;' id = 'Ans" + item.htStep + "' > "
+
+                        htmls += "         <div class='panel-body'>"
+                        htmls += "             <div style='font-size: x-small; clear: both; width: 100%; tetx-align: left; font-weight: bold;'>"
+                        htmls += "                 <label> " + item.htDate + " :: " + item.htTime + " น.</label>"
+
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
+                        htmls += "                 <label>FROM : </label></br>"
+                        htmls += "                 <label>" + item.htFrom + "</label > "
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
+                        htmls += "                 <label>TO : </label></br>"
+                        htmls += "                 <label>" + item.htTo + "</label>"
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
+                        if (item.htCC == null) { item.htCC = "" }
+                        else { item.htCC = item.htCC }
+                        htmls += "                 <label>CC : </label>"
+                        htmls += "                 <label>" + item.htCC + "</label>"
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: right; width: 20%; tetx-align: left;'>"
+                        if (item.htRemark == null) { item.htRemark = "" }
+                        else { item.htRemark = item.htRemark }
+                        htmls += "                 <label>Remark : </label>"
+                        htmls += "                 <label>" + item.htRemark + "</label>"
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: right; width: 20%; tetx-align: left;'>"
+                        htmls += "                 <label>Status : </label>"
+                        if (item.htStatus == null) { item.htStatus = "" }
+                        else {
+                            item.htStatus = item.htStatus
+                            if (item.htStatus == "Finished") {
+                                htmls += "                 <label><span style='color: green;'>" + item.htStatus + "</span></label>"
+                            } else {
+                                htmls += "                 <label><span style='color: darkkhaki;'>" + item.htStatus + "</span></label>"
+                            }
+                        }
+
+                        htmls += "             </div>"
+                        htmls += "         </div>"
+                        htmls += "     </div>"
+
+                    });
+                    htmls += "</div>"
+                }
+                else {
+                    htmls = " <div class='panel panel-default property'>"
+                    htmls += "     <div class='panel-heading panel-heading-custom property' tabindex = '0' >"
+                    htmls += " <label><span style='color: blue;'>ไม่มีประวัติการส่งอีเมล์</span></label>"
+                    htmls += "</div>"
+                    htmls += "</div>"
+                }
+
+                var url = data.partial;
+
+                $("#myModalBodyMT").load(url, function () {
+                    $('#divHistory').html(htmls);
+                    $("#myModalMoldMTSendmail").modal("show");
+                })
+
+            }
+        });
+    }
+}
+function Menubar_MoldOtherMTsavesendMailData(action) {
+
+
+    const form1 = document.forms.namedItem("formMoldOMTRequest");
+    let viewModel1 = new FormData(form1);
+
+
+    _ItemMaterialRequestPartName = [];
+    const groupDivs = document.querySelectorAll('table.MatPartName');
+    groupDivs.forEach(div => {
+        const rowsTr = div.querySelectorAll('tr#trbodyMatPartName'); // แก้ id ให้ตรง
+        const totalInput = div.querySelector('input.form-control.center.input-mpTotal');
+
+        rowsTr.forEach(tr => {
+            _ItemMaterialRequestPartName.push({
+                mpDocumentNoSub: tr.querySelector(".input-mpDocumentNoSub").value.trim(),
+                mpRunNo: parseFloat(tr.querySelector(".input-mpRunNo").value.trim()) || 0,
+                mpPartName: tr.querySelector(".input-mpPartName").value.trim(),
+                mpCavityNo: parseFloat(tr.querySelector(".input-mpCavityNo").value.trim()) || 0,
+                mpTypeCavity: tr.querySelector(".input-mpTypeCavity").value.trim(),
+                mpNoProcess: tr.querySelector(".input-mpNoProcess").value.trim(),
+                mpNo: parseFloat(tr.querySelector(".input-mpNo").value.trim()) || 0,
+                mpItem: tr.querySelector(".input-mpItem").value.trim() || 0,
+                mpPCS: parseFloat(tr.querySelector(".input-mpPCS").value.trim()) || 0,
+                mpAmount: parseFloat(tr.querySelector(".input-mpAmount").value.trim()) || 0,
+                mpTotal: totalInput ? parseFloat(totalInput.value.trim()) : 0,
+                mpIssueDate: tr.querySelector(".input-mpIssueDate").value.trim(),
+            });
+        });
+    });
+
+    viewModel1.append("_ItemMaterialRequestPartName", JSON.stringify(_ItemMaterialRequestPartName));
+
+
+    //1.check send mail
+    //2.save form
+    //3.send mail
+    //4.save item
+    $.ajax({
+        type: "POST",
+        url: action,
+        data: viewModel1,
+        processData: false,
+        contentType: false,
+        beforeSend: function () {
+            swal.fire({
+                html: '<h5>Loading...</h5>',
+                showConfirmButton: false,
+                onRender: function () {
+                    // there will only ever be one sweet alert open.
+                    //$('.swal2-content').prepend(sweet_loader);
+                }
+            });
+        },
+        success: async function (config) {
+            // alert(config.c1);
+            if (config.c1 == "S") {
+                await $("#myModalMoldMTSendmail").modal("hide");
+                swal.fire({
+                    title: 'SUCCESS',
+                    icon: 'success',
+                    text: config.c2,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //console.log("config.c3" + config.c3);
+                        GoSideMenu("SearchMoldOther");
+                        //GoSideMenu("SearchMold");
+                        //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                    }
+                });
+            }
+            else if (config.c1 == "E") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        $("#myModalMoldMTSendmail").modal("show");
+                    });
+
+            }
+            else if (config.c1 == "P") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                await $("#myModalMoldMTSendmail").modal("hide");
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'warning',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        //$("#myModal1").modal("show");
+                    });
+
+            }
+
+        }
+    });
+
+}
+function DeleteFileUserMT(id, vname, action) {
+    var getID = document.getElementById("i_NewOtherMT_DocumentNo").value; //txtMIssueID
+    //action, vForm, vTeam, vSubject, vSrNo
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure delete File?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { id: id, vname: vname },
+                success: function (res) {
+                    swal.fire({
+                        title: 'แจ้งเตือน',
+                        icon: res.res,
+                        text: res.res,
+                    })
+                        .then((result) => {
+                            //GoSideMenu("Home");
+                            // GoNewRequest(getID)
+                            GoNewMoldOtherMTRequest(getID, "");
+                            //GoNewMoldRequest(getID)
+                            //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                        });
+
+
+
+                }
+            });
+        } else {
+            //console.log('Cancel');
+            return false;
+        }
+    });
+}
+
+//mold other Tool GR
+function Menubar_MoldOtherTGRsaveDraft(action) {
+    var getID = document.getElementById("i_NewOtherTGR_DocumentNo").value; //txtMIssueID
+    const form1 = document.forms.namedItem("formMoldOTGRRequest");
+    let viewModel1 = new FormData(form1);
+
+
+    $.ajax({
+        type: "POST",
+        url: action,
+        data: viewModel1,
+        processData: false,
+        contentType: false,
+        beforeSend: function () {
+            swal.fire({
+                html: '<h5>Loading...</h5>',
+                showConfirmButton: false,
+                onRender: function () {
+                    // there will only ever be one sweet alert open.
+                    //$('.swal2-content').prepend(sweet_loader);
+                }
+            });
+        },
+        success: async function (config) {
+            // alert(config.c1);
+            if (config.c1 == "S") {
+                //await $("#myModalMoldWKSendmail").modal("hide");
+                swal.fire({
+                    title: 'SUCCESS',
+                    icon: 'success',
+                    text: config.c2,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //console.log("config.c3" + config.c3);
+                        GoNewMoldOtherTGRRequest(getID, "");
+                        //GoSideMenu("SearchMoldOther");
+                        //GoSideMenu("SearchMold");
+                        //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                    }
+                });
+            }
+            else if (config.c1 == "E") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        //$("#myModalMoldWKSendmail").modal("show");
+                    });
+
+            }
+            else if (config.c1 == "P") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                //await $("#myModalMoldWKSendmail").modal("hide");
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'warning',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        //$("#myModal1").modal("show");
+                    });
+
+            }
+
+        }
+    });
+
+
+
+
+
+}
+function Menubar_MoldOtherTGRsendmail(getID, action) {
+    console.log("MoldOTGR Request");
+    let vmsg = "";
+    if (vmsg != "") {
+        swal.fire({
+            title: 'แจ้งเตือน',
+            icon: 'warning',
+            text: vmsg,
+        })
+            .then((result) => {
+
+            });
+    }
+    else {
+
+        let formElement = document.getElementById("formMoldOTGRRequest");
+        let viewModel1 = new FormData(formElement);
+
+
+        $.ajax({
+            type: 'post',
+            url: action,
+            data: viewModel1,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+
+                var htmls = "";
+                if (data.status == "hasHistory") {
+                    htmls = " <div class='panel panel-default property'>"
+                    // console.log(data.listHistory.length);
+                    $.each(data.listHistory, function (i, item) {
+                        //console.log('test' + item.htTo); console.log(data.listHistory[0].htTo);
+                        console.log("OK")
+                        htmls += "     <div class='panel-heading panel-heading-custom property' tabindex = '0' >"
+                        htmls += "         <h4 class='panel-title faq-title-range collapsed' data-bs-toggle='collapse' data-bs-target='#Ans" + item.htStep + "' aria-expanded='false' aria-controls='collapseExample'>"
+                        htmls += "             <label style='font-size: 13px;'>Step : "
+
+
+                        htmls += item.htStep;
+                        //if (item.htStep == 0) {
+                        //    htmls += item.htStep;
+                        //}
+                        //else {
+                        //    // htmls += (i + 1);
+                        //    htmls += (item.htStep + 1)
+                        //}
+
+                        htmls += "  </label > <label class='lbV'></label>"
+                        htmls += "         </h4>"
+                        htmls += "     </div >"
+                        htmls += "     <div class='panel-collapse collapse' style = 'overflow: auto;' id = 'Ans" + item.htStep + "' > "
+
+                        htmls += "         <div class='panel-body'>"
+                        htmls += "             <div style='font-size: x-small; clear: both; width: 100%; tetx-align: left; font-weight: bold;'>"
+                        htmls += "                 <label> " + item.htDate + " :: " + item.htTime + " น.</label>"
+
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
+                        htmls += "                 <label>FROM : </label></br>"
+                        htmls += "                 <label>" + item.htFrom + "</label > "
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
+                        htmls += "                 <label>TO : </label></br>"
+                        htmls += "                 <label>" + item.htTo + "</label>"
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
+                        if (item.htCC == null) { item.htCC = "" }
+                        else { item.htCC = item.htCC }
+                        htmls += "                 <label>CC : </label>"
+                        htmls += "                 <label>" + item.htCC + "</label>"
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: right; width: 20%; tetx-align: left;'>"
+                        if (item.htRemark == null) { item.htRemark = "" }
+                        else { item.htRemark = item.htRemark }
+                        htmls += "                 <label>Remark : </label>"
+                        htmls += "                 <label>" + item.htRemark + "</label>"
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: right; width: 20%; tetx-align: left;'>"
+                        htmls += "                 <label>Status : </label>"
+                        if (item.htStatus == null) { item.htStatus = "" }
+                        else {
+                            item.htStatus = item.htStatus
+                            if (item.htStatus == "Finished") {
+                                htmls += "                 <label><span style='color: green;'>" + item.htStatus + "</span></label>"
+                            } else {
+                                htmls += "                 <label><span style='color: darkkhaki;'>" + item.htStatus + "</span></label>"
+                            }
+                        }
+
+                        htmls += "             </div>"
+                        htmls += "         </div>"
+                        htmls += "     </div>"
+
+                    });
+                    htmls += "</div>"
+                }
+                else {
+                    htmls = " <div class='panel panel-default property'>"
+                    htmls += "     <div class='panel-heading panel-heading-custom property' tabindex = '0' >"
+                    htmls += " <label><span style='color: blue;'>ไม่มีประวัติการส่งอีเมล์</span></label>"
+                    htmls += "</div>"
+                    htmls += "</div>"
+                }
+
+                var url = data.partial;
+
+                $("#myModalBodyTGR").load(url, function () {
+                    $('#divHistory').html(htmls);
+                    $("#myModalMoldTGRSendmail").modal("show");
+                })
+
+            }
+        });
+    }
+}
+function Menubar_MoldOtherTGRsavesendMailData(action) {
+    const form1 = document.forms.namedItem("formMoldOTGRRequest");
+    let viewModel1 = new FormData(form1);
+    $.ajax({
+        type: "POST",
+        url: action,
+        data: viewModel1,
+        processData: false,
+        contentType: false,
+        beforeSend: function () {
+            swal.fire({
+                html: '<h5>Loading...</h5>',
+                showConfirmButton: false,
+                onRender: function () {
+                    // there will only ever be one sweet alert open.
+                    //$('.swal2-content').prepend(sweet_loader);
+                }
+            });
+        },
+        success: async function (config) {
+            // alert(config.c1);
+            if (config.c1 == "S") {
+                await $("#myModalMoldTGRSendmail").modal("hide");
+                swal.fire({
+                    title: 'SUCCESS',
+                    icon: 'success',
+                    text: config.c2,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //console.log("config.c3" + config.c3);
+                        GoSideMenu("SearchMoldOther");
+                        //GoSideMenu("SearchMold");
+                        //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                    }
+                });
+            }
+            else if (config.c1 == "E") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        $("#myModalMoldTGRSendmail").modal("show");
+                    });
+
+            }
+            else if (config.c1 == "P") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                await $("#myModalMoldTGRSendmail").modal("hide");
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'warning',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        //$("#myModal1").modal("show");
+                    });
+
+            }
+
+        }
+    });
+
+}
+function DeleteFileUserTGR(id, vname, action) {
+    var getID = document.getElementById("i_NewOtherTGR_DocumentNo").value; //txtMIssueID
+    //action, vForm, vTeam, vSubject, vSrNo
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure delete File?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { id: id, vname: vname },
+                success: function (res) {
+                    swal.fire({
+                        title: 'แจ้งเตือน',
+                        icon: res.res,
+                        text: res.res,
+                    })
+                        .then((result) => {
+                            //GoSideMenu("Home");
+                            // GoNewRequest(getID)
+                            GoNewMoldOtherTGRRequest(getID, "");
+                            //GoNewMoldRequest(getID)
+                            //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                        });
+
+
+
+                }
+            });
+        } else {
+            //console.log('Cancel');
+            return false;
+        }
+    });
+}
+
+//mold Information spac mold
+function Menubar_MoldOtherSMsendmail(getID, action) {
+    console.log("MoldOSM Request");
+    let vmsg = "";
+    if (vmsg != "") {
+        swal.fire({
+            title: 'แจ้งเตือน',
+            icon: 'warning',
+            text: vmsg,
+        })
+            .then((result) => {
+
+            });
+    }
+    else {
+
+        let formElement = document.getElementById("formMoldOSMRequest");
+        let viewModel1 = new FormData(formElement);
+
+
+        $.ajax({
+            type: 'post',
+            url: action,
+            data: viewModel1,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+
+                var htmls = "";
+                if (data.status == "hasHistory") {
+                    htmls = " <div class='panel panel-default property'>"
+                    // console.log(data.listHistory.length);
+                    $.each(data.listHistory, function (i, item) {
+                        //console.log('test' + item.htTo); console.log(data.listHistory[0].htTo);
+                        console.log("OK")
+                        htmls += "     <div class='panel-heading panel-heading-custom property' tabindex = '0' >"
+                        htmls += "         <h4 class='panel-title faq-title-range collapsed' data-bs-toggle='collapse' data-bs-target='#Ans" + item.htStep + "' aria-expanded='false' aria-controls='collapseExample'>"
+                        htmls += "             <label style='font-size: 13px;'>Step : "
+
+
+                        htmls += item.htStep;
+                        //if (item.htStep == 0) {
+                        //    htmls += item.htStep;
+                        //}
+                        //else {
+                        //    // htmls += (i + 1);
+                        //    htmls += (item.htStep + 1)
+                        //}
+
+                        htmls += "  </label > <label class='lbV'></label>"
+                        htmls += "         </h4>"
+                        htmls += "     </div >"
+                        htmls += "     <div class='panel-collapse collapse' style = 'overflow: auto;' id = 'Ans" + item.htStep + "' > "
+
+                        htmls += "         <div class='panel-body'>"
+                        htmls += "             <div style='font-size: x-small; clear: both; width: 100%; tetx-align: left; font-weight: bold;'>"
+                        htmls += "                 <label> " + item.htDate + " :: " + item.htTime + " น.</label>"
+
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
+                        htmls += "                 <label>FROM : </label></br>"
+                        htmls += "                 <label>" + item.htFrom + "</label > "
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
+                        htmls += "                 <label>TO : </label></br>"
+                        htmls += "                 <label>" + item.htTo + "</label>"
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: left; width: 20%; tetx-align: left;'>"
+                        if (item.htCC == null) { item.htCC = "" }
+                        else { item.htCC = item.htCC }
+                        htmls += "                 <label>CC : </label>"
+                        htmls += "                 <label>" + item.htCC + "</label>"
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: right; width: 20%; tetx-align: left;'>"
+                        if (item.htRemark == null) { item.htRemark = "" }
+                        else { item.htRemark = item.htRemark }
+                        htmls += "                 <label>Remark : </label>"
+                        htmls += "                 <label>" + item.htRemark + "</label>"
+                        htmls += "             </div>"
+                        htmls += "             <div style='font-size: x-small; float: right; width: 20%; tetx-align: left;'>"
+                        htmls += "                 <label>Status : </label>"
+                        if (item.htStatus == null) { item.htStatus = "" }
+                        else {
+                            item.htStatus = item.htStatus
+                            if (item.htStatus == "Finished") {
+                                htmls += "                 <label><span style='color: green;'>" + item.htStatus + "</span></label>"
+                            } else {
+                                htmls += "                 <label><span style='color: darkkhaki;'>" + item.htStatus + "</span></label>"
+                            }
+                        }
+
+                        htmls += "             </div>"
+                        htmls += "         </div>"
+                        htmls += "     </div>"
+
+                    });
+                    htmls += "</div>"
+                }
+                else {
+                    htmls = " <div class='panel panel-default property'>"
+                    htmls += "     <div class='panel-heading panel-heading-custom property' tabindex = '0' >"
+                    htmls += " <label><span style='color: blue;'>ไม่มีประวัติการส่งอีเมล์</span></label>"
+                    htmls += "</div>"
+                    htmls += "</div>"
+                }
+
+                var url = data.partial;
+
+                $("#myModalBodySendMoldSM").load(url, function () {
+                    $('#divHistory').html(htmls);
+                    $("#myModalMoldSMSendmail").modal("show");
+                })
+
+            }
+        });
+    }
+}
+function Menubar_MoldOtherSMsaveDraft(action) {
+    var getID = document.getElementById("i_NewOtherSM_DocumentNo").value; //txtMIssueID
+    const form1 = document.forms.namedItem("formMoldOSMRequest");
+    let viewModel1 = new FormData(form1);
+
+
+    $.ajax({
+        type: "POST",
+        url: action,
+        data: viewModel1,
+        processData: false,
+        contentType: false,
+        beforeSend: function () {
+            swal.fire({
+                html: '<h5>Loading...</h5>',
+                showConfirmButton: false,
+                onRender: function () {
+                    // there will only ever be one sweet alert open.
+                    //$('.swal2-content').prepend(sweet_loader);
+                }
+            });
+        },
+        success: async function (config) {
+            // alert(config.c1);
+            if (config.c1 == "S") {
+                //await $("#myModalMoldWKSendmail").modal("hide");
+                swal.fire({
+                    title: 'SUCCESS',
+                    icon: 'success',
+                    text: config.c2,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //console.log("config.c3" + config.c3);
+                        GoNewMoldOtherSMRequest(getID, "");
+                        //GoSideMenu("SearchMoldOther");
+                        //GoSideMenu("SearchMold");
+                        //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                    }
+                });
+            }
+            else if (config.c1 == "E") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        //$("#myModalMoldWKSendmail").modal("show");
+                    });
+
+            }
+            else if (config.c1 == "P") {
+                //$("#loaderDiv").hide();
+                //await $("#myModal1").modal("hide");
+                //await $("#myModalMoldWKSendmail").modal("hide");
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'warning',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        //$("#myModal1").modal("show");
+                    });
+
+            }
+
+        }
+    });
+
+
+
+
+
+}
+function DeleteFileUserSM(id, vname, action) {
+    var getID = document.getElementById("i_NewOtherSM_DocumentNo").value; //txtMIssueID
+    //action, vForm, vTeam, vSubject, vSrNo
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure delete File?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { id: id, vname: vname },
+                success: function (res) {
+                    swal.fire({
+                        title: 'แจ้งเตือน',
+                        icon: res.res,
+                        text: res.res,
+                    })
+                        .then((result) => {
+                            //GoSideMenu("Home");
+                            // GoNewRequest(getID)
+                            GoNewMoldOtherSMRequest(getID, "");
+                            //GoNewMoldRequest(getID)
+                            //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                        });
+
+
+
+                }
+            });
+        } else {
+            //console.log('Cancel');
+            return false;
+        }
+    });
+}
 

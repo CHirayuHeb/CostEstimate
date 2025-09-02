@@ -58,6 +58,9 @@
     <Content Update="Views\NewMoldOtherMT\_PartialMTAttachFile.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\NewMoldOtherSM\SendMail.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\NewMoldOtherSM\_PartialStepFlowOtherRequest.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

@@ -9,343 +9,354 @@
 <div class="home-content">
     <div id="DisplayContent" class="content-box">
         <div class="row center" style="margin-bottom:3px">
-            <div class="col-70 ">
+            <div class="col-75">
             </div>
-            <div class="col-15" style="text-align:right">
-                <button class="button btnBrown " style="width:auto" onclick="GoSideMenuNewRequest('NewMoldOther')">
+
+            <div class="col-20" style="text-align:right">
+                <button class="button btnGray " style="width:auto" onclick="GoSideMenuNewRequest('NewMoldOther')">
                     <img src="~/images/tool.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;font-size:10px" />
                     New Request
                 </button>
-            </div>
-            <div class="col-10" style="text-align:right">
-                <a asp-area="" asp-controller="SearchMoldOther" asp-action="btnExportExcel" style="margin-right:5px;font-size:10px;text-decoration:auto" class="button">
-                    <img src="~/images/excel.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />Search
-                </a>
+
+                @*<a asp-area="" asp-controller="SearchMoldOther" asp-action="btnExportExcel" style="margin-right:5px;font-size:10px;text-decoration:auto" class="button">
+                        <img src="~/images/excel.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />Search
+                    </a>*@
             </div>
             <div class="col-5" style="text-align:right">
             </div>
         </div>
         @using (Html.BeginForm("Index", "SearchMoldOther", FormMethod.Post, new { enctype = "multipart/form-data", id = "formSearch", name = "formSearch" }))
         {
-        <div style="" class="content-text">
-            <div style="width:100%;">
-                <div id="divSearchMain" style="margin-inline: auto;border: 0px solid #a39e9e; background-color: aliceblue;padding:15px;border-radius:2px;">
+            <div style="" class="content-text">
+                <div style="width:100%;">
+                    <div id="divSearchMain" style="margin-inline: auto;border: 0px solid #a39e9e; background-color: aliceblue;padding:15px;border-radius:2px;">
+                        <div style="text-align:right">
+                            @*formaction="@Url.Action("btnExportExcel", "SearchMold")"*@
+                            <button type="submit"
+                                    formaction="@Url.Action("btnExportExcel", "SearchMoldOther")"
+                                    formmethod="post"
+                                    style="margin-right:5px;font-size:10px;width:100px"
+                                    class="button">
+                                <img src="~/images/excel.png"
+                                     style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                                Excel
+                            </button>
+                        </div>
 
-                    <div style=" display: flex;margin-top:6px;margin-bottom:6px ">
-                        <div class="grid-item fw-800 center" style="font-size:22px">ค้นหาข้อมูล</div>
+                        <div style=" display: flex;margin-top:6px;margin-bottom:6px ">
+                            <div class="grid-item fw-800 center" style="font-size:22px">ค้นหาข้อมูล</div>
+                        </div>
+
+                        <div class="row center">
+                            <div class="row center">
+                                <div class="col-5 " style="">
+                                </div>
+                                <div class="col-20 border1_5green " style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Document No</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DocumentNo">
+                                </div>
+                                <div class="col-20 border1_5green " style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Customer No.</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_CusName">
+                                </div>
+                                <div class="col-5 " style="">
+
+                                </div>
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Function</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_Function">
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Revision</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:45%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_Revision">
+                                    <span style="margin-left:10px;color:blue">*EX 00</span>
+                                </div>
+                                <div class="col-5 " style="">
+
+                                </div>
+
+
+                            </div>
+
+
+                          
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Model Name.</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_ModelName">
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Event.</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_Event">
+
+                                </div>
+
+                                <div class="col-5 " style="">
+
+                                </div>
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5green " style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Mold GO</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_MoldGo">
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Try 1.</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="input-with-image datepicker form-control center" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_Try1">
+                                </div>
+                                <div class="col-5 " style="">
+
+                                </div>
+                            </div>
+
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Mold Mass</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="input-with-image datepicker form-control center" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_MoldMass">
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Type</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_Type">
+
+                                </div>
+                                <div class="col-5 " style="">
+
+                                </div>
+
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Issue/Date (from)</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+
+                                    <input type="text" class="input-with-image Searchdatepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueFrom">
+
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Issue/Date (To)</div>
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                    <input type="text" class="input-with-image Searchdatepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueTo">
+                                </div>
+                                <div class="col-5 " style="">
+
+                                </div>
+
+                            </div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Status.</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    @Html.DropDownListFor(m => m._ViewSearchData.v_status, (SelectList)ViewBag.vbformStatus, "กรุณาเลือก", new { @class = "form-control", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:12px" })
+                                </div>
+                                <div class="col-20  " style=" display: flex;align-items: center;">
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                </div>
+
+                                <div class="col-5 " style="">
+
+                                </div>
+                            </div>
+
+                            <br />
+
+
+
+
+
+
+                        </div>
+
+                        <div class="row center">
+                            <div class="col-30 ">
+                            </div>
+                            <div class="col-40 ">
+                                <button class="button btn-success" style="width:auto">
+                                    <img src="~/images/search.png" style="width:30px;height:26px;padding-right:1.5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                                    SEARCH
+                                </button>
+                            </div>
+                            <div class="col-30 " style="text-align:right">
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-30 ">
+                            <label style="font-size:14px;font-weight:600">
+                                จำนวน
+                                <span style="color:royalblue">
+                                    @Model._ListViewceMastMoldOtherRequest.Count
+                                    @*@ViewBag.Listcount*@
+                                </span>
+                                แถว
+                            </label>
+                        </div>
+                        <div class="col-20 fw-800"></div>
+                        <div class="col-50" style="">
+                        </div>
                     </div>
 
-                    <div class="row center">
-                        <div class="row center">
-                            <div class="col-5 " style="">
-                            </div>
-                            <div class="col-20 border1_5green " style=" display: flex;align-items: center;">
-                                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Document No</div>
-                            </div>
-                            <div class="col-25 " style=" display: flex;align-items: center; ">
-                                <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DocumentNo">
-                            </div>
-                            <div class="col-20 border1_5green " style=" display: flex;align-items: center;">
-                                <div class="grid-item fw-800 center" style="text-align:left;">Reference No.</div>
-                            </div>
-                            <div class="col-25" style=" display: flex;align-items: center; ">
-                                <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_OrderNo">
-                            </div>
-                            <div class="col-5 " style="">
 
-                            </div>
-                        </div>
-                        <div class="row center">
-                            <div class="col-5 " style="">
-                            </div>
-                            <div class="col-20 border1_5green " style=" display: flex;align-items: center;">
-                                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Lot No.</div>
-                            </div>
-                            <div class="col-25 " style=" display: flex;align-items: center; ">
-                                <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_LotNo">
-                            </div>
-                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                <div class="grid-item fw-800 center" style="text-align:left;">Revision.</div>
-                            </div>
-                            <div class="col-25 " style=" display: flex;align-items: center; ">
-                                <input type="text" class="form-control left" style="width:45%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_Revision">
-                                <span style="margin-left:10px;color:blue">*EX 00</span>
-                            </div>
-                            <div class="col-5 " style="">
-
-                            </div>
-                        </div>
-                        <div class="row center">
-                            <div class="col-5 " style="">
-
-                            </div>
-                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                <div class="grid-item fw-800 center" style="text-align:left;">Customer Name</div>
-                            </div>
-                            <div class="col-25 " style=" display: flex;align-items: center; ">
-                                <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_CusName">
-                            </div>
-                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                <div class="grid-item fw-800 center" style="text-align:left;">Mold No. / Mold Name.</div>
-                            </div>
-                            <div class="col-25 " style=" display: flex;align-items: center; ">
-                                <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_MoldName">
-                            </div>
-                            <div class="col-5 " style="">
-
-                            </div>
-                        </div>
-                        <div class="row center">
-                            <div class="col-5 " style="">
-
-                            </div>
-                            <div class="col-20 border1_5green " style=" display: flex;align-items: center;">
-                                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Model Name</div>
-                            </div>
-                            <div class="col-25 " style=" display: flex;align-items: center; ">
-                                <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_ModelName">
-                            </div>
-                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                <div class="grid-item fw-800 center" style="text-align:left;">Status.</div>
-                            </div>
-                            <div class="col-25 " style=" display: flex;align-items: center; ">
-                                @*@Html.DropDownListFor(m => m._ViewSearchData.v_status, (SelectList)ViewBag.vbformStatus, "กรุณาเลือก", new { @class = "form-control", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:12px" })*@
-                            </div>
-                            <div class="col-5 " style="">
-
-                            </div>
-                        </div>
-
-                        <div class="row center">
-                            <div class="col-5 " style="">
-
-                            </div>
-                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                <div class="grid-item fw-800 center" style="text-align:left;">Mold Mass</div>
-                            </div>
-                            <div class="col-25 " style=" display: flex;align-items: center; ">
-                                <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_MoldMass">
-                            </div>
-                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                <div class="grid-item fw-800 center" style="text-align:left;">Type of Cavity</div>
-                            </div>
-                            <div class="col-25" style=" display: flex;align-items: center; ">
-                                @*@Html.DropDownListFor(m => m._ViewSearchData.v_TypeofCavity, (SelectList)ViewBag.TypeofCavity, "กรุณาเลือก", new { @class = "form-control", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:12px" })*@
-
-                                @*<input type="text" class="form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_TypeofCavity">*@
-
-                            </div>
-                            <div class="col-5 " style="">
-
-                            </div>
-
-                        </div>
-                        <div class="row center">
-                            <div class="col-5 " style="">
-
-                            </div>
-                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                <div class="grid-item fw-800 center" style="text-align:left;">Issue/Date (from)</div>
-                            </div>
-                            <div class="col-25" style=" display: flex;align-items: center; ">
-
-                                <input type="text" class="input-with-image Searchdatepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueFrom">
-
-                            </div>
-                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-
-                                <div class="grid-item fw-800 center" style="text-align:left;">Issue/Date (To)</div>
-                            </div>
-                            <div class="col-25" style=" display: flex;align-items: center; ">
-                                <input type="text" class="input-with-image Searchdatepicker  form-control center" style="width:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DateIssueTo">
-                            </div>
-                            <div class="col-5 " style="">
-
-                            </div>
-
-                        </div>
-                        <div class="row center">
-                            <div class="col-5 " style="">
-
-                            </div>
-                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                <div class="grid-item fw-800 center" style="text-align:left;">Function</div>
-                            </div>
-                            <div class="col-25" style=" display: flex;align-items: center; ">
-                                <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_Function">
-                            </div>
-                            <div class="col-20 " style=" display: flex;align-items: center;">
-                                @*<div class="grid-item fw-800 center" style="text-align:left;">Development Stage</div>*@
-                            </div>
-                            <div class="col-25 " style=" display: flex;align-items: center; ">
-                                @*<input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DevelopmentStage">*@
-                            </div>
-                            <div class="col-5 " style="">
-
-                            </div>
+                    <div class="row center" style="background-color:aliceblue;margin-top:5px;margin-bottom:10px;padding:5px">
 
 
-                        </div>
+                        <table class="tbgreen">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center">No.​</th>
+                                    <th style="text-align:center;">Document No.​</th>
+                                    <th style="text-align:center;">Cus Name.​</th>
+                                    <th style="text-align:center">Function.​</th>
+                                    <th style="text-align:center">Revion​</th>
+                                    <th style="text-align:center">Model Name​</th>
+                                    <th style="text-align:center">Event</th>
+                                    <th style="text-align:center">Mold Go</th>
+                                    <th style="text-align:center">Try 1</th>
+                                    <th style="text-align:center">Mold Mass</th>
+                                    <th style="text-align:center">Date Issue</th>
+                                    <th style="text-align:center">Request Name​</th>
+                                    <th style="text-align:center">Waiting Approve​</th>
+                                    <th style="text-align:center">Status​</th>
+                                    <th style="text-align:center">Action​</th>
+                                </tr>
+                            </thead>
 
+                            @if (Model._ListViewceMastMoldOtherRequest != null)
+                            {
+                                var row = 0;
+                                @foreach (var item in @Model._ListViewceMastMoldOtherRequest)
+                                {
+                                    <tr style="font-size:10px">
+                                        <td> <tlabel>@(row += 1)</tlabel></td>
+
+                                        <td style="text-align:center;">@item.mrDocmentNo</td>
+                                        <td style="text-align:center;">@item.mrCustomerName</td>
+                                        <td style="text-align:center;">@item.mrFunction</td>
+                                        <td style="text-align:center;">@item.mrRevision</td>
+                                        <td style="text-align:center;">@item.mrModelName</td>
+                                        <td style="text-align:center;">@item.mrEvent</td>
+                                        <td style="text-align:center;">@item.mrMoldGo</td>
+                                        <td style="text-align:center;">@item.mrTry1</td>
+                                        <td style="text-align:center;">@item.mrMoldMass</td>
+                                        <td style="text-align:center;">@item.mrIssueDate</td>
+                                        <td style="text-align:center;">@item.mrEmpCodeRequest @item.mrNameRequest</td>
+                                        <td style="text-align:center">
+                                            @if (@item.mrStep == 2)
+                                            {
+                                                <span style="color:blue;font-weight:700">
+                                                    Document Pending..
+                                                </span>
+                                            }
+                                            else if (@item.mrStep < 8)
+                                            {
+                                                <span style="color:black;font-weight:700">
+                                                    @item.mrEmpCodeApprove
+
+                                                    @item.mrNameApprove
+                                                </span>
+                                            }
+                                        </td>
+
+                                        <td style="text-align:center">
+                                            @*@item.smStep*@
+                                            @if (@item.mrStep == 0 && @item.mrStatus.Contains("Disapprove"))
+                                            {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                            else if (@item.mrStep == 0) /*//new*/
+                                            {
+                                                <img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />
+                                            }
+                                            else if (@item.mrStep == 1)
+                                            { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                            else if (@item.mrStep == 2)
+                                            { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.mrStep == 3)/*//issue*/
+                                            { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.mrStep == 4)
+                                            { <img src="~/images/5.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.mrStep == 5)
+                                            { <img src="~/images/6.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.mrStep == 6)
+                                            { <img src="~/images/7.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.mrStep == 7)
+                                            { <img src="~/images/8.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                            else if (@item.mrStep == 8)
+                                            { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
+
+                                        </td>
+
+                                        <td style="text-align:center">
+                                            @if (@item.mrStep == 8)
+                                            {
+                                                <img src="~/images/revision.png" alt="icon" onclick="GoNewMoldOtherRequest('@item.mrDocmentNo','@item.mrRevision')" class="img" />
+                                            }
+                                            <input type="button" style="font-size:18px" value="&#x1F50E;" onclick="GoNewMoldOtherRequest('@item.mrDocmentNo','')">
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            }
+
+
+
+
+                        </table>
                         <br />
 
 
 
 
-
-
-                    </div>
-
-                    <div class="row center">
-                        <div class="col-30 ">
-                        </div>
-                        <div class="col-40 ">
-                            <button class="button btn-success" style="width:auto">
-                                <img src="~/images/search.png" style="width:30px;height:26px;padding-right:1.5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                                SEARCH
-                            </button>
-                        </div>
-                        <div class="col-30 " style="text-align:right">
-
-                        </div>
-
-
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-30 ">
-                        <label style="font-size:14px;font-weight:600">
-                            จำนวน
-                            <span style="color:royalblue">
-                                @Model._ListViewceMastMoldOtherRequest.Count
-                                @*@ViewBag.Listcount*@
-                            </span>
-                            แถว
-                        </label>
-                    </div>
-                    <div class="col-20 fw-800"></div>
-                    <div class="col-50" style="">
-                    </div>
-                </div>
-
-
-                <div class="row center" style="background-color:aliceblue">
-                    <div class="col-5 " style="">
-
-                    </div>
-                    <div class="col-90 " style="border:0px solid gray;padding:10px">
-
-                        <div class="row center" style="">
-
-                            <div class="col-100 table-container" style="align-items: center; ">
-                                <table class="tbgreen">
-                                    <thead>
-                                        <tr>
-                                            <th style="text-align:center">No.​</th>
-                                            <th style="text-align:center;">Document No.​</th>
-                                            <th style="text-align:center;">Customer Name.​</th>
-                                            <th style="text-align:center">Function.​</th>
-                                            <th style="text-align:center">Revion​</th>
-                                            <th style="text-align:center">Model Name​</th>
-                                            <th style="text-align:center">Event</th>
-                                            <th style="text-align:center">Mold Go</th>
-                                            <th style="text-align:center">Try 1</th>
-                                            <th style="text-align:center">Mold Mass</th>
-                                            <th style="text-align:center">Date Issue</th>
-                                            <th style="text-align:center">Request Name​</th>
-                                            <th style="text-align:center">Waiting Approve​</th>
-                                            <th style="text-align:center">Status​</th>
-                                            <th style="text-align:center">Action​</th>
-                                        </tr>
-                                    </thead>
-
-                                    @if (Model._ListViewceMastMoldOtherRequest != null)
-                                    {
-                                        var row = 0;
-                                        @foreach (var item in @Model._ListViewceMastMoldOtherRequest)
-                                        {
-                                            <tr>
-                                                <td> <tlabel>@(row += 1)</tlabel></td>
-
-                                                <td style="text-align:center">@item.mrDocmentNo</td>
-                                                <td style="text-align:center">@item.mrCustomerName</td>
-                                                <td style="text-align:center">@item.mrFunction</td>
-                                                <td style="text-align:center">@item.mrRevision</td>
-                                                <td style="text-align:center">@item.mrModelName</td>
-                                                <td style="text-align:center">@item.mrEvent</td>
-                                                <td style="text-align:center">@item.mrMoldGo</td>
-                                                <td style="text-align:center">@item.mrTry1</td>
-                                                <td style="text-align:center">@item.mrMoldMass</td>
-                                                <td style="text-align:center">@item.mrIssueDate</td>
-                                                <td style="text-align:center">@item.mrEmpCodeRequest @item.mrNameRequest</td>
-                                                <td style="text-align:center">
-                                                    @if (@item.mrStep < 8)
-                                                    {
-                                                        @item.mrEmpCodeApprove
-                                                        <span></span>
-                                                        @item.mrNameApprove
-                                                    }
-                                                </td>
-                                               
-                                                <td style="text-align:center">
-                                                    @*@item.smStep*@
-                                                    @if (@item.mrStep == 0 && @item.mrStatus.Contains("Disapprove"))
-                                                    {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
-                                                    else if (@item.mrStep == 0) /*//new*/
-                                                    {
-                                                        <img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />
-                                                    }
-                                                    else if (@item.mrStep == 1)
-                                                    { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
-                                                    else if (@item.mrStep == 2)
-                                                    { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                    else if (@item.mrStep == 3)/*//issue*/
-                                                    { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                    else if (@item.mrStep == 4)
-                                                    { <img src="~/images/5.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                    else if (@item.mrStep == 5)
-                                                    { <img src="~/images/6.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                    else if (@item.mrStep == 6)
-                                                    { <img src="~/images/7.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                    else if (@item.mrStep == 7)
-                                                    { <img src="~/images/8.png" alt="icon" style="height: 25px; width: 25px;" />}
-                                                    else if (@item.mrStep == 8)
-                                                    { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
-
-                                                </td>
-
-                                                <td style="text-align:center">
-                                                    @if (@item.mrStep == 8)
-                                                    {
-                                                        <img src="~/images/revision.png" alt="icon" onclick="GoNewMoldOtherRequest('@item.mrDocmentNo','@item.mrRevision')" class="img" />
-                                                    }
-                                                    <input type="button" style="font-size:18px" value="&#x1F50E;" onclick="GoNewMoldOtherRequest('@item.mrDocmentNo','')">
-                                                </td>
-                                            </tr>
-
-                                        }
-
-                                    }
-
-
-
-
-                                </table>
-
-
-                            </div>
-
-
-                        </div>
-
-                    </div>
-                    <div class="col-5 " style="">
-
                     </div>
                 </div>
             </div>
-        </div>
         }
 
     </div>

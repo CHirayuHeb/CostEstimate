@@ -212,13 +212,18 @@ function GoSideMenu(controller) {
 
 
 function PositionY(menu) {
-    let vmenu = menu;
-    if (menu.search("New") > -1 && menu.search("NewMoldModify") == -1 && menu.search("NewMoldOther") == -1) {
-        menu = "New";
+    //let vmenu = menu;
+    //if (menu.search("New") > -1 && menu.search("NewMoldModify") == -1 && menu.search("NewMoldOther") == -1) {
+    //    menu = "New";
+    //}
+    //else if (menu.search("SubHistorysum") > -1) {
+    //    menu = "SubHistorysum";
+    //}
+    let idx = menu.indexOf("?");
+    if (idx !== -1) {
+        menu = menu.substring(0, idx);
     }
-    else if (menu.search("SubHistorysum") > -1) {
-        menu = "SubHistorysum";
-    }
+    console.log(menu); // 👉 "NewMoldOther"
 
     let PY = 0;
     let opacity;
