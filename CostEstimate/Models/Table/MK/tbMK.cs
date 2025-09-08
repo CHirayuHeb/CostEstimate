@@ -655,7 +655,7 @@ namespace CostEstimate.Models.Table.MK
         public string mrEvent { get; set; }
         public string mrMoldGo { get; set; }
         public string mrTry1 { get; set; }
-        public string mrType { get; set; }
+        public string mrType { get; set; } = "None";
         public string mrMoldMass { get; set; }
         public string mrIssueDate { get; set; }
         public int mrStep { get; set; }
@@ -855,8 +855,87 @@ namespace CostEstimate.Models.Table.MK
         public string irNameApprove { get; set; }
         public int irFlowNo { get; set; } = 7;
     }
+    [Table("ceItemInforRequestPartName")]
+    public class ViewceItemInforRequestPartName
+    {
+        [Key]
+        public string ipDocumentNoSub { get; set; }
+        public int ipRunNo { get; set; }
+        public string ipPartName { get; set; }
+        public double ipCavityNo { get; set; }
+        public string ipTypeCavity { get; set; }
+        public int ipNoProcess { get; set; }
+        public string ipSprueSystem { get; set; } = "";
+        public string ipRunner { get; set; } = "";
+        public string ipMakerHotRunner { get; set; } = "";
+        public string ipGateType1 { get; set; } = "";
+        public double ipNumberPoint1 { get; set; } = 0;
+        public string ipGateType2 { get; set; } = "";
+        public double ipNumberPoint2 { get; set; } = 0;
+        public string ipGateType3 { get; set; } = "";
+        public double ipNumberPoint3 { get; set; } = 0;
+        public string ipBaseCavity { get; set; } = "";
+        public string ipInsertCavity { get; set; } = "";
+        public string ipBaseCode { get; set; } = "";
+        public string ipInsertCode { get; set; } = "";
+        public string ipSlide { get; set; } = "";
+        public bool ipElectroFormType { get; set; } = true;
+        public double ipElectroFormPcs { get; set; } = 0;
+    }
+    [Table("ceItemInforSlideSystem")]
+    public class ViewceItemInforSlideSystem
+    {
+        [Key]
+        public string isDocumentNoSub { get; set; }
+        public int isRunNo { get; set; }
+        public string isPartName { get; set; }
+        public double isCavityNo { get; set; }
+        public string isTypeCavity { get; set; }
+        public int isNoProcess { get; set; }
+        public string isSlideSystemType { get; set; }
+        public int isSlideSystemCount { get; set; }
 
+    }
+    [Table("ceItemInforTypeOfCut")]
+    public class ViewceItemInforTypeOfCut
+    {
+        [Key]
+        public string icDocumentNoSub { get; set; }
+        public int icRunNo { get; set; }
+        public string icPartName { get; set; }
+        public double icCavityNo { get; set; }
+        public string icTypeCavity { get; set; }
+        public int icNoProcess { get; set; }
+        public string icTypeofcut { get; set; }
 
+    }
+
+    [Table("ceItemInforShibo")]
+    public class ViewceItemInforShibo
+    {
+        [Key]
+        public string ibDocumentNoSub { get; set; }
+        public int ibRunNo { get; set; }
+        public string ibPartName { get; set; }
+        public double ibCavityNo { get; set; }
+        public string ibTypeCavity { get; set; }
+        public int ibNoProcess { get; set; }
+        public bool ibShiboType { get; set; } = true;
+        public string ibSHiboPCS { get; set; }
+
+    }
+
+    public class GroupViewceMastInforSpacMoldRequest
+    {
+        public string ipPartName { get; set; }
+        public double ipCavityNo { get; set; }
+        public string ipTypeCavity { get; set; }
+        public int ipNoProcess { get; set; }
+        public List<ViewceItemInforRequestPartName> InforRequestPartName { get; set; }
+        public List<ViewceItemInforSlideSystem> ItemInforSlideSystem { get; set; }
+        public List<ViewceItemInforTypeOfCut> ItemInforTypeOfCut { get; set; }
+        public List<ViewceItemInforShibo> ItemInforShibo { get; set; }
+    }
 
 
 

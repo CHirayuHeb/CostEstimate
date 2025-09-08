@@ -1,0 +1,64 @@
+﻿@model CostEstimate.Models.Common.Class;
+@using CostEstimate.Models.Common;
+@{
+    ViewData["Title"] = "Master Mold Other | ThaiStanley";
+    Layout = "~/Views/Shared/_MenuBar_MoldOther.cshtml";
+}
+@{
+    string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+    string _admin = GlobalVariable.perAdmin.ToUpper();
+}
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("MasterMoldOther"); } }</script>
+<div class="home-content">
+    <div id="DisplayContent" class="content-box">
+        <div style="margin:2%" class="content-text">
+            <div class="grid-item fw-800" style="text-align:left;font-size:24px;padding-top:0px;color:green"><span style="color:black">MASTER</span> MOLD OTHER</div>
+            <br />
+
+
+            <div style="width:100%">
+             
+                <div class="centerdiv" id="divHomeMold" style="margin-inline: auto;" onclick="GoSideMenuNewRequest('AddOProcess')">
+                    <div class="row " style="margin:2px">
+                        <div class="col-20" style=" display: flex;align-items: center; ">
+                            <img src="~/images/iteration.png" style="max-height:100px; max-width:100px;" class="center" />
+                        </div>
+                        <div class="col-80">
+                            <div class="grid-item fw-800" style="text-align:left;">MASTER Mold OTHER PROCESS</div>
+                            <div class="grid-item fw-600" style="text-align:left;font-size:10px;">1.MASTER Mold Other  PROCESS SHEET DETAIL</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="centerdiv" id="divHomeMold" style="margin-inline: auto;" onclick="GoSideMenuNewRequest('AddOProcessWK')">
+                    <div class="row " style="margin:2px">
+                        <div class="col-20" style=" display: flex;align-items: center; ">
+                            <img src="~/images/working-time.png" style="max-height:100px; max-width:100px;" class="center" />
+                        </div>
+                        <div class="col-80">
+                            <div class="grid-item fw-800" style="text-align:left;">MASTER Mold OTHER PROCESS <span style="color:orange">Working time</span> </div>
+                            <div class="grid-item fw-600" style="text-align:left;font-size:10px;">1.MASTER Mold Other  PROCESS SHEET DETAIL</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="centerdiv" id="divHomeMold" style="margin-inline: auto;" onclick="GoSideMenuNewRequest('AddOModel')">
+                    <div class="row " style="margin:2px">
+                        <div class="col-20" style=" display: flex;align-items: center; ">
+                            <img src="~/images/molding-machine.png" style="max-height:100px; max-width:100px;" class="center" />
+                        </div>
+                        <div class="col-80">
+                            <div class="grid-item fw-800" style="text-align:left;">MASTER  MOLD OTHER MODEL <span style="color:blue">Material</span> </div>
+                            <div class="grid-item fw-600" style="text-align:left;font-size:10px;">1.MASTER Mold OTHER  MODEL SHEET DETAIL</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

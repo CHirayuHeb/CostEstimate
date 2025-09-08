@@ -45,7 +45,7 @@
                     <button class="button btnGray" style="width:auto ; @(Model._ViewceMastMoldOtherRequest.mrStep == 8 ? "pointer-events: none;" : "")"
                             onclick="Menubar_MoldOther_saveDraft('@Url.Action("SaveDraft", "NewMoldOther")')">
                         <img src="~/images/savedaft.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                        SAVE DAFT
+                        SAVE DRAFT
                     </button>
                 </div>
             </div>
@@ -175,11 +175,11 @@
                                 <div class="col-25" style=" display: flex;align-items: center; ">
                                     <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px;background-color:yellow" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrMoldMass" id="i_NewOther_MoldMass">
                                 </div>
-                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Type</div>
+                                <div class="col-20 " style=" display: flex;align-items: center;">
+                                    @*<div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Type</div>*@
                                 </div>
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_Type" asp-for="_ViewceMastMoldOtherRequest.mrType">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow;display:none" autocomplete="off" id="i_NewOther_Type" asp-for="_ViewceMastMoldOtherRequest.mrType">
 
                                 </div>
                                 <div class="col-5 " style="">
@@ -243,7 +243,7 @@
                                         {
                                             <tr>
                                                 <td>@(row += 1)</td>
-                                                <td  >
+                                                <td>
                                                     <input type='text' class='vPartName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipPartName" readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1)">
                                                 </td>
                                                 <td style="display:none"><input type='text' class='vRunNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgrey;' asp-for="_ListViewceItemPartName[i].ipRunNo" readonly></td>
@@ -253,8 +253,27 @@
                                                 <td>
                                                     @Html.DropDownListFor(m => m._ListViewceItemPartName[i].ipTypeCavity, (SelectList)ViewBag.TypeofCavity, "กรุณาเลือก", new { @class = "form-control vTypeCavity", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;", disabled = Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "disabled" : null })
                                                 </td>
-                                                <td width='70px'><img src='~/images/petition.png' alt='icon' class='imgM' /></td>
+                                                <td width='70px'>
+
+                                                    @*<img src='~/images/petition.png' alt='icon' class='imgM' />*@
+                                                    @if (Model._ViewceMastMoldOtherRequest.mrStep == 8)
+                                                    {
+
+                                                        <a href="@Url.Action("Index", "SumRateMoldOther", new { Docno = Model._ListViewceItemPartName[i].ipDocumentNo,vProcess=Model._ListViewceItemPartName[i].ipRunNo })"
+                                                           target="_blank"
+                                                           style="font-size:15px;text-decoration:none;">
+                                                            <img src="~/images/petition.png" alt="icon" class="imgM" />
+                                                        </a>
+
+                                                    }
+
+
+
+
+                                                </td>
                                                 <td align='Center'>
+                                                 
+
                                                     <input type="button"
                                                            class="RemoveRow"
                                                            value="&#x274C"
@@ -277,13 +296,13 @@
                         <hr />
                         <div class="grid-item fw-800 center " style="text-align:left;font-size:13px">ITEM</div>
                         <div class="row center">
-                          
+
                             <div class="col-5 " style="">
 
                             </div>
-                            <div class="col-90"  >
+                            <div class="col-90">
 
-                                <table class="tbgreen text-left" tabindex="-1" id="divItem" >
+                                <table class="tbgreen text-left" tabindex="-1" id="divItem">
                                     <tr>
                                         <th style="text-align:center">No.​</th>
                                         <th style="text-align:center">Document Type​</th>
@@ -341,8 +360,8 @@
                                                 }
 
                                                 @*<a href="@Url.Action("Index", "NewMoldOtherWK",new {Docno = Model._ViewceMastWorkingTimeRequest.wrDocumentNo})" target="_blank" style="font-size:15px;text-decoration: none;">
-                                <img src="~/images/searchWK.png" alt="icon" class="imgM" />
-                            </a>*@
+                                                        <img src="~/images/searchWK.png" alt="icon" class="imgM" />
+                                                    </a>*@
                                             </td>
                                         </tr>
                                         <tr>
@@ -475,7 +494,7 @@
                                                     { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
                                                     else if (Model._ViewceMastInforSpacMoldRequest.irStep == 2)
                                                     { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                    else if (Model._ViewceMastToolGRRequest.trStep == 3)
+                                                    else if (Model._ViewceMastInforSpacMoldRequest.irStep == 3)
                                                     { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
                                                     else if (Model._ViewceMastInforSpacMoldRequest.irStep == 4)
                                                     { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
@@ -498,8 +517,8 @@
 
 
                                                 @*<a href="@Url.Action("Index", "NewMoldOtherSM")" target="_blank" style="font-size:12px;text-decoration: none;">
-                                <img src="~/images/searchWK.png" alt="icon" class="imgM" />
-                            </a>*@
+                                                        <img src="~/images/searchWK.png" alt="icon" class="imgM" />
+                                                    </a>*@
                                             </td>
                                         </tr>
                                     </tbody>
@@ -788,6 +807,8 @@
                 select: function (event, ui) {
                     const vCus = ui.item.value.split("|")[0];
                     var terms = split(this.value);
+
+                    console.log("this.value : " + vCus);
                     //remove the current input
                     terms.pop();
                     //add the selected item
@@ -800,6 +821,22 @@
                     this.value = terms.join("");
                     return false;
                 }
+                ,
+                change: function (event, ui) {
+                    // ถ้าไม่ได้เลือกจาก list
+                    if (!ui.item) {
+                        console.log("ไม่ถูกต้อง");
+                        swal.fire({
+                            title: 'แจ้งเตือน',
+                            icon: 'warning',
+                            text: "กรุณากรอกข้อมูลให้ถูกต้อง",
+                        })
+                            .then((result) => {
+                                $("#i_NewOther_CusName").val("");  
+                        });
+                    }
+                }
+
             });
 
 
@@ -839,6 +876,21 @@
                     this.value = terms.join("");
                     return false;
                 }
+                ,
+                change: function (event, ui) {
+                    // ถ้าไม่ได้เลือกจาก list
+                    if (!ui.item) {
+                        console.log("ไม่ถูกต้อง");
+                        swal.fire({
+                            title: 'แจ้งเตือน',
+                            icon: 'warning',
+                            text: "กรุณากรอกข้อมูลให้ถูกต้อง",
+                        })
+                            .then((result) => {
+                                $("#i_NewOther_Function").val("");
+                            });
+                    }
+                }
             });
 
         $("#i_NewOther_ModelName")
@@ -877,6 +929,22 @@
                     this.value = terms.join("");
                     return false;
                 }
+                ,
+                change: function (event, ui) {
+                    // ถ้าไม่ได้เลือกจาก list
+                    if (!ui.item) {
+                        console.log("ไม่ถูกต้อง");
+                        swal.fire({
+                            title: 'แจ้งเตือน',
+                            icon: 'warning',
+                            text: "กรุณากรอกข้อมูลให้ถูกต้อง",
+                        })
+                            .then((result) => {
+                                $("#i_NewOther_ModelName").val("");
+                            });
+                    }
+                }
+
             });
 
 
@@ -916,6 +984,22 @@
                     this.value = terms.join("");
                     return false;
                 }
+                ,
+                change: function (event, ui) {
+                    // ถ้าไม่ได้เลือกจาก list
+                    if (!ui.item) {
+                        console.log("ไม่ถูกต้อง");
+                        swal.fire({
+                            title: 'แจ้งเตือน',
+                            icon: 'warning',
+                            text: "กรุณากรอกข้อมูลให้ถูกต้อง",
+                        })
+                            .then((result) => {
+                                $("#i_NewOther_Event").val("");
+                            });
+                    }
+                }
+
             });
 
 

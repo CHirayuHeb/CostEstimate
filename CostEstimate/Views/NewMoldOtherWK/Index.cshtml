@@ -46,7 +46,7 @@
                     <button class="button btnGray" style="width:auto ; @(Model._ViewceMastMoldOtherRequest.mrStep == 4 ? "pointer-events: none;" : "")"
                             onclick="Menubar_MoldOtherWKsaveDraft('@Url.Action("SaveDraft","NewMoldOtherWK")','@Url.Action("SaveCeDetailSub","NewMoldModify")')">
                         <img src="~/images/savedaft.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                        SAVE DAFT
+                       SAVE DRAFT
                     </button>
                 </div>
 
@@ -170,11 +170,11 @@
                             <div class="col-25" style=" display: flex;align-items: center; ">
                                 <input type="text" class="input-with-image   form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrMoldMass" id="i_NewOtherWK_MoldMass" readonly>
                             </div>
-                            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Type</div>
+                            <div class="col-20 " style=" display: flex;align-items: center;">
+                                @*<div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Type</div>*@
                             </div>
                             <div class="col-25 " style=" display: flex;align-items: center; ">
-                                <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOtherWK_Type" asp-for="_ViewceMastMoldOtherRequest.mrType" readonly>
+                                @*<input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOtherWK_Type" asp-for="_ViewceMastMoldOtherRequest.mrType" readonly>*@
 
                             </div>
                             <div class="col-5 " style="">

@@ -28,6 +28,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\AddOModel\_PartialMastModel.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\AddOProcessWK\_PartialMastOProcessWK.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\AddOProcess\_PartialMastOProcess.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\NewMoldModify\SendMail.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
@@ -56,6 +65,9 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\NewMoldOtherMT\_PartialMTAttachFile.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\NewMoldOtherSM\SendMailPost.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\NewMoldOtherSM\SendMail.cshtml">

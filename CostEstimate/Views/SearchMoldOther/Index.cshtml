@@ -147,10 +147,12 @@
                                     <input type="text" class="input-with-image datepicker form-control center" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_MoldMass">
                                 </div>
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                    <div class="grid-item fw-800 center" style="text-align:left;">Type</div>
+                                    <div class="grid-item fw-800 center" style="text-align:left;">Status.</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_Type">
+                                    @Html.DropDownListFor(m => m._ViewSearchData.v_status, (SelectList)ViewBag.vbformStatus, "กรุณาเลือก", new { @class = "form-control", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:12px" })
+
+                                    @*<input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_Type">*@
 
                                 </div>
                                 <div class="col-5 " style="">
@@ -182,7 +184,7 @@
                                 </div>
 
                             </div>
-                            <div class="row center">
+                            @*<div class="row center">
                                 <div class="col-5 " style="">
 
                                 </div>
@@ -200,7 +202,7 @@
                                 <div class="col-5 " style="">
 
                                 </div>
-                            </div>
+                            </div>*@
 
                             <br />
 
@@ -333,10 +335,10 @@
                                         </td>
 
                                         <td style="text-align:center">
-                                            @if (@item.mrStep == 8)
+                                            @*@if (@item.mrStep == 8)
                                             {
                                                 <img src="~/images/revision.png" alt="icon" onclick="GoNewMoldOtherRequest('@item.mrDocmentNo','@item.mrRevision')" class="img" />
-                                            }
+                                            }*@
                                             <input type="button" style="font-size:18px" value="&#x1F50E;" onclick="GoNewMoldOtherRequest('@item.mrDocmentNo','')">
                                         </td>
                                     </tr>

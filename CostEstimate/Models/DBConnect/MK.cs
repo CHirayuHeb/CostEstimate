@@ -81,12 +81,19 @@ namespace CostEstimate.Models.DBConnect
             });
             modelBuilder.Entity<ViewceItemMaterialRequestPartName>(entity =>
             {
-                entity.HasKey(k => new {k.mpDocumentNoSub, k.mpRunNo,k.mpPartName, k.mpCavityNo, k.mpTypeCavity
+                entity.HasKey(k => new
+                {
+                    k.mpDocumentNoSub,
+                    k.mpRunNo,
+                    k.mpPartName,
+                    k.mpCavityNo,
+                    k.mpTypeCavity
                 });
             });
             modelBuilder.Entity<ViewceItemToolGRRequestPartName>(entity =>
             {
-                entity.HasKey(k => new {
+                entity.HasKey(k => new
+                {
                     k.tpDocumentNoSub,
                     k.tpRunNo,
                     k.tpPartName,
@@ -94,7 +101,52 @@ namespace CostEstimate.Models.DBConnect
                     k.tpTypeCavity
                 });
             });
-            
+            modelBuilder.Entity<ViewceItemInforRequestPartName>(entity =>
+            {
+                entity.HasKey(k => new
+                {
+                    k.ipDocumentNoSub,
+                    k.ipRunNo,
+                    k.ipPartName,
+                    k.ipCavityNo,
+                    k.ipTypeCavity
+                });
+            });
+            modelBuilder.Entity<ViewceItemInforSlideSystem>(entity =>
+            {
+                entity.HasKey(k => new
+                {
+                    k.isDocumentNoSub,
+                    k.isRunNo,
+                    k.isPartName,
+                    k.isCavityNo,
+                    k.isTypeCavity
+                });
+            });
+            modelBuilder.Entity<ViewceItemInforTypeOfCut>(entity =>
+            {
+                entity.HasKey(k => new
+                {
+                    k.icDocumentNoSub,
+                    k.icRunNo,
+                    k.icPartName,
+                    k.icCavityNo,
+                    k.icTypeCavity
+                });
+            });
+
+            modelBuilder.Entity<ViewceItemInforShibo>(entity =>
+            {
+                entity.HasKey(k => new
+                {
+                    k.ibDocumentNoSub,
+                    k.ibRunNo,
+                    k.ibPartName,
+                    k.ibCavityNo,
+                    k.ibTypeCavity
+                });
+            });
+
 
         }
 
@@ -148,10 +200,14 @@ namespace CostEstimate.Models.DBConnect
         //Tool & GR
         public DbSet<ViewceMastToolGRRequest> _ViewceMastToolGRRequest { get; set; }
         public DbSet<ViewceItemToolGRRequestPartName> _ViewceItemToolGRRequestPartName { get; set; }
-        
+
 
         //information spac
         public DbSet<ViewceMastInforSpacMoldRequest> _ViewceMastInforSpacMoldRequest { get; set; }
+        public DbSet<ViewceItemInforRequestPartName> _ViewceItemInforRequestPartName { get; set; }
+        public DbSet<ViewceItemInforSlideSystem> _ViewceItemInforSlideSystem { get; set; }
+        public DbSet<ViewceItemInforTypeOfCut> _ViewceItemInforTypeOfCut { get; set; }
+        public DbSet<ViewceItemInforShibo> _ViewceItemInforShibo { get; set; }
 
 
         //public DbSet<GroupedResult> _GroupedResult { get; set; }

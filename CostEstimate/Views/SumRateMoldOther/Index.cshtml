@@ -1,0 +1,58 @@
+﻿@model CostEstimate.Models.Common.Class;
+@{
+    ViewData["Title"] = "Rate Mold Other| ThaiStanley";
+    Layout = "~/Views/Shared/_MenuBar_MoldOther.cshtml";
+}
+@{
+    string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+<link href="~/css/MyRequest/siteMyRequest.css" rel="stylesheet" />
+<link href="~/css/New/mNew.css" rel="stylesheet" />
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("SumRateMoldOther"); } }</script>
+<div class="home-content">
+    <div id="DisplayContent" class="content-box">
+        <br />
+        <div style="" class="content-text">
+            <div class="row center" style="padding:5px; background-color:#6fa54f; margin-bottom:5px; border-radius:5px;">
+                <div class="col-60" style="text-align:left">
+                    <span style="font-size:26px; font-weight:800; color:black; line-height:1.4;">
+                        <span style="color:#b3e07d">NEW MOLD ACTURE COST</span> ESTIMATE SHEET.
+                    </span>
+                    <span style="font-size:16px; font-weight:600; color:white; line-height:1.4; margin-top:2px; display:block;">
+                        CP-COST PLANNING DIVISION
+                    </span>
+                </div>
+                <div class="col-40 center" style="text-align:right;">
+                    <span style="font-size:14px; font-weight:800; color:#b3e07d; line-height:1.4;">
+                        MOLD SUBMAKER COST ESTIMATE SHEET
+                    </span>
+                    <span style="font-size:14px; font-weight:600; color:white; line-height:1.4; margin-top:2px; display:block;">
+                        OVERSEA MAKER
+                    </span>
+                </div>
+            </div>
+            <div style="border: 0px solid white; background-color: aliceblue;padding:5px;border-radius:2px;">
+                <table class="tbgreen">
+                    <tr>
+                        <th>11</th>
+                        <th>22</th>
+                        <th>22</th>
+                        <th>33</th>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+   
+
+
+
+    </div>
+</div>

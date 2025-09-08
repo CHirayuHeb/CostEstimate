@@ -231,11 +231,21 @@ namespace CostEstimate.Models.Common
         public ViewceMastToolGRRequest _ViewceMastToolGRRequest { get; set; }
         public ViewceItemToolGRRequestPartName _ViewceItemToolGRRequestPartName { get; set; }
         public List<ViewceItemToolGRRequestPartName> _ListViewceItemToolGRRequestPartName { get; set; }
-        
+
 
 
         //information spac
         public ViewceMastInforSpacMoldRequest _ViewceMastInforSpacMoldRequest { get; set; }
+        public ViewceItemInforRequestPartName _ViewceItemInforRequestPartName { get; set; }
+        public ViewceItemInforSlideSystem _ViewceItemInforSlideSystem { get; set; }
+        public ViewceItemInforTypeOfCut _ViewceItemInforTypeOfCut { get; set; }
+        public ViewceItemInforShibo _ViewceItemInforShibo { get; set; }
+        public List<ViewceItemInforRequestPartName> _ListViewceItemInforRequestPartName { get; set; }
+        public List<ViewceItemInforSlideSystem> _ListViewceItemInforSlideSystem { get; set; }
+        public List<ViewceItemInforTypeOfCut> _ListViewceItemInforTypeOfCut { get; set; }
+        public List<ViewceItemInforShibo> _ListViewceItemInforShibo { get; set; }
+
+        public List<GroupViewceMastInforSpacMoldRequest> _ListGroupViewceMastInforSpacMoldRequest { get; set; }
 
 
 
@@ -245,8 +255,8 @@ namespace CostEstimate.Models.Common
         public List<GroupViewceSubWorkingTimeRequestItem> _ListGroupViewceSubWorkingTimeRequestItem { get; set; }
 
 
-      
-        
+
+
 
 
     }

@@ -399,6 +399,9 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                     }
 
 
+
+
+
                     //SqlBulk insert
                     var connection = (SqlConnection)_MK.Database.GetDbConnection();
                     if (connection.State != ConnectionState.Open)

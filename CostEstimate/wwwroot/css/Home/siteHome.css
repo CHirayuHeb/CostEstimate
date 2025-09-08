@@ -197,7 +197,12 @@ table tr td .td-approve {
 
 .col-30 {
     float: left;
-    width: 20%;
+    width: 30%;
+    margin-top: 6px;
+}
+.col-35 {
+    float: left;
+    width: 35%;
     margin-top: 6px;
 }
 

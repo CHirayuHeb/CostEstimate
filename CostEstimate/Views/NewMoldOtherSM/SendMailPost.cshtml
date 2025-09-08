@@ -1,0 +1,317 @@
+﻿@using System.Security.Claims;
+@model CostEstimate.Models.Common.Class
+@{
+    string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+@{
+    Layout = null;
+}
+@*New Request*@
+<div>
+    <div class="modal-header" style="margin-top:1px">
+        <h5 class="modal-title">
+            <span style="font-weight: bold; font-size: 16px;">
+                ส่งคำขออนุมัติเอกสาร​ --> INFORMATION  SPEC MOLD
+            </span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="p-2-modify" style="width: 100%; border: 1px grey; padding-top: 3px;font-size:8px">
+
+        <div class="input-group ig-property">
+            <span class="input-group-text w-25" style="font-size: 13px;">From.</span>
+            @*<span>@Model._ViewceHistoryApproved.htFrom</span>*@
+            <input type="text" class="form-control" id="txtFrom" value="@Model._ViewceHistoryApproved.htFrom"
+                   asp-for="_ViewceHistoryApproved.htFrom" readonly
+                   style="font-size: 13px;" />
+            @*<input type="text" class="form-control" id="txtFrom" asp-for="_ViewceHistoryApproved.htFrom" readonly style="font-size: 13px;" />*@
+        </div>
+        <div class="input-group ig-property">
+            <span class="input-group-text w-25" style="font-size: 13px;">
+                To
+            </span>
+            <input type="text" class="form-control" id="searchInputTO" asp-for="_ViewceHistoryApproved.htTo" style="font-size: 13px;"
+                   readonly="@(ViewBag.step == 4  ?  "readonly" : null)"
+                   value="@Model._ViewceHistoryApproved.htTo" />
+
+
+        </div>
+        <div class="input-group ig-property">
+            <span class="input-group-text w-25" style="font-size: 13px;">CC.</span>
+            @*<textarea class="form-control" id="searchInputCC" rows="4" cols="50" asp-for="_ViewceHistoryApproved.htCC" required style="font-size: 13px;"
+        value="@Model._ViewceHistoryApproved.htCC"></textarea>*@
+
+            @*<span>@Model._ViewceHistoryApproved.htCC</span>*@
+
+            @*<textarea class="form-control" id="searchInputCC" rows="4" cols="50" asp-for="_ViewceHistoryApproved.htCC"
+        required style="font-size: 13px;">@Model._ViewceHistoryApproved.htCC</textarea>*@
+            @*<textarea class="form-control" id="searchInputCC2" rows="4" cols="50"
+                      asp-for="_ViewceHistoryApproved.htCC"
+                      required style="font-size: 13px;"></textarea>
+            <textarea class="form-control" id="searchInputCC3"
+                      asp-for="_ViewceHistoryApproved.htCC"
+                      rows="4" cols="50"
+                      required
+                      style="font-size: 13px;">@Model._ViewceHistoryApproved.htCC</textarea>*@
+
+            <textarea class="form-control" id="searchInputCC" name="_ViewceHistoryApproved.htCC"
+                      rows="4" cols="50"
+                      required
+                      style="font-size: 13px;">@Model._ViewceHistoryApproved.htCC</textarea>
+
+
+            @*<input type="text" class="form-control" id="searchInputCC1" style="font-size: 13px;"
+                   readonly="@(ViewBag.step == 4  ?  "readonly" : null)"
+                   value="@Model._ViewceHistoryApproved.htCC" />
+            <span>@Model._ViewceHistoryApproved.htCC</span>*@
+
+
+
+        </div>
+
+        <div style="margin:5px">
+            <span style=" font-size: 13px;">วันที่ : @ViewBag.vDate</span>
+
+        </div>
+
+        <div class="d-flex justify-content-center" style="width: 100%; text-align: center; padding-top: 5px; padding-bottom: 5px;">
+            <div class="p-1-modify" style="width: 100%; border: 1px grey;   ">
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Approve", new { @class = "", id = "StatusApp", onclick = "CheckDis('Approve')", required = "required", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Approve</label><br />
+                </div>
+                <div class="form-check form-check-inline ">
+                    @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Disapprove", new { @class = "", id = "StatusApp", onclick = "CheckDis('Disapprove')", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Disapprove</label><br />
+                </div>
+            </div>
+        </div>
+        <div class="input-group ig-property">
+            <span class="input-group-text w-25" style="font-size: 13px;">Remark</span>
+            <textarea class="form-control" id="Remark" rows="2" cols="50" asp-for="_ViewceHistoryApproved.htRemark" style="font-size: 13px;"></textarea>
+        </div>
+
+
+    </div>
+
+
+    <div class=" panel-group ir fadeInUp animated wowload animated" style=" animation-name: fadeInUp; margin-bottom: 5px;">
+        <div class="panel panel-default property">
+            <div class=" panel-heading panel-heading-custom property" tabindex="0">
+                <br />
+                <h4 class="panel-title faq-title-range collapsed" data-bs-toggle="collapse" data-bs-target="#History"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    <label style="font-size:15px;font-weight:800">
+                        History
+                    </label>
+                    <label class="lbV">
+                    </label>
+                </h4>
+            </div>
+            <div class="panel-collapse collapse" id="History" style="overflow-y: scroll; max-height: 200px;">
+                <div id="divHistory" class="panel-body">
+                    @for (int g = 0; g < Model._ListViewceHistoryApproved.Count(); g++)
+{
+                    <div class="panel panel-default property">
+                        <div class="panel-heading panel-heading-custom property" tabindex="0">
+                            <h4 class="panel-title faq-title-range collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#Ans@(g)"
+                                aria-expanded="false"
+                                aria-controls="Ans@(Model._ListViewceHistoryApproved[g].htStep)">
+                                <label style="font-size: 13px;">
+                                    Step : @Html.DisplayFor(x => x._ListViewceHistoryApproved[g].htStep)
+                                </label>
+                            </h4>
+                        </div>
+
+                        <div id="Ans@(g)" class="collapse">
+                            <div class="panel-body">
+                                <div style="font-size: x-small; clear: both; width: 100%; text-align: left; font-weight: bold;">
+                                    @Model._ListViewceHistoryApproved[g].htDate  : @Model._ListViewceHistoryApproved[g].htTime
+                                </div>
+                                <div class="row">
+                                    <div class="col-25">
+                                        <span style="font-weight:600">FROM : </span>
+                                        <span>@Model._ListViewceHistoryApproved[g].htFrom</span>
+                                    </div>
+                                    <div class="col-25">
+                                        <span style="font-weight:600">To : </span>
+                                        <span>@Model._ListViewceHistoryApproved[g].htTo</span>
+                                    </div>
+                                    <div class="col-25">
+                                        <span style="font-weight:600">CC : </span>
+                                        <span>@Model._ListViewceHistoryApproved[g].htCC</span>
+                                    </div>
+                                    <div class="col-25">
+                                        <span style="font-weight:600">Status : </span>
+                                        <span>@Model._ListViewceHistoryApproved[g].htStatus</span>
+                                        <br />
+                                        <span style="font-weight:600">Remark : </span>
+                                        <span>@Model._ListViewceHistoryApproved[g].htRemark</span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+}
+                </div>
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal-footer" style="width: 100%;">
+    <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="Menubar_MoldOtherSMsavesendMailData('@Url.Action("chkSaveData", "NewMoldOtherSM")')" style="@(@ViewBag.step == 4  ? "display:none" : "")">Send mail</button>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+</div>
+
+
+
+</div>
+
+
+
+<script type="text/javascript">
+
+
+
+$(function () {
+            function split(val) {
+                return val.split(/,\s*/);
+            }
+            function extractLast(term) {
+                return split(term).pop();
+            }
+
+            $("#searchInputCC")
+          // don't navigate away from the field on tab when selecting an item
+          .on("keydown", function (event) {
+              if (event.keyCode === $.ui.keyCode.TAB &&
+                  $(this).autocomplete("instance").menu.active) {
+                  event.preventDefault();
+              }
+          })
+            .autocomplete({
+                minLength: 0,
+                source: function (request, response) {
+                    $.getJSON('@Url.Action("Search", "New")', {
+                        term: extractLast(request.term)
+                    }, response);
+                },
+                focus: function () {
+                    // prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    const email365 = ui.item.value.split("|")[1];
+                    //let email365 = myArray[0];
+                    console.log("test" + email365);
+
+                    var terms = split(this.value);
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+
+                    //terms.push(ui.item.value);
+                    terms.push(email365);
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join(",");
+                    return false;
+                }
+                });
+
+
+            $("#searchInputCCDept")
+          // don't navigate away from the field on tab when selecting an item
+          .on("keydown", function (event) {
+              if (event.keyCode === $.ui.keyCode.TAB &&
+                  $(this).autocomplete("instance").menu.active) {
+                  event.preventDefault();
+              }
+          })
+            .autocomplete({
+                minLength: 0,
+                source: function (request, response) {
+                    $.getJSON('@Url.Action("Search", "New")', {
+                        term: extractLast(request.term)
+                    }, response);
+                },
+                focus: function () {
+                    // prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    const email365 = ui.item.value.split("|")[1];
+                    //let email365 = myArray[0];
+                    console.log("test" + email365);
+
+                    var terms = split(this.value);
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+
+                    //terms.push(ui.item.value);
+                    terms.push(email365);
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join(",");
+                    return false;
+                }
+            });
+
+             $("#searchInputTO")
+          // don't navigate away from the field on tab when selecting an item
+                 .on("keydown", function (event) {
+                     console.log("OK");
+              if (event.keyCode === $.ui.keyCode.TAB &&
+                  $(this).autocomplete("instance").menu.active) {
+                  event.preventDefault();
+              }
+          })
+            .autocomplete({
+                minLength: 1,
+                source: function (request, response) {
+                    $.getJSON('@Url.Action("Search", "New")', {
+                        term: extractLast(request.term)
+                    }, response);
+                },
+                focus: function () {
+                    // prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    const email365 = ui.item.value.split("|")[1];
+                    //let email365 = myArray[0];
+                    console.log("test" + email365);
+
+                    var terms = split(this.value);
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+
+                    //terms.push(ui.item.value);
+                    terms.push(email365);
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join("");
+                    return false;
+                }
+            });
+    })
+
+</script>
