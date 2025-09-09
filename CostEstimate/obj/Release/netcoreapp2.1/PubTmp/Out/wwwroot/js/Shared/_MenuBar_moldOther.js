@@ -402,7 +402,15 @@ function PositionY(menu) {
             //PY = "114px";
             opacity = "opacity-dot-3";
             break;
-        case "NewMoldOtherTGR":  //Working time
+        case "SumRateMoldOther":  //Working time
+            LoadScript("js/Home/Index.js", "Home");
+            LoadScript("js/New/IndexMoldOther.js", "New");
+            PY = "52px";
+            //PY = "114px";
+            opacity = "opacity-dot-3";
+            break;
+
+        case "NewMoldOtherWK":  //Working time
             LoadScript("js/Home/Index.js", "Home");
             LoadScript("js/New/IndexMoldOther.js", "New");
 
@@ -447,7 +455,7 @@ function PositionY(menu) {
             opacity = "opacity-dot-3";
             break;
 
-            
+
 
 
 
@@ -4467,7 +4475,7 @@ function Menubar_MoldOther_saveDraft(action) {
                 else if (config.c1 == "W") {
                     //$("#loaderDiv").hide();
                     //await $("#myModal1").modal("hide");
-                   // await $("#myModalMoldWKSendmail").modal("hide");
+                    // await $("#myModalMoldWKSendmail").modal("hide");
                     Swal.fire({
                         icon: 'warning',
                         title: 'warning',
@@ -4475,7 +4483,7 @@ function Menubar_MoldOther_saveDraft(action) {
                     })
                         .then((result) => {
                             document.getElementById("divItem").focus();
-                          
+
                         });
 
                 }
@@ -4867,7 +4875,7 @@ function Menubar_MoldOther_savesendMail(action) {
                             //    document.getElementById("divItem").style.outline = "none";
                             //    document.getElementById("divItem").style.boxShadow = "none";
                             //}, 3000);
-                         //document.getElementById("divItem").focus();
+                            //document.getElementById("divItem").focus();
                             //$("#myModal1").modal("show");
                         });
 
@@ -5345,7 +5353,7 @@ function Menubar_MoldOtherWKsavesendMailData(action, action2) {
                     });
 
             }
-         
+
 
 
 
@@ -6177,6 +6185,93 @@ function Menubar_MoldOtherSMsavesendMailData(action) {
         viewModel1.append(input.name, input.value);
     });
 
+    //slide system
+    _ceItemInforSlideSystem = [];
+    //type of cut
+    _ceItemInforTypeOfCut = [];
+    //shibo
+    _ceItemInforShibo = [];
+
+    const groupDivs = document.querySelectorAll('div.divMastInforSpac');
+    groupDivs.forEach(div => {
+
+
+        //const v_ipSprueSystem = div.querySelector(".ipSprueSystem");
+
+        const selectSprueSystem = div.querySelector(".ipSprueSystem");
+        const bselect = selectSprueSystem.options[selectSprueSystem.selectedIndex].text.trim();
+
+
+        //console.log("vipSprueSystem: " + v_ipSprueSystem.value);
+        //console.log("bselect: " + bselect);
+
+
+
+
+        if (bselect == "กรุณาเลือก") {
+            alert(`กรุณาเลือก Sprue System`);
+            selectSprueSystem.focus();
+            throw new Error("Sprue System.​ is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
+        }
+
+        const rowsTrSlideSystem = div.querySelectorAll('tr#trSlideSystem'); // แก้ id ให้ตรง
+        const rowsTrShibo = div.querySelectorAll('tr#trItemShibo'); // แก้ id ให้ตรง
+        const rowsTrTypeofcut = div.querySelectorAll('tr#trTypeofcut'); // แก้ id ให้ตรง
+
+
+
+        rowsTrSlideSystem.forEach((tr, index) => {
+            const select = tr.querySelector(".isSlideSystemType");
+            _ceItemInforSlideSystem.push({
+                isDocumentNoSub: tr.querySelector(".isDocumentNoSub").value.trim() || "",
+                isRunNo: index + 1, // 1,2,3... ในแต่ละ div
+                isPartName: tr.querySelector(".isPartName").value.trim() || "",
+                isCavityNo: tr.querySelector(".isCavityNo").value.trim() || "",
+                isTypeCavity: tr.querySelector(".isTypeCavity").value.trim() || "",
+                isNoProcess: tr.querySelector(".isNoProcess").value.trim() || "",
+                isSlideSystemType: select ? select.options[select.selectedIndex].text.trim() : "",//tr.querySelector(".isSlideSystemType").value.trim() || "",
+                isSlideSystemCount: parseFloat(tr.querySelector(".isSlideSystemCount").value.trim() || 0) || 0,
+            });
+        });
+
+        rowsTrTypeofcut.forEach((tr, index) => {
+            const select = tr.querySelector(".icTypeofcut");
+
+            _ceItemInforTypeOfCut.push({
+                icDocumentNoSub: tr.querySelector(".icDocumentNoSub").value.trim() || "",
+                icRunNo: index + 1, // 1,2,3... ในแต่ละ div
+                icPartName: tr.querySelector(".icPartName").value.trim() || "",
+                icCavityNo: tr.querySelector(".icCavityNo").value.trim() || "",
+                icTypeCavity: tr.querySelector(".icTypeCavity").value.trim() || "",
+                icNoProcess: tr.querySelector(".icNoProcess").value.trim() || "",
+                icTypeofcut: select ? select.options[select.selectedIndex].text.trim() : "", // tr.querySelector(".icTypeofcut").value.trim() || "",
+
+            });
+        });
+
+        rowsTrShibo.forEach((tr, index) => {
+            const select = tr.querySelector(".ibShiboType");
+            const bselect = select ?
+                select.options[select.selectedIndex].text.trim() == "YES" ? true : false
+                : "";
+            _ceItemInforShibo.push({
+                ibDocumentNoSub: tr.querySelector(".ibDocumentNoSub").value.trim() || "",
+                ibRunNo: index + 1, // 1,2,3... ในแต่ละ div
+                ibPartName: tr.querySelector(".ibPartName").value.trim() || "",
+                ibCavityNo: tr.querySelector(".ibCavityNo").value.trim() || "",
+                ibTypeCavity: tr.querySelector(".ibTypeCavity").value.trim() || "",
+                ibNoProcess: tr.querySelector(".ibNoProcess").value.trim() || "",
+                ibShiboType: bselect,//  select ? select.options[select.selectedIndex].text.trim() : "", // tr.querySelector(".icTypeofcut").value.trim() || "",
+                ibSHiboPCS: tr.querySelector(".ibSHiboPCS").value.trim() || "",
+            });
+        });
+
+
+    });
+
+    viewModel1.append("_ceItemInforSlideSystem", JSON.stringify(_ceItemInforSlideSystem));
+    viewModel1.append("_ceItemInforTypeOfCut", JSON.stringify(_ceItemInforTypeOfCut));
+    viewModel1.append("_ceItemInforShibo", JSON.stringify(_ceItemInforShibo));
     $.ajax({
         type: "POST",
         url: action,
@@ -6246,6 +6341,76 @@ function Menubar_MoldOtherSMsaveDraft(action) {
     var getID = document.getElementById("i_NewOtherSM_DocumentNo").value; //txtMIssueID
     const form1 = document.forms.namedItem("formMoldOSMRequest");
     let viewModel1 = new FormData(form1);
+    $.each(form1, function (index, input) {
+        viewModel1.append(input.name, input.value);
+    });
+
+    //slide system
+    _ceItemInforSlideSystem = [];
+    //type of cut
+    _ceItemInforTypeOfCut = [];
+    //shibo
+    _ceItemInforShibo = [];
+
+    const groupDivs = document.querySelectorAll('div.divMastInforSpac');
+    groupDivs.forEach(div => {
+
+        const rowsTrSlideSystem = div.querySelectorAll('tr#trSlideSystem'); // แก้ id ให้ตรง
+        const rowsTrShibo = div.querySelectorAll('tr#trItemShibo'); // แก้ id ให้ตรง
+        const rowsTrTypeofcut = div.querySelectorAll('tr#trTypeofcut'); // แก้ id ให้ตรง
+
+        rowsTrSlideSystem.forEach((tr, index) => {
+            const select = tr.querySelector(".isSlideSystemType");
+            _ceItemInforSlideSystem.push({
+                isDocumentNoSub: tr.querySelector(".isDocumentNoSub").value.trim() || "",
+                isRunNo: index + 1, // 1,2,3... ในแต่ละ div
+                isPartName: tr.querySelector(".isPartName").value.trim() || "",
+                isCavityNo: tr.querySelector(".isCavityNo").value.trim() || "",
+                isTypeCavity: tr.querySelector(".isTypeCavity").value.trim() || "",
+                isNoProcess: tr.querySelector(".isNoProcess").value.trim() || "",
+                isSlideSystemType: select ? select.options[select.selectedIndex].text.trim() : "",//tr.querySelector(".isSlideSystemType").value.trim() || "",
+                isSlideSystemCount: parseFloat(tr.querySelector(".isSlideSystemCount").value.trim() || 0) || 0,
+            });
+        });
+
+        rowsTrTypeofcut.forEach((tr, index) => {
+            const select = tr.querySelector(".icTypeofcut");
+
+            _ceItemInforTypeOfCut.push({
+                icDocumentNoSub: tr.querySelector(".icDocumentNoSub").value.trim() || "",
+                icRunNo: index + 1, // 1,2,3... ในแต่ละ div
+                icPartName: tr.querySelector(".icPartName").value.trim() || "",
+                icCavityNo: tr.querySelector(".icCavityNo").value.trim() || "",
+                icTypeCavity: tr.querySelector(".icTypeCavity").value.trim() || "",
+                icNoProcess: tr.querySelector(".icNoProcess").value.trim() || "",
+                icTypeofcut: select ? select.options[select.selectedIndex].text.trim() : "", // tr.querySelector(".icTypeofcut").value.trim() || "",
+
+            });
+        });
+
+        rowsTrShibo.forEach((tr, index) => {
+            const select = tr.querySelector(".ibShiboType");
+            const bselect = select ?
+                select.options[select.selectedIndex].text.trim() == "YES" ? true : false
+                : "";
+            _ceItemInforShibo.push({
+                ibDocumentNoSub: tr.querySelector(".ibDocumentNoSub").value.trim() || "",
+                ibRunNo: index + 1, // 1,2,3... ในแต่ละ div
+                ibPartName: tr.querySelector(".ibPartName").value.trim() || "",
+                ibCavityNo: tr.querySelector(".ibCavityNo").value.trim() || "",
+                ibTypeCavity: tr.querySelector(".ibTypeCavity").value.trim() || "",
+                ibNoProcess: tr.querySelector(".ibNoProcess").value.trim() || "",
+                ibShiboType: bselect,//  select ? select.options[select.selectedIndex].text.trim() : "", // tr.querySelector(".icTypeofcut").value.trim() || "",
+                ibSHiboPCS: tr.querySelector(".ibSHiboPCS").value.trim() || "",
+            });
+        });
+
+
+    });
+
+    viewModel1.append("_ceItemInforSlideSystem", JSON.stringify(_ceItemInforSlideSystem));
+    viewModel1.append("_ceItemInforTypeOfCut", JSON.stringify(_ceItemInforTypeOfCut));
+    viewModel1.append("_ceItemInforShibo", JSON.stringify(_ceItemInforShibo));
 
 
     $.ajax({
@@ -6388,14 +6553,14 @@ function Menubar_MoldOtherSMsendmail2(getID, action) {
                 //$("#myModalMoldSMSendmailPost").modal("show");
 
                 $("#myModalBodySendMoldSMPost").html(data);
-              
+
                 $("#myModalMoldSMSendmailPost").modal("show");
 
 
                 //$("#myModalBodySendMoldSMPost").html(data);
                 //var modal = new bootstrap.Modal(document.getElementById("myModalMoldSMSendmailPost"));
                 //modal.show();
-                
+
             }
         });
     }
@@ -6435,7 +6600,7 @@ function Menubar_EditMasterOProcess(mpNo, action) {
 
     $("#myModalOProcess").modal("show");
 }
-function Menubar_DeleteMasterOProcess(mpNo ,action) {
+function Menubar_DeleteMasterOProcess(mpNo, action) {
 
     Swal.fire({
         title: "Are you sure?",
@@ -6480,11 +6645,11 @@ function Menubar_AddMasterOProcess(action) {
     if (document.getElementById("i_NewOther_mpGroupName").value == "") {
         msg = "กรุณากรอกข้อมูล GroupName !!!";
         document.getElementById("i_NewOther_mpGroupName").focus();
-    } 
+    }
     else if (document.getElementById("i_NewOther_mpProcessName").value == "") {
         msg = "กรุณากรอกข้อมูล ProcessName !!!";
         document.getElementById("i_NewOther_mpProcessName").focus();
-    } 
+    }
 
     if (msg != "") {
         swal.fire({
@@ -6565,7 +6730,7 @@ function Menubar_AddMasterOProcess(action) {
 
 
 
-  
+
 }
 
 //working time
@@ -6813,7 +6978,7 @@ function Menubar_AddMasterOModel(action) {
         msg = "กรุณากรอกข้อมูล ModelName !!!";
         document.getElementById("i_NewOther_mmModelName").focus();
     }
-  
+
 
     if (msg != "") {
         swal.fire({

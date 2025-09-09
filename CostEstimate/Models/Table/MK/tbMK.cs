@@ -725,6 +725,7 @@ namespace CostEstimate.Models.Table.MK
         public string wpPartName { get; set; }
         public double wpCavityNo { get; set; }
         public string wpTypeCavity { get; set; }
+        public int wpProcess { get; set; }
         public List<GroupViewceItemWorkingTimePartName> _GroupViewceItemWorkingTimePartName { get; set; }
         public List<ViewceItemWorkingTimeSizeProduct> _GroupViewItemWorkingTimeSizeProduct { get; set; }
     }

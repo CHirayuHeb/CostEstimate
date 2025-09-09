@@ -383,11 +383,31 @@ namespace CostEstimate.Controllers.Account
                     {
                         if (@class.paramtype == "MoldModify")
                         {
-                            return RedirectToAction("Index", "NewMoldModify", new { id = @class.param });
+                            var _ceMast = _MK._ViewceMastModifyRequest.Where(x => x.mfCENo == @class.param).FirstOrDefault();
+                            if (_ceMast != null)
+                            {
+                                return RedirectToAction("Index", "NewMoldModify", new { id = @class.param });
+                            }
+                            else
+                            {
+                                return RedirectToAction("Index", "ErrorPage");
+                            }
+
                         }
                         else if (@class.paramtype == "SubMarker")
                         {
-                            return RedirectToAction("Index", "New", new { smDocumentNo = @class.param });
+                            var _ceMast = _MK._ViewceMastSubMakerRequest.Where(x => x.smDocumentNo == @class.param).FirstOrDefault();
+                            if (_ceMast != null)
+                            {
+                                return RedirectToAction("Index", "New", new { smDocumentNo = @class.param });
+                            }
+                            else
+                            {
+                                return RedirectToAction("Index", "ErrorPage");
+                            }
+
+
+
                         }
                         else if (@class.paramtype == "MoldOther") //MoldOther
                         {
@@ -395,19 +415,62 @@ namespace CostEstimate.Controllers.Account
                             {
                                 if (@class.Moldtype == "W") //working time
                                 {
-                                    return RedirectToAction("Index", "NewMoldOtherWK", new { Docno = @class.param });
+                                    var _ceMast = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNo == @class.param).FirstOrDefault();
+                                    if (_ceMast != null)
+                                    {
+                                        return RedirectToAction("Index", "NewMoldOtherWK", new { Docno = @class.param });
+
+                                    }
+                                    else
+                                    {
+                                        return RedirectToAction("Index", "ErrorPage");
+                                    }
+
                                 }
                                 else if (@class.Moldtype == "M") //Material
                                 {
-                                    return RedirectToAction("Index", "NewMoldOtherMT", new { Docno = @class.param });
+                                    var _ceMast = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == @class.param).FirstOrDefault();
+                                    if (_ceMast != null)
+                                    {
+                                        return RedirectToAction("Index", "NewMoldOtherMT", new { Docno = @class.param });
+
+                                    }
+                                    else
+                                    {
+                                        return RedirectToAction("Index", "ErrorPage");
+                                    }
+
                                 }
                                 else if (@class.Moldtype == "T") //Tool GR
                                 {
-                                    return RedirectToAction("Index", "NewMoldOtherTGR", new { Docno = @class.param });
+                                    var _ceMast = _MK._ViewceMastToolGRRequest.Where(x => x.trDocumentNo == @class.param).FirstOrDefault();
+                                    if (_ceMast != null)
+                                    {
+                                        return RedirectToAction("Index", "NewMoldOtherTGR", new { Docno = @class.param });
+
+                                    }
+                                    else
+                                    {
+                                        return RedirectToAction("Index", "ErrorPage");
+                                    }
+
                                 }
-                                else //if(@class.Moldtype == "I") //Information Spac
+                                else if (@class.Moldtype == "I") //Information Spac
                                 {
-                                    return RedirectToAction("Index", "NewMoldOther", new { Docno = @class.param });
+                                    var _ceMast = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == @class.param).FirstOrDefault();
+                                    if (_ceMast != null)
+                                    {
+                                        return RedirectToAction("Index", "NewMoldOtherSM", new { Docno = @class.param });
+                                    }
+                                    else
+                                    {
+                                        return RedirectToAction("Index", "ErrorPage");
+                                    }
+
+                                }
+                                else
+                                {
+                                    return RedirectToAction("Index", "ErrorPage");
                                 }
 
                             }
@@ -420,7 +483,7 @@ namespace CostEstimate.Controllers.Account
                             return RedirectToAction("Index", "New", new { smDocumentNo = @class.param });
                         }
 
-                        // return RedirectToAction("Index", "New", new { smDocumentNo = @class.param });
+                        //return RedirectToAction("Index", "New", new { smDocumentNo = @class.param });
                     }
                     else
                     {

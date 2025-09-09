@@ -79,6 +79,11 @@ namespace CostEstimate.Controllers.SearchMoldOther
 
                     item.mrIssueDate = $"{year}/{month}/{day}";
                 }
+                else
+                {
+                    item.mrIssueDate = "";
+                }
+
 
             });
             if (@class._ViewSearchData != null)
@@ -126,11 +131,20 @@ namespace CostEstimate.Controllers.SearchMoldOther
 
                 if (@class._ViewSearchData.v_DateIssueFrom != null && @class._ViewSearchData.v_DateIssueFrom != "")
                 {
-                    @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => DateTime.Parse(x.mrIssueDate) >= DateTime.Parse(@class._ViewSearchData.v_DateIssueFrom)).ToList();
+
+                    @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => !string.IsNullOrEmpty(x.mrIssueDate)
+             && !string.IsNullOrEmpty(@class._ViewSearchData.v_DateIssueFrom)
+             && DateTime.Parse(x.mrIssueDate) >= DateTime.Parse(@class._ViewSearchData.v_DateIssueFrom)).ToList();
+
+                   // @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => DateTime.Parse(x.mrIssueDate) >= DateTime.Parse(@class._ViewSearchData.v_DateIssueFrom)).ToList();
                 }
                 if (@class._ViewSearchData.v_DateIssueTo != null && @class._ViewSearchData.v_DateIssueTo != "")
                 {
-                    @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => DateTime.Parse(x.mrIssueDate) <= DateTime.Parse(@class._ViewSearchData.v_DateIssueTo)).ToList();
+                    @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => !string.IsNullOrEmpty(x.mrIssueDate)
+&& !string.IsNullOrEmpty(@class._ViewSearchData.v_DateIssueTo)
+&& DateTime.Parse(x.mrIssueDate) <= DateTime.Parse(@class._ViewSearchData.v_DateIssueTo)).ToList();
+
+                    //@class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => DateTime.Parse(x.mrIssueDate) <= DateTime.Parse(@class._ViewSearchData.v_DateIssueTo)).ToList();
                 }
                 if (@class._ViewSearchData.v_status != null)
                 {
@@ -179,9 +193,9 @@ namespace CostEstimate.Controllers.SearchMoldOther
             string slipMat = DateTime.Now.ToString("yyyyMMdd:HHmmss");
             string TempPath = Path.GetTempFileName();
             string fileName = "Export(" + slipMat + ").xlsx";
-            
+
             @class._ListViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.OrderByDescending(x => x.mrDocmentNo).ToList();
-            
+
             _ListViewceMastMoldOtherRequest = SearchList(@class._ListViewceMastMoldOtherRequest, @class);
             @class._ListViewceMastMoldOtherRequest = _ListViewceMastMoldOtherRequest;
 
@@ -198,7 +212,7 @@ namespace CostEstimate.Controllers.SearchMoldOther
 
             //});
 
-            
+
 
             //if (@class._ViewSearchData != null)
             //{

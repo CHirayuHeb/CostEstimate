@@ -84,7 +84,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
             {
                 @class._ViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == Docno).FirstOrDefault();
                 @class._ViewceMastWorkingTimeRequest = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNo == Docno).FirstOrDefault();
-                @class._ListViewceItemWorkingTimePartName = _MK._ViewceItemWorkingTimePartName.Where(x => x.wpDocumentNoSub == @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub).ToList();
+                @class._ListViewceItemWorkingTimePartName = new List<ViewceItemWorkingTimePartName>();//  _MK._ViewceItemWorkingTimePartName.Where(x => x.wpDocumentNoSub == @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub).ToList();
 
                 @class._ListViewceItemPartName = _MK._ViewceItemPartName.Where(x => x.ipDocumentNo == Docno).OrderBy(x => x.ipRunNo).ToList();
                 //@class._ListViewceItemWorkingTimeSizeProduct = _MK._ViewceItemWorkingTimeSizeProduct.Where(x => x.wsDocumentNoSub == @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub).ToList();
@@ -185,13 +185,13 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                 //    }
                 //}
                 //add group  ipPartName ipCavityNo ipTypeCavity
-                @class._ListGroupPartName = @class._ListViewceItemWorkingTimePartName.GroupBy(x => new { x.wpPartName, x.wpCavityNo, x.wpTypeCavity })
+                @class._ListGroupPartName = @class._ListViewceItemWorkingTimePartName.GroupBy(x => new { x.wpPartName, x.wpCavityNo, x.wpTypeCavity,x.wpNoProcess })
                             .Select(g => new GroupPartName
                             {
                                 wpPartName = g.Key.wpPartName,
                                 wpCavityNo = g.Key.wpCavityNo,
                                 wpTypeCavity = g.Key.wpTypeCavity,
-
+                                wpProcess =  g.Key.wpNoProcess,
                                 _GroupViewceItemWorkingTimePartName = g
                                     .GroupBy(x => x.wpGroupName)
                                     .Select(gg => new GroupViewceItemWorkingTimePartName

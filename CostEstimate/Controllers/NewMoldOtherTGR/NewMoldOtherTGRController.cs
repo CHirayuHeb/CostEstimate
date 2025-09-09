@@ -73,7 +73,7 @@ namespace CostEstimate.Controllers.NewMoldOtherTGR
                 @class._ListViewceItemPartName = _MK._ViewceItemPartName.Where(x => x.ipDocumentNo == Docno).OrderBy(x => x.ipRunNo).ToList();
                 for (int j = 0; j < @class._ListViewceItemPartName.Count(); j++)
                 {
-                    var _ceItemToolGRRequestPartName = _MK._ViewceItemToolGRRequestPartName.Where(x => x.mpNoProcess == @class._ListViewceItemPartName[j].ipRunNo).FirstOrDefault();
+                    var _ceItemToolGRRequestPartName = _MK._ViewceItemToolGRRequestPartName.Where(x => x.mpNoProcess == @class._ListViewceItemPartName[j].ipRunNo && x.tpDocumentNoSub == @class._ViewceMastToolGRRequest.trDocumentNoSub).FirstOrDefault();
                     @class._ListViewceItemToolGRRequestPartName.Add(new ViewceItemToolGRRequestPartName
                     {
                         tpDocumentNoSub = @class._ViewceMastToolGRRequest.trDocumentNoSub,
