@@ -29,18 +29,11 @@
                             <span>@Model._ListGroupPartName[k].wpPartName</span>
                         </span>
                     </th>
-                    @for (int g = 0; g < Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName.Count(); g++)
+                    @for (int h = 0; h < @Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName.Count(); h++)
                     {
-                        @for (int h = 0; h < @Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName.Count(); h++)
-                        {
-                            <th colspan="2" rowspan="@(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpEnable_WTAuto == false ? 2 : 1)">
-                                <span style="display:inline-block; width:100px;">@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpProcessName</span>
-                            </th>
-                            @*<th>
-                                    <span style="display:inline-block; width:160px;">@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpProcessName</span>
-                                </th>*@
-                        }
-
+                        <th colspan="2" rowspan="@(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpEnable_WTAuto == false ? 2 : 1)">
+                            <span style="display:inline-block; width:100px;">@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpProcessName</span>
+                        </th>
 
                     }
                     <th rowspan="2">
@@ -48,20 +41,14 @@
                     </th>
                 </tr>
                 <tr>
-                    @for (int g = 0; g < Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName.Count(); g++)
+                    @for (int h = 0; h < @Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName.Count(); h++)
                     {
-                        @for (int h = 0; h < @Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName.Count(); h++)
+                        if (Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpEnable_WTAuto == true)
                         {
-                            if (Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpEnable_WTAuto == true)
-                            {
-                                <td><span style="display:inline-block; width:80px;">MAN</span></td>
-                                <td><span style="display:inline-block; width:80px;">AUTO</span></td>
-                            }
-                            @*<td style="">
-                                    <span >MAN</span>
-                                    <span >AUTO</span>
-                                </td>*@
+                            <td><span style="display:inline-block; width:80px;">MAN</span></td>
+                            <td><span style="display:inline-block; width:80px;">AUTO</span></td>
                         }
+
                     }
                 </tr>
                 <tr id="trbodyItemName">
@@ -74,27 +61,23 @@
                             Type of Cavity: @Model._ListGroupPartName[k].wpTypeCavity
                         </span>
                     </td>
-                    @for (int g = 0; g < Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName.Count(); g++)
+                    @for (int h = 0; h < @Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName.Count(); h++)
                     {
-                        @for (int h = 0; h < @Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName.Count(); h++)
-                        {
 
 
-                    <td colspan="2">
-                        <input class="form-control center input-DocumentNo" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpDocumentNoSub" type="text" />
-                        <input class="form-control center input-PartName" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpPartName" type="text" />
-                        <input class="form-control center input-CavityNo" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpCavityNo" type="number" />
-                        <input class="form-control center input-TypeCavity" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpTypeCavity" type="text" />
-                        <input class="form-control center input-NoProcess" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpNoProcess" type="text" />
-                        <input class="form-control center input-GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpGroupName" type="text" />
-                        <input class="form-control center input-ProcessName" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpProcessName" type="text" />
-                        <input class="form-control center input-Enableman" autocomplete="off" style="display:none;width:100%;height:80%;font-size:10px;" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpEnable_WTMan.ToString()" type="text" />
-                        <input class="form-control center input-man" autocomplete="off" style="display:inline-block;width:80px;height:80%;font-size:10px;@(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpEnable_WTMan == false ? "background-color:darkgrey;display:none" : "background-color:yellow")" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpWT_Man" type="number" readonly="@(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpEnable_WTMan == false ? "readonly" : null)" min="0" />
-                        <input  class="form-control center input-EnableAuto" autocomplete="off" style="display:none;width:100%;height:80%;font-size:10px;" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpEnable_WTAuto.ToString()" type="text" />
-                        <input class="form-control center input-auto" autocomplete="off" style="display:inline-block;width:80px;height:80%;font-size:10px; @(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpEnable_WTAuto == false ? "background-color:darkgrey;display:none" : "background-color:yellow")" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpWT_Auto" type="number" readonly="@(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[g]._ViewceItemWorkingTimePartName[h].wpEnable_WTAuto == false ? "readonly" : null)" min="0" />
-                    </td>
-
-                        }
+                        <td colspan="2">
+                            <input class="form-control center input-DocumentNo" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpDocumentNoSub" type="text" />
+                            <input class="form-control center input-PartName" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpPartName" type="text" />
+                            <input class="form-control center input-CavityNo" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpCavityNo" type="number" />
+                            <input class="form-control center input-TypeCavity" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpTypeCavity" type="text" />
+                            <input class="form-control center input-NoProcess" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpNoProcess" type="text" />
+                            <input class="form-control center input-GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpGroupName" type="text" />
+                            <input class="form-control center input-ProcessName" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpProcessName" type="text" />
+                            <input class="form-control center input-Enableman" autocomplete="off" style="display:none;width:100%;height:80%;font-size:10px;" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpEnable_WTMan.ToString()" type="text" />
+                            <input class="form-control center input-man" autocomplete="off" style="display:inline-block;width:80px;height:80%;font-size:10px;@(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpEnable_WTMan == false ? "background-color:darkgrey;display:none" : "background-color:yellow")" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpWT_Man" type="number" readonly="@(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpEnable_WTMan == false ? "readonly" : null)" min="0" />
+                            <input class="form-control center input-EnableAuto" autocomplete="off" style="display:none;width:100%;height:80%;font-size:10px;" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpEnable_WTAuto.ToString()" type="text" />
+                            <input class="form-control center input-auto" autocomplete="off" style="display:inline-block;width:80px;height:80%;font-size:10px; @(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpEnable_WTAuto == false ? "background-color:darkgrey;display:none" : "background-color:yellow")" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpWT_Auto" type="number" readonly="@(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpEnable_WTAuto == false ? "readonly" : null)" min="0" />
+                        </td>
 
                     }
                     <td>

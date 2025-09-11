@@ -187,352 +187,351 @@
                             </div>
                         </div>
 
-                        <hr />
-                        <div class="grid-item fw-800 center " style="text-align:left;font-size:13px">Part Name</div>
-                        <div class="row center">
+                        <hr style="@(Model._ViewceMastMoldOtherRequest.mrStep > 0 ? "" : "display:none;")" />
+                        <div id="divMoldOtherPartName" style="@(Model._ViewceMastMoldOtherRequest.mrStep > 0 ? "" : "display:none;")">
+                            <div class="grid-item fw-800 center " style="text-align:left;font-size:13px">Part Name</div>
+                            <div class="row center">
+                                <div class="row center">
+                                    <div class="col-5 " style="">
+                                    </div>
+                                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Date Issue</div>
+                                    </div>
+                                    <div class="col-25 " style=" display: flex;align-items: center; ">
+                                        <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_ReferenceNo" asp-for="_ViewceMastMoldOtherRequest.mrIssueDate" value="@(Model._ViewceMastMoldOtherRequest.mrIssueDate == null && Model._ViewceMastMoldOtherRequest.mrStep == 1 ? DateTime.Now.ToString("dd/MM/yyyy") : Model._ViewceMastMoldOtherRequest.mrIssueDate)" readonly>
+                                    </div>
+                                    <div class="col-20 " style=" display: flex;align-items: center;">
+                                    </div>
+                                    <div class="col-25" style=" display: flex;align-items: center; ">
+
+                                    </div>
+
+                                    <div class="col-5 " style="">
+                                        <input type='button' class='button btnOrange' value='➕' style="width:auto;height:30px;vertical-align: sub; @(Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "cursor:not-allowed" : "")" onclick="btnaddPartName()" id="btnAddPartName" @(Model._ViewceMastMoldOtherRequest.mrStep == 1 ? "" : "disabled='disabled'" ) />
+                                        <select id="template_TypeCavity" style="display:none">
+                                            <option value="">กรุณาเลือก</option>
+                                            @foreach (var item in (SelectList)ViewBag.TypeofCavity)
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row center">
                                 <div class="col-5 " style="">
                                 </div>
-                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Date Issue</div>
-                                </div>
-                                <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_ReferenceNo" asp-for="_ViewceMastMoldOtherRequest.mrIssueDate" value="@(Model._ViewceMastMoldOtherRequest.mrIssueDate == null && Model._ViewceMastMoldOtherRequest.mrStep == 1 ? DateTime.Now.ToString("dd/MM/yyyy") : Model._ViewceMastMoldOtherRequest.mrIssueDate)" readonly>
-                                </div>
-                                <div class="col-20 " style=" display: flex;align-items: center;">
-                                </div>
-                                <div class="col-25" style=" display: flex;align-items: center; ">
+                                <div class="col-90 " style="">
+                                    <table class="tbgreen  " id="tbMoldOtherItem">
+                                        <tr>
+                                            <th style="text-align:center">No.​</th>
+                                            <th style="text-align:center">Part Name.​</th>
+                                            <th style="text-align:center;display:none" width='70px'>RunNo​</th>
+                                            <th style="text-align:center" width='100px'>Cavity No.​</th>
+                                            <th style="text-align:center">Type of Cavity.​</th>
+                                            <th style="text-align:center">View Report​</th>
+                                            <th style="text-align:center">Delete</th>
+                                        </tr>
+                                        <tbody id="tableBodyItem">
+                                            @{
+                                                var row = 0;
+                                            }
+                                            @for (int i = 0; i < Model._ListViewceItemPartName.Count(); i++)
+                                            {
+                                                <tr>
+                                                    <td>@(row += 1)</td>
+                                                    <td>
+                                                        <input type='text' class='vPartName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipPartName" readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1)">
+                                                    </td>
+                                                    <td style="display:none"><input type='text' class='vRunNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgrey;' asp-for="_ListViewceItemPartName[i].ipRunNo" readonly></td>
+                                                    <td width='100px'>
+                                                        <input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipCavityNo" readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1)">
+                                                        @*<input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;display:none' asp-for="_ListViewceItemPartName[i].ipCavityNo">*@
+                                                    <td>
+                                                        @Html.DropDownListFor(m => m._ListViewceItemPartName[i].ipTypeCavity, (SelectList)ViewBag.TypeofCavity, "กรุณาเลือก", new { @class = "form-control vTypeCavity", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;", disabled = Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "disabled" : null })
+                                                    </td>
+                                                    <td width='70px'>
 
-                                </div>
+                                                        @*<img src='~/images/petition.png' alt='icon' class='imgM' />*@
+                                                        @if (Model._ViewceMastMoldOtherRequest.mrStep == 8)
+                                                        {
 
+                                                            <a href="@Url.Action("Index", "SumRateMoldOther", new { Docno = Model._ListViewceItemPartName[i].ipDocumentNo,vProcess=Model._ListViewceItemPartName[i].ipRunNo })"
+                                                               target="_blank"
+                                                               style="font-size:15px;text-decoration:none;">
+                                                                <img src="~/images/petition.png" alt="icon" class="imgM" />
+                                                            </a>
+
+                                                        }
+
+
+
+
+                                                    </td>
+                                                    <td align='Center'>
+
+
+                                                        <input type="button"
+                                                               class="RemoveRow"
+                                                               value="&#x274C"
+                                                               style="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "cursor:not-allowed" : "cursor:pointer")"
+                                                               @(Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "disabled='disabled'" : "") />
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                        </tbody>
+
+                                    </table>
+                                </div>
                                 <div class="col-5 " style="">
-                                    <input type='button' class='button btnOrange' value='➕' style="width:auto;height:30px;vertical-align: sub; @(Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "cursor:not-allowed" : "")" onclick="btnaddPartName()" id="btnAddPartName" @(Model._ViewceMastMoldOtherRequest.mrStep == 1 ? "" : "disabled='disabled'" ) />
-                                    <select id="template_TypeCavity" style="display:none">
-                                        <option value="">กรุณาเลือก</option>
-                                        @foreach (var item in (SelectList)ViewBag.TypeofCavity)
-                                        {
-                                            <option value="@item.Value">@item.Text</option>
-                                        }
-                                    </select>
                                 </div>
+
+
+
                             </div>
                         </div>
 
-
-
-
-                        <div class="row center">
-                            <div class="col-5 " style="">
-                            </div>
-                            <div class="col-90 " style="">
-                                <table class="tbgreen  " id="tbMoldOtherItem">
-                                    <tr>
-                                        <th style="text-align:center">No.​</th>
-                                        <th style="text-align:center">Part Name.​</th>
-                                        <th style="text-align:center;display:none" width='70px'>RunNo​</th>
-                                        <th style="text-align:center" width='100px'>Cavity No.​</th>
-                                        <th style="text-align:center">Type of Cavity.​</th>
-                                        <th style="text-align:center">View Report​</th>
-                                        <th style="text-align:center">Delete</th>
-                                    </tr>
-                                    <tbody id="tableBodyItem">
-                                        @{
-                                            var row = 0;
-                                        }
-                                        @for (int i = 0; i < Model._ListViewceItemPartName.Count(); i++)
-                                        {
+                        <hr style="@(Model._ViewceMastMoldOtherRequest.mrStep > 1 ? "" : "display:none;")">
+                        <div id="divMoldOtherItem" style="@(Model._ViewceMastMoldOtherRequest.mrStep > 1 ? "" : "display:none;")">
+                            <div class="grid-item fw-800 center " style="text-align:left;font-size:13px">ITEM</div>
+                            <div class="row center">
+                                <div class="col-5 " style="">
+                                </div>
+                                <div class="col-90">
+                                    <table class="tbgreen text-left" tabindex="-1" id="divItem">
+                                        <tr>
+                                            <th style="text-align:center">No.​</th>
+                                            <th style="text-align:center">Document Type​</th>
+                                            <th style="text-align:center">Document No​</th>
+                                            <th style="text-align:center">Waiting Approve​</th>
+                                            <th style="text-align:center">Status​</th>
+                                            <th style="text-align:center" width="70px">More​</th>
+                                        </tr>
+                                        <tbody>
                                             <tr>
-                                                <td>@(row += 1)</td>
+                                                <td>1</td>
                                                 <td>
-                                                    <input type='text' class='vPartName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipPartName" readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1)">
+                                                    WORKING TIME
                                                 </td>
-                                                <td style="display:none"><input type='text' class='vRunNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgrey;' asp-for="_ListViewceItemPartName[i].ipRunNo" readonly></td>
-                                                <td width='100px'>
-                                                    <input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipCavityNo" readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1)">
-                                                    @*<input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;display:none' asp-for="_ListViewceItemPartName[i].ipCavityNo">*@
+                                                <td>@Html.DisplayFor(m => m._ViewceMastWorkingTimeRequest.wrDocumentNoSub)</td>
                                                 <td>
-                                                    @Html.DropDownListFor(m => m._ListViewceItemPartName[i].ipTypeCavity, (SelectList)ViewBag.TypeofCavity, "กรุณาเลือก", new { @class = "form-control vTypeCavity", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;", disabled = Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "disabled" : null })
-                                                </td>
-                                                <td width='70px'>
-
-                                                    @*<img src='~/images/petition.png' alt='icon' class='imgM' />*@
-                                                    @if (Model._ViewceMastMoldOtherRequest.mrStep == 8)
+                                                    @if (Model._ViewceMastWorkingTimeRequest?.wrStep != 4)
                                                     {
-
-                                                        <a href="@Url.Action("Index", "SumRateMoldOther", new { Docno = Model._ListViewceItemPartName[i].ipDocumentNo,vProcess=Model._ListViewceItemPartName[i].ipRunNo })"
+                                                        @Html.DisplayFor(m => m._ViewceMastWorkingTimeRequest.wrEmpCodeApprove)
+                                                        <span> : </span>
+                                                        @Html.DisplayFor(m => m._ViewceMastWorkingTimeRequest.wrNameApprove)
+                                                    }
+                                                </td>
+                                                <td style="text-align:center">
+                                                    @if (!string.IsNullOrEmpty(Model._ViewceMastWorkingTimeRequest?.wrStatus))
+                                                    {
+                                                        @if (Model._ViewceMastWorkingTimeRequest.wrStep == 0 && Model._ViewceMastWorkingTimeRequest.wrStatus.Contains("Disapprove"))
+                                                        {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                                        else if (Model._ViewceMastWorkingTimeRequest.wrStep == 0)
+                                                        {
+                                                            <img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />
+                                                        }
+                                                        else if (Model._ViewceMastWorkingTimeRequest.wrStep == 1)
+                                                        { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                                        else if (Model._ViewceMastWorkingTimeRequest.wrStep == 2)
+                                                        { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                        else if (Model._ViewceMastWorkingTimeRequest.wrStep == 3)
+                                                        { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                        else if (Model._ViewceMastWorkingTimeRequest.wrStep == 4)
+                                                        { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                                    }
+                                                </td>
+                                                <td class="center">
+                                                    @if (!string.IsNullOrEmpty(Model._ViewceMastWorkingTimeRequest?.wrDocumentNo))
+                                                    {
+                                                        <a href="@Url.Action("Index", "NewMoldOtherWK", new { Docno = Model._ViewceMastWorkingTimeRequest.wrDocumentNo })"
                                                            target="_blank"
                                                            style="font-size:15px;text-decoration:none;">
-                                                            <img src="~/images/petition.png" alt="icon" class="imgM" />
+                                                            <img src="~/images/searchWK.png" alt="icon" class="imgM" />
                                                         </a>
-
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/images/searchWK.png" alt="icon" class="imgM" style="cursor:not-allowed" />
                                                     }
 
-
-
-
-                                                </td>
-                                                <td align='Center'>
-                                                 
-
-                                                    <input type="button"
-                                                           class="RemoveRow"
-                                                           value="&#x274C"
-                                                           style="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "cursor:not-allowed" : "cursor:pointer")"
-                                                           @(Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "disabled='disabled'" : "") />
+                                                    @*<a href="@Url.Action("Index", "NewMoldOtherWK",new {Docno = Model._ViewceMastWorkingTimeRequest.wrDocumentNo})" target="_blank" style="font-size:15px;text-decoration: none;">
+                                                            <img src="~/images/searchWK.png" alt="icon" class="imgM" />
+                                                        </a>*@
                                                 </td>
                                             </tr>
-                                        }
-
-                                    </tbody>
-
-                                </table>
-                            </div>
-                            <div class="col-5 " style="">
-                            </div>
-
-
-
-                        </div>
-                        <hr />
-                        <div class="grid-item fw-800 center " style="text-align:left;font-size:13px">ITEM</div>
-                        <div class="row center">
-
-                            <div class="col-5 " style="">
-
-                            </div>
-                            <div class="col-90">
-
-                                <table class="tbgreen text-left" tabindex="-1" id="divItem">
-                                    <tr>
-                                        <th style="text-align:center">No.​</th>
-                                        <th style="text-align:center">Document Type​</th>
-                                        <th style="text-align:center">Document No​</th>
-                                        <th style="text-align:center">Waiting Approve​</th>
-                                        <th style="text-align:center">Status​</th>
-                                        <th style="text-align:center" width="70px">More​</th>
-                                    </tr>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>
-                                                WORKING TIME
-                                            </td>
-                                            <td>@Html.DisplayFor(m => m._ViewceMastWorkingTimeRequest.wrDocumentNoSub)</td>
-                                            <td>
-                                                @if (Model._ViewceMastWorkingTimeRequest?.wrStep != 4)
-                                                {
-                                                    @Html.DisplayFor(m => m._ViewceMastWorkingTimeRequest.wrEmpCodeApprove)
-                                                    <span> : </span>
-                                                    @Html.DisplayFor(m => m._ViewceMastWorkingTimeRequest.wrNameApprove)
-                                                }
-                                            </td>
-                                            <td style="text-align:center">
-                                                @if (!string.IsNullOrEmpty(Model._ViewceMastWorkingTimeRequest?.wrStatus))
-                                                {
-                                                    @if (Model._ViewceMastWorkingTimeRequest.wrStep == 0 && Model._ViewceMastWorkingTimeRequest.wrStatus.Contains("Disapprove"))
-                                                    {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
-                                                    else if (Model._ViewceMastWorkingTimeRequest.wrStep == 0)
+                                            <tr>
+                                                <td>2</td>
+                                                <td>
+                                                    MATERIAL
+                                                </td>
+                                                <td> @Html.DisplayFor(m => m._ViewceMastMaterialRequest.mrDocumentNoSub)</td>
+                                                <td>
+                                                    @if (Model._ViewceMastMaterialRequest?.mrStep != 4)
                                                     {
-                                                        <img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />
+                                                        @Html.DisplayFor(m => m._ViewceMastMaterialRequest.mrEmpCodeApprove)
+                                                        <span>:</span>
+                                                        @Html.DisplayFor(m => m._ViewceMastMaterialRequest.mrNameApprove)
                                                     }
-                                                    else if (Model._ViewceMastWorkingTimeRequest.wrStep == 1)
-                                                    { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
-                                                    else if (Model._ViewceMastWorkingTimeRequest.wrStep == 2)
-                                                    { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                    else if (Model._ViewceMastWorkingTimeRequest.wrStep == 3)
-                                                    { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                    else if (Model._ViewceMastWorkingTimeRequest.wrStep == 4)
-                                                    { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
-                                                }
-                                            </td>
-                                            <td class="center">
-                                                @if (!string.IsNullOrEmpty(Model._ViewceMastWorkingTimeRequest?.wrDocumentNo))
-                                                {
-                                                    <a href="@Url.Action("Index", "NewMoldOtherWK", new { Docno = Model._ViewceMastWorkingTimeRequest.wrDocumentNo })"
-                                                       target="_blank"
-                                                       style="font-size:15px;text-decoration:none;">
-                                                        <img src="~/images/searchWK.png" alt="icon" class="imgM" />
-                                                    </a>
-                                                }
-                                                else
-                                                {
-                                                    <img src="~/images/searchWK.png" alt="icon" class="imgM" style="cursor:not-allowed" />
-                                                }
+                                                </td>
 
-                                                @*<a href="@Url.Action("Index", "NewMoldOtherWK",new {Docno = Model._ViewceMastWorkingTimeRequest.wrDocumentNo})" target="_blank" style="font-size:15px;text-decoration: none;">
-                                                        <img src="~/images/searchWK.png" alt="icon" class="imgM" />
-                                                    </a>*@
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>
-                                                MATERIAL
-                                            </td>
-                                            <td> @Html.DisplayFor(m => m._ViewceMastMaterialRequest.mrDocumentNoSub)</td>
-                                            <td>
-                                                @if (Model._ViewceMastMaterialRequest?.mrStep != 4)
-                                                {
-                                                    @Html.DisplayFor(m => m._ViewceMastMaterialRequest.mrEmpCodeApprove)
-                                                    <span>:</span>
-                                                    @Html.DisplayFor(m => m._ViewceMastMaterialRequest.mrNameApprove)
-                                                }
-                                            </td>
-
-                                            <td style="text-align:center">
-                                                @if (!string.IsNullOrEmpty(Model._ViewceMastMaterialRequest?.mrStatus))
-                                                {
-                                                    @if (Model._ViewceMastMaterialRequest.mrStep == 0 && Model._ViewceMastMaterialRequest.mrStatus.Contains("Disapprove"))
-                                                    {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
-                                                    else if (Model._ViewceMastMaterialRequest.mrStep == 0)
+                                                <td style="text-align:center">
+                                                    @if (!string.IsNullOrEmpty(Model._ViewceMastMaterialRequest?.mrStatus))
                                                     {
-                                                        <img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />
+                                                        @if (Model._ViewceMastMaterialRequest.mrStep == 0 && Model._ViewceMastMaterialRequest.mrStatus.Contains("Disapprove"))
+                                                        {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                                        else if (Model._ViewceMastMaterialRequest.mrStep == 0)
+                                                        {
+                                                            <img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />
+                                                        }
+                                                        else if (Model._ViewceMastMaterialRequest.mrStep == 1)
+                                                        { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                                        else if (Model._ViewceMastMaterialRequest.mrStep == 2)
+                                                        { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                        else if (Model._ViewceMastMaterialRequest.mrStep == 3)
+                                                        { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                        else if (Model._ViewceMastMaterialRequest.mrStep == 4)
+                                                        { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
                                                     }
-                                                    else if (Model._ViewceMastMaterialRequest.mrStep == 1)
-                                                    { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
-                                                    else if (Model._ViewceMastMaterialRequest.mrStep == 2)
-                                                    { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                    else if (Model._ViewceMastMaterialRequest.mrStep == 3)
-                                                    { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                    else if (Model._ViewceMastMaterialRequest.mrStep == 4)
-                                                    { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
-                                                }
 
 
 
-                                            </td>
-                                            <td class="center">
-                                                @if (!string.IsNullOrEmpty(Model._ViewceMastMaterialRequest?.mrDocumentNo))
-                                                {
-                                                    <a href="@Url.Action("Index", "NewMoldOtherMT",new { Docno = Model._ViewceMastMaterialRequest.mrDocumentNo })" target="_blank" style="font-size:12px;text-decoration: none;">
-                                                        <img src="~/images/searchWK.png" alt="icon" class="imgM" />
-                                                    </a>
-                                                }
-                                                else
-                                                {
-                                                    <img src="~/images/searchWK.png" alt="icon" class="imgM" style="cursor:not-allowed" />
-                                                }
-
-
-
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>TOOL & GR</td>
-                                            <td>@Html.DisplayFor(m => m._ViewceMastToolGRRequest.trDocumentNoSub)</td>
-                                            <td>
-                                                @if (Model._ViewceMastToolGRRequest?.trStep != 4)
-                                                {
-                                                    @Html.DisplayFor(m => m._ViewceMastToolGRRequest.trEmpCodeApprove)<span>:</span> @Html.DisplayFor(m => m._ViewceMastToolGRRequest.trNameApprove)
-
-
-                                                }
-                                            </td>
-                                            <td style="text-align:center">
-                                                @if (!string.IsNullOrEmpty(Model._ViewceMastToolGRRequest?.trStatus))
-                                                {
-                                                    @if (Model._ViewceMastToolGRRequest.trStep == 0 && Model._ViewceMastToolGRRequest.trStatus.Contains("Disapprove"))
-                                                    {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
-                                                    else if (Model._ViewceMastToolGRRequest.trStep == 0)
-                                                    {<img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />}
-                                                    else if (Model._ViewceMastToolGRRequest.trStep == 1)
-                                                    { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
-                                                    else if (Model._ViewceMastToolGRRequest.trStep == 2)
-                                                    { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                    else if (Model._ViewceMastToolGRRequest.trStep == 3)
-                                                    { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                    else if (Model._ViewceMastToolGRRequest.trStep == 4)
-                                                    { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
-
-                                                }
-
-
-                                            </td>
-                                            <td class="center">
-                                                @if (!string.IsNullOrEmpty(Model._ViewceMastToolGRRequest?.trDocumentNo))
-                                                {
-                                                    <a href="@Url.Action("Index", "NewMoldOtherTGR",new { Docno = Model._ViewceMastToolGRRequest.trDocumentNo })" target="_blank" style="font-size:12px;text-decoration: none;">
-                                                        <img src="~/images/searchWK.png" alt="icon" class="imgM" />
-                                                    </a>
-                                                }
-                                                else
-                                                {
-                                                    <img src="~/images/searchWK.png" alt="icon" class="imgM" style="cursor:not-allowed" />
-                                                }
-
-
-
-
-
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td>INFORMATION SPEC MOLD</td>
-                                            <td>@Html.DisplayFor(m => m._ViewceMastInforSpacMoldRequest.irDocumentNoSub)</td>
-                                            <td>
-                                                @if (Model._ViewceMastInforSpacMoldRequest?.irStep != 4)
-                                                {
-                                                    @Html.DisplayFor(m => m._ViewceMastInforSpacMoldRequest.irEmpCodeApprove)
-
-                                                    <span>:</span>@Html.DisplayFor(m => m._ViewceMastInforSpacMoldRequest.irNameApprove)
-                                                }
-
-
-                                            </td>
-                                            <td style="text-align:center">
-                                                @if (!string.IsNullOrEmpty(Model._ViewceMastInforSpacMoldRequest?.irStatus))
-                                                {
-                                                    @if (Model._ViewceMastInforSpacMoldRequest.irStep == 0 && Model._ViewceMastInforSpacMoldRequest.irStatus.Contains("Disapprove"))
-                                                    {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
-                                                    else if (Model._ViewceMastInforSpacMoldRequest.irStep == 0)
+                                                </td>
+                                                <td class="center">
+                                                    @if (!string.IsNullOrEmpty(Model._ViewceMastMaterialRequest?.mrDocumentNo))
                                                     {
-                                                        <img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />
+                                                        <a href="@Url.Action("Index", "NewMoldOtherMT",new { Docno = Model._ViewceMastMaterialRequest.mrDocumentNo })" target="_blank" style="font-size:12px;text-decoration: none;">
+                                                            <img src="~/images/searchWK.png" alt="icon" class="imgM" />
+                                                        </a>
                                                     }
-                                                    else if (Model._ViewceMastInforSpacMoldRequest.irStep == 1)
-                                                    { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
-                                                    else if (Model._ViewceMastInforSpacMoldRequest.irStep == 2)
-                                                    { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                    else if (Model._ViewceMastInforSpacMoldRequest.irStep == 3)
-                                                    { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                    else if (Model._ViewceMastInforSpacMoldRequest.irStep == 4)
-                                                    { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
-                                                }
-
-
-                                            </td>
-                                            <td class="center">
-                                                @if (!string.IsNullOrEmpty(Model._ViewceMastInforSpacMoldRequest?.irDocumentNo))
-                                                {
-                                                    <a href="@Url.Action("Index", "NewMoldOtherSM",new { Docno = Model._ViewceMastInforSpacMoldRequest.irDocumentNo })" target="_blank" style="font-size:12px;text-decoration: none;">
-                                                        <img src="~/images/searchWK.png" alt="icon" class="imgM" />
-                                                    </a>
-                                                }
-                                                else
-                                                {
-                                                    <img src="~/images/searchWK.png" alt="icon" class="imgM" style="cursor:not-allowed" />
-                                                }
+                                                    else
+                                                    {
+                                                        <img src="~/images/searchWK.png" alt="icon" class="imgM" style="cursor:not-allowed" />
+                                                    }
 
 
 
-                                                @*<a href="@Url.Action("Index", "NewMoldOtherSM")" target="_blank" style="font-size:12px;text-decoration: none;">
-                                                        <img src="~/images/searchWK.png" alt="icon" class="imgM" />
-                                                    </a>*@
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>TOOL & GR</td>
+                                                <td>@Html.DisplayFor(m => m._ViewceMastToolGRRequest.trDocumentNoSub)</td>
+                                                <td>
+                                                    @if (Model._ViewceMastToolGRRequest?.trStep != 4)
+                                                    {
+                                                        @Html.DisplayFor(m => m._ViewceMastToolGRRequest.trEmpCodeApprove)<span>:</span> @Html.DisplayFor(m => m._ViewceMastToolGRRequest.trNameApprove)
 
-                                </table>
 
-                                <br />
-                                <br />
-                            </div>
-                            <div class="col-5 " style="">
+                                                    }
+                                                </td>
+                                                <td style="text-align:center">
+                                                    @if (!string.IsNullOrEmpty(Model._ViewceMastToolGRRequest?.trStatus))
+                                                    {
+                                                        @if (Model._ViewceMastToolGRRequest.trStep == 0 && Model._ViewceMastToolGRRequest.trStatus.Contains("Disapprove"))
+                                                        {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                                        else if (Model._ViewceMastToolGRRequest.trStep == 0)
+                                                        {<img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />}
+                                                        else if (Model._ViewceMastToolGRRequest.trStep == 1)
+                                                        { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                                        else if (Model._ViewceMastToolGRRequest.trStep == 2)
+                                                        { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                        else if (Model._ViewceMastToolGRRequest.trStep == 3)
+                                                        { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                        else if (Model._ViewceMastToolGRRequest.trStep == 4)
+                                                        { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
+
+                                                    }
+
+
+                                                </td>
+                                                <td class="center">
+                                                    @if (!string.IsNullOrEmpty(Model._ViewceMastToolGRRequest?.trDocumentNo))
+                                                    {
+                                                        <a href="@Url.Action("Index", "NewMoldOtherTGR",new { Docno = Model._ViewceMastToolGRRequest.trDocumentNo })" target="_blank" style="font-size:12px;text-decoration: none;">
+                                                            <img src="~/images/searchWK.png" alt="icon" class="imgM" />
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/images/searchWK.png" alt="icon" class="imgM" style="cursor:not-allowed" />
+                                                    }
+
+
+
+
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4</td>
+                                                <td>INFORMATION SPEC MOLD</td>
+                                                <td>@Html.DisplayFor(m => m._ViewceMastInforSpacMoldRequest.irDocumentNoSub)</td>
+                                                <td>
+                                                    @if (Model._ViewceMastInforSpacMoldRequest?.irStep != 4)
+                                                    {
+                                                        @Html.DisplayFor(m => m._ViewceMastInforSpacMoldRequest.irEmpCodeApprove)
+
+                                                        <span>:</span>@Html.DisplayFor(m => m._ViewceMastInforSpacMoldRequest.irNameApprove)
+                                                    }
+
+
+                                                </td>
+                                                <td style="text-align:center">
+                                                    @if (!string.IsNullOrEmpty(Model._ViewceMastInforSpacMoldRequest?.irStatus))
+                                                    {
+                                                        @if (Model._ViewceMastInforSpacMoldRequest.irStep == 0 && Model._ViewceMastInforSpacMoldRequest.irStatus.Contains("Disapprove"))
+                                                        {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                                        else if (Model._ViewceMastInforSpacMoldRequest.irStep == 0)
+                                                        {
+                                                            <img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />
+                                                        }
+                                                        else if (Model._ViewceMastInforSpacMoldRequest.irStep == 1)
+                                                        { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                                        else if (Model._ViewceMastInforSpacMoldRequest.irStep == 2)
+                                                        { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                        else if (Model._ViewceMastInforSpacMoldRequest.irStep == 3)
+                                                        { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                        else if (Model._ViewceMastInforSpacMoldRequest.irStep == 4)
+                                                        { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                                    }
+
+
+                                                </td>
+                                                <td class="center">
+                                                    @if (!string.IsNullOrEmpty(Model._ViewceMastInforSpacMoldRequest?.irDocumentNo))
+                                                    {
+                                                        <a href="@Url.Action("Index", "NewMoldOtherSM",new { Docno = Model._ViewceMastInforSpacMoldRequest.irDocumentNo })" target="_blank" style="font-size:12px;text-decoration: none;">
+                                                            <img src="~/images/searchWK.png" alt="icon" class="imgM" />
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/images/searchWK.png" alt="icon" class="imgM" style="cursor:not-allowed" />
+                                                    }
+
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <br />
+                                    <br />
+                                </div>
+                                <div class="col-5 " style="">
+                                </div>
                             </div>
                         </div>
+
+
+
                     </div>
+                    <div style="margin-top:10px">
+                        @await Html.PartialAsync("_PartialOtherAttachFile", Model)
 
+                    </div>
 
 
 
@@ -547,10 +546,7 @@
                         </div>
                     </div>
 
-                    <div style="margin-top:10px">
-                        @await Html.PartialAsync("_PartialOtherAttachFile", Model)
 
-                    </div>
 
 
                 </form>
@@ -832,7 +828,7 @@
                             text: "กรุณากรอกข้อมูลให้ถูกต้อง",
                         })
                             .then((result) => {
-                                $("#i_NewOther_CusName").val("");  
+                                $("#i_NewOther_CusName").val("");
                         });
                     }
                 }

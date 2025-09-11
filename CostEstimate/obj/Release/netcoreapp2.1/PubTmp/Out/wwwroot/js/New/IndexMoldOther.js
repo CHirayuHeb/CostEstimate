@@ -98,7 +98,9 @@ $("#btnfileMoldOtherMT").click(function () {
 });
 
 $("#btnfileMoldOtherTGR").click(function () {
+    console.log("btnfileMoldOtherTGR");
     $("#myModalNewMoldOtherTGR").modal("show");
+    //myModalNewMoldOtherTGR
 });
 
 $("#btnfileMoldOtherSM").click(function () {

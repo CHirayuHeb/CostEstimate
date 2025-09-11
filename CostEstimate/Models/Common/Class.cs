@@ -221,6 +221,7 @@ namespace CostEstimate.Models.Common
 
         //material
         public ViewceMastMaterialRequest _ViewceMastMaterialRequest { get; set; }
+        public List<ViewceMastMaterialRequest> _ListViewceMastMaterialRequest { get; set; }
         public ViewceItemMaterialRequestPartName _ViewceItemMaterialRequestPartName { get; set; }
         public List<ViewceItemMaterialRequestPartName> _ListViewceItemMaterialRequestPartName { get; set; }
         public GroupViewceItemMaterialRequestPartName _GroupViewceItemMaterialRequestPartName { get; set; }
@@ -231,11 +232,13 @@ namespace CostEstimate.Models.Common
         public ViewceMastToolGRRequest _ViewceMastToolGRRequest { get; set; }
         public ViewceItemToolGRRequestPartName _ViewceItemToolGRRequestPartName { get; set; }
         public List<ViewceItemToolGRRequestPartName> _ListViewceItemToolGRRequestPartName { get; set; }
+        public List<ViewceMastToolGRRequest> _ListViewceMastToolGRRequest { get; set; }
 
 
 
         //information spac
         public ViewceMastInforSpacMoldRequest _ViewceMastInforSpacMoldRequest { get; set; }
+        public List<ViewceMastInforSpacMoldRequest> _ListViewceMastInforSpacMoldRequest { get; set; }
         public ViewceItemInforRequestPartName _ViewceItemInforRequestPartName { get; set; }
         public ViewceItemInforSlideSystem _ViewceItemInforSlideSystem { get; set; }
         public ViewceItemInforTypeOfCut _ViewceItemInforTypeOfCut { get; set; }
@@ -248,6 +251,12 @@ namespace CostEstimate.Models.Common
         public List<GroupViewceMastInforSpacMoldRequest> _ListGroupViewceMastInforSpacMoldRequest { get; set; }
 
 
+
+        public List<ViewceMastWorkingTimeRequestDetail> _ListViewceMastWorkingTimeRequestDetail { get; set; }
+        public List<ViewceMastMaterialRequestDetail> _ListViewceMastMaterialRequestDetail { get; set; }
+        public List<ViewceMastToolGRRequestDetail> _ListViewceMastToolGRRequestDetail { get; set; }
+        public List<ViewceMastInforSpacMoldRequestDetail> _ListViewceMastInforSpacMoldRequestDetail { get; set; }
+        
 
         public ViewceSubWorkingTimeRequestItem _ViewceSubWorkingTimeRequestItem { get; set; }
         public List<ViewceSubWorkingTimeRequestItem> _ListViewceSubWorkingTimeRequestItem { get; set; }

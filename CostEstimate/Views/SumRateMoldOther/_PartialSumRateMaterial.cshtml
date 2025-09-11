@@ -1,0 +1,39 @@
+﻿@using System.Security.Claims;
+@model CostEstimate.Models.Common.Class;
+@using CostEstimate.Models.Common;
+
+@{
+    string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+    string _admin = GlobalVariable.perAdmin.ToUpper();
+}
+<div>
+    <div class="row center">
+        <div class="row center">
+            <div class="col-5 " style="">
+            </div>
+            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Customer Name.</div>
+            </div>
+            <div class="col-25" style=" display: flex;align-items: center; ">
+                <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_CusName" >
+            </div>
+
+            <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Document No.</div>
+            </div>
+            <div class="col-25 " style=" display: flex;align-items: center; ">
+                <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_DocumentNo"  readonly>
+
+            </div>
+
+
+            <div class="col-5 " style="">
+            </div>
+        </div>
+    </div>
+</div>

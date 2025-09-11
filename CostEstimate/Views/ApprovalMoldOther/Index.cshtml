@@ -8,6 +8,7 @@
 <link href="~/css/New/mNew.css" rel="stylesheet" />
 
 <link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<link href="~/css/New/requestStyle.css" rel="stylesheet" />
 <script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("ApprovalMoldOther"); } }</script>
 <div class="home-content">
     <div id="DisplayContent" class="content-box">
@@ -17,6 +18,485 @@
                 <h5 class="control-title" style="font-weight:600">งานของฉัน <img src="~/images/Approval.png" height="35px" width="35px" style="vertical-align:middle" /></h5>
 
             </div>
+
+
+
+            var r1 = 0;
+            var r2 = 0;
+            var r3 = 0;
+            var r4 = 0;
+            var r5 = 0;
+            <div class="report-container" style="margin-top:10px;margin-left:5%;margin-right:5%">
+                <!-- Report 1 -->
+                <div class="accordion-item">
+                    <div class="accordion-header " style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <span style="color:forestgreen; ">    MOLD OTHER WORK</span>
+
+                            <span style="color:aliceblue; margin-left:5px;font-size:12px">
+                                จำนวน @Model._ListViewceMastMoldOtherRequest.Count รายการ
+                            </span>
+                        </div>
+                        <span class="toggle-icon ">+</span>
+                    </div>
+                    <div class="accordion-content">
+                        <span style="font-size:12px;font-weight:900">ค้นหา</span> <input type="text" id="searchInputtbOther" placeholder="Search..." style="margin-bottom:10px; width:200px; font-size:10px">
+                        <table class="tbgreen tbOther">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center">No.​</th>
+                                    <th style="text-align:center;">Document No.​</th>
+                                    <th style="text-align:center;">Cus Name.​</th>
+                                    <th style="text-align:center">Function.​</th>
+                                    <th style="text-align:center">Model Name​</th>
+                                    <th style="text-align:center">Revion​</th>
+
+                                    @*  <th style="text-align:center">Event</th>
+                                    <th style="text-align:center">Mold Go</th>
+                                    <th style="text-align:center">Try 1</th>
+                                    <th style="text-align:center">Mold Mass</th>
+                                    <th style="text-align:center">Date Issue</th>*@
+                                    <th style="text-align:center">Request Name​</th>
+                                    <th style="text-align:center">Waiting Approve​</th>
+                                    <th style="text-align:center">Status​</th>
+                                    <th style="text-align:center">Action​</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item in @Model._ListViewceMastMoldOtherRequest)
+                                {
+                                    <tr style="font-size:10px">
+                                        <td> @(r1 += 1)</td>
+                                        <td style="text-align:center;">@item.mrDocmentNo</td>
+                                        <td style="text-align:center;">@item.mrCustomerName</td>
+                                        <td style="text-align:center;">@item.mrFunction</td>
+                                        <td style="text-align:center;">@item.mrModelName</td>
+                                        <td style="text-align:center;">@item.mrRevision</td>
+                                        @* <td style="text-align:center;">@item.mrEvent</td>
+                                        <td style="text-align:center;">@item.mrMoldGo</td>
+                                        <td style="text-align:center;">@item.mrTry1</td>
+                                        <td style="text-align:center;">@item.mrMoldMass</td>
+                                        <td style="text-align:center;">@item.mrIssueDate</td>*@
+                                        <td style="text-align:center;">@item.mrEmpCodeRequest @item.mrNameRequest</td>
+                                        <td style="text-align:center">
+                                            @if (@item.mrStep == 2)
+                                            {
+                                                <span style="color:blue;font-weight:700">
+                                                    Document Pending..
+                                                </span>
+                                            }
+                                            else if (@item.mrStep < 8)
+                                            {
+                                                <span style="color:black;font-weight:700">
+                                                    @item.mrEmpCodeApprove
+
+                                                    @item.mrNameApprove
+                                                </span>
+                                            }
+                                        </td>
+
+                                        <td style="text-align:center">
+                                            @*@item.smStep*@
+                                            @if (@item.mrStep == 0 && @item.mrStatus.Contains("Disapprove"))
+                                            {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                            else if (@item.mrStep == 0) /*//new*/
+                                            {
+                                                <img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />
+                                            }
+                                            else if (@item.mrStep == 1)
+                                            { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                            else if (@item.mrStep == 2)
+                                            { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.mrStep == 3)/*//issue*/
+                                            { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.mrStep == 4)
+                                            { <img src="~/images/5.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.mrStep == 5)
+                                            { <img src="~/images/6.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.mrStep == 6)
+                                            { <img src="~/images/7.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.mrStep == 7)
+                                            { <img src="~/images/8.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                            else if (@item.mrStep == 8)
+                                            { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
+
+                                        </td>
+
+                                        <td style="text-align:center">
+
+                                            <input type="button" style="font-size:18px" value="&#x1F50E;" onclick="GoNewMoldOtherRequest('@item.mrDocmentNo','')">
+                                        </td>
+                                    </tr>
+
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+
+                <!-- Report 1 -->
+                <div class="accordion-item">
+                    <div class="accordion-header " style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <span style="color:orange;">WORKING TIME WORK</span>
+                            <span style="color:aliceblue; margin-left:5px;font-size:12px">
+                                จำนวน @Model._ListViewceMastWorkingTimeRequestDetail.Count รายการ
+                            </span>
+                        </div>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+
+
+                        <span style="font-size:12px;font-weight:900">ค้นหา</span> <input type="text" id="searchInputtbWK" placeholder="Search..." style="margin-bottom:10px; width:200px; font-size:10px">
+
+                        <table class="tbgreen tbWK">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center">No.​</th>
+                                    <th style="text-align:center;">Document No.​</th>
+                                    <th style="text-align:center;">Cus Name.​</th>
+                                    <th style="text-align:center">Function.​</th>
+                                    <th style="text-align:center">Model Name​</th>
+                                    <th style="text-align:center">Revion​</th>
+                                    <th style="text-align:center">Request Name​</th>
+                                    <th style="text-align:center">Waiting Approve​</th>
+                                    <th style="text-align:center">Status​</th>
+                                    <th style="text-align:center">Action​</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @*@{
+                                    var row1 = 0;
+                                }*@
+
+                                @foreach (var item in @Model._ListViewceMastWorkingTimeRequestDetail)
+                                {
+                                    <tr style="font-size:10px">
+                                        <td> @(r2 += 1)</td>
+                                        <td style="text-align:center;">@item.wrDocumentNoSub</td>
+                                        <td style="text-align:center;">@item.wrCustomerName</td>
+                                        <td style="text-align:center;">@item.wrFunction</td>
+                                        <td style="text-align:center;">@item.wrModelName</td>
+                                        <td style="text-align:center;">@item.wrRev</td>
+                                        <td style="text-align:center;">@item.wrEmpCodeRequest @item.wrNameRequest</td>
+                                        <td style="text-align:center">
+                                            <span style="color:black;font-weight:700">
+                                                @item.wrEmpCodeApprove :
+                                                @item.wrNameApprove
+                                            </span>
+                                        </td>
+                                        <td style="text-align:center">
+                                            @*@item.smStep*@
+                                            @if (@item.wrStep == 0 && @item.wrStatus.Contains("Disapprove"))
+                                            {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                            else if (@item.wrStep == 0) /*//new*/
+                                            {
+                                                <img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />
+                                            }
+                                            else if (@item.wrStep == 1)
+                                            { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                            else if (@item.wrStep == 2)
+                                            { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.wrStep == 3)/*//issue*/
+                                            { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.wrStep == 4)
+                                            { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
+
+                                        </td>
+
+                                        <td style="text-align:center">
+
+                                            <a href="@Url.Action("Index", "NewMoldOtherWK", new { Docno = @item.wrDocumentNo })"
+                                               target="_blank"
+                                               style="font-size:15px;text-decoration:none;">
+                                                <img src="~/images/searchWK.png" alt="icon" class="imgM" />
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Report 1 -->
+                <div class="accordion-item">
+                    <div class="accordion-header " style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <span style="color:darkblue;">MATERIAL WORK</span>
+                            <span style="color:aliceblue; margin-left:5px;font-size:12px">
+                                จำนวน @Model._ListViewceMastMaterialRequestDetail.Count รายการ
+                            </span>
+                        </div>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+
+
+                        <span style="font-size:12px;font-weight:900">ค้นหา</span> <input type="text" id="searchInputtbMT" placeholder="Search..." style="margin-bottom:10px; width:200px; font-size:10px">
+
+                        <table class="tbgreen tbMT">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center">No.​</th>
+                                    <th style="text-align:center;">Document No.​</th>
+                                    <th style="text-align:center;">Cus Name.​</th>
+                                    <th style="text-align:center">Function.​</th>
+                                    <th style="text-align:center">Model Name​</th>
+                                    <th style="text-align:center">Revion​</th>
+                                    <th style="text-align:center">Request Name​</th>
+                                    <th style="text-align:center">Waiting Approve​</th>
+                                    <th style="text-align:center">Status​</th>
+                                    <th style="text-align:center">Action​</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @*@{
+                                    var row1 = 0;
+                                }*@
+
+                                @foreach (var item in @Model._ListViewceMastMaterialRequestDetail)
+                                {
+                                    <tr style="font-size:10px">
+                                        <td> @(r3 += 1)</td>
+                                        <td style="text-align:center;">@item.mrDocumentNoSub</td>
+                                        <td style="text-align:center;">@item.mrCustomerName</td>
+                                        <td style="text-align:center;">@item.mrFunction</td>
+                                        <td style="text-align:center;">@item.mrModelName</td>
+                                        <td style="text-align:center;">@item.mrRev</td>
+                                        <td style="text-align:center;">@item.mrEmpCodeRequest @item.mrNameRequest</td>
+                                        <td style="text-align:center">
+                                            <span style="color:black;font-weight:700">
+                                                @item.mrEmpCodeApprove :
+                                                @item.mrNameApprove
+                                            </span>
+                                        </td>
+                                        <td style="text-align:center">
+                                            @*@item.smStep*@
+                                            @if (@item.mrStep == 0 && @item.mrStatus.Contains("Disapprove"))
+                                            {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                            else if (@item.mrStep == 0) /*//new*/
+                                            {
+                                                <img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />
+                                            }
+                                            else if (@item.mrStep == 1)
+                                            { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                            else if (@item.mrStep == 2)
+                                            { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.mrStep == 3)/*//issue*/
+                                            { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.mrStep == 4)
+                                            { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
+
+                                        </td>
+
+                                        <td style="text-align:center">
+
+                                            <a href="@Url.Action("Index", "NewMoldOtherMT",new { Docno =  @item.mrDocumentNo  })" target="_blank" style="font-size:12px;text-decoration: none;">
+                                                <img src="~/images/searchWK.png" alt="icon" class="imgM" />
+                                            </a>
+
+
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Report 1 -->
+                <div class="accordion-item">
+                    <div class="accordion-header " style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <span style="color:palegoldenrod;">TOOL & GR WORK</span>
+                            <span style="color:aliceblue; margin-left:5px;font-size:12px">
+                                จำนวน @Model._ListViewceMastToolGRRequestDetail.Count รายการ
+                            </span>
+                        </div>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+                        <input type="text" id="searchInputtbTGR" placeholder="Search..." style="margin-bottom:10px; width:200px; padding:5px;">
+
+                        <table class="tbgreen tbTGR">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center">No.​</th>
+                                    <th style="text-align:center;">Document No.​</th>
+                                    <th style="text-align:center;">Cus Name.​</th>
+                                    <th style="text-align:center">Function.​</th>
+                                    <th style="text-align:center">Model Name​</th>
+                                    <th style="text-align:center">Revion​</th>
+                                    <th style="text-align:center">Request Name​</th>
+                                    <th style="text-align:center">Waiting Approve​</th>
+                                    <th style="text-align:center">Status​</th>
+                                    <th style="text-align:center">Action​</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @*@{
+                                    var row1 = 0;
+                                }*@
+
+                                @foreach (var item in @Model._ListViewceMastToolGRRequestDetail)
+                                {
+                                    <tr style="font-size:10px">
+                                        <td> @(r4 += 1)</td>
+                                        <td style="text-align:center;">@item.trDocumentNoSub</td>
+                                        <td style="text-align:center;">@item.trCustomerName</td>
+                                        <td style="text-align:center;">@item.trFunction</td>
+                                        <td style="text-align:center;">@item.trModelName</td>
+                                        <td style="text-align:center;">@item.trRev</td>
+                                        <td style="text-align:center;">@item.trEmpCodeRequest @item.trNameRequest</td>
+                                        <td style="text-align:center">
+                                            <span style="color:black;font-weight:700">
+                                                @item.trEmpCodeApprove :
+                                                @item.trNameApprove
+                                            </span>
+                                        </td>
+                                        <td style="text-align:center">
+                                            @*@item.smStep*@
+                                            @if (@item.trStep == 0 && @item.trStatus.Contains("Disapprove"))
+                                            {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                            else if (@item.trStep == 0) /*//new*/
+                                            {
+                                                <img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />
+                                            }
+                                            else if (@item.trStep == 1)
+                                            { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                            else if (@item.trStep == 2)
+                                            { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.trStep == 3)/*//issue*/
+                                            { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.trStep == 4)
+                                            { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
+
+                                        </td>
+
+                                        <td style="text-align:center">
+
+                                            <a href="@Url.Action("Index", "NewMoldOtherTGR",new { Docno = @item.trDocumentNo })" target="_blank" style="font-size:12px;text-decoration: none;">
+                                                <img src="~/images/searchWK.png" alt="icon" class="imgM" />
+                                            </a>
+
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Report 1 -->
+                <div class="accordion-item">
+                    <div class="accordion-header " style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <span style="color:saddlebrown;">INFORMATION SPEC MOLD</span>
+                            <span style="color:aliceblue; margin-left:5px;font-size:12px">
+                                จำนวน @Model._ListViewceMastInforSpacMoldRequestDetail.Count รายการ
+                            </span>
+                        </div>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+
+
+                        <span style="font-size:12px;font-weight:900">ค้นหา</span>   <input type="text" id="searchInputtbSM" placeholder="Search..." style="margin-bottom:10px; width:200px; font-size:10px">
+
+                        <table class="tbgreen tbSM">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center">No.​</th>
+                                    <th style="text-align:center;">Document No.​</th>
+                                    <th style="text-align:center;">Cus Name.​</th>
+                                    <th style="text-align:center">Function.​</th>
+                                    <th style="text-align:center">Model Name​</th>
+                                    <th style="text-align:center">Revion​</th>
+                                    <th style="text-align:center">Request Name​</th>
+                                    <th style="text-align:center">Waiting Approve​</th>
+                                    <th style="text-align:center">Status​</th>
+                                    <th style="text-align:center">Action​</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @*@{ int rowNumber = 1; }*@
+                                @foreach (var item in @Model._ListViewceMastInforSpacMoldRequestDetail)
+                                {
+                                    <tr style="font-size:10px">
+                                        <td> @(r5 += 1)</td>
+                                        <td style="text-align:center;">@item.irDocumentNoSub</td>
+                                        <td style="text-align:center;">@item.irCustomerName</td>
+                                        <td style="text-align:center;">@item.irFunction</td>
+                                        <td style="text-align:center;">@item.irModelName</td>
+                                        <td style="text-align:center;">@item.irRev</td>
+                                        <td style="text-align:center;">@item.irEmpCodeRequest @item.irNameRequest</td>
+                                        <td style="text-align:center">
+                                            <span style="color:black;font-weight:700">
+                                                @item.irEmpCodeApprove :
+                                                @item.irNameApprove
+                                            </span>
+                                        </td>
+                                        <td style="text-align:center">
+                                            @*@item.smStep*@
+                                            @if (@item.irStep == 0 && @item.irStatus.Contains("Disapprove"))
+                                            {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                            else if (@item.irStep == 0) /*//new*/
+                                            {
+                                                <img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />
+                                            }
+                                            else if (@item.irStep == 1)
+                                            { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                            else if (@item.irStep == 2)
+                                            { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.irStep == 3)/*//issue*/
+                                            { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.irStep == 4)
+                                            { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
+
+                                        </td>
+
+                                        <td style="text-align:center">
+
+                                            <a href="@Url.Action("Index", "NewMoldOtherSM",new { Docno = @item.irDocumentNo })" target="_blank" style="font-size:12px;text-decoration: none;">
+                                                <img src="~/images/searchWK.png" alt="icon" class="imgM" />
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    //rowNumber++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
         }
     </div>
 </div>
+<script>
+    // Accordion toggle
+    //document.querySelectorAll(".accordion-header").forEach(header => {
+    //    header.addEventListener("click", () => {
+    //        const content = header.nextElementSibling;
+    //        const icon = header.querySelector(".toggle-icon");
+
+    //        // toggle แสดง/ซ่อน
+    //        if (content.style.display === "block") {
+    //            content.style.display = "none";
+    //            icon.textContent = "+";
+    //        } else {
+    //            content.style.display = "block";
+    //            icon.textContent = "-";
+    //        }
+    //    });
+    //});
+</script>

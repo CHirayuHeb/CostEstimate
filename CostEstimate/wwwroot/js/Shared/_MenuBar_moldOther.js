@@ -313,9 +313,7 @@ function PositionY(menu) {
         menu = menu.substring(0, idx);
     }
     console.log(menu); // 👉 "NewMoldOther"
-
-
-
+    
     //if (menu.search("New") > -1 && menu.search("NewMoldModify") == -1 && menu.search("NewMoldOther") == -1) {
     //    menu = "New";
     //} else if (menu.search("NewMoldModify") > -1) {
@@ -363,6 +361,8 @@ function PositionY(menu) {
             //LoadScript("js/New/Index.js", "NewItem");
             //LoadScript("js/New/EventMore.js", "EventNewMore");
             LoadScript("js/Home/Index.js", "Home");
+
+
 
             PY = "0px";
             //PY = "52px";
@@ -421,12 +421,17 @@ function PositionY(menu) {
 
 
         case "MyRequestMoldOther":
+     
             LoadScript("js/Home/Index.js", "Home");
+            LoadScript("js/Home/divShow.js", "Home");
             PY = "114px";
             //PY = "176px";
             opacity = "opacity-dot-3";
             break;
         case "ApprovalMoldOther":
+            LoadScript("js/Home/Index.js", "Home");
+            LoadScript("js/Home/divShowApprove.js", "Home");
+            //LoadScript("js/New/IndexMoldOther.js", "New");
             PY = "176px";
             // PY = "238px";
             opacity = "opacity-dot-3";

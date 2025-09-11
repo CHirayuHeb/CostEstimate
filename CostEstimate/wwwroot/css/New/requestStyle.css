@@ -1,0 +1,60 @@
+﻿.report-container {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.accordion-item {
+    background: #fff;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.accordion-header {
+    padding: 15px 20px;
+    background: #9bbd5e;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size:13px
+
+}
+
+    .accordion-header:hover {
+        background: #b7d47a;
+    }
+
+.accordion-content {
+    display: none;
+    padding: 20px;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.info-box {
+    background: #f3f7fb;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+    .info-box strong {
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+
+
+/* ไอคอน + หรือ - */
+.toggle-icon {
+    font-size: 18px;
+}

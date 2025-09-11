@@ -330,9 +330,10 @@ namespace CostEstimate.Controllers.NewMoldOther
         public ActionResult SearchModel(string term)
         {
 
+            //remark use type subMaker becuase  use same model
             return Json(
                         _MK._ViewceMastModel
-                            .Where(p => p.mmModelName.Contains(term) && p.mmType == "MoldOther")
+                            .Where(p => p.mmModelName.Contains(term) && p.mmType == "subMaker")
                             .Select(p => p.mmModelName
                             )
                             .ToList()

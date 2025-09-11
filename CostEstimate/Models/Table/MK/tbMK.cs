@@ -726,13 +726,14 @@ namespace CostEstimate.Models.Table.MK
         public double wpCavityNo { get; set; }
         public string wpTypeCavity { get; set; }
         public int wpProcess { get; set; }
-        public List<GroupViewceItemWorkingTimePartName> _GroupViewceItemWorkingTimePartName { get; set; }
+        public List<ViewceItemWorkingTimePartName> _GroupViewceItemWorkingTimePartName { get; set; }
+       // public List<GroupViewceItemWorkingTimePartName> _GroupViewceItemWorkingTimePartName { get; set; }
         public List<ViewceItemWorkingTimeSizeProduct> _GroupViewItemWorkingTimeSizeProduct { get; set; }
     }
 
     public class GroupViewceItemWorkingTimePartName
     {
-        public string GroupName { get; set; }
+        //public string GroupName { get; set; }
         public List<ViewceItemWorkingTimePartName> _ViewceItemWorkingTimePartName { get; set; }
     }
     [Table("ceItemWorkingTimeSizeProduct")]
@@ -965,5 +966,40 @@ namespace CostEstimate.Models.Table.MK
         public string GroupName { get; set; }
         public List<ViewceSubWorkingTimeRequestItem> WorkingTimeRequestItem { get; set; }
     }
+
+
+
+    public class ViewceMastWorkingTimeRequestDetail : ViewceMastWorkingTimeRequest
+    {
+        public string wrCustomerName { get; set; }
+        public string wrFunction { get; set; }
+        public string wrModelName { get; set; }
+        public int wrRev { get; set; }
+    }
+
+    public class ViewceMastMaterialRequestDetail : ViewceMastMaterialRequest
+    {
+        public string mrCustomerName { get; set; }
+        public string mrFunction { get; set; }
+        public string mrModelName { get; set; }
+        public int mrRev { get; set; }
+    }
+
+    public class ViewceMastToolGRRequestDetail : ViewceMastToolGRRequest
+    {
+        public string trCustomerName { get; set; }
+        public string trFunction { get; set; }
+        public string trModelName { get; set; }
+        public int trRev { get; set; }
+    }
+
+    public class ViewceMastInforSpacMoldRequestDetail : ViewceMastInforSpacMoldRequest
+    {
+        public string irCustomerName { get; set; }
+        public string irFunction { get; set; }
+        public string irModelName { get; set; }
+        public int irRev { get; set; }
+    }
+
 
 }

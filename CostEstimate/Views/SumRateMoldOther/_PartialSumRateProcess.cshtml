@@ -1,0 +1,54 @@
+﻿@using System.Security.Claims;
+@model CostEstimate.Models.Common.Class;
+@using CostEstimate.Models.Common;
+
+@{
+    string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+    string _admin = GlobalVariable.perAdmin.ToUpper();
+
+}
+<div class="" style="">
+    <table class="tbgreen center" style="">
+        <tr>
+            <th rowspan="2" width="10%">MOTHOD</th>
+            <th colspan="2" width="10%">WT</th>
+            <th colspan="2" width="10%">LABOUR (L)</th>
+            <th colspan="2" width="10%">DEPRECIATION (DP)</th>
+            <th colspan="2" width="10%">MANUFACTURING  EXPENSES(ME)</th>
+            <th width="10%">TOTAL COST</th>
+            <th colspan="2" width="10%" >CHART RATE SUB LOCAL 2024</th>
+            <th colspan="2" width="10%" >CHART RATE SUB OVERSEA 2024</th>
+        </tr>
+        <tr>
+            <td>(MAN)</td>
+            <td>(TOTAL)</td>
+            <td>RATE</td>
+            <td>COST(KB)</td>
+            <td>RATE</td>
+            <td>COST(KB)</td>
+            <td>RATE</td>
+            <td>COST(KB)</td>
+            <td>COST(KB)</td>
+            <td>RATE</td>
+            <td>COST(KB)</td>
+            <td>RATE</td>
+            <td>COST(KB)</td>
+        </tr>
+
+        @for(int i = 0; i < 6; i++)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+

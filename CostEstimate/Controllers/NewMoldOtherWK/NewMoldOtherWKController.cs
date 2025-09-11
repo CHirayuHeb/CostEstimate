@@ -116,15 +116,8 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                             wpTotal = _ViewceItemPartName != null ? _ViewceItemPartName.wpTotal : 0,
                             wpIssueDate = _ViewceItemPartName != null ? _ViewceItemPartName.wpIssueDate : "",// @class._ListceMastProcess[i].mpProcessName.Trim(),
                         });
-
-
-
-
                     }
-
                 }
-
-
                 for (int j = 0; j < @class._ListViewceItemPartName.Count(); j++)
                 {
                     var _ceItemWorkingTimeSizeProduct = _MK._ViewceItemWorkingTimeSizeProduct.Where(x => x.wsDocumentNoSub == @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub && x.wsRunNo == @class._ListViewceItemPartName[j].ipRunNo).FirstOrDefault();
@@ -140,9 +133,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                         wsSizeProductY = _ceItemWorkingTimeSizeProduct != null ? _ceItemWorkingTimeSizeProduct.wsSizeProductY : 0,
                         wsSizeProductz = _ceItemWorkingTimeSizeProduct != null ? _ceItemWorkingTimeSizeProduct.wsSizeProductz : 0,
                     });
-
                 }
-
 
                 //if (@class._ListViewceItemWorkingTimePartName.Count() == 0)
                 //{
@@ -185,20 +176,24 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                 //    }
                 //}
                 //add group  ipPartName ipCavityNo ipTypeCavity
-                @class._ListGroupPartName = @class._ListViewceItemWorkingTimePartName.GroupBy(x => new { x.wpPartName, x.wpCavityNo, x.wpTypeCavity,x.wpNoProcess })
+                @class._ListGroupPartName = @class._ListViewceItemWorkingTimePartName.GroupBy(x => new { x.wpPartName, x.wpCavityNo, x.wpTypeCavity, x.wpNoProcess })
                             .Select(g => new GroupPartName
                             {
                                 wpPartName = g.Key.wpPartName,
                                 wpCavityNo = g.Key.wpCavityNo,
                                 wpTypeCavity = g.Key.wpTypeCavity,
-                                wpProcess =  g.Key.wpNoProcess,
-                                _GroupViewceItemWorkingTimePartName = g
-                                    .GroupBy(x => x.wpGroupName)
-                                    .Select(gg => new GroupViewceItemWorkingTimePartName
-                                    {
-                                        GroupName = gg.Key,
-                                        _ViewceItemWorkingTimePartName = gg.ToList()
-                                    }).ToList(),
+                                wpProcess = g.Key.wpNoProcess,
+                                _GroupViewceItemWorkingTimePartName = @class._ListViewceItemWorkingTimePartName.Where(x=>  x.wpPartName == g.Key.wpPartName && x.wpCavityNo == g.Key.wpCavityNo
+                                                                                                                        && x.wpTypeCavity == g.Key.wpTypeCavity && x.wpNoProcess == g.Key.wpNoProcess).ToList(),
+
+
+                                //_GroupViewceItemWorkingTimePartName = g
+                                //    .GroupBy(x => x.wpGroupName)
+                                //    .Select(gg => new GroupViewceItemWorkingTimePartName
+                                //    {
+                                //        GroupName = gg.Key,
+                                //        _ViewceItemWorkingTimePartName = gg.ToList()
+                                //    }).ToList(),
                                 _GroupViewItemWorkingTimeSizeProduct = @class._ListViewceItemWorkingTimeSizeProduct.Where(
                                                                         x => x.wsDocumentNoSub == @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub
                                                                               && x.wsPartName == g.Key.wpPartName
@@ -216,15 +211,10 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                                                                                     wsSizeProductY = y.wsSizeProductY,
                                                                                     wsSizeProductz = y.wsSizeProductz
                                                                                 }).ToList(),
-
-
                             })
                             .ToList();
 
-
                 @class._listAttachment = _IT.Attachment.Where(x => x.fnNo == @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub).ToList();
-
-
             }
 
 
