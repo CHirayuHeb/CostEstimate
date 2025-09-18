@@ -251,12 +251,22 @@ namespace CostEstimate.Models.Common
         public List<GroupViewceMastInforSpacMoldRequest> _ListGroupViewceMastInforSpacMoldRequest { get; set; }
 
 
+        public ViewceMastChartRateOtherReport _ViewceMastChartRateOtherReport { get; set; }
+        public List<ViewceMastChartRateOtherReport> _ListViewceMastChartRateOtherReport { get; set; }
+
+        public List<ViewDetailceMastChartRateOtherReport> _ListViewDetailceMastChartRateOtherReport { get; set; }
+        public ViewDetailceMastChartRateOtherReport _ViewDetailceMastChartRateOtherReport { get; set; }
+
+
+        public List<GroupViewceMastChartRateOtherReport> _ListGroupViewceMastChartRateOtherReport { get; set; }
+
+
 
         public List<ViewceMastWorkingTimeRequestDetail> _ListViewceMastWorkingTimeRequestDetail { get; set; }
         public List<ViewceMastMaterialRequestDetail> _ListViewceMastMaterialRequestDetail { get; set; }
         public List<ViewceMastToolGRRequestDetail> _ListViewceMastToolGRRequestDetail { get; set; }
         public List<ViewceMastInforSpacMoldRequestDetail> _ListViewceMastInforSpacMoldRequestDetail { get; set; }
-        
+
 
         public ViewceSubWorkingTimeRequestItem _ViewceSubWorkingTimeRequestItem { get; set; }
         public List<ViewceSubWorkingTimeRequestItem> _ListViewceSubWorkingTimeRequestItem { get; set; }
@@ -264,6 +274,8 @@ namespace CostEstimate.Models.Common
         public List<GroupViewceSubWorkingTimeRequestItem> _ListGroupViewceSubWorkingTimeRequestItem { get; set; }
 
 
+        public List<MappingRuleChartRate> _ListMappingRuleChartRate { get; set; }
+        public MappingRuleChartRate _ViewMappingRuleChartRate { get; set; }
 
 
 

@@ -134,7 +134,7 @@
                         </span>
                     </div>
                     <div class="col-55" style="text-align: center;">
-                   
+
 
 
 
@@ -152,7 +152,7 @@
                             }
 
 
-                           // var vMoldicsMoldNoName = Model._ViewceMastModifyRequest.mfIcsname + "<br> (" + Model._ViewceMastModifyRequest.mfMoldNoOrMoldName + ")";
+                            // var vMoldicsMoldNoName = Model._ViewceMastModifyRequest.mfIcsname + "<br> (" + Model._ViewceMastModifyRequest.mfMoldNoOrMoldName + ")";
                         }
                         <span style="font-size:28px;padding:0.5px;">@Html.Raw(vMold)</span>
                         @*<span style="font-size:21px;padding:0.5px;">@vMoldicsMoldNoName</span>*@
@@ -160,7 +160,7 @@
                     </div>
                     <div class="col-25">
 
-                        </div>
+                    </div>
                 </div>
 
                 <div class="row" style="margin-bottom:10px">
@@ -217,28 +217,28 @@
         </div>
         <div style="margin-bottom:5px;height:250px">
             <div class="row">
-                    <div class="col-50">
-                        <span style="font-size:14px;">
-                            1.) According to you request MAIL BY MOLD
-                        </span>
-                    </div>
-                    <div class="col-50 txt-right">
-                      
-                        @*<span style="font-size:12px;padding-right:12px ">
-            @{
-                var weight = @Model._ViewceMastSubMakerRequest.smWeight is null
-                             || @Model._ViewceMastSubMakerRequest.smWeight == "" ? "0" : @Model._ViewceMastSubMakerRequest.smWeight;
-            }
-
-
-
-            WEIGHT = @weight KG.
-        </span>
-        <span style="font-size:12px; ">
-            QTY. @Html.DisplayFor(model => model._ViewceMastSubMakerRequest.smQty) PC.
-        </span>*@
-                    </div>
+                <div class="col-50">
+                    <span style="font-size:14px;">
+                        1.) According to you request MAIL BY MOLD
+                    </span>
                 </div>
+                <div class="col-50 txt-right">
+
+                    @*<span style="font-size:12px;padding-right:12px ">
+                            @{
+                                var weight = @Model._ViewceMastSubMakerRequest.smWeight is null
+                                             || @Model._ViewceMastSubMakerRequest.smWeight == "" ? "0" : @Model._ViewceMastSubMakerRequest.smWeight;
+                            }
+
+
+
+                            WEIGHT = @weight KG.
+                        </span>
+                        <span style="font-size:12px; ">
+                            QTY. @Html.DisplayFor(model => model._ViewceMastSubMakerRequest.smQty) PC.
+                        </span>*@
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-5 ">
@@ -273,7 +273,7 @@
             <div class="row">
                 <div class="col-100 center" style="margin-top:20px">
                     @*@Html.DisplayFor(model => model._ViewceMastModifyRequest.mfType)
-                    @Html.DisplayFor(model => model._ViewceMastModifyRequest.mfLeadTime)*@
+                        @Html.DisplayFor(model => model._ViewceMastModifyRequest.mfLeadTime)*@
                     @if (@Model._ViewceMastModifyRequest.mfType != null)
                     {
                         @if (Model._ViewceMastModifyRequest.mfType.Contains("CLAIM"))
@@ -292,33 +292,33 @@
 
 
                     @*@{
-            var vmfType = @Model._ViewceMastModifyRequest.mfType;
+                            var vmfType = @Model._ViewceMastModifyRequest.mfType;
 
-        }
+                        }
 
-        <span style="font-size:20px;padding:0.5px;">@vmfType.ToString()</span>*@
+                        <span style="font-size:20px;padding:0.5px;">@vmfType.ToString()</span>*@
 
 
 
                     @*@if (Model._ViewceMastModifyRequest.mfType.Contains("CLAIM"))
-        {
-            <span style="font-size:25px;">
-                ALREADY
-            </span>
-        }
-        else
-        {
-            <span style="font-size:25px;">
-                We use working time modify mold  day
-            </span>
-            <span style="font-size:26px;">
-                @Html.DisplayFor(model => model._ViewceMastModifyRequest.mfLeadTime)
-            </span>
+                        {
+                            <span style="font-size:25px;">
+                                ALREADY
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="font-size:25px;">
+                                We use working time modify mold  day
+                            </span>
+                            <span style="font-size:26px;">
+                                @Html.DisplayFor(model => model._ViewceMastModifyRequest.mfLeadTime)
+                            </span>
 
-            <span style="font-size:25px;">
-                day
-            </span>
-        }*@
+                            <span style="font-size:25px;">
+                                day
+                            </span>
+                        }*@
 
 
 
@@ -357,9 +357,9 @@
                 <img src="~/images/@(empOP).png" style="width:100px;height:20px;" onerror="this.style.display='none';" />
 
                 @*@if (@Model._ViewOperaterCP.empIssueBy == "004168")
-                {
-                    <img src="~/images/004168.png" style="width:100px;height:20px;" />
-                }*@
+                    {
+                        <img src="~/images/004168.png" style="width:100px;height:20px;" />
+                    }*@
 
                 @*<img src="~/images/@(Model._ViewOperaterCP.empIssueBy + ".png")" style="width:100px;height:30px;" />*@
             </div>
@@ -384,31 +384,31 @@
 
 
                 @*@if (@Model._ViewOperaterCP.empCheckedByTL == "002429")
-                {
-                    <img src="~/images/002429.png" style="width:100px;height:20px;" />
-                }
-                else if (@Model._ViewOperaterCP.empCheckedByTL == "002989")
-                {
-                    <img src="~/images/002989.png" style="width:100px;height:20px;" />
-                }
-                else if (@Model._ViewOperaterCP.empCheckedByTL == "002429")
-                {
-                    <img src="~/images/002429.png" style="width:100px;height:20px;" />
-                }
-                else if (@Model._ViewOperaterCP.empCheckedByTL == "002989")
-                {
-                    <img src="~/images/002989.png" style="width:100px;height:20px;" />
-                }
-                else if (@Model._ViewOperaterCP.empCheckedByTL == "009197")
-                {
-                    <img src="~/images/009197.png" style="width:100px;height:20px;" />
-                }
-                else if (@Model._ViewOperaterCP.empCheckedByTL == "001578")
-                {
-                    <img src="~/images/001578.png" style="width:160px;height:30px;" />
-                }*@
+                    {
+                        <img src="~/images/002429.png" style="width:100px;height:20px;" />
+                    }
+                    else if (@Model._ViewOperaterCP.empCheckedByTL == "002989")
+                    {
+                        <img src="~/images/002989.png" style="width:100px;height:20px;" />
+                    }
+                    else if (@Model._ViewOperaterCP.empCheckedByTL == "002429")
+                    {
+                        <img src="~/images/002429.png" style="width:100px;height:20px;" />
+                    }
+                    else if (@Model._ViewOperaterCP.empCheckedByTL == "002989")
+                    {
+                        <img src="~/images/002989.png" style="width:100px;height:20px;" />
+                    }
+                    else if (@Model._ViewOperaterCP.empCheckedByTL == "009197")
+                    {
+                        <img src="~/images/009197.png" style="width:100px;height:20px;" />
+                    }
+                    else if (@Model._ViewOperaterCP.empCheckedByTL == "001578")
+                    {
+                        <img src="~/images/001578.png" style="width:160px;height:30px;" />
+                    }*@
 
-               
+
             </div>
         </div>
         <br />
@@ -432,32 +432,32 @@
 
 
                 @*@if (@Model._ViewOperaterCP.empCheckedByTM == "002429")
-                {
-                    <img src="~/images/002429.png" style="width:100px;height:20px;" />
-                }
-                else if (@Model._ViewOperaterCP.empCheckedByTM == "002989")
-                {
-                    <img src="~/images/002989.png" style="width:100px;height:20px;" />
-                }
-                else if (@Model._ViewOperaterCP.empCheckedByTM == "002429")
-                {
-                    <img src="~/images/002429.png" style="width:100px;height:20px;" />
-                }
-                else if (@Model._ViewOperaterCP.empCheckedByTM == "002989")
-                {
-                    <img src="~/images/002989.png" style="width:100px;height:20px;" />
-                }
-                else if (@Model._ViewOperaterCP.empCheckedByTM == "009197")
-                {
-                    <img src="~/images/009197.png" style="width:100px;height:20px;" />
-                }
-                else if (@Model._ViewOperaterCP.empCheckedByTM == "001578")
-                {
-                    <img src="~/images/001578.png" style="width:160px;height:30px;" />
-                }*@
+                    {
+                        <img src="~/images/002429.png" style="width:100px;height:20px;" />
+                    }
+                    else if (@Model._ViewOperaterCP.empCheckedByTM == "002989")
+                    {
+                        <img src="~/images/002989.png" style="width:100px;height:20px;" />
+                    }
+                    else if (@Model._ViewOperaterCP.empCheckedByTM == "002429")
+                    {
+                        <img src="~/images/002429.png" style="width:100px;height:20px;" />
+                    }
+                    else if (@Model._ViewOperaterCP.empCheckedByTM == "002989")
+                    {
+                        <img src="~/images/002989.png" style="width:100px;height:20px;" />
+                    }
+                    else if (@Model._ViewOperaterCP.empCheckedByTM == "009197")
+                    {
+                        <img src="~/images/009197.png" style="width:100px;height:20px;" />
+                    }
+                    else if (@Model._ViewOperaterCP.empCheckedByTM == "001578")
+                    {
+                        <img src="~/images/001578.png" style="width:160px;height:30px;" />
+                    }*@
 
                 @*<img src="~/images/002429.png" style="width:100px;height:20px;" />
-        <img src="~/images/002989.png" style="width:100px;height:20px;" />*@
+                    <img src="~/images/002989.png" style="width:100px;height:20px;" />*@
             </div>
         </div>
         <br />
@@ -477,35 +477,35 @@
                     var empAP = Model._ViewOperaterCP.empApproveBy;
                 }
 
-                <img src="~/images/@(empAP).png" style="width:100px;height:20px;"  onerror="this.style.display='none';" />
+                <img src="~/images/@(empAP).png" style="width:100px;height:20px;" onerror="this.style.display='none';" />
                 @*@if (@Model._ViewOperaterCP.empApproveBy == "009197")
-                {
-                    <img src="~/images/009197.png" style="width:100px;height:20px;" />
-                }
-                else if (@Model._ViewOperaterCP.empApproveBy == "001578")
-                {
-                    <img src="~/images/001578.png" style="width:160px;height:30px;" />
-                }
-                else if (@Model._ViewOperaterCP.empApproveBy == "002429")
-                {
-                    <img src="~/images/002429.png" style="width:100px;height:20px;" />
-                }
-                else if (@Model._ViewOperaterCP.empApproveBy == "002989")
-                {
-                    <img src="~/images/002989.png" style="width:100px;height:20px;" />
-                }
-                else if (@Model._ViewOperaterCP.empApproveBy == "002429")
-                {
-                    <img src="~/images/002429.png" style="width:100px;height:20px;" />
-                }
-                else if (@Model._ViewOperaterCP.empApproveBy == "002989")
-                {
-                    <img src="~/images/002989.png" style="width:100px;height:20px;" />
-                }*@
+                    {
+                        <img src="~/images/009197.png" style="width:100px;height:20px;" />
+                    }
+                    else if (@Model._ViewOperaterCP.empApproveBy == "001578")
+                    {
+                        <img src="~/images/001578.png" style="width:160px;height:30px;" />
+                    }
+                    else if (@Model._ViewOperaterCP.empApproveBy == "002429")
+                    {
+                        <img src="~/images/002429.png" style="width:100px;height:20px;" />
+                    }
+                    else if (@Model._ViewOperaterCP.empApproveBy == "002989")
+                    {
+                        <img src="~/images/002989.png" style="width:100px;height:20px;" />
+                    }
+                    else if (@Model._ViewOperaterCP.empApproveBy == "002429")
+                    {
+                        <img src="~/images/002429.png" style="width:100px;height:20px;" />
+                    }
+                    else if (@Model._ViewOperaterCP.empApproveBy == "002989")
+                    {
+                        <img src="~/images/002989.png" style="width:100px;height:20px;" />
+                    }*@
 
                 @*<img src="~/images/@(Model._ViewOperaterCP.empApproveBy + ".png")" style="width:100px;height:30px;" />*@
                 @*<img src="~/images/009197.png" style="width:100px;height:20px;" />
-        <img src="~/images/001578.png" style="width:160px;height:30px;" />*@
+                    <img src="~/images/001578.png" style="width:160px;height:30px;" />*@
             </div>
         </div>
     </div>

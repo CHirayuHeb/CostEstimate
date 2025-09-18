@@ -97,6 +97,9 @@
     <Content Update="Views\NewMoldOther\SendMail.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\NewMoldOther\_PartialDisplayMoldOtherQuotation.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\NewMoldOther\_PartialOtherAttachFile.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

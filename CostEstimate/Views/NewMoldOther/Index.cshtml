@@ -31,12 +31,11 @@
                     </span>
                 </div>
                 <div class="col-40 center" style="text-align:right;">
-
-                    @*<button class="button btnBlue" style="margin-right:20px;width:auto; @(Model._ViewceMastMoldOtherRequest.rfStep > 8 ? "" : "display:none")"
-                                onclick="Menubar_PrintMoldQUOTATION('@Url.Action("PrintMoldQUOTATION", "NewMoldModify")','@Model._ViewceMastModifyRequest.mfCENo')">
-                            <img src="~/images/printer.png" style="width:33px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                            REPORT
-                        </button>*@
+                    <button class="button btnBlue" style="margin-right:20px;width:auto; @(Model._ViewceMastMoldOtherRequest.mrStep > 4 ? "" : "display:none")"
+                            onclick="Menubar_PrintMoldOtherQUOTATION('@Url.Action("PrintMoldQUOTATION", "NewMoldOther")','@Model._ViewceMastMoldOtherRequest.mrDocmentNo')">
+                        <img src="~/images/printer.png" style="width:33px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                        REPORT
+                    </button>
                     <button class="button" style="width:auto" onclick="Menubar_MoldOther_sendmail('','@Url.Action("History", "NewMoldOther")')">
                         <img src="~/images/direct.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
                         SEND
@@ -229,6 +228,7 @@
                                             <th style="text-align:center;display:none" width='70px'>RunNo​</th>
                                             <th style="text-align:center" width='100px'>Cavity No.​</th>
                                             <th style="text-align:center">Type of Cavity.​</th>
+                                            <th style="text-align:center" width='80px'>Chart Rate.​</th>
                                             <th style="text-align:center">View Report​</th>
                                             <th style="text-align:center">Delete</th>
                                         </tr>
@@ -249,6 +249,14 @@
                                                         @*<input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;display:none' asp-for="_ListViewceItemPartName[i].ipCavityNo">*@
                                                     <td>
                                                         @Html.DropDownListFor(m => m._ListViewceItemPartName[i].ipTypeCavity, (SelectList)ViewBag.TypeofCavity, "กรุณาเลือก", new { @class = "form-control vTypeCavity", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;", disabled = Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "disabled" : null })
+                                                    </td>
+                                                    <td>
+                                                        <input type='number' class='vRateReport form-control txt-right' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipRateReport"
+                                                               readonly="@( !(Model._ViewceMastMoldOtherRequest.mrStep == 1 ||
+                       Model._ViewceMastMoldOtherRequest.mrStep == 4 ||
+                       Model._ViewceMastMoldOtherRequest.mrStep == 5 ||
+                       Model._ViewceMastMoldOtherRequest.mrStep == 6 ||
+                       Model._ViewceMastMoldOtherRequest.mrStep == 7) ? "" : "readonly" )" />
                                                     </td>
                                                     <td width='70px'>
 
@@ -646,6 +654,49 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal QUOTATION  -->
+    <div class="modal modal-sxl fade" id="myModalMoldOtherQUOTATION" style="background-color:rgba(79,75,75,0.3);" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" style="min-width:900px; width:900px; max-height:90vh;">
+            <div class="modal-content">
+                <!-- Header -->
+                <div class="modal-header" style="margin-top:1px">
+                    <h5 class="modal-title">
+                        <img src="~/images/quotation.png" height="35px" width="35px" style="vertical-align:middle;margin-right:10px" />
+                        <span style="font-weight:bold; font-size:16px;">Quotation Mold Modify</span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <!-- Body -->
+                <div class="modal-body" id="myModalBodyDivMoldOtherQUOTATION" style="position:relative; max-height:70vh; overflow-y:auto; padding:10px;">
+
+                    <!-- Loading Indicator -->
+                    <div id="loadingIndicatorMoldOtherQuotation" style="display:block; position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); z-index:1055; text-align:center;">
+                        <img src="~/images/wait1.gif" alt="Loading..." width="100px" />
+                        <div style="font-weight:600;">Loading...</div>
+                    </div>
+
+                    <!-- Result Content -->
+                    <div id="ResultMoldOtherQuotation" style="display:none;">
+                        @await Html.PartialAsync("_PartialDisplayMoldOtherQuotation", Model)
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer" style="width:100%;">
+                    <button class="btn btn-primary"
+                            onclick="printQuotationA4('@Model._ViewceMastMoldOtherRequest.mrDocmentNo','NewMoldOther?id=','MoldOther')"
+                            style="@(Model._ViewceMastMoldOtherRequest.mrStep >5 ? "" : "display:none")">
+                        🖨 พิมพ์ A4
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 
 <script type="text/javascript">
@@ -1077,7 +1128,10 @@
         htmls += " <td width='100px'> <input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow ;' value ='0' min='0'>";
         htmls +=" <input type='text' class='vCustomerName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;display:None' value =''></td > ";
         htmls += "<td>" + document.getElementById("template_TypeCavity").outerHTML.replace('template_TypeCavity', 'i_NewMold_TypeCavity').replace('style="display:none"', 'class="vTypeCavity form-control" style="width:100%;font-size:10px;background-color:yellow;"') + "</td>";
-        htmls += " <td width='70px'><img src='" + imgSrc + "' alt='icon' class='imgM' /></td>";
+        htmls += " <td><input type='number' class='vRateReport form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow ;' value ='1.1'></td>";
+
+        //htmls += " <td width='70px'><img src='" + imgSrc + "' alt='icon' class='imgM' /></td>";
+        htmls += " <td width='70px'></td>";
         htmls += "<td align='Center'><input type='button' class='RemoveRow' value='&#x274C'></td>";
         htmls += "</tr>";
 

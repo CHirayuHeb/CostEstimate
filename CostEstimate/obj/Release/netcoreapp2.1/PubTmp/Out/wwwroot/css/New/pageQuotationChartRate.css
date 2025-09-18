@@ -1,0 +1,27 @@
+﻿.body1 {
+    margin: 0;
+    padding: 0;
+    background: #eee;
+}
+
+.page1 {
+    width: 794px; /* A4 กว้าง (96dpi) */
+    height: 1123px; /* A4 สูง (96dpi) */
+    margin: 10px auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.row1 {
+    height: 100px;
+    margin-bottom: 5px;
+    border: 1px solid #aaa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-sizing: border-box;
+}

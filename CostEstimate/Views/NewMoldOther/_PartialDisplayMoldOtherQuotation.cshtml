@@ -1,0 +1,235 @@
+﻿@model CostEstimate.Models.Common.Class;
+@{
+    //string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+@*<link href="~/css/New/pageQuotation.css" rel="stylesheet" />*@
+<link href="~/css/New/pageQuotation_moldOther.css" rel="stylesheet" />
+
+<body>
+    @* ใช้ไฟล์ Razor/CSHTML *@
+    <div class="a4-page">
+        <div class="row">
+            <div class="col-30">
+                <table style="width:100%; border-collapse: collapse;">
+                    <tr>
+                        <td style="width:20%; padding: 0;">
+                            <span style="font-size:10px; display: block; padding: 0;">MAIL :</span>
+                        </td>
+                        <td style="text-align:center; border:1px solid black; padding: 0;">
+                            <span style="font-size:10px; display: block; padding: 0;">SATELLITE</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0;"></td>
+                        <td style="text-align:center; border:1px solid black; padding: 0;">
+                            <span style="font-size:10px; display: block; padding: 0;">ST</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-60"></div>
+            <div class="col-10">
+                <div class="circle">
+                    <div class="content">1/1</div>
+                </div>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="col-60">
+                <span style="font-size:25px">
+                    ESTIMATION
+                    <span style="font-size:20px">
+                        in MANUFACTURING  COST
+                    </span>
+                </span>
+            </div>
+            <div class="col-40" style="text-align:right"></div>
+
+        </div>
+        <hr style="border:1px double black;margin-top:2px" />
+        <div class="row">
+            <div class="col-60"></div>
+            <div class="col-40" style="text-align:right;font-size:16px">
+                DATE :
+                <span style="text-decoration: underline; text-underline-offset:5px;font-size:18px">
+                    @Html.DisplayFor(model => model._ViewceMastMoldOtherRequest.mrIssueDate)
+                </span>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:10px">
+            <div class="col-30"></div>
+            <div class="col-70" style="text-align:right">
+                <span style="font-size:25px;border: 0px solid black; padding: 5px;text-decoration: underline; text-underline-offset:5px;">
+                    @Html.DisplayFor(model => model._ViewceMastMoldOtherRequest.mrCustomerName)
+                    @Html.DisplayFor(model => model._ViewceMastMoldOtherRequest.mrModelName)
+                    (@Html.DisplayFor(model => model._ViewceMastMoldOtherRequest.mrFunction))
+                </span>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:10px">
+            <div class="col-20">
+                <span style="font-size:16px;padding:0.5px">
+                    @Html.DisplayFor(model => model._ViewceMastMoldOtherRequest.mrDocmentNo)
+                </span>
+            </div>
+            <div class="col-50"></div>
+            <div class="col-30" style="text-align:center;">
+                <span style="font-size:16px">NEW  MOLD</span>
+            </div>
+
+        </div>
+        <hr style="border:1px double black;" />
+        <!-- Header Table -->
+    
+
+        <div class="page-item">
+            <div style="display:flex; width:100%;">
+                <div style="flex:0 0 30%;height:30px; border:0.5px solid black;
+                            display:flex; align-items:center; justify-content:center; padding-left:5px;">
+                    <span style="font-size:12px">MOLD No. & NAME</span>
+                </div>
+                <div style="flex:0 0 30%;height:30px; border:0.5px solid black;
+                            display:flex; align-items:center; justify-content:center; padding-left:5px;">
+                    <span style="font-size:12px">CAVITY & AMOUNT BAHT</span>
+                </div>
+                <div style="flex:0 0 40%;height:30px; border:0.5px solid black;
+                            display:flex; align-items:center; justify-content:center;">
+                    <span style="font-size:12px">TYPE, GATE, SLIDE & OTHER SPEC.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loop Rows -->
+        @for (int i = 0; i < 10; i++)
+        {
+            <div class="page-item">
+                <div style="display:flex; width:100%;">
+                    <div style="flex:0 0 30%;height:110px; border:0.5px solid black;
+                            display:flex; align-items:center; justify-content:flex-start; padding-left:5px;">
+                        @*<span style="font-size:24px">
+                        @Html.DisplayFor(x => x._ListViewceItemPartName[i].ipPartName)
+                        </span>*@
+                    </div>
+                    <div style="flex:0 0 30%;height:110px; border:0.5px solid black;
+                            text-align:right;padding-right:5px">
+                        <span style="font-size:12px;padding-right:10px">
+                            @*@Html.DisplayFor(x => x._ListViewceItemPartName[i].ipCavityNo)*@
+                        </span>
+                        <span style="font-size:12px">
+                            @*@Html.DisplayFor(x => x._ListViewceItemPartName[i].ipTypeCavity)*@
+                        </span>
+                    </div>
+                    <div style="flex:0 0 40%;height:110px; border:0.5px solid black;
+                            display:flex; align-items:center; justify-content:center;">
+                        Box 3
+                    </div>
+                </div>
+            </div>
+        }
+
+
+
+        <div class="row">
+            <div class="col-80">
+            </div>
+            <div class="col-20" style="margin-top:20px;margin-bottom:10px">
+                <span style="font-size:14px;padding:0.5px">Yours  faithfully,</span>
+            </div>
+        </div>
+        <br />
+        <div class="row" style="padding-right:10px">
+            <div class="col-20">
+                <span style="font-size:12px;padding:0.5px">ISSUED BY:</span>
+            </div>
+            <div class="col-50">
+                <span style="font-size:12px;padding:0.5px">@Html.DisplayFor(model => model._ViewOperaterCP.IssueBy)</span>
+            </div>
+            <div class="col-30 center" style="text-decoration: underline; border-bottom: 1px solid black;nderline;padding-bottom: 1px;">
+                @{
+                    var empOP = Model._ViewOperaterCP.empIssueBy;
+                }
+
+                <img src="~/images/@(empOP).png" style="width:100px;height:20px;" onerror="this.style.display='none';" />
+
+            </div>
+        </div>
+        <br />
+        <div class="row" style="padding-right:10px">
+            <div class="col-20">
+                <span style="font-size:12px;padding:0.5px">CHECKED BY:</span>
+            </div>
+            <div class="col-50">
+                <span style="font-size:12px;padding:0.5px">@Html.DisplayFor(model => model._ViewOperaterCP.CheckedByTL)</span>
+
+            </div>
+            <div class="col-30 center" style="text-decoration: underline; border-bottom: 1px solid black;nderline;padding-bottom: 1px;">
+
+                @{
+                    var empTL = Model._ViewOperaterCP.empCheckedByTL;
+                }
+
+                <img src="~/images/@(empTL).png" style="width:100px;height:20px;" onerror="this.style.display='none';" />
+
+
+
+            </div>
+        </div>
+        <br />
+        <div class="row" style="padding-right:10px">
+            <div class="col-20">
+                <span style="font-size:12px;padding:0.5px">CHECKED BY:</span>
+            </div>
+            <div class="col-50">
+                <span style="font-size:12px;padding:0.5px">@Html.DisplayFor(model => model._ViewOperaterCP.CheckedByTM)</span>
+
+            </div>
+            <div class="col-30 center" style="text-decoration: underline; border-bottom: 1px solid black;nderline;padding-bottom: 1px;">
+                @*<img src="~/images/@(Model._ViewOperaterCP.empCheckedBy + ".png")" style="width:100px;height:30px;" />*@
+
+                @{
+                    var empTM = Model._ViewOperaterCP.empCheckedByTM;
+                }
+
+                <img src="~/images/@(empTM).png" style="width:100px;height:20px;" onerror="this.style.display='none';" />
+
+
+            </div>
+        </div>
+        <br />
+        <div class="row" style="padding-right:10px">
+            <div class="col-20">
+                <span style="font-size:12px;padding:0.5px">APPROVED BY:</span>
+            </div>
+
+            <div class="col-50">
+                <span style="font-size:12px;padding:0.5px">@Html.DisplayFor(model => model._ViewOperaterCP.ApproveBy)</span>
+            </div>
+            <div class="col-30 center" style="text-decoration: underline; border-bottom: 1px solid black;nderline;padding-bottom: 1px;">
+
+
+                @{
+                    var empAP = Model._ViewOperaterCP.empApproveBy;
+                }
+
+                <img src="~/images/@(empAP).png" style="width:100px;height:20px;" onerror="this.style.display='none';" />
+
+            </div>
+        </div>
+        <br />
+    </div>
+
+ 
+</body>
+

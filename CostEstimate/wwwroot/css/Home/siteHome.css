@@ -200,6 +200,7 @@ table tr td .td-approve {
     width: 30%;
     margin-top: 6px;
 }
+
 .col-35 {
     float: left;
     width: 35%;
@@ -211,6 +212,7 @@ table tr td .td-approve {
     width: 40%;
     margin-top: 6px;
 }
+
 .col-45 {
     float: left;
     width: 45%;
@@ -314,6 +316,7 @@ col-100 {
     height: 30px;
     background: #9bbd5e;
 }
+
 .border1_5SkyBlue {
     border: 0px solid #cbeff7;
     border-radius: 2px;
@@ -588,9 +591,8 @@ col-100 {
         /*vertical-align: baseline;*/
         text-align: center;
         vertical-align: middle;
-     
     }
-   
+
     .tbgreen thead th {
         position: sticky;
         top: 0;
@@ -785,3 +787,57 @@ col-100 {
     transition: box-shadow 0.3s, outline 0.3s;
 }*/
 
+/*.rotated {
+    width: 40px;
+   
+    padding: 2px; 
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+
+
+
+.rotated-inner {
+    transform: rotate(270deg);
+    transform-origin: center;
+    display: inline-block;
+    white-space: nowrap;
+    font-size: 16px;
+    padding: 0; 
+    margin: 0; 
+    line-height: 1; 
+}*/
+
+.rotate {
+    transform: rotate(270deg); /* หมุนข้อความ */
+    white-space: nowrap; /* กันตัดบรรทัด */
+    display: inline-block; /* ให้หมุนเฉพาะข้อความ */
+}
+
+
+.vertical-text {
+    writing-mode: sideways-lr; /* จัดตัวหนังสือแนวตั้ง */
+    text-orientation: upright; /* ให้ตัวอักษรตรง ไม่หมุน */
+    /*background-color: red;*/
+    white-space: nowrap; /* กันตัดบรรทัด */
+    font-size: 14px;
+    padding: 4px;
+}
+
+.divflex30center {
+    flex: 0 0 30%;
+    border: 1px solid black;
+  
+}
+.divflex40center {
+    flex: 0 0 40%;
+    border: 1px solid black;
+    display: flex;
+}
+.divcenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

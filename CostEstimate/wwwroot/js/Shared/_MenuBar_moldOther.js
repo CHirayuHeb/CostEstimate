@@ -1952,11 +1952,12 @@ function printQuotationA4(mpNo, action, type) {
     var printContents;
     // MoldModify
     //SubMaker
-    if (type == "SubMaker") {
-        printContents = document.getElementById("ResultQuotation").innerHTML;
-    } else {
-        printContents = document.getElementById("ResultMoldQuotation").innerHTML;
-    }
+    //if (type == "SubMaker") {
+    //    printContents = document.getElementById("ResultQuotation").innerHTML;
+    //} else {
+    //    printContents = document.getElementById("ResultMoldQuotation").innerHTML;
+    //}
+    printContents = document.getElementById("ResultMoldOtherQuotation").innerHTML;
     //ResultMoldQuotation
     //ResultQuotation
     //printContents = document.getElementById("ResultQuotation").innerHTML;
@@ -4397,6 +4398,7 @@ function Menubar_MoldOther_saveDraft(action) {
                 ipRunNo: row.querySelector(".vRunNo").value.trim(), //   index + 1, // ✅ เริ่มจาก 1
                 ipPartName: row.querySelector(".vPartName").value.trim(),
                 ipCavityNo: parseInt(row.querySelector(".vCavityNo").value) || 0,
+                ipRateReport: parseFloat(row.querySelector(".vRateReport").value) || 0,
                 ipTypeCavity: itemTypeCavityNoInput.options[itemTypeCavityNoInput.selectedIndex].text.trim(),   //row.querySelector(".vTypeCavity").value.trim(),
             });
         });
@@ -4784,6 +4786,7 @@ function Menubar_MoldOther_savesendMail(action) {
                 ipRunNo: row.querySelector(".vRunNo").value.trim(),// index + 1, // ✅ เริ่มจาก 1
                 ipPartName: row.querySelector(".vPartName").value.trim(),
                 ipCavityNo: parseInt(row.querySelector(".vCavityNo").value) || 0,
+                ipRateReport: parseFloat(row.querySelector(".vRateReport").value) || 0,
                 ipTypeCavity: itemTypeCavityNoInput.options[itemTypeCavityNoInput.selectedIndex].text.trim(),   //row.querySelector(".vTypeCavity").value.trim(),
             });
         });
@@ -7065,3 +7068,39 @@ function Menubar_AddMasterOModel(action) {
 
 
 }
+
+
+
+function Menubar_PrintMoldOtherQUOTATION(action, mpNo) {
+    console.log("Menubar_PrintMoldOtherQUOTATION");
+    $.ajax({
+        url: action,//'/New/SearchbyModelName', // URL ของ Controller
+        type: 'POST',
+        data: {
+            mpNo: mpNo
+        },
+        beforeSend: function () {
+
+            console.log("Showing loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorMoldOtherQuotation").css("display", "block"); // แสดง Loader
+            $("#ResultMoldOtherQuotation").css("display", "none"); // ซ่อน Loader
+        },
+        success: function (response) {
+            //$("#ResultQuotation").html(response); // เอา HTML Partial View มาใส่ใน Div
+
+            $("#ResultMoldOtherQuotation").css("display", "block"); // แสดง Loader
+            $("#ResultMoldOtherQuotation").html(response); // เอา HTML Partial View มาใส่ใน Div
+        },
+        error: function () {
+            alert("Error!!");
+        },
+        complete: function () {
+            // ซ่อนรูปโหลดเมื่อ request เสร็จ
+            console.log("Hiding loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorMoldOtherQuotation").css("display", "none"); // ซ่อน Loader
+
+        }
+    });
+    $("#myModalMoldOtherQUOTATION").modal("show");
+}
+

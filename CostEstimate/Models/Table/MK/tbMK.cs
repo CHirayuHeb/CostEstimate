@@ -144,7 +144,10 @@ namespace CostEstimate.Models.Table.MK
         public double cpDP_Rate { get; set; }
         // public float cpDP_Cost { get; set; }
         public double cpME_Rate { get; set; }
-        //public float cpME_Cost { get; set; }
+
+        public double cpCR_Local_Rate { get; set; } = 0;
+        public double cpCR_Oversea_Rate { get; set; } = 0;
+
         public string cpIssueBy { get; set; }
         public string cpUpdateBy { get; set; }
 
@@ -679,7 +682,7 @@ namespace CostEstimate.Models.Table.MK
         public string ipPartName { get; set; }
         public double ipCavityNo { get; set; }
         public string ipTypeCavity { get; set; }
-
+        public double ipRateReport { get; set; } = 1.1;
 
     }
 
@@ -727,7 +730,7 @@ namespace CostEstimate.Models.Table.MK
         public string wpTypeCavity { get; set; }
         public int wpProcess { get; set; }
         public List<ViewceItemWorkingTimePartName> _GroupViewceItemWorkingTimePartName { get; set; }
-       // public List<GroupViewceItemWorkingTimePartName> _GroupViewceItemWorkingTimePartName { get; set; }
+        // public List<GroupViewceItemWorkingTimePartName> _GroupViewceItemWorkingTimePartName { get; set; }
         public List<ViewceItemWorkingTimeSizeProduct> _GroupViewItemWorkingTimeSizeProduct { get; set; }
     }
 
@@ -927,6 +930,17 @@ namespace CostEstimate.Models.Table.MK
 
     }
 
+    [Table("ceMastChartRateOtherReport")]
+    public class ViewceMastChartRateOtherReport
+    {
+        [Key]
+        public int crRunno { get; set; }
+        public string crDocumentNo { get; set; }
+        public string crCostPlanningNo { get; set; }
+
+    }
+
+
     public class GroupViewceMastInforSpacMoldRequest
     {
         public string ipPartName { get; set; }
@@ -1001,5 +1015,40 @@ namespace CostEstimate.Models.Table.MK
         public int irRev { get; set; }
     }
 
+
+
+    public class ViewDetailceMastChartRateOtherReport
+    {
+        [Key]
+        public string crGroupName { get; set; }   //varchar
+        public string cpProcessName { get; set; }   // varchar
+        public double crWTMan { get; set; }   //   float
+        public double crWTTotal { get; set; }   //   float
+        public double crLabour_Rate { get; set; }   //   float
+        public double crLabour_Cost { get; set; }   //   float
+        public double crDP_Rate { get; set; }   // float
+        public double crpDP_Cost { get; set; }   //   float
+        public double crME_Rate { get; set; }   //   float
+        public double crME_Cost { get; set; }   //   float
+        public double crTotal_cost { get; set; }   //    float
+        public double crChartRateSub_Local_Rate { get; set; }   //  float
+        public double crChartRateSub_Local_Cost { get; set; }   //   float
+        public double crChartRateSub_Oversea_Rate { get; set; }   //  float
+        public double crChartRateSub_Oversea_Cost { get; set; }   // float
+
+    }
+
+    public class GroupViewceMastChartRateOtherReport
+    {
+        public string GroupName { get; set; }
+        public List<ViewDetailceMastChartRateOtherReport> DetailceMastChartRateOtherReport { get; set; }
+    }
+
+    public class MappingRuleChartRate
+    {
+        public string Code { get; set; }     // ช่องหลัก เช่น "DT&QC"
+        public string ManFormula { get; set; }  // สูตร เช่น "OT CAD + OT CAM"
+        public string AutoFormula { get; set; }
+    }
 
 }

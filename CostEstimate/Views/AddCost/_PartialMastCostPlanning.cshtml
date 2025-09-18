@@ -46,10 +46,13 @@
                         <th style="text-align:center;font-size:9px" width="20%">LABOUR RATE</th>
                         <th style="text-align:center;font-size:9px" width="20%">DEPRECIATION (DP)​</th>
                         <th style="text-align:center;font-size:9px" width="20%">MANUFACTURING EXPENSES(ME)​</th>
-
+                        <th style="text-align:center;font-size:9px" width="20%">CHART RATE SUB LOCAL​</th>
+                        <th style="text-align:center;font-size:9px" width="20%">CHART RATE SUB OVERSEA​</th>
                     </tr>
                     <tr style="height:30px">
                         <th style="text-align:center;font-size:9px" width="20%">RATE</th>
+                        <th style="text-align:center;font-size:9px" width="20%">RATE</th>
+                        <th style="text-align:center;font-size:9px" width="20%">RATE​</th>
                         <th style="text-align:center;font-size:9px" width="20%">RATE</th>
                         <th style="text-align:center;font-size:9px" width="20%">RATE​</th>
 
@@ -82,13 +85,19 @@
                                     </td>
                                     <td style="text-align:left;">
                                         <input asp-for="_ListViewceCostPlanning[RowCount].cpME_Rate" type="number" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;" value="@group.ceCostPlanning[i].cpME_Rate" />
+
+                                    </td>
+                                    <td style="text-align:left;">
+                                        <input asp-for="_ListViewceCostPlanning[RowCount].cpCR_Local_Rate" type="number" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;" value="@group.ceCostPlanning[i].cpCR_Local_Rate" />
+                                    </td>
+                                    <td style="text-align:left;">
+                                        <input asp-for="_ListViewceCostPlanning[RowCount].cpCR_Oversea_Rate" type="number" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;" value="@group.ceCostPlanning[i].cpCR_Oversea_Rate" />
                                         <span style="display:none">@(RowCount += 1)</span>
-                                        @*<input asp-for="_ListViewceCostPlanning[RowCount].cpNo" type="text" class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;" value="@(RowCount += 1)" />*@
                                     </td>
                                 </tr>
                             }
                             <tr>
-                                <th style="text-align:left" colspan="4"><span style="font-weight:600"> @group.GroupName</span></th>
+                                <th style="text-align:left" colspan="6"><span style="font-weight:600"> @group.GroupName</span></th>
                                 @*<td style="text-align:left"><input class="form-control center cpLabour_Rate @group.GroupName" id="cpLabour_Rate @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
                                     <td style="text-align:left"><input class="form-control center cpDP_Rate @group.GroupName" id="cpDP_Rate @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>
                                     <td style="text-align:left"><input class="form-control center cpME_Rate @group.GroupName" id="cpME_Rate @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="number" min="0" readonly /></td>*@

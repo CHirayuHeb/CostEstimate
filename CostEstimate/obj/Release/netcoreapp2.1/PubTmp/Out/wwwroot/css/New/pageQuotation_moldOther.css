@@ -1,0 +1,56 @@
+﻿/*body {
+    font-family: KodchiangUPC Bold;
+    font-weight: 600;
+  
+}*/
+
+.a4-page {
+    width: 210mm;
+    height: 297mm;
+    padding: 5mm;
+    margin: 5px auto;
+    background: white;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    font-family: KodchiangUPC Bold;
+    /*font-family: Angsana New;*/
+    font-weight: 600;
+}
+
+.circle {
+    width: 50px;
+    height: 35px;
+    border-radius: 50%;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.content {
+    font-size: 12px;
+}
+
+/* ห้ามตัด row กลางหน้า */
+.page-item {
+    page-break-inside: avoid;
+}
+
+@media print {
+    body {
+        background: none;
+    }
+
+    .a4-page {
+        margin: 0;
+        box-shadow: none;
+        page-break-after: always; /* จบหน้าแล้วขึ้นหน้าใหม่ */
+        font-family: KodchiangUPC Bold;
+        font-weight: 600;
+    }
+
+    .no-print {
+        display: none;
+    }
+}

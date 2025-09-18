@@ -1,0 +1,363 @@
+﻿@using System.Security.Claims;
+@model CostEstimate.Models.Common.Class;
+@using CostEstimate.Models.Common;
+
+@{
+    string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+    string _admin = GlobalVariable.perAdmin.ToUpper();
+}
+
+
+@{
+    var toolAmount = Model._ListViewceItemMaterialRequestPartName
+                        .Where(x => x.mpItem.Contains("TOOL"))
+                        .Select(x => x.mpAmount)
+                        .FirstOrDefault();
+
+    var MatCOSTTool = Model._ListViewceItemMaterialRequestPartName[0].mpTotal - toolAmount;
+}
+
+<table class="tbgreen " style="font-size:9px;margin:0px">
+    <tr>
+        <th rowspan="16" width="50px">
+            <div class="vertical-text" style="margin-left:20%">ESTIMATE COST MOLD</div>
+        </th>
+
+        <td colspan="3">
+            LABOUR. COST (A)
+        </td>
+        <td colspan="3">
+            DP. COST (B)
+        </td>
+        <td colspan="3">
+            ME. COST (C)
+        </td>
+        <td colspan="2">
+            WT COST (LOCAL)
+        </td>
+        <td colspan="2">
+            WT COST (OVERSEA)
+        </td>
+        <td colspan="2">
+            MAT COST - TOOL
+        </td>
+        <td width="50px"></td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            @*364.91*@
+            <input class="form-control center" id="EsTotalLabour_Cost" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="number" min="0" readonly />
+        </td>
+        <td colspan="3">
+            @*364.91*@
+            <input class="form-control center" id="EsTotalDP_Cost" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="number" min="0" readonly />
+
+        </td>
+        <td colspan="3">
+            @*364.91*@
+            <input class="form-control center" id="EsTotalME_Cost" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="number" min="0" readonly />
+
+
+        </td>
+        <td colspan="2">
+            <input class="form-control center" id="EsTotalChLocal_Cost" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="number" min="0" readonly />
+
+
+
+        </td>
+        <td colspan="2">
+            <input class="form-control center" id="EsTotalChOversea_Cost" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="number" min="0" readonly />
+
+
+
+        </td>
+        <td colspan="2">
+            <input class="form-control center " id="EsTotalMatCOSTTool" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@MatCOSTTool" type="number" readonly />
+
+
+
+        </td>
+        <td>
+            .-KB
+        </td>
+    </tr>
+    <tr>
+        <td colspan="6">
+            D = COST UNTIL SH  ((A+B+C) x COEFFICIENT).
+        </td>
+        <td colspan="3">
+            MATERIAL COST
+        </td>
+        <th class="rotated" rowspan="4" width="40px">
+            <div class="vertical-text" style="">LOCAL</div>
+
+        </th>
+        <td colspan="3">
+            TARGET MAKER COST FOR PU
+        </td>
+        <td colspan="2">
+            DEVELOP THS (ST-T0)
+        </td>
+        <td>
+            <input class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@Model._ViewceItemWorkingTimeSizeProduct.wsSize" type="text" readonly />
+        </td>
+    </tr>
+
+
+
+    <tr>
+        <td colspan="4">
+            <span>
+                (( A + B + C ) x
+                @Html.DisplayFor(x=> x._ViewceItemPartName.ipRateReport)
+                 )) =
+            </span>
+            <input class="form-control center " id="EsChartRate" autocomplete="off" style="width:40px;height:80%;font-size:10px;background-color:lightgray;display:none" type="text" readonly asp-for="_ViewceItemPartName.ipRateReport" />
+
+        </td>
+
+        <td colspan="2">
+            <input class="form-control center " id="EsTotalCOSTUNTILSH" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="number" readonly />
+
+
+        </td>
+        <td colspan="2">
+            <input class="form-control center " id="EsMatCOSTTool" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@MatCOSTTool" type="number" readonly />
+
+        </td>
+        <td>
+            .-KB
+        </td>
+        <td colspan="3">
+            <input class="form-control center " id="EsTotalTargetMakerCostForPU" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="number" readonly />
+        </td>
+        <td colspan="2">
+
+            @{
+                var valueSize = 0;
+
+                if (Model._ViewceItemWorkingTimeSizeProduct.wsSize == "S")
+                {
+                    valueSize = 67;
+                }
+                else if (Model._ViewceItemWorkingTimeSizeProduct.wsSize == "M")
+                {
+                    valueSize = 74;
+                }
+                else if (Model._ViewceItemWorkingTimeSizeProduct.wsSize == "L")
+                {
+                    valueSize = 92;
+                }
+                else if (Model._ViewceItemWorkingTimeSizeProduct.wsSize == "LL")
+                {
+                    valueSize = 100;
+                }
+            }
+            <input class="form-control center " id="EsDevelopTHS" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="text" value="@valueSize" readonly />
+
+
+            @*
+                S	67
+                M	74
+                L	92
+                LL	100*@
+
+
+        </td>
+        <td>
+            .-KB
+        </td>
+    </tr>
+    <tr>
+        <th colspan="2" rowspan="2">
+            <span style="font-size:8px">FOCAST ACTUAL 2025</span>
+                
+        </th>
+        <td colspan="4" rowspan="2">
+            TOTAL ESTIMATE COST(E)
+        </td>
+
+        <td colspan="3">
+            E = D + MATERIAL
+        </td>
+        <td colspan="6">
+            LOCAL MAKER COST UNTIL SH   (A x COEFFICIENT)+MAT.
+        </td>
+
+    </tr>
+    <tr>
+        <td colspan="2">
+            <input class="form-control center " id="EsE_D_MATERIAL" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="number" readonly />
+
+
+        </td>
+        <td>
+            .-KB
+        </td>
+        <td>
+            <input class="form-control center " autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="text" readonly asp-for="_ViewceItemPartName.ipRateReport" />
+        </td>
+        <td colspan="4">
+            @*LOCAL MAKER COST UNTIL SH   (A x COEFFICIENT)+MAT.*@
+            <input class="form-control center " id="EsLocalMakerCostAxCOEFFICIENT_MAT" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="text" readonly asp-for="_ViewceItemPartName.ipRateReport" />
+
+            @*1,490,000.00*@
+        </td>
+        <td>
+            .-B
+        </td>
+
+    </tr>
+
+    <tr>
+        <th colspan="2" rowspan="2">
+            <span style="font-size:8px">
+                ESTIMATE COST
+            </span> 
+        </th>
+        <td rowspan="2" colspan="3">
+            <input class="form-control center " id="EstotalESTIMATE_COST" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="text" readonly />
+
+            @*1,600,000*@
+        </td>
+        <th rowspan="2">
+            SIZE PRODUCT
+        </th>
+        <th>
+
+            X
+        </th>
+        <th>
+
+            Y
+        </th>
+        <th>
+
+            Z
+        </th>
+        <th rowspan="6" width="40px">
+            <div class="vertical-text" style="">OVERSEA</div>
+
+        </th>
+
+        <td colspan="3">
+            TARGET MAKER COST FOR PU
+        </td>
+        <td colspan="2">
+            DEVELOP THS (ST-T0)
+
+        </td>
+        <td>
+            <input class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@Model._ViewceItemWorkingTimeSizeProduct.wsSize" type="text" readonly />
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@Model._ViewceItemWorkingTimeSizeProduct.wsSizeProductX" type="text" readonly />
+        </td>
+        <td>
+            <input class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@Model._ViewceItemWorkingTimeSizeProduct.wsSizeProductY" type="text" readonly />
+        </td>
+        <td>
+            <input class="form-control center" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@Model._ViewceItemWorkingTimeSizeProduct.wsSizeProductz" type="text" readonly />
+        </td>
+        <td colspan="3">
+            @*1420.00*@
+            <input class="form-control center" id="EsTotalTargetMakerCostForPU1" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="text" readonly />
+
+        </td>
+        <td colspan="2">
+            @*S		0
+                M		54
+                L		70
+                LL		85*@
+
+
+
+            @*54.00*@
+            @{
+                var valueSize1 = 0;
+
+                if (Model._ViewceItemWorkingTimeSizeProduct.wsSize == "S")
+                {
+                    valueSize1 = 0;
+                }
+                else if (Model._ViewceItemWorkingTimeSizeProduct.wsSize == "M")
+                {
+                    valueSize1 = 54;
+                }
+                else if (Model._ViewceItemWorkingTimeSizeProduct.wsSize == "L")
+                {
+                    valueSize1 = 70;
+                }
+                else if (Model._ViewceItemWorkingTimeSizeProduct.wsSize == "LL")
+                {
+                    valueSize1 = 85;
+                }
+            }
+
+            <input class="form-control center " id="EsDevelopTHS1" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="text" value="@valueSize1" readonly />
+
+
+
+        </td>
+        <td>
+            .-KB.
+        </td>
+    </tr>
+    <tr>
+        <td colspan="9" rowspan="4"></td>
+        <td colspan="6">
+            OVERSEA MAKER COST UNTIL SH (A x COEFFICIENT) + MAT.
+        </td>
+    </tr>
+    <tr>
+
+        <td>
+            <input class="form-control center " id="EsOverseaRate" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="text" readonly asp-for="_ViewceItemPartName.ipRateReport" />
+
+            @*1.10*@
+        </td>
+        <td colspan="4">
+            <input class="form-control center " id="EsOverseaMakerCost" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="text" readonly />
+
+            @*1,550,000.00*@
+
+        </td>
+        <td>
+            .-B
+
+        </td>
+    </tr>
+    <tr>
+
+        <td colspan="6">
+            TOTAL OVERSEA MAKER INCLUDE  ( SHIPPING EXPENSE)
+        </td>
+    </tr>
+    <tr>
+
+        <td>
+            <input class="form-control center " id="EsOverseaINCLUDERate" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="text" readonly asp-for="_ViewceItemPartName.ipRateReport" />
+
+        </td>
+        <td colspan="4">
+            <input class="form-control center " id="EsOverseaINCLUDETotal" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" type="text" readonly asp-for="_ViewceItemPartName.ipRateReport" />
+
+
+
+        </td>
+        <td>
+            .-B
+
+        </td>
+    </tr>
+</table>
+
+

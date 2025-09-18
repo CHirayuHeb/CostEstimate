@@ -267,7 +267,7 @@ namespace CostEstimate.Controllers.AddCost
                 @class.paramCostNo = DocNo;
                 @class.paramCostDes = Desc;
                 List<ViewceMastProcess> _ListceMastProcess = new List<ViewceMastProcess>();
-                _ListceMastProcess = _MK._ViewceMastProcess.Where(x=>x.mpType == "subMaker").ToList();
+                _ListceMastProcess = _MK._ViewceMastProcess.Where(x => x.mpType == "subMaker").ToList();
                 @class._ListceCostPlanning = new List<ViewceCostPlanning>();
 
                 if (DocNo != null)
@@ -289,6 +289,8 @@ namespace CostEstimate.Controllers.AddCost
                             cpLabour_Rate = 0,
                             cpDP_Rate = 0,
                             cpME_Rate = 0,
+                            cpCR_Local_Rate = 0,
+                            cpCR_Oversea_Rate = 0,
                             cpIssueBy = "",
                             cpUpdateBy = "",
                         });
@@ -427,9 +429,6 @@ namespace CostEstimate.Controllers.AddCost
                         _ViewcceRunCostpalnning.rcUpdateBy = IssueBy;
                         _MK._ViewcceRunCostpalnning.AddAsync(_ViewcceRunCostpalnning);
 
-
-
-
                         //_ListViewceCostPlanning = Count = 34
                         if (@class._ListViewceCostPlanning.Count() > 0)
                         {
@@ -445,6 +444,9 @@ namespace CostEstimate.Controllers.AddCost
                                     cpLabour_Rate = @class._ListViewceCostPlanning[i].cpLabour_Rate,
                                     cpDP_Rate = @class._ListViewceCostPlanning[i].cpDP_Rate,
                                     cpME_Rate = @class._ListViewceCostPlanning[i].cpME_Rate,
+                                    cpCR_Local_Rate = @class._ListViewceCostPlanning[i].cpCR_Local_Rate,
+                                    cpCR_Oversea_Rate = @class._ListViewceCostPlanning[i].cpCR_Oversea_Rate,
+
                                     cpIssueBy = @class._ListViewceCostPlanning[i].cpIssueBy == null ? IssueBy : @class._ListViewceCostPlanning[i].cpIssueBy,
                                     cpUpdateBy = IssueBy,
                                 };
@@ -476,6 +478,8 @@ namespace CostEstimate.Controllers.AddCost
                                         cpLabour_Rate = @class._ListViewceCostPlanning[i].cpLabour_Rate,
                                         cpDP_Rate = @class._ListViewceCostPlanning[i].cpDP_Rate,
                                         cpME_Rate = @class._ListViewceCostPlanning[i].cpME_Rate,
+                                        cpCR_Local_Rate = @class._ListViewceCostPlanning[i].cpCR_Local_Rate,
+                                        cpCR_Oversea_Rate = @class._ListViewceCostPlanning[i].cpCR_Oversea_Rate,
                                         cpIssueBy = @class._ListViewceCostPlanning[i].cpIssueBy == null ? IssueBy : @class._ListViewceCostPlanning[i].cpIssueBy,
                                         cpUpdateBy = IssueBy,
                                     };

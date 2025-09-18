@@ -19,7 +19,7 @@
 <div class="home-content">
     <div id="DisplayContent" class="content-box">
         <br />
-        <div style="" class="content-text">
+        <div style="padding-left:20px;padding-right:20px" class="content-text">
             <div class="row center" style="padding:5px; background-color:#6fa54f; margin-bottom:5px; border-radius:5px;">
                 <div class="col-60" style="text-align:left">
                     <span style="font-size:26px; font-weight:800; color:black; line-height:1.4;">
@@ -33,25 +33,176 @@
                     <span style="font-size:14px; font-weight:800; color:#b3e07d; line-height:1.4;">
                         MOLD SUBMAKER COST ESTIMATE SHEET
                     </span>
-                    <span style="font-size:14px; font-weight:600; color:white; line-height:1.4; margin-top:2px; display:block;">
-                        OVERSEA MAKER
-                    </span>
+                    @*<span style="font-size:14px; font-weight:600; color:white; line-height:1.4; margin-top:2px; display:block;">
+                    OVERSEA MAKER
+                </span>*@
                 </div>
             </div>
-            <div style="margin-top:10px;border:0px solid #000;border-radius:5px;background:#fff;padding:5px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
+            <div style="margin-top:10px;border:0px solid #000;border-radius:5px;background:#fff;padding:5px;box-shadow:0 4px 12px rgba(0,0,0,0.2);padding:10px">
+                <div class="row center">
+                    <div class="col-5 " style="">
+                    </div>
+                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Customer Name.</div>
+                    </div>
+                    <div class="col-25" style=" display: flex;align-items: center; ">
+                        <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrCustomerName" readonly>
+                    </div>
+
+                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Document No.</div>
+                    </div>
+                    <div class="col-25 " style=" display: flex;align-items: center; ">
+                        <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrDocmentNo" readonly>
+
+                    </div>
+
+
+                    <div class="col-5 " style="">
+                    </div>
+                </div>
+                <div class="row center">
+                    <div class="col-5 " style="">
+                    </div>
+                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Model Name.</div>
+                    </div>
+                    <div class="col-25" style=" display: flex;align-items: center; ">
+                        <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrModelName" readonly>
+                    </div>
+
+                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Model No</div>
+                    </div>
+                    <div class="col-25 " style=" display: flex;align-items: center; ">
+                        <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrModelName" readonly>
+
+                    </div>
+
+
+                    <div class="col-5 " style="">
+                    </div>
+                </div>
+                <div class="row center">
+                    <div class="col-5 " style="">
+                    </div>
+                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Model Name.</div>
+                    </div>
+                    <div class="col-25" style=" display: flex;align-items: center; ">
+                        <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrModelName" readonly>
+                    </div>
+
+                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Part Name</div>
+                    </div>
+                    <div class="col-25 " style=" display: flex;align-items: center; ">
+                        <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceItemPartName.ipPartName" readonly>
+
+                    </div>
+
+
+                    <div class="col-5 " style="">
+                    </div>
+                </div>
+                <div class="row center">
+                    <div class="col-5 " style="">
+                    </div>
+                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Cavity No.</div>
+                    </div>
+                    <div class="col-25" style=" display: flex;align-items: center; ">
+                        <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceItemPartName.ipCavityNo" readonly>
+                    </div>
+
+                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Cavity Type</div>
+                    </div>
+                    <div class="col-25 " style=" display: flex;align-items: center; ">
+                        <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceItemPartName.ipTypeCavity" readonly>
+
+                    </div>
+
+
+                    <div class="col-5 " style="">
+                    </div>
+                </div>
+                <br />
+                @*<div>
                 @await Html.PartialAsync("_PartialSumRateProcess", Model)
+            </div>*@
+
+                @*<div class="row">
+                <div class="col-80">
+                    @await Html.PartialAsync("_PartialSumRateProcess", Model)
+                </div>
+                <div class="col-20">
+                    @await Html.PartialAsync("_PartialSumRateMaterial", Model)
+                </div>
+            </div>*@
+
+
+
+
+
+            </div>
+            <div  class=" center" style="display:flex; width:100%;margin-top:10px;border:0px solid #000;border-radius:5px;background:#fff;padding:10px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
+                <div style="flex:0 0 80%;">
+                    @await Html.PartialAsync("_PartialSumRateProcess", Model)
+                </div>
+                <div style="flex:0 0 20%;margin-left:5px">
+                    @await Html.PartialAsync("_PartialSumRateMaterial", Model)
+                </div>
+            </div>
+            @*<br />*@
+            @*<div class="row center" style="margin-top:10px;border:0px solid #000;border-radius:5px;background:#fff;padding-bottom:10px;padding-top:5px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
+                <div class="col-80">
+                    @await Html.PartialAsync("_PartialSumRateProcess", Model)
+                </div>
+                <div class="col-20">
+                    @await Html.PartialAsync("_PartialSumRateMaterial", Model)
+                </div>
+            </div>*@
+
+
+            <div class=" center" style="margin-top:10px;border:0px solid #000;border-radius:5px;background:#fff;padding:5px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
+                @await Html.PartialAsync("_PartialEstimateCost", Model)
             </div>
 
-            <div style="margin-top:10px;border:0px solid #000;border-radius:5px;background:#fff;padding:5px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
+            @*  <div class="row center" style="margin-top:10px;border:0px solid #000;border-radius:5px;background:#fff;padding:10px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
+            <div class="col-25">
                 @await Html.PartialAsync("_PartialSumRateMaterial", Model)
             </div>
-    
-            
 
+        </div>*@
+
+            @*<div class="row center" style="margin-top:10px;border:0px solid #000;border-radius:5px;background:#fff;padding-bottom:10px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
+            <div class="col-75">
+                @await Html.PartialAsync("_PartialEstimateCost", Model)
             </div>
+            <div class="col-25">
+                @await Html.PartialAsync("_PartialSumRateMaterial", Model)
+            </div>
+        </div>*@
+
+
+
+
+            @*<div style="margin-top:10px;border:0px solid #000;border-radius:5px;background:#fff;padding:5px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
+            @await Html.PartialAsync("_PartialSumRateMaterial", Model)
+        </div>
+
+        <div style="margin-top:10px;border:0px solid #000;border-radius:5px;background:#fff;padding:5px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
+            @await Html.PartialAsync("_PartialEstimateCost", Model)
+        </div>*@
 
 
 
 
         </div>
-</div>
+
+
+
+
+            </div>
+        </div>
