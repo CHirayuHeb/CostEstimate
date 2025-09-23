@@ -278,6 +278,14 @@ namespace CostEstimate.Models.Common
         public MappingRuleChartRate _ViewMappingRuleChartRate { get; set; }
 
 
+        //quoataion
+        public ViewMoldOtherDatailQuotation _ViewMoldOtherDatailQuotation { get; set; }
+        public List<ViewMoldOtherDatailQuotation> _ListViewMoldOtherDatailQuotation { get; set; }
+
+
+        public ViewceMastMappingRuleChartRate _ViewceMastMappingRuleChartRate { get; set; }
+        public List<ViewceMastMappingRuleChartRate> _ListViewceMastMappingRuleChartRaten { get; set; }
+        
 
 
     }

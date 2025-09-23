@@ -83,7 +83,7 @@ namespace CostEstimate.Controllers.NewMoldOther
             @class._ViewceMastMaterialRequest = new ViewceMastMaterialRequest();
             @class._ViewceMastToolGRRequest = new ViewceMastToolGRRequest();
             @class._ViewceMastInforSpacMoldRequest = new ViewceMastInforSpacMoldRequest();
-
+            @class._ListViewMoldOtherDatailQuotation = new List<ViewMoldOtherDatailQuotation>();
             if (id != null)
             {
                 //check status 
@@ -104,6 +104,27 @@ namespace CostEstimate.Controllers.NewMoldOther
                 @class._ViewceMastToolGRRequest = _MK._ViewceMastToolGRRequest.Where(x => x.trDocumentNo == id).FirstOrDefault();
                 @class._ViewceMastInforSpacMoldRequest = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == id).FirstOrDefault();
                 @class._listAttachment = _IT.Attachment.Where(x => x.fnNo == id).ToList();
+
+
+
+                //for report Quataion 22/09/2025 
+                //@class._ListViewMoldOtherDatailQuotation = getDatailQuotation(id, @class);
+
+                //@class._ListViewMoldOtherDatailQuotation = new List<ViewMoldOtherDatailQuotation>();
+                //for (int i = 0; i < @class._ListViewceItemPartName.Count(); i++)
+                //{
+                //    @class._ListViewMoldOtherDatailQuotation.Add(new ViewMoldOtherDatailQuotation
+                //    {
+                //        dMoldNoName = @class._ListViewceItemPartName[i].ipPartName,
+                //        dCavityNo = @class._ListViewceItemPartName[i].ipCavityNo,
+                //        dTypeCavity = @class._ListViewceItemPartName[i].ipTypeCavity,
+                //        dDetail = "2 PLATE TYPE",
+
+                //    });
+                //}
+
+
+
             }
 
 
@@ -132,6 +153,348 @@ namespace CostEstimate.Controllers.NewMoldOther
         }
 
 
+        public List<ViewMoldOtherDatailQuotation> getDatailQuotation(string id, Class @class)
+        {
+            List<ViewMoldOtherDatailQuotation> _ListViewMoldOtherDatailQuotation = new List<ViewMoldOtherDatailQuotation>();
+            //for report Quataion 22 / 09 / 2025
+
+            for (int i = 0; i < @class._ListViewceItemPartName.Count(); i++)
+            {
+
+                //ceMastInforSpacMoldRequest
+                //ceItemInforRequestPartName
+                //ceItemInforSlideSystem
+                //ceItemInforTypeOfCut
+                //ceItemInforShibo
+                var DocNoSub = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == id).Select(x => x.irDocumentNoSub).FirstOrDefault();
+
+
+                string _ItemInforRequestPart = "";
+                string ipGate1 = "";
+                string ipGate2 = "";
+                string ipGate3 = "";
+                string ipsprueSys = "";
+                string ipMakerRunHot = "";
+
+                string vInforSlideSystem = "";
+
+                string vGMaterial = "";
+                string ipBaseCavity = "";
+                string ipInsertCavity = "";
+                string ipBaseCode = "";
+                string ipInsertCode = "";
+
+
+                string vitemTypeofcout = "";
+
+
+                string vitemSHIBO = "";
+
+                var _listViewceItemInforRequestPartName = _MK._ViewceItemInforRequestPartName.Where(x => x.ipDocumentNoSub == DocNoSub && x.ipNoProcess == @class._ListViewceItemPartName[i].ipRunNo).ToList();
+                for (int j = 0; j < _listViewceItemInforRequestPartName.Count(); j++)
+                {
+                    ipGate1 += _listViewceItemInforRequestPartName[j].ipGateType1 != null && _listViewceItemInforRequestPartName[j].ipGateType1 != "" ? _listViewceItemInforRequestPartName[j].ipGateType1 + "(" + _listViewceItemInforRequestPartName[j].ipNumberPoint1.ToString() + "DROP), " : "";
+                    ipGate2 += _listViewceItemInforRequestPartName[j].ipGateType2 != null && _listViewceItemInforRequestPartName[j].ipGateType2 != "" ? _listViewceItemInforRequestPartName[j].ipGateType2 + "(" + _listViewceItemInforRequestPartName[j].ipNumberPoint2.ToString() + "DROP), " : "";
+                    ipGate3 += _listViewceItemInforRequestPartName[j].ipGateType3 != null && _listViewceItemInforRequestPartName[j].ipGateType3 != "" ? _listViewceItemInforRequestPartName[j].ipGateType3 + "(" + _listViewceItemInforRequestPartName[j].ipNumberPoint3.ToString() + "DROP), " : "";
+
+
+                    //ipsprueSys = _listViewceItemInforRequestPartName[0].ipSprueSystem != null && _listViewceItemInforRequestPartName[0].ipSprueSystem != "" ?
+                    //                                        _listViewceItemInforRequestPartName[0].ipSprueSystem : "";
+                    //ipMakerRunHot = _listViewceItemInforRequestPartName[0].ipMakerHotRunner != null && _listViewceItemInforRequestPartName[0].ipMakerHotRunner != "" ? "(" + _listViewceItemInforRequestPartName[0].ipMakerHotRunner + "), " : ", ";
+
+
+                    ipsprueSys = _listViewceItemInforRequestPartName[0].ipSprueSystem ?? "";
+                    ipMakerRunHot = string.IsNullOrEmpty(_listViewceItemInforRequestPartName[0].ipMakerHotRunner)
+                    ? ", "
+                        : $"({_listViewceItemInforRequestPartName[0].ipMakerHotRunner}), ";
+
+                }
+
+                var _listViewceItemInforSlideSystem = _MK._ViewceItemInforSlideSystem.Where(x => x.isDocumentNoSub == DocNoSub && x.isNoProcess == @class._ListViewceItemPartName[i].ipRunNo).ToList();
+                if (_listViewceItemInforSlideSystem.Count > 0)
+                {
+                    for (int j = 0; j < _listViewceItemInforSlideSystem.Count(); j++)
+                    {
+                        vInforSlideSystem += _listViewceItemInforSlideSystem[j].isSlideSystemType + "(" + _listViewceItemInforSlideSystem[j].isSlideSystemCount.ToString() + " PCS),";
+                    }
+                }
+                else
+                {
+                    vInforSlideSystem = "NO SLIDE, ";
+                }
+
+
+                //GROUP MATERIAL
+                for (int j = 0; j < _listViewceItemInforRequestPartName.Count(); j++)
+                {
+                    ipBaseCavity = _listViewceItemInforRequestPartName[j].ipBaseCavity != null ? _listViewceItemInforRequestPartName[j].ipBaseCavity + "," : "";
+                    ipInsertCavity = _listViewceItemInforRequestPartName[j].ipInsertCavity != null ? _listViewceItemInforRequestPartName[j].ipInsertCavity + "," : "";
+                    ipBaseCode = _listViewceItemInforRequestPartName[j].ipBaseCode != null ? _listViewceItemInforRequestPartName[j].ipBaseCode + "," : "";
+                    ipInsertCode = _listViewceItemInforRequestPartName[j].ipInsertCode != null ? _listViewceItemInforRequestPartName[j].ipInsertCode + "," : "";
+                }
+                vGMaterial = ipBaseCavity + ipInsertCavity + ipBaseCode + ipInsertCode;
+
+
+                //TYPE OF CUT
+                var _listItemInforTypeOfCut = _MK._ViewceItemInforTypeOfCut.Where(x => x.icDocumentNoSub == DocNoSub && x.icNoProcess == @class._ListViewceItemPartName[i].ipRunNo).ToList();
+                if (_listItemInforTypeOfCut.Count > 0)
+                {
+                    vitemTypeofcout = "*HAVE ";
+                    for (int j = 0; j < _listItemInforTypeOfCut.Count(); j++)
+                    {
+
+                        vitemTypeofcout += _listItemInforTypeOfCut[j].icTypeofcut;
+                        if (j < _listItemInforTypeOfCut.Count() - 1)
+                        {
+                            vitemTypeofcout += " && ";
+                        }
+                    }
+                    vitemTypeofcout += " = 0.33 mm";
+                }
+                else
+                {
+                    vitemTypeofcout = "*DONT HAVE,";
+                }
+
+
+                //SHIBO
+                var _listItemShibo = _MK._ViewceItemInforShibo.Where(x => x.ibDocumentNoSub == DocNoSub && x.ibNoProcess == @class._ListViewceItemPartName[i].ipRunNo).ToList();
+                if (_listItemShibo.Count > 0)
+                {
+                    vitemSHIBO = "*HAVE SHIBO ";
+                    for (int j = 0; j < _listItemShibo.Count(); j++)
+                    {
+
+                        vitemSHIBO += _listItemShibo[j].ibSHiboPCS;
+                        if (j < _listItemInforTypeOfCut.Count() - 1)
+                        {
+                            vitemSHIBO += ", ";
+                        }
+                    }
+
+                }
+                else
+                {
+                    vitemSHIBO = "*DONT HAVE SHIBO, ";
+                }
+
+                _ItemInforRequestPart = ipGate1 + ipGate2 + ipGate3 + ipsprueSys + ipMakerRunHot + vInforSlideSystem + vGMaterial + vitemTypeofcout + vitemSHIBO;
+
+
+
+                //cal dEstimateCost TOTAL MT.
+
+                @class._ListViewDetailceMastChartRateOtherReport = getListViewDetailceMastChartRateOtherReport(id, @class._ListViewceItemPartName[i].ipRunNo);
+
+
+                @class._ViewceMastMaterialRequest = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == id).FirstOrDefault();
+                @class._ListViewceItemMaterialRequestPartName = _MK._ViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == @class._ViewceMastMaterialRequest.mrDocumentNoSub && x.mpNoProcess == @class._ListViewceItemPartName[i].ipRunNo).ToList();
+
+
+                double vRate = @class._ListViewceItemPartName[i].ipRateReport;
+                double vTotalCost = Math.Round(@class._ListViewDetailceMastChartRateOtherReport.Sum(x => x.crTotal_cost),2);
+                double vCalTotal = Math.Round(vTotalCost * vRate,2);
+                double vTOTALMT = @class._ListViewceItemMaterialRequestPartName[0].mpTotal;
+                double resultsum = vCalTotal + vTOTALMT;
+
+                double result = Math.Ceiling(resultsum / 10.0) * 10 * 1000;
+
+
+                _ListViewMoldOtherDatailQuotation.Add(new ViewMoldOtherDatailQuotation
+                {
+                    dMoldNoName = @class._ListViewceItemPartName[i].ipPartName,
+                    dCavityNo = @class._ListViewceItemPartName[i].ipCavityNo,
+                    dTypeCavity = @class._ListViewceItemPartName[i].ipTypeCavity,
+                    dEstimateCost = result.ToString("N0"),
+                    dDetail = _ItemInforRequestPart,
+
+                });
+            }
+
+            return _ListViewMoldOtherDatailQuotation;
+        }
+
+
+
+
+        //public List<GroupViewceMastChartRateOtherReport> getListGroupViewceMastChartRateOtherReport(string Docno, int vProcess)
+        public List<ViewDetailceMastChartRateOtherReport> getListViewDetailceMastChartRateOtherReport(string Docno, int vProcess)
+        {
+            Class @class = new Class();
+
+            var ceCostPlan = _MK._ViewceMastChartRateOtherReport.Where(x => x.crDocumentNo == Docno).Select(x => x.crCostPlanningNo).FirstOrDefault();
+            var listCeCostPlan = _MK._ViewceCostPlanning.Where(x => x.cpCostPlanningNo == ceCostPlan).ToList();
+
+
+
+            //ceWorkingTimePartName
+            var docWokingTime = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNo == Docno).Select(x => x.wrDocumentNoSub).FirstOrDefault();
+            var ceWorkingTimePartName = _MK._ViewceItemWorkingTimePartName.Where(x => x.wpDocumentNoSub == docWokingTime && x.wpNoProcess == vProcess).ToList();
+
+
+
+            List<ViewceMastMappingRuleChartRate> mappingList = new List<ViewceMastMappingRuleChartRate>();
+            mappingList = _MK._ViewceMastMappingRuleChartRate.ToList();
+
+            //var mappingList = new List<MappingRuleChartRate>
+            //{
+            //    new MappingRuleChartRate { Code = "DT&QC.", ManFormula = "OT CAD#wpWT_MAN,OT CAM#wpWT_MAN",AutoFormula ="" },
+            //    new MappingRuleChartRate { Code = "3-D.", ManFormula = "3D(QC)#wpWT_MAN",AutoFormula ="" },
+            //    new MappingRuleChartRate { Code = "CAD-D.", ManFormula = "CAD-D#wpWT_MAN",AutoFormula ="" },
+            //    new MappingRuleChartRate { Code = "CAD-M.", ManFormula = "CAD-M#wpWT_MAN",AutoFormula ="" },
+            //    new MappingRuleChartRate { Code = "BM.", ManFormula = "BM#wpWT_MAN",AutoFormula ="BM#wpWTAuto" },
+            //    new MappingRuleChartRate { Code = "NC(CO).", ManFormula = "NC#wpWT_MAN",AutoFormula ="NC#wpWT_MAN,NC#wpWTAuto" },
+            //    new MappingRuleChartRate { Code = "NCG(CO).", ManFormula = "NCG#wpWT_MAN",AutoFormula ="NCG#wpWT_MAN,NCG#wpWTAuto" },
+            //    new MappingRuleChartRate { Code = "NCL.", ManFormula = "MNC#wpWT_MAN,LNC#wpWT_MAN",AutoFormula ="MNC#wpWT_MAN,MNC#wpWTAuto,LNC#wpWT_MAN,LNC#wpWTAuto" },
+            //    new MappingRuleChartRate { Code = "NC(GR).", ManFormula = "NCGR#wpWT_MAN",AutoFormula ="NCGR#wpWT_MAN,NCGR#wpWTAuto" },
+            //    new MappingRuleChartRate { Code = "EDM(CO).", ManFormula = "ED#wpWT_MAN",AutoFormula ="ED#wpWT_MAN,ED#wpWTAuto" },
+            //    new MappingRuleChartRate { Code = "W-E.", ManFormula = "WE#wpWT_MAN",AutoFormula ="WE#wpWT_MAN,WE#wpWTAuto" },
+            //    new MappingRuleChartRate { Code = "M.", ManFormula = "M.#wpWT_MAN",AutoFormula ="" },
+            //    new MappingRuleChartRate { Code = "F.", ManFormula = "FG#wpWT_MAN",AutoFormula ="" },
+            //    new MappingRuleChartRate { Code = "P(W).", ManFormula = "PG#wpWT_MAN",AutoFormula ="" },
+            //    new MappingRuleChartRate { Code = "TRIAL.", ManFormula = "OT TM#wpWT_MAN",AutoFormula ="" },
+            //    new MappingRuleChartRate { Code = "OT.FG", ManFormula = "OT 3D#wpWT_MAN,OT NC#wpWT_MAN,OT PG#wpWT_MAN,OT FG#wpWT_MAN",AutoFormula ="" },
+            //};
+
+
+            /*   DT&QC. = OT CAD(MAN) + OT CAM(MAN)
+                 3-D. = 3D(QC)(MAN)
+                 CAD-D. = CAD-D(MAN)
+                 CAD-M. =CAD-M(MAN)
+                 BM. = BM(MAN), BM(AUTO)	
+                 NC(CA). = ?
+                 NC(CO).= NC(MAN),  NC(MAN)+NC(AUTO)
+                 NCG(CA). = ?
+                 NCG(CO). =NCG(MAN) ,NCG(MAN) +NCG(AUTO)
+                 NCL. =MNC(MAN) + LNC(MAN)   , MNC(MAN) + MNC(AUTO)+LNC(MAN)+LNC(AUTO)	
+                 NC(GR).= NCGR(MAN) ,NCGR(MAN)+ NCGR(AUTO)
+                 EDM(CA). =?
+                 EDM(CO). =ED(MAN) , ED(MAN) + ED(AUTO)
+                 W-E. =WE(MAN) ,	WE(MAN)+WE(AUTO)
+                 M. = GM(MAN)
+                 SG,FG,CG. =?
+                 D. =?
+                 D(E). =?
+                 RD. =?
+                 L.=?
+                 W. =?
+                 W(L). =?
+                 P(A).=?
+                 C,U.=?
+                 DS.=?
+                 MK.=?
+                 MF. =?
+                 F. = FG(MAN)
+                 F(GR).=?
+                 M-A.=?
+                 P(M).=?
+                 P(W). = PG(MAN)
+                 TRIAL. = OT TM(MAN)
+                 OT.FG = =OT 3D(MAN) + OT NC(MAN) + OT PG(MAN)+  OT FG(MAN)   
+                 MEETING.
+            */
+
+
+
+            @class._ListViewDetailceMastChartRateOtherReport = new List<ViewDetailceMastChartRateOtherReport>();
+            for (int i = 0; i < listCeCostPlan.Count(); i++)
+            {
+                //select list
+                double crWTMan = 0;
+                double crWTTotal = 0;
+
+                var RuleChartRate = mappingList.FirstOrDefault(m => m.mrCode == listCeCostPlan[i].cpProcessName);
+                if (RuleChartRate != null)
+                {
+                    //get Man
+                    //var manParts = RuleChartRate.mrManFormula.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    var manParts = string.IsNullOrEmpty(RuleChartRate.mrManFormula) ? Array.Empty<string>() : RuleChartRate.mrManFormula.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var part in manParts)
+                    {
+                        var lmanParts = part.Split('#');
+                        if (lmanParts.Count() > 1)
+                        {
+
+
+                            var vceItemWorking = _MK._ViewceItemWorkingTimePartName.Where(x => x.wpDocumentNoSub == docWokingTime && x.wpNoProcess == vProcess && x.wpProcessName == lmanParts[0].ToString()).ToList();
+                            double vWTMan = vceItemWorking != null && vceItemWorking.Count() > 0 ?
+                                            lmanParts[1].ToString() == "wpWT_MAN" ? vceItemWorking.Select(x => x.wpWT_Man).FirstOrDefault() : vceItemWorking.Select(x => x.wpWT_Auto).FirstOrDefault() : 0;
+
+                            crWTMan += vWTMan;
+
+                        }
+
+
+
+                    }
+                    //get auto
+                    //var autoParts =  RuleChartRate.mrAutoFormula.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    var autoParts = !string.IsNullOrEmpty(RuleChartRate.mrAutoFormula) ? RuleChartRate.mrAutoFormula.Split(',', StringSplitOptions.RemoveEmptyEntries) : Array.Empty<string>();
+
+
+                    foreach (var part in autoParts)
+                    {
+                        var lmanParts = part.Split('#');
+                        if (lmanParts.Count() > 1)
+                        {
+
+                            var vceItemWorking = _MK._ViewceItemWorkingTimePartName.Where(x => x.wpDocumentNoSub == docWokingTime && x.wpNoProcess == vProcess && x.wpProcessName == lmanParts[0].ToString()).ToList();
+                            double vWTAuto = vceItemWorking != null && vceItemWorking.Count() > 0 ?
+                                         lmanParts[1].ToString() == "wpWT_MAN" ? vceItemWorking.Select(x => x.wpWT_Man).FirstOrDefault() : vceItemWorking.Select(x => x.wpWT_Auto).FirstOrDefault() : 0;
+                            crWTTotal += vWTAuto;
+
+                        }
+
+
+
+
+                    }
+
+                }
+
+                //find list 
+
+                //for loop sum
+
+                //DESIGN
+                //NC.
+                double sSumLabour_Cost = listCeCostPlan[i].cpProcessName == "NC." ? crWTTotal * listCeCostPlan[i].cpDP_Rate / 1000 : crWTMan * listCeCostPlan[i].cpDP_Rate / 1000;
+                double sSumDPrCost = listCeCostPlan[i].cpProcessName == "NC." ? crWTTotal * listCeCostPlan[i].cpDP_Rate / 1000 : crWTMan * listCeCostPlan[i].cpDP_Rate / 1000;
+                double sSumME_Cost = listCeCostPlan[i].cpProcessName == "NC." ? crWTTotal * listCeCostPlan[i].cpME_Rate / 1000 : crWTMan * listCeCostPlan[i].cpME_Rate / 1000;
+
+
+                @class._ListViewDetailceMastChartRateOtherReport.Add(new ViewDetailceMastChartRateOtherReport
+                {
+                    crGroupName = listCeCostPlan[i].cpGroupName,
+                    cpProcessName = listCeCostPlan[i].cpProcessName,
+                    crWTMan = crWTMan,
+                    crWTTotal = crWTTotal,
+                    crLabour_Rate = listCeCostPlan[i].cpLabour_Rate,
+                    crLabour_Cost = Math.Round(crWTMan * listCeCostPlan[i].cpLabour_Rate / 1000, 2),
+                    crDP_Rate = listCeCostPlan[i].cpDP_Rate,
+                    crpDP_Cost = listCeCostPlan[i].cpProcessName == "NC." ? Math.Round(crWTTotal * listCeCostPlan[i].cpDP_Rate / 1000, 2) : Math.Round(crWTMan * listCeCostPlan[i].cpDP_Rate / 1000, 2),
+                    crME_Rate = listCeCostPlan[i].cpME_Rate,
+                    crME_Cost = listCeCostPlan[i].cpProcessName == "NC." ? Math.Round(crWTTotal * listCeCostPlan[i].cpME_Rate / 1000, 2) : Math.Round(crWTMan * listCeCostPlan[i].cpME_Rate / 1000, 2),
+                    crTotal_cost = Math.Round(sSumLabour_Cost + sSumDPrCost + sSumME_Cost, 2),
+                    crChartRateSub_Local_Rate = listCeCostPlan[i].cpCR_Local_Rate,
+                    crChartRateSub_Local_Cost = listCeCostPlan[i].cpProcessName == "NC." ? Math.Round(crWTTotal * listCeCostPlan[i].cpCR_Local_Rate / 1000, 2) : Math.Round(crWTMan * listCeCostPlan[i].cpCR_Local_Rate / 1000, 2),
+                    crChartRateSub_Oversea_Rate = listCeCostPlan[i].cpCR_Oversea_Rate,
+                    crChartRateSub_Oversea_Cost = listCeCostPlan[i].cpProcessName == "NC." ? Math.Round(crWTTotal * listCeCostPlan[i].cpCR_Oversea_Rate / 1000, 2) : Math.Round(crWTMan * listCeCostPlan[i].cpCR_Oversea_Rate / 1000, 2),
+                });
+            }
+
+
+
+
+            @class._ListGroupViewceMastChartRateOtherReport = @class._ListViewDetailceMastChartRateOtherReport.GroupBy(p => p.crGroupName).Select(g => new GroupViewceMastChartRateOtherReport
+            {
+                GroupName = g.Key.Trim(),
+                DetailceMastChartRateOtherReport = g.ToList()
+            }).ToList();
+
+            return @class._ListViewDetailceMastChartRateOtherReport;// @class._ListGroupViewceMastChartRateOtherReport;
+
+        }
         [Authorize("Checked")]
         [HttpPost]
         public JsonResult History(Class @classs)//string getID)
@@ -1119,7 +1482,7 @@ namespace CostEstimate.Controllers.NewMoldOther
 
 
                     //new revision
-                    if(vstep == 8) //chk step == finish insert to table ceMastChartRateOtherReport
+                    if (vstep == 8) //chk step == finish insert to table ceMastChartRateOtherReport
                     {
                         var ceMastChartRateOtherReport = _MK._ViewceMastChartRateOtherReport.Where(x => x.crDocumentNo == RunDoc).ToList();
 
@@ -1131,7 +1494,7 @@ namespace CostEstimate.Controllers.NewMoldOther
                         //insert to 
                         var ceMastCostModel = _MK._ViewceMastCostModel.Where(x => x.mcModelName == @class._ViewceMastMoldOtherRequest.mrModelName).OrderByDescending(x => x.mcCostPlanningNo).Select(x => x.mcCostPlanningNo).FirstOrDefault();
                         ViewceMastChartRateOtherReport _ViewceMastChartRateOtherReport = new ViewceMastChartRateOtherReport();
-                       //_ViewceMastChartRateOtherReport.crRunno = 1; run auto
+                        //_ViewceMastChartRateOtherReport.crRunno = 1; run auto
                         _ViewceMastChartRateOtherReport.crDocumentNo = RunDoc;
                         _ViewceMastChartRateOtherReport.crCostPlanningNo = ceMastCostModel;
                         _MK._ViewceMastChartRateOtherReport.AddAsync(_ViewceMastChartRateOtherReport);
@@ -1719,7 +2082,7 @@ namespace CostEstimate.Controllers.NewMoldOther
                 {
                     @class._ViewOperaterCP = new ViewOperaterCP();
 
-                    string tbHistoryIssueName = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 5).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep ==5).Select(x => x.htFrom).FirstOrDefault();
+                    string tbHistoryIssueName = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 5).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 5).Select(x => x.htFrom).FirstOrDefault();
                     string tbHistoryIssueEMPCODE = tbHistoryIssueName == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistoryIssueName)).Select(x => x.emEmpcode).FirstOrDefault();
 
                     string tbHistoryCheckedGLName = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 6).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 6).Select(x => x.htFrom).FirstOrDefault();
@@ -1730,7 +2093,7 @@ namespace CostEstimate.Controllers.NewMoldOther
                     string tbHistoryCheckedEMPCODE = tbHistoryCheckedName == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistoryCheckedName)).Select(x => x.emEmpcode).FirstOrDefault();
 
 
-                    string tbHistoryApproveByName = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep ==8).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 8).Select(x => x.htFrom).FirstOrDefault();
+                    string tbHistoryApproveByName = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 8).Select(x => x.htFrom).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 8).Select(x => x.htFrom).FirstOrDefault();
                     string tbHistoryApproveByEMPCODE = tbHistoryApproveByName == "" ? "" : _IT.rpEmails.Where(u => u.emName_M365.Contains(tbHistoryApproveByName)).Select(x => x.emEmpcode).FirstOrDefault();
 
 
@@ -1782,7 +2145,7 @@ namespace CostEstimate.Controllers.NewMoldOther
 
 
 
-
+                    @class._ListViewMoldOtherDatailQuotation = getDatailQuotation(mpNo, @class);
                 }
 
 

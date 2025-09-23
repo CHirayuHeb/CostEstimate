@@ -941,7 +941,18 @@ namespace CostEstimate.Models.Table.MK
     }
 
 
-    public class GroupViewceMastInforSpacMoldRequest
+    [Table("ceMastMappingRuleChartRate")]
+    public class ViewceMastMappingRuleChartRate
+    {
+        [Key]
+        public int mrRunno { get; set; }
+        public string mrCode { get; set; }
+        public string mrManFormula { get; set; }
+        public string mrAutoFormula { get; set; }
+    }
+
+
+        public class GroupViewceMastInforSpacMoldRequest
     {
         public string ipPartName { get; set; }
         public double ipCavityNo { get; set; }
@@ -1051,4 +1062,18 @@ namespace CostEstimate.Models.Table.MK
         public string AutoFormula { get; set; }
     }
 
-}
+    public class ViewMoldOtherDatailQuotation
+    {
+        public string dMoldNoName { get; set; }     // ช่องหลัก เช่น "DT&QC"
+        public double dCavityNo { get; set; }
+        public string dTypeCavity { get; set; }
+        public string dEstimateCost { get; set; }
+        public string dDetail { get; set; }  //TYPE, GATE, SLIDE & OTHER  SPEC.
+
+
+    }
+
+
+
+
+    }

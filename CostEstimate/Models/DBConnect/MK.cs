@@ -213,6 +213,10 @@ namespace CostEstimate.Models.DBConnect
         public DbSet<ViewceItemInforShibo> _ViewceItemInforShibo { get; set; }
 
 
+        public DbSet<ViewceMastMappingRuleChartRate> _ViewceMastMappingRuleChartRate { get; set; }
+        
+
+
         //public DbSet<GroupedResult> _GroupedResult { get; set; }
         //public DbSet<ProcessResult> _ProcessResult { get; set; }
 

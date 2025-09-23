@@ -110,25 +110,29 @@ namespace CostEstimate.Controllers.SumRateMoldOther
             var ceWorkingTimePartName = _MK._ViewceItemWorkingTimePartName.Where(x => x.wpDocumentNoSub == docWokingTime && x.wpNoProcess == vProcess).ToList();
 
 
-            var mappingList = new List<MappingRuleChartRate>
-            {
-                new MappingRuleChartRate { Code = "DT&QC.", ManFormula = "OT CAD#wpWT_MAN,OT CAM#wpWT_MAN",AutoFormula ="" },
-                new MappingRuleChartRate { Code = "3-D.", ManFormula = "3D(QC)#wpWT_MAN",AutoFormula ="" },
-                new MappingRuleChartRate { Code = "CAD-D.", ManFormula = "CAD-D#wpWT_MAN",AutoFormula ="" },
-                new MappingRuleChartRate { Code = "CAD-M.", ManFormula = "CAD-M#wpWT_MAN",AutoFormula ="" },
-                new MappingRuleChartRate { Code = "BM.", ManFormula = "BM#wpWT_MAN",AutoFormula ="BM#wpWTAuto" },
-                new MappingRuleChartRate { Code = "NC(CO).", ManFormula = "NC#wpWT_MAN",AutoFormula ="NC#wpWT_MAN,NC#wpWTAuto" },
-                new MappingRuleChartRate { Code = "NCG(CO).", ManFormula = "NCG#wpWT_MAN",AutoFormula ="NCG#wpWT_MAN,NCG#wpWTAuto" },
-                new MappingRuleChartRate { Code = "NCL.", ManFormula = "MNC#wpWT_MAN,LNC#wpWT_MAN",AutoFormula ="MNC#wpWT_MAN,MNC#wpWTAuto,LNC#wpWT_MAN,LNC#wpWTAuto" },
-                new MappingRuleChartRate { Code = "NC(GR).", ManFormula = "NCGR#wpWT_MAN",AutoFormula ="NCGR#wpWT_MAN,NCGR#wpWTAuto" },
-                new MappingRuleChartRate { Code = "EDM(CO).", ManFormula = "ED#wpWT_MAN",AutoFormula ="ED#wpWT_MAN,ED#wpWTAuto" },
-                new MappingRuleChartRate { Code = "W-E.", ManFormula = "WE#wpWT_MAN",AutoFormula ="WE#wpWT_MAN,WE#wpWTAuto" },
-                new MappingRuleChartRate { Code = "M.", ManFormula = "M.#wpWT_MAN",AutoFormula ="" },
-                new MappingRuleChartRate { Code = "F.", ManFormula = "FG#wpWT_MAN",AutoFormula ="" },
-                new MappingRuleChartRate { Code = "P(W).", ManFormula = "PG#wpWT_MAN",AutoFormula ="" },
-                new MappingRuleChartRate { Code = "TRIAL.", ManFormula = "OT TM#wpWT_MAN",AutoFormula ="" },
-                new MappingRuleChartRate { Code = "OT.FG", ManFormula = "OT 3D#wpWT_MAN,OT NC#wpWT_MAN,OT PG#wpWT_MAN,OT FG#wpWT_MAN",AutoFormula ="" },
-            };
+
+            List<ViewceMastMappingRuleChartRate> mappingList = new List<ViewceMastMappingRuleChartRate>();
+            mappingList = _MK._ViewceMastMappingRuleChartRate.ToList();
+
+            //var mappingList = new List<MappingRuleChartRate>
+            //{
+            //    new MappingRuleChartRate { Code = "DT&QC.", ManFormula = "OT CAD#wpWT_MAN,OT CAM#wpWT_MAN",AutoFormula ="" },
+            //    new MappingRuleChartRate { Code = "3-D.", ManFormula = "3D(QC)#wpWT_MAN",AutoFormula ="" },
+            //    new MappingRuleChartRate { Code = "CAD-D.", ManFormula = "CAD-D#wpWT_MAN",AutoFormula ="" },
+            //    new MappingRuleChartRate { Code = "CAD-M.", ManFormula = "CAD-M#wpWT_MAN",AutoFormula ="" },
+            //    new MappingRuleChartRate { Code = "BM.", ManFormula = "BM#wpWT_MAN",AutoFormula ="BM#wpWTAuto" },
+            //    new MappingRuleChartRate { Code = "NC(CO).", ManFormula = "NC#wpWT_MAN",AutoFormula ="NC#wpWT_MAN,NC#wpWTAuto" },
+            //    new MappingRuleChartRate { Code = "NCG(CO).", ManFormula = "NCG#wpWT_MAN",AutoFormula ="NCG#wpWT_MAN,NCG#wpWTAuto" },
+            //    new MappingRuleChartRate { Code = "NCL.", ManFormula = "MNC#wpWT_MAN,LNC#wpWT_MAN",AutoFormula ="MNC#wpWT_MAN,MNC#wpWTAuto,LNC#wpWT_MAN,LNC#wpWTAuto" },
+            //    new MappingRuleChartRate { Code = "NC(GR).", ManFormula = "NCGR#wpWT_MAN",AutoFormula ="NCGR#wpWT_MAN,NCGR#wpWTAuto" },
+            //    new MappingRuleChartRate { Code = "EDM(CO).", ManFormula = "ED#wpWT_MAN",AutoFormula ="ED#wpWT_MAN,ED#wpWTAuto" },
+            //    new MappingRuleChartRate { Code = "W-E.", ManFormula = "WE#wpWT_MAN",AutoFormula ="WE#wpWT_MAN,WE#wpWTAuto" },
+            //    new MappingRuleChartRate { Code = "M.", ManFormula = "M.#wpWT_MAN",AutoFormula ="" },
+            //    new MappingRuleChartRate { Code = "F.", ManFormula = "FG#wpWT_MAN",AutoFormula ="" },
+            //    new MappingRuleChartRate { Code = "P(W).", ManFormula = "PG#wpWT_MAN",AutoFormula ="" },
+            //    new MappingRuleChartRate { Code = "TRIAL.", ManFormula = "OT TM#wpWT_MAN",AutoFormula ="" },
+            //    new MappingRuleChartRate { Code = "OT.FG", ManFormula = "OT 3D#wpWT_MAN,OT NC#wpWT_MAN,OT PG#wpWT_MAN,OT FG#wpWT_MAN",AutoFormula ="" },
+            //};
 
 
             /*   DT&QC. = OT CAD(MAN) + OT CAM(MAN)
@@ -177,11 +181,12 @@ namespace CostEstimate.Controllers.SumRateMoldOther
                 double crWTMan = 0;
                 double crWTTotal = 0;
 
-                var RuleChartRate = mappingList.FirstOrDefault(m => m.Code == listCeCostPlan[i].cpProcessName);
+                var RuleChartRate = mappingList.FirstOrDefault(m => m.mrCode == listCeCostPlan[i].cpProcessName);
                 if (RuleChartRate != null)
                 {
                     //get Man
-                    var manParts = RuleChartRate.ManFormula.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                   //var manParts = RuleChartRate.mrManFormula.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    var manParts = string.IsNullOrEmpty(RuleChartRate.mrManFormula)? Array.Empty<string>(): RuleChartRate.mrManFormula.Split(',', StringSplitOptions.RemoveEmptyEntries);
                     foreach (var part in manParts)
                     {
                         var lmanParts = part.Split('#');
@@ -201,7 +206,10 @@ namespace CostEstimate.Controllers.SumRateMoldOther
 
                     }
                     //get auto
-                    var autoParts = RuleChartRate.AutoFormula.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    //var autoParts =  RuleChartRate.mrAutoFormula.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    var autoParts = !string.IsNullOrEmpty(RuleChartRate.mrAutoFormula)? RuleChartRate.mrAutoFormula.Split(',', StringSplitOptions.RemoveEmptyEntries): Array.Empty<string>();
+
+
                     foreach (var part in autoParts)
                     {
                         var lmanParts = part.Split('#');
