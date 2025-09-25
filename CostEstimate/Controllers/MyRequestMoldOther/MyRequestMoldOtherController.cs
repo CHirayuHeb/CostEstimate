@@ -47,7 +47,7 @@ namespace CostEstimate.Controllers.MyRequestMoldOther
             @class._ListViewceMastToolGRRequest = new List<ViewceMastToolGRRequest>();
             @class._ListViewceMastInforSpacMoldRequest = new List<ViewceMastInforSpacMoldRequest>();
 
-            @class._ListViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrEmpCodeRequest == user_id && x.mrStep != 8).ToList();
+            @class._ListViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrEmpCodeRequest == user_id).ToList();
 
             @class._ListViewceMastWorkingTimeRequest = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrEmpCodeRequest == user_id && x.wrStep != 4).ToList();
             @class._ListViewceMastWorkingTimeRequestDetail = getceMastWorkingTimeRequestDetail(@class._ListViewceMastWorkingTimeRequest); //call get list 

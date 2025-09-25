@@ -6,7 +6,7 @@
 
 .a4-page {
     width: 210mm;
-    height: 297mm;
+    height: auto;
     padding: 5mm;
     margin: 5px auto;
     background: white;
@@ -43,6 +43,8 @@
     }
 
     .a4-page {
+        width: 210mm;
+        height: 297mm;
         margin: 0;
         box-shadow: none;
         page-break-after: always; /* จบหน้าแล้วขึ้นหน้าใหม่ */
@@ -54,3 +56,15 @@
         display: none;
     }
 }
+
+
+
+.NTable {
+    border: 0.5px solid black;
+    border-collapse: collapse;
+}
+
+    .NTable td, .NTable th {
+        border: 0.5px solid black; /* ถ้าอยากให้แต่ละ cell มีเส้นขอบ */
+        padding: 5px;
+    }

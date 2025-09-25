@@ -100,36 +100,55 @@
         </div>
 
         <!-- Header Table -->
-
-
-        <div class="page-item">
-            <div style="display:flex; width:100%;">
+        @*<div style="display:flex; width:100%;">
                 <div style="flex:0 0 30%;height:30px; border:0.5px solid black;
-                            display:flex; align-items:center; justify-content:center; padding-left:5px;">
+                                display:flex; align-items:center; justify-content:center; padding-left:5px;">
                     <span style="font-size:12px">MOLD No. & NAME</span>
                 </div>
                 <div style="flex:0 0 30%;height:30px; border:0.5px solid black;
-                            display:flex; align-items:center; justify-content:center; padding-left:5px;">
+                                display:flex; align-items:center; justify-content:center; padding-left:5px;">
                     <span style="font-size:12px">CAVITY & AMOUNT BAHT</span>
                 </div>
                 <div style="flex:0 0 40%;height:30px; border:0.5px solid black;
-                            display:flex; align-items:center; justify-content:center;">
+                                display:flex; align-items:center; justify-content:center;">
                     <span style="font-size:12px">TYPE, GATE, SLIDE & OTHER SPEC.</span>
                 </div>
-            </div>
-        </div>
+            </div>*@
+
+
+
 
         <!-- Loop Rows -->
 
 
         @{
             int loopCount = Model._ListViewceItemPartName.Count < 5 ? 5 : Model._ListViewceItemPartName.Count;
-            int loopCount1 = Model._ListViewMoldOtherDatailQuotation is null ? 0 : Model._ListViewMoldOtherDatailQuotation.Count;
+            //int loopCount1 = Model._ListViewMoldOtherDatailQuotation is null ? 0 : Model._ListViewMoldOtherDatailQuotation.Count;
             //int loopCount = 10;
         }
 
         @for (int i = 0; i < loopCount; i++)
         {
+            if (i == 0)
+            {
+                <div class="page-item">
+                    <div style="display:flex; width:100%;">
+                        <div style="flex:0 0 30%;height:30px; display:flex; align-items:center; justify-content:center;padding-left:5px;border:0.5px solid black;border-collapse: collapse;">
+                            <span style="font-size:12px">MOLD No. & NAME</span>
+                        </div>
+
+                        <div style="flex:0 0 30%;height:30px; display:flex; align-items:center; justify-content:center;padding-left:5px;border:0.5px solid black;border-collapse: collapse;">
+                            <span style="font-size:12px">CAVITY & AMOUNT BAHT</span>
+                        </div>
+
+                        <div style="flex:0 0 40%;height:30px; display:flex; align-items:center; justify-content:center;padding-left:5px;border:0.5px solid black;border-collapse: collapse;">
+                            <span style="font-size:12px">TYPE, GATE, SLIDE & OTHER SPEC.</span>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
             <div class="page-item">
                 <div style="display:flex; width:100%;">
                     <div style="flex:0 0 30%;height:120px;
@@ -143,7 +162,7 @@
                     </div>
 
                     <div style="flex:0 0 30%;height:120px;
-                        text-align:right;padding-right:5px;  @(i < Model._ListViewceItemPartName.Count ? "border:0.5px solid black;" : "")">
+                        text-align:right;padding-right:5px;  @(i < Model._ListViewceItemPartName.Count ? "border:0.5px solid black;border-collapse: collapse;" : "")">
                         <span style="font-size:12px;padding-right:10px;padding-top:10px">
                             @if (i < Model._ListViewceItemPartName.Count)
                             {@Html.DisplayFor(x => x._ListViewceItemPartName[i].ipCavityNo)}
@@ -159,7 +178,7 @@
                         </span>
                         @if (i < Model._ListViewceItemPartName.Count)
                         {
-                            <div style="flex:0 0 40%; height:90px; display:flex; justify-content:flex-end; align-items:flex-end;padding:5px;">
+                            <div style="flex:0 0 40%; height:70px; display:flex; justify-content:flex-end; align-items:flex-end;padding:5px;">
                                 <span style="font-size:30px;display:flex; justify-content:flex-end; align-items:flex-end;padding-right:5px;">
                                     @*@Html.DisplayFor(x => x._ListViewMoldOtherDatailQuotation[i].dEstimateCost)*@
                                     @if (i < Model._ListViewMoldOtherDatailQuotation.Count)
@@ -167,15 +186,15 @@
                                 </span>
                             </div>
 
-                        
+
                         }
 
 
                     </div>
 
                     <div style="flex:0 0 40%;height:120px;
-                        display:flex; align-items:self-start; justify-content:left;padding-left:5px;  @(i < Model._ListViewceItemPartName.Count ? "border:0.5px solid black;" : "")">
-                        <span style="font-size:12px;">
+                        display:flex; align-items:self-start; justify-content:left;padding-left:5px;  @(i < Model._ListViewceItemPartName.Count ? "border:0.5px solid black;border-collapse: collapse;" : "")">
+                        <span style="font-size:11px;">
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             @if (i < Model._ListViewMoldOtherDatailQuotation.Count)
                             {@Html.DisplayFor(x => x._ListViewMoldOtherDatailQuotation[i].dDetail)}
@@ -187,6 +206,101 @@
                 </div>
             </div>
         }
+        <br />
+        <div class="row" style="text-align:left;padding-left:5px;">
+            <span style="font-size:14px;padding:0.5px">Making  schedule </span><br />
+            <span style="font-size:12px;padding:0.5px">LEAD  TIME</span>
+        </div>
+
+        @*<br />
+            <div class="row" style="text-align:left;padding-left:10px">
+                <span style="font-size:14px;padding:0.5px">Making  schedule </span>
+                <span style="font-size:12px;padding:0.5px">LEAD  TIME</span>
+                <table class="NTable">
+                    <tr>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            ITEM
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                        <td>
+                            (MON.)
+                        </td>
+                    </tr>
+                </table>
+            </div>*@
 
         <br />
         <div class="row" style="text-align:right;padding-right:10px">
@@ -225,9 +339,6 @@
                 }
 
                 <img src="~/images/@(empTL).png" style="width:100px;height:20px;" onerror="this.style.display='none';" />
-
-
-
             </div>
         </div>
         <br />

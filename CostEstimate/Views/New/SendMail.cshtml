@@ -67,7 +67,7 @@
                 <div class="form-check form-check-inline" style="@(ViewBag.step == 7 ? "display: none;" : "")">
                     @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Approve", new { @class = "", id = "StatusApp", onclick = "CheckDis('Approve')", required = "required", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Approve</label><br />
                 </div>
-                <div class="form-check form-check-inline " style="@(ViewBag.step == 0 || (ViewBag.step <8 && ViewBag.step>3 ) ? "display: none;" : "")">
+                <div class="form-check form-check-inline " style="@(ViewBag.step == 0 || (ViewBag.step <8 && ViewBag.step>4 ) ? "display: none;" : "")">
                     @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Disapprove", new { @class = "", id = "StatusApp", onclick = "CheckDis('Disapprove')", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Disapprove</label><br />
                 </div>
                 @*<div class="form-check form-check-inline">
