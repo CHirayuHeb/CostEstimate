@@ -23,13 +23,23 @@
 </head>
 <body>
     <br />
- 
+    @*@if (_Permission.ToUpper() == GlobalVariable.perAdmin.ToUpper())
+    {
+        <div style="text-align:right;padding-right:5px">
+            <a asp-controller="Admin" asp-action="OnlineUsers" class="btn btn-primary">
+                ดูคนที่กำลังออนไลน์
+            </a>
+        </div>
+    }*@
+
+
+
     <div class="row" style="margin-left:10%">
         <div class="col-10">
 
         </div>
         <div class="col-80">
-          
+
             @*<div onclick="window.open('newurl.html','mywindow');" style="cursor: pointer;">&nbsp;</div>*@
             <div class="Homecenterdiv" id="divHomeProduct" style="margin-inline: auto;">
                 <div class="row ">
@@ -39,7 +49,7 @@
 
                     <div class="col-80">
                         <div class="grid-item fw-800" style="text-align:left;">PRODUCT</div>
-                        <div class="grid-item fw-600" style="text-align:left;font-size:10px;">1.COST ESTIMATE</div>
+                        <div class="grid-item fw-600" style="text-align:left;font-size:10px;cursor:not-allowed;">1.COST ESTIMATE</div>
                     </div>
 
                 </div>
@@ -56,7 +66,8 @@
                         <div class="grid-item fw-600 Btncenterdiv" style="text-align:left;" onclick="GoSideMenuNewRequest('New')">1.SUB MAKER REQUEST SHEET DETAIL</div>
                         <div class="grid-item fw-600 Btncenterdiv" style="text-align:left;" onclick="GoSideMenuNewRequest('NewMoldModify')">2.MOLD MODIFY REQUEST SHEET DETAIL</div>
                         @*<div class="grid-item fw-600 Btncenterdiv" style="text-align:left;cursor:not-allowed;">2.MOLD MODIFY REQUEST SHEET DETAIL</div>*@
-                        <div class="grid-item fw-600 Btncenterdiv" style="text-align:left;cursor:not-allowed;">3.MOLD OTHER REQUEST SHEET DETAIL</div>
+                        @*<div class="grid-item fw-600 Btncenterdiv" style="text-align:left;cursor:not-allowed;">3.MOLD OTHER REQUEST SHEET DETAIL</div>*@
+                        <div class="grid-item fw-600 Btncenterdiv" style="text-align:left;" onclick="GoSideMenuNewRequest('NewMoldOther')">3.MOLD OTHER REQUEST SHEET DETAIL</div>
                     </div>
                 </div>
             </div>

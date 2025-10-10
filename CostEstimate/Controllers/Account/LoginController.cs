@@ -14,6 +14,7 @@ using CostEstimate.Models.Table.LAMP;
 using CostEstimate.Models.Table.MK;
 using MimeKit;
 using MailKit.Net.Smtp;
+using CostEstimate.Services;
 
 namespace CostEstimate.Controllers.Account
 {
@@ -25,13 +26,19 @@ namespace CostEstimate.Controllers.Account
         private MK _MK;
         private CacheSettingController _Cache;
         public string pgmName = "CostEstimateRequest";
-        public LoginController(LAMP lamp, HRMS hrms, CacheSettingController cacheController, IT it, MK MK)
+
+
+        private readonly IUserTracker _tracker; //for check login 30/09/2025
+
+        public LoginController(LAMP lamp, HRMS hrms, CacheSettingController cacheController, IT it, MK MK, IUserTracker tracker)
         {
             _LAMP = lamp;
             _HRMS = hrms;
             _IT = it;
             _Cache = cacheController;
             _MK = MK;
+
+            _tracker = tracker;
         }
         public IActionResult Index(string DocumentNo, string DocType, string subType)
         {
@@ -86,6 +93,9 @@ namespace CostEstimate.Controllers.Account
                         string[] stat = await Task.Run(() => SetClaim(accData, _ViewLoginPgm.Permission, sUsername, sPassword));
                         if (stat[0] == "Ok")
                         {
+                            _tracker.UserLoggedIn(_ViewLoginPgm.Empcode);
+                            //  _tracker.UserLoggedIn(User.Identity.Name); // for check login 30/09/2025
+
                             if (@class.param != null)
                             {
                                 if (@class.paramtype == "MoldModify")
@@ -114,7 +124,7 @@ namespace CostEstimate.Controllers.Account
                                     }
 
 
-                                   
+
                                 }
                                 else if (@class.paramtype == "MoldOther") //MoldOther
                                 {
@@ -162,10 +172,10 @@ namespace CostEstimate.Controllers.Account
                                             }
 
                                         }
-                                        else if(@class.Moldtype == "I") //Information Spac
+                                        else if (@class.Moldtype == "I") //Information Spac
                                         {
                                             var _ceMast = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == @class.param).FirstOrDefault();
-                                            if(_ceMast != null)
+                                            if (_ceMast != null)
                                             {
                                                 return RedirectToAction("Index", "NewMoldOtherSM", new { Docno = @class.param });
                                             }
@@ -181,12 +191,26 @@ namespace CostEstimate.Controllers.Account
                                         }
 
                                     }
-                                    return RedirectToAction("Index", "NewMoldOther", new { id = @class.param });
+                                    else
+                                    {
+                                        var _ceMast = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == @class.param).FirstOrDefault();
+                                        if (_ceMast != null)
+                                        {
+                                            return RedirectToAction("Index", "NewMoldOther", new { id = @class.param });
+                                        }
+                                        else
+                                        {
+                                            return RedirectToAction("Index", "ErrorPage");
+                                        }
+                                    }
+                                    //return RedirectToAction("Index", "NewMoldOther", new { id = @class.param });
 
 
                                 }
                                 else // other
                                 {
+
+
                                     return RedirectToAction("Index", "New", new { smDocumentNo = @class.param });
                                 }
 
@@ -290,16 +314,30 @@ namespace CostEstimate.Controllers.Account
                 claims.Add(new Claim("NICKNAME", acc.NICKNAME.ToUpper()));
                 claims.Add(new Claim("Email", Email));
 
-                ClaimsIdentity identity = new ClaimsIdentity(claims,
-                    CookieAuthenticationDefaults.AuthenticationScheme);
+                //ClaimsIdentity identity = new ClaimsIdentity(claims,
+                //    CookieAuthenticationDefaults.AuthenticationScheme);
+                //ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+                //await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme
+                //    , principal, new AuthenticationProperties()
+                //    {
+                //        IsPersistent = true,
+                //        AllowRefresh = true, // ✅ อนุญาตให้ session ถูกยืดอายุ
+                //        ExpiresUtc = DateTime.UtcNow.AddMinutes(60)
+                //    }); //true is remember login
+
+                ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 ClaimsPrincipal principal = new ClaimsPrincipal(identity);
-                await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme
-                    , principal, new AuthenticationProperties()
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    principal,
+                    new AuthenticationProperties
                     {
-                        IsPersistent = true,
-                        AllowRefresh = true, // ✅ อนุญาตให้ session ถูกยืดอายุ
-                        ExpiresUtc = DateTime.UtcNow.AddMinutes(30)
-                    }); //true is remember login
+                        IsPersistent = true,   // ✅ คงอยู่แม้ปิด browser (ขึ้นอยู่กับ ExpireTimeSpan)
+                        AllowRefresh = true    // ✅ อนุญาตให้ cookie ถูกรีเฟรชตาม SlidingExpiration
+                                               // ❌ ไม่ต้องใส่ ExpiresUtc ที่นี่ ถ้าใช้ SlidingExpiration แล้ว
+                    });
+
 
                 //            await HttpContext.SignInAsync(
                 //CookieAuthenticationDefaults.AuthenticationScheme,
@@ -379,6 +417,9 @@ namespace CostEstimate.Controllers.Account
                 string[] stat = await Task.Run(() => SetClaim(accData, _ViewLoginPgm.Permission, sUsername, sPassword));
                 if (stat[0] == "Ok")
                 {
+                    //_tracker.UserLoggedIn(_ViewLoginPgm.Empcode);
+                    //_tracker.UserLoggedIn(User.Identity.Name);
+
                     if (@class.param != null)
                     {
                         if (@class.paramtype == "MoldModify")
@@ -474,7 +515,19 @@ namespace CostEstimate.Controllers.Account
                                 }
 
                             }
-                            return RedirectToAction("Index", "NewMoldOther", new { id = @class.param });
+                            else
+                            {
+                                var _ceMast = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == @class.param).FirstOrDefault();
+                                if (_ceMast != null)
+                                {
+                                    return RedirectToAction("Index", "NewMoldOther", new { id = @class.param });
+                                }
+                                else
+                                {
+                                    return RedirectToAction("Index", "ErrorPage");
+                                }
+                            }
+                            //return RedirectToAction("Index", "NewMoldOther", new { id = @class.param });
 
 
                         }
@@ -504,6 +557,8 @@ namespace CostEstimate.Controllers.Account
 
         public IActionResult Logout()
         {
+            //_tracker.UserLoggedOut(User.Identity?.Name ?? "Unknown");
+
             this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             TempData.Clear();
             return RedirectToAction("Index", "Login");
@@ -610,6 +665,8 @@ namespace CostEstimate.Controllers.Account
 
         public IActionResult SignOut()
         {
+            //_tracker.UserLoggedOut(User.Identity?.Name ?? "Unknown");
+
             this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             _Cache.clearCacheAccEmployee();
             TempData.Clear();

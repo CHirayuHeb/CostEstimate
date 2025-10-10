@@ -15,51 +15,51 @@
     <div id="DisplayContent" class="content-box">
         @using (Html.BeginForm("Index", "MyRequest", FormMethod.Post, new { enctype = "multipart/form-data", id = "formMyReq" }))
         {
-        @*<div id="DisplayContent" class="content-box"> </div>*@
-                <div class="content-text" style=" margin: auto; padding: 10px; width: 95%;">
-                    <h5 class="control-title">คำร้องของฉัน <img src="~/images/request.png" height="35px" width="35px" style="vertical-align:middle" /></h5>
+            @*<div id="DisplayContent" class="content-box"> </div>*@
+            <div class="content-text" style=" margin: auto; padding: 10px; width: 95%;">
+                <h5 class="control-title">คำร้องของฉัน <img src="~/images/request.png" height="35px" width="35px" style="vertical-align:middle" /></h5>
 
-                    <div style="width:100%;">
-                        <div class="row center" style="left:0px">
-                            <div class="col-10">
+                <div style="width:100%;">
+                    <div class="row center" style="left:0px">
+                        <div class="col-10">
 
-                            </div>
-                            <div class="col-20" style="text-align:right">
-                                <div class="grid-item fw-800" style="text-align:right;padding-top:5px">
-                                    STATUS
-                                </div>
-                            </div>
-                            <div class="col-40" style="text-align:right">
-                                @Html.DropDownListFor(m => m._ViewSearchData.v_status, (SelectList)ViewBag.vbformStatus, "กรุณาเลือก", new { @class = "form-control", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:12px" })
-
-                                @*<input type="text" class="form-control left" style="width:100%;height:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DevelopmentStage">*@
-                            </div>
-                            <div class="col-20" style="text-align:left;">
-                                <button class="button" style="width:auto;height:auto;margin-top:1px" value="SEARCH">
-                                    <img src="~/images/search.png" style="width:25px;" />
-                                </button>
-                            </div>
-                            <div class="col-10">
-
+                        </div>
+                        <div class="col-20" style="text-align:right">
+                            <div class="grid-item fw-800" style="text-align:right;padding-top:5px">
+                                STATUS
                             </div>
                         </div>
+                        <div class="col-40" style="text-align:right">
+                            @Html.DropDownListFor(m => m._ViewSearchData.v_status, (SelectList)ViewBag.vbformStatus, "กรุณาเลือก", new { @class = "form-control", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:12px" })
 
-                        @if (Model._ListceMastSubMakerRequest != null)
+                            @*<input type="text" class="form-control left" style="width:100%;height:100%;font-size:12px" autocomplete="off" asp-for="_ViewSearchData.v_DevelopmentStage">*@
+                        </div>
+                        <div class="col-20" style="text-align:left;">
+                            <button class="button" style="width:auto;height:auto;margin-top:1px" value="SEARCH">
+                                <img src="~/images/search.png" style="width:25px;" />
+                            </button>
+                        </div>
+                        <div class="col-10">
+
+                        </div>
+                    </div>
+
+                    @if (Model._ListceMastSubMakerRequest != null)
+                    {
+
+                        <div class="grid-item fw-800" style="text-align:left;padding-left:10px"><label style="font-size:14px"><span style="color:royalblue"> จำนวน @Model._ListceMastSubMakerRequest.Count() แถว</span>  </label></div>
+
+                    }
+                    else
+                    {
+                        <div class="grid-item fw-800" style="text-align:left;padding-left:10px"><label style="font-size:14px"><span style="color:royalblue"> จำนวน 0 แถว</span> </label></div>
+
+                    }
+                    @if (Model._ListceMastSubMakerRequest != null)
+                    {
+                        var row = 0;
+                        @foreach (var item in Model._ListceMastSubMakerRequest)
                         {
-
-                            <div class="grid-item fw-800" style="text-align:left;padding-left:10px"><label style="font-size:14px"><span style="color:royalblue"> จำนวน @Model._ListceMastSubMakerRequest.Count() แถว</span>  </label></div>
-
-                        }
-                        else
-                        {
-                            <div class="grid-item fw-800" style="text-align:left;padding-left:10px"><label style="font-size:14px"><span style="color:royalblue"> จำนวน 0 แถว</span> </label></div>
-
-                        }
-                        @if (Model._ListceMastSubMakerRequest != null)
-                        {
-                            var row = 0;
-                            @foreach (var item in Model._ListceMastSubMakerRequest)
-                            {
                             <div class="row center centerdiv">
                                 <div class="row ">
                                     <div class="col-30" style="text-align:right">
@@ -68,7 +68,7 @@
                                     </div>
                                     <div class="col-10" style=" display: flex;align-items: left;">
                                     </div>
-                                    <div class="col-20" style=" display: flex;align-items: left;">
+                                    <div class="col-40" style=" display: flex;align-items: left;">
                                         @if (@item.smStep == 0 && @item.smStatus.Contains("Disapprove"))
                                         {
                                             <img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />
@@ -92,30 +92,31 @@
                                         { <img src="~/images/7.png" alt="icon" style="height: 23px; width: 23px;" />}
                                         else if (@item.smStep == 7)
                                         { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                        @*<span style="color:black;font-size:10px">@item.smStatus</span>*@
 
 
                                         @*@if (@item.smStep == 0 && @item.smStatus.Contains("Disapprove"))
-        {
-            {<img src="~/images/stepDis.png" alt="icon" style="height: 23px; width: 23px;" /> }
-        }
-        else if (@item.smStep == 0)
-        {<img src="~/images/step0.png" alt="icon" style="height: 23px; width: 23px;" /> }
-        else if (@item.smStep == 1)
-        { <img src="~/images/step2.png" alt="icon" style="height: 23px; width: 23px;" /> }
-        else if (@item.smStep == 2)
-        { <img src="~/images/step3.png" alt="icon" style="height: 23px; width: 23px;" />}
-        else if (@item.smStep == 3)
-        { <img src="~/images/notes.png" alt="icon" style="height: 23px; width: 23px;" />}
-        else if (@item.smStep == 4)
-        { <img src="~/images/step5.png" alt="icon" style="height: 23px; width: 23px;" />}
-        else if (@item.smStep == 5)
-        { <img src="~/images/step6.png" alt="icon" style="height: 23px; width: 23px;" />}
-        else if (@item.smStep == 6)
-        { <img src="~/images/step7.png" alt="icon" style="height: 23px; width: 23px;" />}
-        else if (@item.smStep == 7)
-        { <img src="~/images/stepfinish1.png" alt="icon" style="height: 23px; width: 23px;" />}*@
+                                            {
+                                                {<img src="~/images/stepDis.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                            }
+                                            else if (@item.smStep == 0)
+                                            {<img src="~/images/step0.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                            else if (@item.smStep == 1)
+                                            { <img src="~/images/step2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                            else if (@item.smStep == 2)
+                                            { <img src="~/images/step3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.smStep == 3)
+                                            { <img src="~/images/notes.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.smStep == 4)
+                                            { <img src="~/images/step5.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.smStep == 5)
+                                            { <img src="~/images/step6.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.smStep == 6)
+                                            { <img src="~/images/step7.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.smStep == 7)
+                                            { <img src="~/images/stepfinish1.png" alt="icon" style="height: 23px; width: 23px;" />}*@
                                     </div>
-                                    <div class="col-30" style=" display: flex;align-items: right;">
+                                    <div class="col-10" style=" display: flex;align-items: right;">
 
                                     </div>
                                     <div class="col-5" style=" display: flex;">
@@ -144,10 +145,10 @@
                                     </div>
                                     <div class="col-5" style=" display: flex;">
                                         @*<input type="button" style="font-size:18px" value="&#x1F50E;" onclick="GoNewRequest('@item.srRequestBy','Edit','@Url.Action("Index", "RequestForm")','@item.srFrom','@item.srType','@item.srSubject','@item.srNo')">*@
-                                       
+
                                     </div>
                                     <div class="col-5" style=" display: flex;">
-                                    
+
                                         @*<input type="button" style="font-size:18px" value="&#x1F5D1" onclick="DeleteData('@item.srNo','@Url.Action("DeteleData","RequestForm")')" disabled>*@
                                         @*<input type="button" style="font-size:18px" value="&#x1F50E;">*@
                                     </div>
@@ -160,7 +161,12 @@
                                         <div class="grid-item fw-800 " style="text-align:left;"><label style="font-size:12px">Requester Date: <span style="color:royalblue"> @item.smIssueDate</span> </label></div>
                                     </div>
                                     <div class="col-30" style="text-align:left">
-                                        <div class="grid-item fw-800 " style="text-align:left;"><label style="font-size:12px">Waitting Approve: <span style="color:royalblue"> @item.smEmpCodeApprove @item.smNameApprove</span> </label></div>
+                                        <div class="grid-item fw-800 " style="text-align:left;">
+                                            <label style="font-size:12px; @(item.smStep ==7? "Display:none":"")">
+                                                Waitting Approve:
+                                                <span style="color:royalblue"> @item.smEmpCodeApprove @item.smNameApprove</span>
+                                            </label>
+                                        </div>
                                     </div>
                                     <div class="col-20" style="text-align:right">
 
@@ -169,17 +175,17 @@
                             </div>
 
 
-                            }
                         }
-
-
-                    </div>
+                    }
 
 
                 </div>
 
 
-           
+            </div>
+
+
+
         }
 
 

@@ -4974,11 +4974,11 @@ function Menubar_MoldOtherWKsaveDraft(action, action2) {
         const itemTypeCavity = table.querySelector('.input-size');
         const itemValuesTypeCavity = itemTypeCavity.value.trim();
         console.log("itemTypeCavity==> " + itemTypeCavity);
-        if (itemValuesTypeCavity == "") {
-            alert(`กรุณาเลือก Type of Cavity`);
-            itemTypeCavity.focus(); // optional: focus ช่องนั้น
-            throw new Error("Type of Cavity.​ is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
-        }
+        //if (itemValuesTypeCavity == "") {
+        //    alert(`กรุณาเลือก Type of Cavity`);
+        //    itemTypeCavity.focus(); // optional: focus ช่องนั้น
+        //    throw new Error("Type of Cavity.​ is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
+        //}
 
         _ItemWorkingTimeSizeProduct.push({
             wsDocumentNoSub: table.querySelector('.input-DocumentNo').value.trim(),

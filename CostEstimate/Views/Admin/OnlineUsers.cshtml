@@ -1,0 +1,56 @@
+﻿@model CostEstimate.Models.Common.Class;
+@using CostEstimate.Models.Common;
+@{
+    ViewData["Title"] = "Home | Thai Stanley";
+    Layout = "~/Views/Shared/_MenuBarMain.cshtml";
+}
+<link href="~/css/MyRequest/siteMyRequest.css" rel="stylesheet" />
+<link href="~/css/New/mNew.css" rel="stylesheet" />
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<br />
+<div style="display:flex; justify-content:center; align-items:center; ">
+    <div style="background-color:white;padding:10px;width:90%" class="content-text" >
+
+        <div class="row center" style="padding:5px; background-color:lightgray; margin-bottom:5px; border-radius:5px;padding:5px">
+            <div class="col-60" style="text-align:left">
+                <span style="font-size:24px; font-weight:600; color:#ffffff; line-height:1.4;">
+                    <span style="color:black">Users Online</span>
+                </span>
+            </div>
+            <div class="col-40 center" style="text-align:right;">
+
+
+            </div>
+        </div>
+
+        @*<ul>
+                @foreach (var user in Model._ListUserlogin)
+                {
+                    <li>@user.Username</li>
+                }
+            </ul>*@
+        <table class="tbgreen" style="font-size:14px">
+            <thead>
+                <tr>
+                    <th width="50px">No</th>
+                    <th>Username</th>
+                    <th>Last Active</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model._ListUserActivity)
+                {
+                    <tr>
+                        <td>@user.No</td>
+                        <td>@user.Username</td>
+                        <td>@user.LastActivityUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+    </div>
+</div>
+
+

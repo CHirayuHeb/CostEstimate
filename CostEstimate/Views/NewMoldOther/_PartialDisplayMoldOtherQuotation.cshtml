@@ -99,30 +99,13 @@
             <hr style="border:0.5px solid black;" />
         </div>
 
-        <!-- Header Table -->
-        @*<div style="display:flex; width:100%;">
-                <div style="flex:0 0 30%;height:30px; border:0.5px solid black;
-                                display:flex; align-items:center; justify-content:center; padding-left:5px;">
-                    <span style="font-size:12px">MOLD No. & NAME</span>
-                </div>
-                <div style="flex:0 0 30%;height:30px; border:0.5px solid black;
-                                display:flex; align-items:center; justify-content:center; padding-left:5px;">
-                    <span style="font-size:12px">CAVITY & AMOUNT BAHT</span>
-                </div>
-                <div style="flex:0 0 40%;height:30px; border:0.5px solid black;
-                                display:flex; align-items:center; justify-content:center;">
-                    <span style="font-size:12px">TYPE, GATE, SLIDE & OTHER SPEC.</span>
-                </div>
-            </div>*@
-
-
 
 
         <!-- Loop Rows -->
 
 
         @{
-            int loopCount = Model._ListViewceItemPartName.Count < 5 ? 5 : Model._ListViewceItemPartName.Count;
+            int loopCount = Model._ListViewceItemPartName.Count < 5 ? 4 : Model._ListViewceItemPartName.Count;
             //int loopCount1 = Model._ListViewMoldOtherDatailQuotation is null ? 0 : Model._ListViewMoldOtherDatailQuotation.Count;
             //int loopCount = 10;
         }
@@ -212,95 +195,70 @@
             <span style="font-size:12px;padding:0.5px">LEAD  TIME</span>
         </div>
 
-        @*<br />
-            <div class="row" style="text-align:left;padding-left:10px">
-                <span style="font-size:14px;padding:0.5px">Making  schedule </span>
-                <span style="font-size:12px;padding:0.5px">LEAD  TIME</span>
-                <table class="NTable">
-                    <tr>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            ITEM
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                        <td>
-                            (MON.)
-                        </td>
-                    </tr>
-                </table>
-            </div>*@
+        <div class="center" style="padding-left:10px;margin-top:10px">
+            <div class="page-item">
+                <div style="display: flex; width: 100%; box-sizing: border-box;">
+
+                    <div style="flex:0 0 20%;height:25px; display:flex; align-items:center; justify-content:center;padding-left:5px;border:0.5px solid black;border-collapse: collapse; box-sizing: border-box;">
+                        (MON.)
+                    </div>
+
+                    <div style="flex:0 0 20%;height:25px; display:flex; align-items:center; justify-content:center;padding-left:5px;border:0.5px solid black;border-collapse: collapse; box-sizing: border-box;">
+                        <span>@Html.DisplayFor(model => model.rMoldGO)</span>
+                    </div>
+
+                    <div style="flex:0 0 20%;height:25px; display:flex; align-items:center; justify-content:center;padding-left:5px;border:0.5px solid black;border-collapse: collapse; box-sizing: border-box;">
+                        <span>@Html.DisplayFor(model => model.rMoldTry1)</span>
+                    </div>
+
+                    <div style="flex:0 0 20%;height:25px; display:flex; align-items:center; justify-content:center;padding-left:5px;border:0.5px solid black;border-collapse: collapse; box-sizing: border-box;">
+                        <span>@Html.DisplayFor(model => model.rMoldMass1)</span>
+                    </div>
+
+                    <div style="flex:0 0 20%;height:25px; display:flex; align-items:center; justify-content:center;padding-left:5px;border:0.5px solid black;border-collapse: collapse; box-sizing: border-box;">
+                        <span>@Html.DisplayFor(model => model.rMoldMass)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="page-item">
+                <div style="display: flex; width: 100%; box-sizing: border-box;">
+                    <div style="flex: 0 0 20%; height: 40px; display: flex; align-items: center; justify-content: center; padding-left: 5px; border: 0.5px solid black; box-sizing: border-box;">
+                        ITEM
+                    </div>
+
+                    <div style="flex: 0 0 20%; height: 40px; display: flex; align-items: center; justify-content: center; padding-left: 5px; border: 0.5px solid black; box-sizing: border-box;">
+                        <span>
+                            O
+                            <br />
+                            DS
+                        </span>
+                    </div>
+
+                    <div style="flex: 0 0 20%; height: 40px; display: flex; align-items: center; justify-content: center; padding-left: 5px; border: 0.5px solid black; box-sizing: border-box;">
+                        <span>T1</span>
+                    </div>
+
+                    <div style="flex: 0 0 20%; height: 40px; display: flex; align-items: center; justify-content: center; padding-left: 5px; border: 0.5px solid black; box-sizing: border-box;">
+                        <span>SH</span>
+                    </div>
+
+                    <div style="flex: 0 0 20%; height: 40px; display: flex; align-items: center; justify-content: center; padding-left: 5px; border: 0.5px solid black; box-sizing: border-box;">
+                        <span>MP</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="center" style="margin-top:5px">
+            <span style="font-size:10px">O : P/O      D : DRAW.      S : START      T1 : TRY-1      T : TRY 2-3,…,      PP : PRE-PRODUCTION      MP : MASS-PRODUCTION      FS : FIN. & SHIP   </span>
+        </div>
+
+
+
+
+
+
 
         <br />
         <div class="row" style="text-align:right;padding-right:10px">

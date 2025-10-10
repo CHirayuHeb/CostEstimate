@@ -17,6 +17,9 @@ using CostEstimate.Models.Common;
 using CostEstimate.Models.DBConnect;
 using Microsoft.AspNetCore.Http.Features;
 
+//add service 30/09/2025
+using CostEstimate.Services;
+
 namespace CostEstimate
 {
     public class Startup
@@ -59,19 +62,33 @@ namespace CostEstimate
             services.AddDbContext<MOLD>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("MOLD")));
 
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //    .AddCookie(x =>
+            //    {
+            //        x.Cookie.Name = "Remember";
+            //        x.ExpireTimeSpan = TimeSpan.FromMinutes(15); // อายุของ session
+            //        x.LoginPath = "/Login/Index"; //path login
+            //        x.LogoutPath = "/Login/Logout"; //path loout
+            //        x.AccessDeniedPath = "/ErrorCase/Index";
+            //        x.ReturnUrlParameter = "returnurl";
+            //        x.Cookie.IsEssential = true;
+            //        x.SlidingExpiration = true; // ✅ เปิดให้ session ต่ออายุถ้ามีการใช้งาน
+            //    });
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(x =>
-                {
-                    x.Cookie.Name = "Remember";
-                    x.ExpireTimeSpan = TimeSpan.FromMinutes(15); // อายุของ session
-                    //x.ExpireTimeSpan = TimeSpan.FromDays(1);
-                    x.LoginPath = "/Login/Index"; //path login
-                    x.LogoutPath = "/Login/Logout"; //path loout
-                    x.AccessDeniedPath = "/ErrorCase/Index";
-                    x.ReturnUrlParameter = "returnurl";
-                    x.Cookie.IsEssential = true;
-                    x.SlidingExpiration = true; // ✅ เปิดให้ session ต่ออายุถ้ามีการใช้งาน
-                });
+                 .AddCookie(x =>
+                 {
+                     x.Cookie.Name = "Remember";
+                     x.ExpireTimeSpan = TimeSpan.FromMinutes(30); // อายุ session รวม (เริ่มนับใหม่เมื่อมี activity)
+                     x.LoginPath = "/Login/Index";
+                     x.LogoutPath = "/Login/Logout";
+                     x.AccessDeniedPath = "/ErrorCase/Index";
+                     x.ReturnUrlParameter = "returnurl";
+                     x.Cookie.IsEssential = true;
+                     x.SlidingExpiration = true; // ✅ ต่อเวลาอัตโนมัติเมื่อมีการใช้งาน
+                 });
+
+
 
             services.AddAuthorization(x =>
             {
@@ -90,6 +107,11 @@ namespace CostEstimate
             services.AddHttpContextAccessor();
             services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            //add 30/09/2025
+            services.AddSingleton<IUserTracker, InMemoryUserTracker>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -103,7 +125,7 @@ namespace CostEstimate
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-           
+
 
             app.UseStaticFiles();
             app.UseAuthentication();
@@ -117,5 +139,8 @@ namespace CostEstimate
             });
             app.UseCookiePolicy();
         }
+
+
+
     }
 }

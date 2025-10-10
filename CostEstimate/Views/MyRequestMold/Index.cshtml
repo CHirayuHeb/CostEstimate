@@ -167,7 +167,7 @@
                                         <div class="grid-item fw-800 " style="text-align:left;"><label style="font-size:12px">Requester Date: <span style="color:royalblue"> @item.mfIssueDate</span> </label></div>
                                     </div>
                                     <div class="col-30" style="text-align:left">
-                                        <div class="grid-item fw-800 " style="text-align:left;"><label style="font-size:12px">Waitting Approve: <span style="color:royalblue"> @item.mfEmpCodeApprove @item.mfNameApprove</span> </label></div>
+                                        <div class="grid-item fw-800 " style="text-align:left;"><label style="font-size:12px;@(item.mfStep ==6? "Display:none":"")">Waitting Approve: <span style="color:royalblue; "> @item.mfEmpCodeApprove @item.mfNameApprove</span> </label></div>
                                     </div>
                                     <div class="col-20" style="text-align:right">
 

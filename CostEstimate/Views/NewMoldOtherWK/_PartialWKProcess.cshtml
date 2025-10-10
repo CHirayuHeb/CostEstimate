@@ -16,7 +16,34 @@
 
 <div class="" style="border:0px solid gray;margin-top:10px;padding:2px;">
     <div class="grid-item fw-800 center " style="text-align:left;font-size:14px;margin-bottom:10px;">
-        Process Detail. <span style="color:orange">ทั้งหมด  @Model._ListGroupPartName.Count() Part</span>
+        <div class="row">
+            <div class="col-60">
+                Process Detail. <span style="color:orange">ทั้งหมด  @Model._ListGroupPartName.Count() Part</span>
+            </div>
+            <div class="col-20" style="text-align:right">
+                @*<button type="submit"
+                        formaction="@Url.Action("btnExportExcel", "SearchMoldOther")"
+                        formmethod="post"
+                        style="margin-right:5px;font-size:10px;width:100px"
+                        class="button">
+                    <img src="~/images/excel.png"
+                         style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                    Export
+                </button>*@
+            </div>
+            <div class="col-20" style="text-align:right">
+                @*<button type="submit"
+                        formaction="@Url.Action("btnExportExcel", "SearchMoldOther")"
+                        formmethod="post"
+                        style="margin-right:5px;font-size:10px;width:100px"
+                        class="button btnBlue">
+                    <img src="~/images/excel.png"
+                         style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                    Import
+                </button>*@
+            </div>
+        </div>
+
     </div>
 
     @for (int k = 0; k < Model._ListGroupPartName.Count(); k++)

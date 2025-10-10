@@ -258,7 +258,7 @@
                                                 Model._ViewceMastMoldOtherRequest.mrStep == 6 ||
                                                 Model._ViewceMastMoldOtherRequest.mrStep == 7) ? "" : "readonly" )" />*@
 
-                                                        <input type='number' class='vRateReport form-control txt-right' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipRateReport" readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 && Model._ViewceMastMoldOtherRequest.mrStep != 4 && Model._ViewceMastMoldOtherRequest.mrStep != 5 && Model._ViewceMastMoldOtherRequest.mrStep != 6)">
+                                                        <input type='number' class='vRateReport form-control txt-right' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgray;' asp-for="_ListViewceItemPartName[i].ipRateReport" readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 && Model._ViewceMastMoldOtherRequest.mrStep != 4 && Model._ViewceMastMoldOtherRequest.mrStep != 5 && Model._ViewceMastMoldOtherRequest.mrStep != 6)">
 
                                                     </td>
                                                     <td width='70px'>
@@ -1133,7 +1133,7 @@
         htmls += " <td width='100px'> <input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow ;' value ='0' min='0'>";
         htmls +=" <input type='text' class='vCustomerName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;display:None' value =''></td > ";
         htmls += "<td>" + document.getElementById("template_TypeCavity").outerHTML.replace('template_TypeCavity', 'i_NewMold_TypeCavity').replace('style="display:none"', 'class="vTypeCavity form-control" style="width:100%;font-size:10px;background-color:yellow;"') + "</td>";
-        htmls += " <td><input type='number' class='vRateReport form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow ;' value ='1.1'></td>";
+        htmls += " <td><input type='number' class='vRateReport form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgray ;' value ='1.1' readonly></td>";
 
         //htmls += " <td width='70px'><img src='" + imgSrc + "' alt='icon' class='imgM' /></td>";
         htmls += " <td width='70px'></td>";

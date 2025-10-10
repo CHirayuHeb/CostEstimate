@@ -27,6 +27,7 @@ using System.IO;
 
 using MimeKit;
 using MailKit.Net.Smtp;
+using System.Globalization;
 
 namespace CostEstimate.Controllers.NewMoldOther
 {
@@ -292,8 +293,8 @@ namespace CostEstimate.Controllers.NewMoldOther
 
 
                 double vRate = @class._ListViewceItemPartName[i].ipRateReport;
-                double vTotalCost = Math.Round(@class._ListViewDetailceMastChartRateOtherReport.Sum(x => x.crTotal_cost),2);
-                double vCalTotal = Math.Round(vTotalCost * vRate,2);
+                double vTotalCost = Math.Round(@class._ListViewDetailceMastChartRateOtherReport.Sum(x => x.crTotal_cost), 2);
+                double vCalTotal = Math.Round(vTotalCost * vRate, 2);
                 double vTOTALMT = @class._ListViewceItemMaterialRequestPartName[0].mpTotal;
                 double resultsum = vCalTotal + vTOTALMT;
 
@@ -2146,6 +2147,16 @@ namespace CostEstimate.Controllers.NewMoldOther
 
 
                     @class._ListViewMoldOtherDatailQuotation = getDatailQuotation(mpNo, @class);
+
+
+                    @class.rMoldGO = chgDateFormat(@class._ViewceMastMoldOtherRequest.mrMoldGo, "MM/yy",0);
+                    @class.rMoldTry1 = chgDateFormat(@class._ViewceMastMoldOtherRequest.mrTry1 ,"MM/yy",0);
+                    @class.rMoldMass1 = chgDateFormat(@class._ViewceMastMoldOtherRequest.mrMoldMass, "MM/yy",1);
+                    @class.rMoldMass = chgDateFormat(@class._ViewceMastMoldOtherRequest.mrMoldMass, "MM/yy",0);
+
+                    //MoldTry1
+                    //MoldMass1
+                    //MoldMass
                 }
 
 
@@ -2159,6 +2170,13 @@ namespace CostEstimate.Controllers.NewMoldOther
             return PartialView("_PartialDisplayMoldOtherQuotation", @class);
 
 
+        }
+        public string chgDateFormat(string vdate, string vformat,int vM)
+        {
+            DateTime dateValue = DateTime.ParseExact(vdate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            dateValue = dateValue.AddMonths(-vM);
+            string formatted = dateValue.ToString(vformat);
+            return formatted;
         }
 
 

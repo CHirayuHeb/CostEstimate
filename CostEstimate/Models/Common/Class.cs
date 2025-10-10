@@ -24,6 +24,9 @@ namespace CostEstimate.Models.Common
 
         public string paramDateIssue { get; set; }
 
+
+
+
         //MK
         public ViewGroupbyceMastCostModel _ViewGroupbyceMastCostModel { get; set; }
         public List<ViewGroupbyceMastCostModel> _ListViewGroupbyceMastCostModel { get; set; }
@@ -285,12 +288,38 @@ namespace CostEstimate.Models.Common
 
         public ViewceMastMappingRuleChartRate _ViewceMastMappingRuleChartRate { get; set; }
         public List<ViewceMastMappingRuleChartRate> _ListViewceMastMappingRuleChartRaten { get; set; }
-        
+
+
+
+        public Userlogin _Userlogin { get; set; }
+        public List<Userlogin> _ListUserlogin { get; set; }
+
+        public UserActivity _UserActivity { get; set; }
+        public List<UserActivity> _ListUserActivity { get; set; }
+
+
+        //for report mold other
+        public string rMoldGO { get; set; }
+        public string rMoldTry1 { get; set; }
+        public string rMoldMass1 { get; set; }
+        public string rMoldMass { get; set; }
+
+
 
 
     }
+    public class UserActivity
+    {
+        public string No { get; set; }
+        public string Username { get; set; }
+        public DateTime LastActivityUtc { get; set; }
+    }
 
+    public class Userlogin
+    {
+        public string Username { get; set; }
 
+    }
 
 
     public class OTTimeStart
