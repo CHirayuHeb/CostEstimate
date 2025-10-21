@@ -22,25 +22,26 @@
             </div>
             <div class="col-20" style="text-align:right">
                 @*<button type="submit"
-                        formaction="@Url.Action("btnExportExcel", "SearchMoldOther")"
-                        formmethod="post"
-                        style="margin-right:5px;font-size:10px;width:100px"
-                        class="button">
-                    <img src="~/images/excel.png"
-                         style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                    Export
-                </button>*@
+                            formaction="@Url.Action("btnExportExcel", "SearchMoldOther")"
+                            formmethod="post"
+                            style="margin-right:5px;font-size:10px;width:100px"
+                            class="button">
+                        <img src="~/images/excel.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                        Export
+                    </button>*@
+
             </div>
             <div class="col-20" style="text-align:right">
-                @*<button type="submit"
-                        formaction="@Url.Action("btnExportExcel", "SearchMoldOther")"
+
+                <button type="submit"
+                        formaction='@Url.Action("btnExportExcel", "NewMoldOtherWK")?id=@Model._ViewceMastMoldOtherRequest.mrDocmentNo'
                         formmethod="post"
-                        style="margin-right:5px;font-size:10px;width:100px"
-                        class="button btnBlue">
+                        class="button"
+                        style="margin-right:5px;font-size:8px;width:130px">
                     <img src="~/images/excel.png"
-                         style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                    Import
-                </button>*@
+                         style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top:2px;margin-bottom:2px;" />
+                    FROMAT EXPORT
+                </button>
             </div>
         </div>
 

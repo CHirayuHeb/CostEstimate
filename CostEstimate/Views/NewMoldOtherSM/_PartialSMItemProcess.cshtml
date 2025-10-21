@@ -23,411 +23,426 @@
     <div class="table-groupSMPartName table-containerHM " style="margin:auto">
         @for (int j = 0; j < Model._ListGroupViewceMastInforSpacMoldRequest.Count(); j++)
         {
-            <div class="divMastInforSpac" data-block="@j" style="min-width:600px;border:0px solid #000;border-radius:12px;background:#fff;padding:10px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
-                <div class="row center">
-                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                        <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">Part Name</div>
-                    </div>
-                    <div class="col-30" style=" display: flex;align-items: center; ">
-                        <input type="text" class="form-control left icDocumentNoSub" asp-for="_ListViewceItemInforRequestPartName[j].ipDocumentNoSub" style="width:100%;height:80%;font-size:12px;background-color:lightgray;display:none" autocomplete="off" readonly>
-                        <input type="text" class="form-control left icDocumentNoSub" asp-for="_ListViewceItemInforRequestPartName[j].ipRunNo" style="width:100%;height:80%;font-size:12px;background-color:lightgray;display:none" autocomplete="off" readonly>
-
-                        <input type="text" class="form-control left iPartName" asp-for="_ListViewceItemInforRequestPartName[j].ipPartName" style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" readonly>
-
-                        <input type="text" class="form-control left iSprueSystem" asp-for="_ListViewceItemInforRequestPartName[j].ipSlide" style="width:100%;height:80%;font-size:12px;background-color:lightgray;display:none" autocomplete="off" readonly>
-
-                    </div>
-                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                        <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">Cavity No</div>
-                    </div>
-                    <div class="col-30 " style=" display: flex;align-items: center; ">
-                        <input type="text" class="form-control left iCavityNo" asp-for="_ListViewceItemInforRequestPartName[j].ipCavityNo" style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" readonly>
-                    </div>
+        <div class="divMastInforSpac" data-block="@j" style="min-width:600px;border:0px solid #000;border-radius:12px;background:#fff;padding:10px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
+            <div class="row center">
+                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                    <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">Part Name</div>
                 </div>
-                <div class="row center">
-                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                        <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">Type of Cavity</div>
-                    </div>
-                    <div class="col-50" style=" display: flex;align-items: center; ">
-                        <input type="text" class="form-control left iTypeCavity" asp-for="_ListViewceItemInforRequestPartName[j].ipTypeCavity" style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" readonly>
-                        <input type="text" class="form-control left iNoProcess" asp-for="_ListViewceItemInforRequestPartName[j].ipNoProcess" style="width:100%;height:80%;font-size:12px;background-color:lightgray;display:none" autocomplete="off" readonly>
+                <div class="col-30" style=" display: flex;align-items: center; ">
+                    <input type="text" class="form-control left icDocumentNoSub" asp-for="_ListViewceItemInforRequestPartName[j].ipDocumentNoSub" style="width:100%;height:80%;font-size:12px;background-color:lightgray;display:none" autocomplete="off" readonly>
+                    <input type="text" class="form-control left icDocumentNoSub" asp-for="_ListViewceItemInforRequestPartName[j].ipRunNo" style="width:100%;height:80%;font-size:12px;background-color:lightgray;display:none" autocomplete="off" readonly>
 
-                    </div>
-                    
-                    <div class="col-30 " style=" display: flex;align-items: center; ">
-                    </div>
-                </div>
-                <hr style="margin:10px" />
-                <div class="row center">
-                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                        <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">SPRUE SYSTEM</div>
-                    </div>
-                    <div class="col-30" style=" display: flex;align-items: center; ">
-                        @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipSprueSystem, (SelectList)ViewBag.listSprueSystem,
-                       "กรุณาเลือก", new { @class = "form-control ipSprueSystem",
-                           id = "i_NewMold_listSlideSystem_" + j,
-                           autocomplete = "off",
-                           @style = "width:100%;font-size:12px;background-color:yellow;height:80%;",
-                             // <= กำหนดฟังก์ชัน JS
-                       })
+                    <input type="text" class="form-control left iPartName" asp-for="_ListViewceItemInforRequestPartName[j].ipPartName" style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" readonly>
 
-                    </div>
-                    <div class="col-20 " style=" display: flex;align-items: center;">
-
-                    </div>
-                    <div class="col-30 " style=" display: flex;align-items: center; ">
-                    </div>
-                </div>
-                <div class="row center">
-                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                        <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">RUNNER</div>
-                    </div>
-                    <div class="col-30" style=" display: flex;align-items: center; ">
-                        @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipRunner, (SelectList)ViewBag.listRunner, "กรุณาเลือก",new { @class = "form-control ipRunner",
-                       id = "i_NewMold_listRUNNER" + j,
-                       autocomplete = "off",
-                       @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
-                    </div>
-                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                        <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">MAKER HOT RUNER </div>
-                    </div>
-                    <div class="col-30 " style=" display: flex;align-items: center; ">
-                        @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipMakerHotRunner, (SelectList)ViewBag.listMakerHotRunner, "กรุณาเลือก", new { @class = "form-control ipMakerHotRunner",
-                       id = "i_NewMold_listMakerHotRunner" + j,
-                       autocomplete = "off",
-                       @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
-                    </div>
-                </div>
-                <div class="row center">
-                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                        <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">GATE TYPE</div>
-                    </div>
-                    <div class="col-30" style=" display: flex;align-items: center; ">
-                        @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipGateType1, (SelectList)ViewBag.listGateType, "กรุณาเลือก", new { @class = "form-control ipGateType1", id = "i_NewMold_listSlideSystem" + j, autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
-
-                    </div>
-                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">NUMBER POINT </div>
-                    </div>
-                    <div class="col-30 " style=" display: flex;align-items: center; ">
-                        <input type="number" class="form-control left ipNumberPoint1" id="i_NewMold_ipNumberPoint1" +j style="width:80%;height:80%;font-size:10px;background-color:yellow;margin-right:5px" autocomplete="off" asp-for="_ListViewceItemInforRequestPartName[j].ipNumberPoint1">
-                        <span style="font-size:10px;font-weight:600">DROP</span>
-                    </div>
+                    <input type="text" class="form-control left iSprueSystem" asp-for="_ListViewceItemInforRequestPartName[j].ipSlide" style="width:100%;height:80%;font-size:12px;background-color:lightgray;display:none" autocomplete="off" readonly>
 
                 </div>
-                <div class="row center">
-                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                        <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">GATE TYPE</div>
-                    </div>
-                    <div class="col-30" style=" display: flex;align-items: center; ">
-                        @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipGateType2, (SelectList)ViewBag.listGateType, "กรุณาเลือก", new { @class = "form-control ipGateType2", id = "i_NewMold_ipGateType2" + j, autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
-
-                    </div>
-                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">NUMBER POINT </div>
-                    </div>
-                    <div class="col-30 " style=" display: flex;align-items: center; ">
-                        <input type="number" class="form-control left ipNumberPoint2" style="width:80%;height:80%;font-size:10px;background-color:yellow;margin-right:5px" autocomplete="off" asp-for="_ListViewceItemInforRequestPartName[j].ipNumberPoint2" id="i_NewMold_ipNumberPoint2" +j>
-                        <span style="font-size:10px;font-weight:600">DROP</span>
-                    </div>
-
+                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                    <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">Cavity No</div>
                 </div>
-                <div class="row center">
-                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                        <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">GATE TYPE</div>
-                    </div>
-                    <div class="col-30" style=" display: flex;align-items: center; ">
-                        @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipGateType3, (SelectList)ViewBag.listGateType, "กรุณาเลือก", new { @class = "form-control ipGateType3", id = "i_NewMold_ipGateType3" + j, autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
-
-                    </div>
-                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">NUMBER POINT </div>
-                    </div>
-                    <div class="col-30 " style=" display: flex;align-items: center; ">
-                        <input type="number" class="form-control left ipNumberPoint3" style="width:80%;height:80%;font-size:10px;background-color:yellow;margin-right:5px" autocomplete="off" asp-for="_ListViewceItemInforRequestPartName[j].ipNumberPoint3" id="i_NewMold_ipNumberPoint3" +j>
-                        <span style="font-size:10px;font-weight:600">DROP</span>
-                    </div>
-
-                </div>
-                <hr style="margin:10px" />
-                <div class="row">
-                    @*<div class="col-70" style="text-align:left;padding-left:20px">
-                            <span style="font-size:10px;font-weight:800;">
-                                SLIDE SYSTEM
-                            </span>
-                        </div>*@
-                    <div class="col-70" style="text-align:left;padding-left:20px">
-                        <a class="btn btn-link p-0" data-bs-toggle="collapse" href="#collapseSlideSystem_@j" role="button" style="font-size:11px;font-weight:800;">
-                            ▶ SLIDE SYSTEM
-                        </a>
-                    </div>
-
-                    <div class="col-30" style="text-align:right;">
-                        <input type='button'
-                               class='button btnOrange btnAddRowSlideSystem'
-                               data-table="tbSlideSystem_@j"
-                               value='➕'
-                               style="width:auto;height:28px;vertical-align: sub;margin-left:5px" />
-                        @*<input type='button' class='button btnOrange' value='➕' style="width:auto;height:28px;vertical-align: sub;margin-left:5px" />*@
-                    </div>
-
-                </div>
-                <div class="collapse show" id="collapseSlideSystem_@j">
-                    @{
-                        var SlideSystem = (SelectList)ViewBag.listSlideSystem;
-                    }
-
-                    <!-- Template Dropdown (ซ่อนไว้) -->
-                    <div id="templateDropdownSlideSystem" style="display:none;" class="isSlideSystemType">
-                        <select class="form-control isSlideSystemType" autocomplete="off"
-                                style="width:100%;font-size:10px;background-color:yellow;height:80%;">
-                            <option value="">กรุณาเลือก</option>
-                            @foreach (var item in SlideSystem)
-                            {
-                                <option value="@item.Value">@item.Text</option>
-                            }
-                        </select>
-                    </div>
-
-
-                    <table class="tbgreen" Typeofcut" id="tbSlideSystem_@j">
-                        <tr>
-                            <th width="10%">No</th>
-                            <th>SYSTEM</th>
-                            <th width="20%">TOTAL</th>
-                            <th width="10%">DEL</th>
-                        </tr>
-                        @{
-                            var row = 0;
-                        }
-                        @for (int i = 0; i < Model._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforSlideSystem.Count(); i++)
-                        {
-                            <tr id='trSlideSystem'>
-                                <td style="text-align:center;">@(row += 1)</td>
-                                <td>
-                                    @Html.DropDownListFor(m => m._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforSlideSystem[i].isSlideSystemType, (SelectList)ViewBag.listSlideSystem, "กรุณาเลือก", new { @class = "form-control isSlideSystemType", id = "i_NewMold_ItemisSlideSystemType" + i, autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;height:80%;" })
-                                    <input type="text" class="isDocumentNoSub form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipDocumentNoSub" style="margin-bottom:2px; width:100%;display:none" />
-                                    <input type="text" class="isPartName form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipPartName" style="margin-bottom:2px; width:100%;display:none" />
-                                    <input type="text" class="isCavityNo form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipCavityNo" style="margin-bottom:2px; width:100%;display:none" />
-                                    <input type="text" class="isTypeCavity form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipTypeCavity" style="margin-bottom:2px; width:100%;display:none" />
-                                    <input type="text" class="isNoProcess form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipNoProcess" style="margin-bottom:2px; width:100%;display:none" />
-                                </td>
-                                <td>
-                                    <input type="number" class="isSlideSystemCount form-control" value="@Model._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforSlideSystem[i].isSlideSystemCount" style="margin-bottom:2px; width:100%;font-size:9px;background-color:yellow;" />
-                                </td>
-                                <td style="text-align:center;">
-                                    <input type="button" class="btnDel" value="&#x274C" />
-                                </td>
-
-                            </tr>
-                        }
-
-                    </table>
-                </div>
-                <hr style="margin:10px" />
-                <span style="font-size:10px;font-weight:800;margin-left:5px">GROUP MATERIAL</span>
-                <div class="row center">
-                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                        <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">
-                            BASE CAVITY
-                        </div>
-                    </div>
-                    <div class="col-30" style=" display: flex;align-items: center; ">
-                        @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipBaseCavity, (SelectList)ViewBag.listGroupMaterial, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_listSlideSystem", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
-
-                    </div>
-                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                        <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">
-                            INSERT CAVITY
-                        </div>
-                    </div>
-                    <div class="col-30 " style=" display: flex;align-items: center; ">
-                        @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipInsertCavity, (SelectList)ViewBag.listGroupMaterial, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_listSlideSystem", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
-                    </div>
-
-                </div>
-                <div class="row center">
-                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                        <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">
-                            BASE CORE
-                        </div>
-                    </div>
-                    <div class="col-30" style=" display: flex;align-items: center; ">
-                        @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipBaseCode, (SelectList)ViewBag.listGroupMaterial, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_listSlideSystem", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
-
-                    </div>
-                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                        <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">
-                            INSERT CORE
-                        </div>
-                    </div>
-                    <div class="col-30 " style=" display: flex;align-items: center; ">
-                        @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipInsertCode, (SelectList)ViewBag.listGroupMaterial, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_listSlideSystem", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
-                    </div>
-
-                </div>
-
-
-                <hr style="margin:10px" />
-                <div class="row">
-                    <div class="col-70" style="text-align:left">
-                        @*<span style="font-size:10px;font-weight:800;padding-left:10px">TYPE OF CUT</span>*@
-
-                        <a class="btn btn-link p-0" data-bs-toggle="collapse" href="#collapseTypeofcut_@j" role="button" style="font-size:11px;font-weight:800;">
-                            ▶ TYPE OF CUT
-                        </a>
-
-                    </div>
-
-                    <div class="col-30" style="text-align:right;">
-                        <input type='button'
-                               class='button btnOrange btnAddRowTypeofcut'
-                               data-table="tbTypeofcut_@j"
-                               value='➕'
-                               style="width:auto;height:28px;vertical-align: sub;margin-left:5px" />
-                    </div>
-                </div>
-                <div class="collapse show" id="collapseTypeofcut_@j">
-                    @{
-                        var typeOfCuts = (SelectList)ViewBag.listTypeOfCut;
-                    }
-                    <!-- Template Dropdown (ซ่อนไว้) -->
-                    <div id="templateDropdown" style="display:none;" class="icTypeofcut">
-                        <select class="form-control icTypeofcut" autocomplete="off"
-                                style="width:100%;font-size:10px;background-color:yellow;height:80%;">
-                            <option value="">กรุณาเลือก</option>
-                            @foreach (var item in typeOfCuts)
-                            {
-                                <option value="@item.Value">@item.Text</option>
-                            }
-                        </select>
-                    </div>
-
-                    <table class="tbgreen Typeofcut" id="tbTypeofcut_@j">
-                        <tr>
-                            <th width="10%">No</th>
-                            <th>TYPE</th>
-                            <th width="10%">DEL</th>
-                        </tr>
-                        @{
-                            var row1 = 0;
-                        }
-                        @for (int i = 0; i < Model._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforTypeOfCut.Count(); i++)
-                        {
-                            <tr id='trTypeofcut'>
-                                <td style="text-align:center;">@(row1 += 1)</td>
-                                <td>
-                                    @Html.DropDownListFor(m => m._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforTypeOfCut[i].icTypeofcut, (SelectList)ViewBag.listTypeOfCut, "กรุณาเลือก", new { @class = "form-control icTypeofcut", id = "i_NewMold_typeOfCuts" + i, autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;height:80%;" })
-                                    <input type="text" class="icDocumentNoSub form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipDocumentNoSub" style="margin-bottom:2px; width:100%;display:none" />
-                                    <input type="text" class="icPartName form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipPartName" style="margin-bottom:2px; width:100%;display:none" />
-                                    <input type="text" class="icCavityNo form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipCavityNo" style="margin-bottom:2px; width:100%;display:none" />
-                                    <input type="text" class="icTypeCavity form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipTypeCavity" style="margin-bottom:2px; width:100%;display:none" />
-                                    <input type="text" class="icNoProcess form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipNoProcess" style="margin-bottom:2px; width:100%;display:none" />
-                                </td>
-                                <td style="text-align:center;">
-                                    <input type="button" class="btnDel" value="&#x274C" />
-                                </td>
-                            </tr>
-
-
-
-
-                        }
-
-
-                    </table>
-                </div>
-                <hr style="margin:10px" />
-                <div class="row">
-                    <div class="col-70" style="text-align:left">
-                        @*<span style="font-size:10px;font-weight:800;padding-left:10px">SHIBO</span>*@
-                        <a class="btn btn-link p-0" data-bs-toggle="collapse" href="#collapseSHIBO_@j" role="button" style="font-size:11px;font-weight:800;">
-                            ▶ SHIBO
-                        </a>
-
-                    </div>
-                    <div class="col-30" style="text-align:right;">
-                        <input type='button'
-                               class='button btnOrange btnAddRowShibo'
-                               data-table="tbShibo_@j"
-                               value='➕'
-                               style="width:auto;height:28px;vertical-align: sub;margin-left:5px" />
-                    </div>
-
-                </div>
-                <div class="collapse show" id="collapseSHIBO_@j">
-                    @{
-                        var typeShibo = (SelectList)ViewBag.listELECTROFORM;
-                    }
-                    <!-- Template Dropdown (ซ่อนไว้) -->
-                    <div id="templateDropdownShibo" style="display:none;" class="ibShiboType">
-                        <select class="form-control ibShiboType" autocomplete="off"
-                                style="width:100%;font-size:10px;background-color:yellow;height:80%;">
-                            @*<option value="">กรุณาเลือก</option>*@
-                            @foreach (var item in typeShibo)
-                            {
-                                <option value="@item.Value">@item.Text</option>
-                            }
-                        </select>
-                    </div>
-
-                    <table class="tbgreen typeShibo" id="tbShibo_@j">
-                        <tr>
-                            <th width="10%">No</th>
-                            <th>TYPE</th>
-                            <th width="50%">Description</th>
-                            <th width="10%">DEL</th>
-                        </tr>
-                        @{
-                            var row2 = 0;
-                        }
-                        @for (int i = 0; i < Model._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforShibo.Count(); i++)
-                        {
-                            <tr id='trItemShibo'>
-                                <td style="text-align:center;">@(row2 += 1)</td>
-                                <td>
-                                    @Html.DropDownListFor(m => m._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforShibo[i].ibShiboType, (SelectList)ViewBag.listELECTROFORM, "กรุณาเลือก", new { @class = "form-control ibShiboType", id = "i_NewMold_ibShiboType" + i, autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;height:80%;" })
-                                    <input type="text" class="ibDocumentNoSub form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipDocumentNoSub" style="margin-bottom:2px; width:100%;display:none" />
-                                    <input type="text" class="ibPartName form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipPartName" style="margin-bottom:2px; width:100%;display:none" />
-                                    <input type="text" class="ibCavityNo form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipCavityNo" style="margin-bottom:2px; width:100%;display:none" />
-                                    <input type="text" class="ibTypeCavity form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipTypeCavity" style="margin-bottom:2px; width:100%;display:none" />
-                                    <input type="text" class="ibNoProcess form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipNoProcess" style="margin-bottom:2px; width:100%;display:none" />
-                                </td>
-                                <td>
-                                    <input type="text" class="ibSHiboPCS form-control" value="@Model._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforShibo[i].ibSHiboPCS" style="margin-bottom:2px; width:100%;font-size:9px;background-color:yellow;" />
-                                </td>
-                                <td style="text-align:center;">
-                                    <input type="button" class="btnDel" value="&#x274C" />
-                                </td>
-
-                            </tr>
-                        }
-
-                    </table>
-                </div>
-                <hr style="margin:10px" />
-                <div class="row center">
-                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                        <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">ELECTROFORM</div>
-                    </div>
-                    <div class="col-30" style=" display: flex;align-items: center; ">
-                        @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipElectroFormType, (SelectList)ViewBag.listELECTROFORM, new { @class = "form-control ipElectroFormType", id = "i_NewMold_ipElectroFormType" + j, autocomplete = "off", @style = "width:100%;font-size:11px;background-color:yellow;height:80%;" })
-                    </div>
-                    <div class="col-35 " style=" display: flex;align-items: center;">
-                        <input type="number" class="form-control ipElectroFormPcs " asp-for="_ListViewceItemInforRequestPartName[j].ipElectroFormPcs"
-                               style="width:80%;height:100%;font-size:12px;margin-right:5px; " autocomplete="off" id="i_moldOther_ipElectroFormPcs" />
-
-                        @*<input type="number"
-                            class="form-control"
-                            @(Model._ListViewceItemInforRequestPartName[j].ipElectroFormType == false ? "disabled" : "")
-                            style="width:80%;height:80%;font-size:12px;background-color:yellow;" />*@
-
-                        <span class="FormPcs" style="font-size:10px;font-weight:600;" id="i_MoldOther_FormPcs" +j>PCS</span>
-                    </div>
-                    <div class="col-15 " style=" display: flex;align-items: center; ">
-                    </div>
+                <div class="col-30 " style=" display: flex;align-items: center; ">
+                    <input type="text" class="form-control left iCavityNo" asp-for="_ListViewceItemInforRequestPartName[j].ipCavityNo" style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" readonly>
                 </div>
             </div>
+            <div class="row center">
+                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                    <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">Type of Cavity</div>
+                </div>
+                <div class="col-50" style=" display: flex;align-items: center; ">
+                    <input type="text" class="form-control left iTypeCavity" asp-for="_ListViewceItemInforRequestPartName[j].ipTypeCavity" style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" readonly>
+                    <input type="text" class="form-control left iNoProcess" asp-for="_ListViewceItemInforRequestPartName[j].ipNoProcess" style="width:100%;height:80%;font-size:12px;background-color:lightgray;display:none" autocomplete="off" readonly>
+
+                </div>
+
+                <div class="col-30 " style=" display: flex;align-items: center; ">
+                </div>
+            </div>
+            <hr style="margin:10px" />
+            <div class="row center">
+                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                    <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">SPRUE SYSTEM</div>
+                </div>
+                <div class="col-30" style=" display: flex;align-items: center; ">
+                    @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipSprueSystem, (SelectList)ViewBag.listSprueSystem,
+                   "กรุณาเลือก", new { @class = "form-control ipSprueSystem",
+                       id = "i_NewMold_listSlideSystem_" + j,
+                       autocomplete = "off",
+                       @style = "width:100%;font-size:12px;background-color:yellow;height:80%;",
+                         // <= กำหนดฟังก์ชัน JS
+                   })
+
+                </div>
+                <div class="col-20 " style=" display: flex;align-items: center;">
+
+                </div>
+                <div class="col-30 " style=" display: flex;align-items: center; ">
+                </div>
+            </div>
+            <div class="row center">
+                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                    <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">RUNNER</div>
+                </div>
+                <div class="col-30" style=" display: flex;align-items: center; ">
+                    @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipRunner, (SelectList)ViewBag.listRunner, "กรุณาเลือก",new { @class = "form-control ipRunner",
+                   id = "i_NewMold_listRUNNER" + j,
+                   autocomplete = "off",
+                   @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
+                </div>
+                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                    <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">MAKER HOT RUNER </div>
+                </div>
+                <div class="col-30 " style=" display: flex;align-items: center; ">
+                    @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipMakerHotRunner, (SelectList)ViewBag.listMakerHotRunner, "กรุณาเลือก", new { @class = "form-control ipMakerHotRunner",
+                   id = "i_NewMold_listMakerHotRunner" + j,
+                   autocomplete = "off",
+                   @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
+                </div>
+            </div>
+            <div class="row center">
+                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                    <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">GATE TYPE</div>
+                </div>
+                <div class="col-30" style=" display: flex;align-items: center; ">
+                    @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipGateType1, (SelectList)ViewBag.listGateType, "กรุณาเลือก", new { @class = "form-control ipGateType1", id = "i_NewMold_listSlideSystem" + j, autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
+
+                </div>
+                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">NUMBER POINT </div>
+                </div>
+                <div class="col-30 " style=" display: flex;align-items: center; ">
+                    <input type="number" class="form-control left ipNumberPoint1" id="i_NewMold_ipNumberPoint1" +j style="width:80%;height:80%;font-size:10px;background-color:yellow;margin-right:5px" autocomplete="off" asp-for="_ListViewceItemInforRequestPartName[j].ipNumberPoint1">
+                    <span style="font-size:10px;font-weight:600">DROP</span>
+                </div>
+
+            </div>
+            <div class="row center">
+                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                    <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">GATE TYPE</div>
+                </div>
+                <div class="col-30" style=" display: flex;align-items: center; ">
+                    @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipGateType2, (SelectList)ViewBag.listGateType, "กรุณาเลือก", new { @class = "form-control ipGateType2", id = "i_NewMold_ipGateType2" + j, autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
+
+                </div>
+                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">NUMBER POINT </div>
+                </div>
+                <div class="col-30 " style=" display: flex;align-items: center; ">
+                    <input type="number" class="form-control left ipNumberPoint2" style="width:80%;height:80%;font-size:10px;background-color:yellow;margin-right:5px" autocomplete="off" asp-for="_ListViewceItemInforRequestPartName[j].ipNumberPoint2" id="i_NewMold_ipNumberPoint2" +j>
+                    <span style="font-size:10px;font-weight:600">DROP</span>
+                </div>
+
+            </div>
+            <div class="row center">
+                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                    <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">GATE TYPE</div>
+                </div>
+                <div class="col-30" style=" display: flex;align-items: center; ">
+                    @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipGateType3, (SelectList)ViewBag.listGateType, "กรุณาเลือก", new { @class = "form-control ipGateType3", id = "i_NewMold_ipGateType3" + j, autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
+
+                </div>
+                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">NUMBER POINT </div>
+                </div>
+                <div class="col-30 " style=" display: flex;align-items: center; ">
+                    <input type="number" class="form-control left ipNumberPoint3" style="width:80%;height:80%;font-size:10px;background-color:yellow;margin-right:5px" autocomplete="off" asp-for="_ListViewceItemInforRequestPartName[j].ipNumberPoint3" id="i_NewMold_ipNumberPoint3" +j>
+                    <span style="font-size:10px;font-weight:600">DROP</span>
+                </div>
+
+            </div>
+            <hr style="margin:10px" />
+            <div class="row">
+                @*<div class="col-70" style="text-align:left;padding-left:20px">
+                <span style="font-size:10px;font-weight:800;">
+                    SLIDE SYSTEM
+                </span>
+            </div>*@
+                <div class="col-70" style="text-align:left;padding-left:20px">
+                    <a class="btn btn-link p-0" data-bs-toggle="collapse" href="#collapseSlideSystem_@j" role="button" style="font-size:11px;font-weight:800;">
+                        ▶ SLIDE SYSTEM
+                    </a>
+                </div>
+
+                <div class="col-30" style="text-align:right;">
+                    <input type='button'
+                           class='button btnOrange btnAddRowSlideSystem'
+                           data-table="tbSlideSystem_@j"
+                           value='➕'
+                           style="width:auto;height:28px;vertical-align: sub;margin-left:5px" />
+                    @*<input type='button' class='button btnOrange' value='➕' style="width:auto;height:28px;vertical-align: sub;margin-left:5px" />*@
+                </div>
+
+            </div>
+            <div class="collapse show" id="collapseSlideSystem_@j">
+                @{
+                    var SlideSystem = (SelectList)ViewBag.listSlideSystem;
+                }
+
+                <!-- Template Dropdown (ซ่อนไว้) -->
+                <div id="templateDropdownSlideSystem" style="display:none;" class="isSlideSystemType">
+                    <select class="form-control isSlideSystemType" autocomplete="off"
+                            style="width:100%;font-size:10px;background-color:yellow;height:80%;">
+                        <option value="">กรุณาเลือก</option>
+                        @foreach (var item in SlideSystem)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+
+
+                <table class="tbgreen" Typeofcut" id="tbSlideSystem_@j">
+                    <tr>
+                        <th width="10%">No</th>
+                        <th>SYSTEM</th>
+                        <th width="20%">TOTAL(DROP)</th>
+                        <th width="10%">DEL</th>
+                    </tr>
+                    @{
+                        var row = 0;
+                    }
+                    @for (int i = 0; i < Model._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforSlideSystem.Count(); i++)
+                    {
+                        <tr id='trSlideSystem'>
+                            <td style="text-align:center;">@(row += 1)</td>
+                            <td>
+                                @Html.DropDownListFor(m => m._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforSlideSystem[i].isSlideSystemType, (SelectList)ViewBag.listSlideSystem, "กรุณาเลือก", new { @class = "form-control isSlideSystemType", id = "i_NewMold_ItemisSlideSystemType" + i, autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;height:80%;" })
+                                <input type="text" class="isDocumentNoSub form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipDocumentNoSub" style="margin-bottom:2px; width:100%;display:none" />
+                                <input type="text" class="isPartName form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipPartName" style="margin-bottom:2px; width:100%;display:none" />
+                                <input type="text" class="isCavityNo form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipCavityNo" style="margin-bottom:2px; width:100%;display:none" />
+                                <input type="text" class="isTypeCavity form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipTypeCavity" style="margin-bottom:2px; width:100%;display:none" />
+                                <input type="text" class="isNoProcess form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipNoProcess" style="margin-bottom:2px; width:100%;display:none" />
+                            </td>
+                            <td>
+                                <input type="number" class="isSlideSystemCount form-control" value="@Model._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforSlideSystem[i].isSlideSystemCount" style="margin-bottom:2px; width:100%;font-size:9px;background-color:yellow;" />
+                            </td>
+                            <td style="text-align:center;">
+                                <input type="button" class="btnDel" value="&#x274C" />
+                            </td>
+
+                        </tr>
+                    }
+
+                </table>
+            </div>
+            <hr style="margin:10px" />
+            <span style="font-size:10px;font-weight:800;margin-left:5px">GROUP MATERIAL</span>
+            <div class="row center">
+                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                    <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">
+                        BASE CAVITY
+                    </div>
+                </div>
+                <div class="col-30" style=" display: flex;align-items: center; ">
+                    @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipBaseCavity, (SelectList)ViewBag.listGroupMaterial, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_listSlideSystem", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
+
+                </div>
+                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                    <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">
+                        INSERT CAVITY
+                    </div>
+                </div>
+                <div class="col-30 " style=" display: flex;align-items: center; ">
+                    @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipInsertCavity, (SelectList)ViewBag.listGroupMaterial, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_listSlideSystem", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
+                </div>
+
+            </div>
+            <div class="row center">
+                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                    <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">
+                        BASE CORE
+                    </div>
+                </div>
+                <div class="col-30" style=" display: flex;align-items: center; ">
+                    @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipBaseCode, (SelectList)ViewBag.listGroupMaterial, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_listSlideSystem", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
+
+                </div>
+                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                    <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">
+                        INSERT CORE
+                    </div>
+                </div>
+                <div class="col-30 " style=" display: flex;align-items: center; ">
+                    @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipInsertCode, (SelectList)ViewBag.listGroupMaterial, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_listSlideSystem", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
+                </div>
+
+            </div>
+
+
+            <hr style="margin:10px" />
+            <div class="row">
+                <div class="col-70" style="text-align:left">
+                    @*<span style="font-size:10px;font-weight:800;padding-left:10px">TYPE OF CUT</span>*@
+
+                    <a class="btn btn-link p-0" data-bs-toggle="collapse" href="#collapseTypeofcut_@j" role="button" style="font-size:11px;font-weight:800;">
+                        ▶ TYPE OF CUT
+                    </a>
+
+                </div>
+
+                <div class="col-30" style="text-align:right;">
+                    <input type='button'
+                           class='button btnOrange btnAddRowTypeofcut'
+                           data-table="tbTypeofcut_@j"
+                           value='➕'
+                           style="width:auto;height:28px;vertical-align: sub;margin-left:5px" />
+                </div>
+            </div>
+            <div class="collapse show" id="collapseTypeofcut_@j">
+                @{
+                    var typeOfCuts = (SelectList)ViewBag.listTypeOfCut;
+                }
+                <!-- Template Dropdown (ซ่อนไว้) -->
+                <div id="templateDropdown" style="display:none;" class="icTypeofcut">
+                    <select class="form-control icTypeofcut" autocomplete="off"
+                            style="width:100%;font-size:10px;background-color:yellow;height:80%;">
+                        <option value="">กรุณาเลือก</option>
+                        @foreach (var item in typeOfCuts)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+
+                <table class="tbgreen Typeofcut" id="tbTypeofcut_@j">
+                    <tr>
+                        <th width="10%">No</th>
+                        <th>TYPE</th>
+                        <th width="10%">DEL</th>
+                    </tr>
+                    @{
+                        var row1 = 0;
+                    }
+                    @for (int i = 0; i < Model._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforTypeOfCut.Count(); i++)
+                    {
+                        <tr id='trTypeofcut'>
+                            <td style="text-align:center;">@(row1 += 1)</td>
+                            <td>
+                                @Html.DropDownListFor(m => m._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforTypeOfCut[i].icTypeofcut, (SelectList)ViewBag.listTypeOfCut, "กรุณาเลือก", new { @class = "form-control icTypeofcut", id = "i_NewMold_typeOfCuts" + i, autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;height:80%;" })
+                                <input type="text" class="icDocumentNoSub form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipDocumentNoSub" style="margin-bottom:2px; width:100%;display:none" />
+                                <input type="text" class="icPartName form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipPartName" style="margin-bottom:2px; width:100%;display:none" />
+                                <input type="text" class="icCavityNo form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipCavityNo" style="margin-bottom:2px; width:100%;display:none" />
+                                <input type="text" class="icTypeCavity form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipTypeCavity" style="margin-bottom:2px; width:100%;display:none" />
+                                <input type="text" class="icNoProcess form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipNoProcess" style="margin-bottom:2px; width:100%;display:none" />
+                            </td>
+                            <td style="text-align:center;">
+                                <input type="button" class="btnDel" value="&#x274C" />
+                            </td>
+                        </tr>
+
+
+
+
+                    }
+
+
+                </table>
+            </div>
+            <hr style="margin:10px" />
+            <div class="row">
+                <div class="col-70" style="text-align:left">
+                    @*<span style="font-size:10px;font-weight:800;padding-left:10px">SHIBO</span>*@
+                    <a class="btn btn-link p-0" data-bs-toggle="collapse" href="#collapseSHIBO_@j" role="button" style="font-size:11px;font-weight:800;">
+                        ▶ SHIBO
+                    </a>
+
+                </div>
+                <div class="col-30" style="text-align:right;">
+                    <input type='button'
+                           class='button btnOrange btnAddRowShibo'
+                           data-table="tbShibo_@j"
+                           value='➕'
+                           style="width:auto;height:28px;vertical-align: sub;margin-left:5px" />
+                </div>
+
+            </div>
+            <div class="collapse show" id="collapseSHIBO_@j">
+                @{
+                    var typeShibo = (SelectList)ViewBag.listELECTROFORM;
+                }
+                <!-- Template Dropdown (ซ่อนไว้) -->
+                <div id="templateDropdownShibo" style="display:none;" class="ibShiboType">
+                    <select class="form-control ibShiboType" autocomplete="off"
+                            style="width:100%;font-size:10px;background-color:yellow;height:80%;">
+                        @*<option value="">กรุณาเลือก</option>*@
+                        @foreach (var item in typeShibo)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+
+                <table class="tbgreen typeShibo" id="tbShibo_@j">
+                    <tr>
+                        <th width="10%">No</th>
+                        <th>TYPE</th>
+                        <th width="50%">Description</th>
+                        <th width="10%">DEL</th>
+                    </tr>
+                    @{
+                        var row2 = 0;
+                    }
+                    @for (int i = 0; i < Model._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforShibo.Count(); i++)
+                    {
+                        <tr id='trItemShibo'>
+                            <td style="text-align:center;">@(row2 += 1)</td>
+                            <td>
+                                @Html.DropDownListFor(m => m._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforShibo[i].ibShiboType, (SelectList)ViewBag.listELECTROFORM, "กรุณาเลือก", new { @class = "form-control ibShiboType", id = "i_NewMold_ibShiboType" + i, autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;height:80%;" })
+                                <input type="text" class="ibDocumentNoSub form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipDocumentNoSub" style="margin-bottom:2px; width:100%;display:none" />
+                                <input type="text" class="ibPartName form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipPartName" style="margin-bottom:2px; width:100%;display:none" />
+                                <input type="text" class="ibCavityNo form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipCavityNo" style="margin-bottom:2px; width:100%;display:none" />
+                                <input type="text" class="ibTypeCavity form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipTypeCavity" style="margin-bottom:2px; width:100%;display:none" />
+                                <input type="text" class="ibNoProcess form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipNoProcess" style="margin-bottom:2px; width:100%;display:none" />
+                            </td>
+                            <td>
+                                <input type="text" class="ibSHiboPCS form-control" value="@Model._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforShibo[i].ibSHiboPCS" style="margin-bottom:2px; width:100%;font-size:9px;background-color:yellow;" />
+                            </td>
+                            <td style="text-align:center;">
+                                <input type="button" class="btnDel" value="&#x274C" />
+                            </td>
+
+                        </tr>
+                    }
+
+                </table>
+            </div>
+            <hr style="margin:10px" />
+
+            <div class="row">
+                <div class="col-70" style="text-align:left">
+                    @*<span style="font-size:10px;font-weight:800;padding-left:10px">SHIBO</span>*@
+                    <a class="btn btn-link p-0" data-bs-toggle="collapse" href="#collapseETC_@j" role="button" style="font-size:11px;font-weight:800;">
+                        ▶ ETC
+                    </a>
+
+                </div>
+                <div class="col-30" style="text-align:right;">
+                  
+                </div>
+
+            </div>
+
+            <div class="row center collapse show" id="collapseETC_@j">
+                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                    <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">ELECTROFORM</div>
+                </div>
+                <div class="col-30" style=" display: flex;align-items: center; ">
+                    @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipElectroFormType, (SelectList)ViewBag.listELECTROFORM, new { @class = "form-control ipElectroFormType", id = "i_NewMold_ipElectroFormType" + j, autocomplete = "off", @style = "width:100%;font-size:11px;background-color:yellow;height:80%;" })
+                </div>
+                <div class="col-35 " style=" display: flex;align-items: center;">
+                    <input type="number" class="form-control ipElectroFormPcs " asp-for="_ListViewceItemInforRequestPartName[j].ipElectroFormPcs"
+                           style="width:80%;height:100%;font-size:12px;margin-right:5px; " autocomplete="off" id="i_moldOther_ipElectroFormPcs" />
+
+                    @*<input type="number"
+                class="form-control"
+                @(Model._ListViewceItemInforRequestPartName[j].ipElectroFormType == false ? "disabled" : "")
+                style="width:80%;height:80%;font-size:12px;background-color:yellow;" />*@
+
+                    <span class="FormPcs" style="font-size:10px;font-weight:600;" id="i_MoldOther_FormPcs" +j>PCS</span>
+                </div>
+                <div class="col-15 " style=" display: flex;align-items: center; ">
+                </div>
+            </div>
+        </div>
 
 
 

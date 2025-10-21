@@ -59,6 +59,15 @@ namespace CostEstimate.Controllers.SumRateMoldOther
 
             try
             {
+                //update mat by tool
+                @class._ViewceMastToolGRRequest = new ViewceMastToolGRRequest();
+                @class._ViewceMastToolGRRequest = _MK._ViewceMastToolGRRequest.Where(x => x.trDocumentNo == Docno).FirstOrDefault();
+
+                @class._ViewceItemToolGRRequestPartName = new ViewceItemToolGRRequestPartName();
+                @class._ViewceItemToolGRRequestPartName = _MK._ViewceItemToolGRRequestPartName.Where(x => x.tpDocumentNoSub == @class._ViewceMastToolGRRequest.trDocumentNoSub && x.mpNoProcess == vProcess).FirstOrDefault();
+
+
+
 
                 @class._ViewceMastMoldOtherRequest = new ViewceMastMoldOtherRequest();
 
@@ -67,6 +76,29 @@ namespace CostEstimate.Controllers.SumRateMoldOther
                 @class._ViewceItemWorkingTimeSizeProduct = new ViewceItemWorkingTimeSizeProduct();
 
                 @class._ViewceMastMaterialRequest = new ViewceMastMaterialRequest();
+
+
+                //update
+             
+             
+                @class._ViewceMastMaterialRequest = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == Docno).FirstOrDefault();
+                //@class._ViewceItemMaterialRequestPartName = new ViewceItemMaterialRequestPartName();
+
+                ViewceItemMaterialRequestPartName _ceItemMaterialRequestPartNameGP = new ViewceItemMaterialRequestPartName();
+                _ceItemMaterialRequestPartNameGP = _MK._ViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == @class._ViewceMastMaterialRequest.mrDocumentNoSub && x.mpNoProcess == vProcess && x.mpItem.Contains("GP,GB")).FirstOrDefault();
+                _ceItemMaterialRequestPartNameGP.mpPCS = @class._ViewceItemToolGRRequestPartName.tpGrCost;
+                _ceItemMaterialRequestPartNameGP.mpAmount = 0;
+                _MK._ViewceItemMaterialRequestPartName.Update(_ceItemMaterialRequestPartNameGP);
+                _MK.SaveChanges();
+
+                ViewceItemMaterialRequestPartName _ceItemMaterialRequestPartNameTool = new ViewceItemMaterialRequestPartName();
+                _ceItemMaterialRequestPartNameTool = _MK._ViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == @class._ViewceMastMaterialRequest.mrDocumentNoSub && x.mpNoProcess == vProcess && x.mpItem.Contains("TOOL")).FirstOrDefault();
+                _ceItemMaterialRequestPartNameTool.mpPCS = @class._ViewceItemToolGRRequestPartName.tpToolCost;
+                _ceItemMaterialRequestPartNameTool.mpAmount = 0;
+                _MK._ViewceItemMaterialRequestPartName.Update(_ceItemMaterialRequestPartNameTool);
+                _MK.SaveChanges();
+
+
                 @class._ViewceItemPartName = new ViewceItemPartName();
                 @class._ListViewceItemMaterialRequestPartName = new List<ViewceItemMaterialRequestPartName>();
                 @class._ListGroupViewceMastChartRateOtherReport = new List<GroupViewceMastChartRateOtherReport>();

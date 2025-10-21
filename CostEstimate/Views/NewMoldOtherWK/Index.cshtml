@@ -16,6 +16,7 @@
 <link href="~/css/New/mNew.css" rel="stylesheet" />
 <link href="~/css/Home/siteHome.css" rel="stylesheet" />
 
+<link href="~/css/New/siteUploadfile.css" rel="stylesheet" />
 
 <script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("NewMoldOtherWK"); } }</script>
 <div class="home-content">
@@ -46,10 +47,16 @@
                     <button class="button btnGray" style="width:auto ; @(Model._ViewceMastMoldOtherRequest.mrStep == 4 ? "pointer-events: none;" : "")"
                             onclick="Menubar_MoldOtherWKsaveDraft('@Url.Action("SaveDraft","NewMoldOtherWK")','@Url.Action("SaveCeDetailSub","NewMoldModify")')">
                         <img src="~/images/savedaft.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                       SAVE DRAFT
+                        SAVE DRAFT
                     </button>
                 </div>
 
+            </div>
+            <div style="text-align:right">
+                <button style="margin-right:5px;font-size:10px;width:100px"
+                        class="button btnBlue" id="btnUploadFileWK">
+                    <img src="~/images/excel.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />Import
+                </button>
             </div>
             <div>
                 <form id="formMoldOWKRequest" name="formMoldOWKRequest" enctype="multipart/form-data">
@@ -223,8 +230,7 @@
                                             </h4>
                                         </div>
                                         <div class="panel-collapse collapse show" id="History" style="overflow-y: scroll; max-height: 200px;">
-                                            @*<div id="divHistory" class="panel-body">
-                                                </div>*@
+
                                             <div class="panel-body">
                                                 <table class="summarys">
                                                     <tr>
@@ -282,18 +288,54 @@
 
                                     </div>
                                 </div>
-                                @*<div class="modal-footer" style="width: 100%;">
 
-                                        <button type="button" class="button btnRed" data-bs-dismiss="modal" style="width:80px;height:30px">Close</button>
-
-                                    </div>*@
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="modal modal fade" id="myModalNewMoldOtherWKUpload" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body" id="myModalBodyNewMoldOtherUpload">
+                                <form id="formMoldOWKInportFile" name="formMoldOWKInportFile" enctype="multipart/form-data">
+                                    <div class="modal-header" style="margin-top:1px">
+                                        <h5 class="modal-title">
+                                            <span style="font-weight: bold; font-size: 16px;"><img src="~/images/folders.png" height="35px" width="35px" style="vertical-align:middle" /> Upload Excel File</span>
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class=" panel-group ir fadeInUp animated wowload animated" style="visibility: visible; animation-name: fadeInUp; margin-bottom: 5px; ">
+                                        <div class="panel panel-default property">
+                                            <div class="panel-collapse collapse show " style=" height: auto;padding-top: 5px;">
+                                                <span style="color:black">คลิกเพื่อเลือกไฟล์ Excel</span>
+                                                <div class="panel-body center">
+
+                                                    <input name="files" type="file" id="filesImport" class="button btnGray " style="width:100%" accept=".xls,.xlsx" required>
+                                                    <br />
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer" style="width: 100%;">
+                                        <input type="button"
+                                               style="font-size:14px"
+                                               value="Upload & Read"
+                                               onclick="Menubar_uploadFileWK('@Url.Action("ImportDataFile","NewMoldOtherWK")')"/>
+                                        @*<button class="button" style="width:80%;height:30px;width:100px" onclick="Menubar_uploadFileWK('@Url.Action("ImportDataFile","NewMoldOtherWK")')">Upload & Read</button>*@
+                                    </div>
+                                </form>
+                                  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
+</div>
 
 
 

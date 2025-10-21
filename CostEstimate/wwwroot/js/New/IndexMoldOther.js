@@ -106,3 +106,8 @@ $("#btnfileMoldOtherTGR").click(function () {
 $("#btnfileMoldOtherSM").click(function () {
     $("#myModalNewMoldOtherSM").modal("show");
 });
+
+$("#btnUploadFileWK").click(function () {
+    $('#filesImport').val('');
+    $("#myModalNewMoldOtherWKUpload").modal("show");
+});

@@ -374,7 +374,105 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                     string empApprove = @class._ViewceHistoryApproved != null ? _IT.rpEmails.Where(w => w.emName_M365 == @class._ViewceHistoryApproved.htTo).Select(x => x.emEmpcode).First() : @class._ViewceMastMaterialRequest.mrEmpCodeApprove;
                     string NickNameApprove = empApprove != null ? _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == empApprove).Select(x => x.NICKNAME).First() : @class._ViewceMastMaterialRequest.mrNameApprove;
 
-                    vstep = vstep == 9 ? vstep = 0 : vstep;
+
+                    //checked dis approve   20/10/2025
+                    int vStepDis = 0;
+                    if (vstep == 8)
+                    {
+                        string vDocNoMain = @class._ViewceMastMaterialRequest.mrDocumentNo;
+                        if (@class._ViewceMastMaterialRequest.mrStep == 1)
+                        {
+                            vStepDis = 8;
+                            empApprove = @class._ViewceMastMaterialRequest.mrEmpCodeRequest;
+                            string vstatusPanding = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "4" && x.mfStep == 9).Select(x => x.mfSubject).FirstOrDefault();
+                            //update status
+                            //wr
+                            ViewceMastWorkingTimeRequest _MastWorkingTimeRequest = new ViewceMastWorkingTimeRequest();
+                            _MastWorkingTimeRequest = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNo == vDocNoMain).FirstOrDefault();
+                            var approvedNameWr = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _MastWorkingTimeRequest.wrDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault();
+                            var empCodeWr = _IT.rpEmails.Where(y => y.emName_M365 == approvedNameWr).Select(y => y.emEmpcode).FirstOrDefault();
+                            var nicknameAppWr = _HRMS.AccEMPLOYEE.Where(u => u.EMP_CODE == empCodeWr).Select(u => u.NICKNAME).FirstOrDefault();
+
+                            _MastWorkingTimeRequest.wrStep = 0;
+                            _MastWorkingTimeRequest.wrStatus = vstatusPanding;
+                            _MastWorkingTimeRequest.wrEmpCodeApprove = empCodeWr;//_IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _MastWorkingTimeRequest.wrDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault();
+                            _MastWorkingTimeRequest.wrNameApprove = nicknameAppWr;// _HRMS.AccEMPLOYEE.Where(u => u.EMP_CODE == _IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _MastWorkingTimeRequest.wrDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault()).Select(x => x.NICKNAME).FirstOrDefault();
+                            _MK._ViewceMastWorkingTimeRequest.Update(_MastWorkingTimeRequest);
+                            _MK.SaveChanges();
+
+                            //Mat
+
+
+                            //ViewceMastMaterialRequest _ceMastMaterialRequest = new ViewceMastMaterialRequest();
+                            //_ceMastMaterialRequest = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == vDocNoMain).FirstOrDefault();
+                            //var approvedNameMat = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastMaterialRequest.mrDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault();
+                            //var empCodeMat = _IT.rpEmails.Where(y => y.emName_M365 == approvedNameMat).Select(y => y.emEmpcode).FirstOrDefault();
+                            //var nicknameAppMat = _HRMS.AccEMPLOYEE.Where(u => u.EMP_CODE == empCodeMat).Select(u => u.NICKNAME).FirstOrDefault();
+
+
+                            //_ceMastMaterialRequest.mrStep = 0;
+                            //_ceMastMaterialRequest.mrStatus = vstatusPanding;
+                            //_ceMastMaterialRequest.mrEmpCodeApprove = empCodeMat; // _IT.rpEmails.Where(y=>y.emName_M365 ==   _MK._ViewceHistoryApproved.Where(x=>x.htDocNo == _ceMastMaterialRequest.mrDocumentNo && x.htStep==1).Select(x=>x.htTo).FirstOrDefault()).Select(x=>x.emEmpcode).FirstOrDefault();
+                            //_ceMastMaterialRequest.mrNameApprove = nicknameAppMat;//_HRMS.AccEMPLOYEE.Where(u=>u.EMP_CODE ==   _IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastMaterialRequest.mrDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault()).Select(x=>x.NICKNAME).FirstOrDefault();
+                            //_MK._ViewceMastMaterialRequest.Update(_ceMastMaterialRequest);
+                            //_MK.SaveChanges();
+
+                            //Tool
+                            ViewceMastToolGRRequest _ceMastToolGRRequest = new ViewceMastToolGRRequest();
+                            _ceMastToolGRRequest = _MK._ViewceMastToolGRRequest.Where(x => x.trDocumentNo == vDocNoMain).FirstOrDefault();
+                            var approvedNameTool = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastToolGRRequest.trDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault();
+                            var empCodeTool = _IT.rpEmails.Where(y => y.emName_M365 == approvedNameTool).Select(y => y.emEmpcode).FirstOrDefault();
+                            var nicknameAppTool = _HRMS.AccEMPLOYEE.Where(u => u.EMP_CODE == empCodeTool).Select(u => u.NICKNAME).FirstOrDefault();
+
+                            _ceMastToolGRRequest.trStep = 0;
+                            _ceMastToolGRRequest.trStatus = vstatusPanding;
+                            _ceMastToolGRRequest.trEmpCodeApprove = empCodeTool;//_IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastToolGRRequest.trDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault();
+                            _ceMastToolGRRequest.trNameApprove = nicknameAppTool;//_HRMS.AccEMPLOYEE.Where(u => u.EMP_CODE == _IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastToolGRRequest.trDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault()).Select(x => x.NICKNAME).FirstOrDefault();
+                            _MK._ViewceMastToolGRRequest.Update(_ceMastToolGRRequest);
+                            _MK.SaveChanges();
+
+                            //SM
+                            ViewceMastInforSpacMoldRequest _ceMastInforSpacMoldRequest = new ViewceMastInforSpacMoldRequest();
+                            _ceMastInforSpacMoldRequest = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == vDocNoMain).FirstOrDefault();
+                            var approvedNameSM = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastInforSpacMoldRequest.irDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault();
+                            var empCodeSM = _IT.rpEmails.Where(y => y.emName_M365 == approvedNameSM).Select(y => y.emEmpcode).FirstOrDefault();
+                            var nicknameAppSM = _HRMS.AccEMPLOYEE.Where(u => u.EMP_CODE == empCodeSM).Select(u => u.NICKNAME).FirstOrDefault();
+
+                            _ceMastInforSpacMoldRequest.irStep = 0;
+                            _ceMastInforSpacMoldRequest.irStatus = vstatusPanding;
+                            _ceMastInforSpacMoldRequest.irEmpCodeApprove = empCodeSM;//_IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastInforSpacMoldRequest.irDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault();
+                            _ceMastInforSpacMoldRequest.irNameApprove = nicknameAppSM;//_HRMS.AccEMPLOYEE.Where(u => u.EMP_CODE == _IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastInforSpacMoldRequest.irDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault()).Select(x => x.NICKNAME).FirstOrDefault();
+                            _MK._ViewceMastInforSpacMoldRequest.Update(_ceMastInforSpacMoldRequest);
+                            _MK.SaveChanges();
+
+
+                            //re step main other
+                            string reStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "3" && x.mfStep == 1).Select(x => x.mfSubject).FirstOrDefault();
+                            ViewceMastMoldOtherRequest _ViewceMastMoldOtherRequest = new ViewceMastMoldOtherRequest();
+                            _ViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == vDocNoMain).FirstOrDefault();
+                            _ViewceMastMoldOtherRequest.mrStep = 1;
+                            _ViewceMastMoldOtherRequest.mrStatus = reStatus;// _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "3" && x.mfStep == 1).Select(x => x.mfSubject).FirstOrDefault();
+                            _MK._ViewceMastMoldOtherRequest.Update(_ViewceMastMoldOtherRequest);
+                            _MK.SaveChanges();
+                        }
+                        else
+                        {
+                            vStepDis = 1;
+                            vstep = 1;
+                           // empApprove = _IT.rpEmails.Where(w => w.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == vDocNo && x.htStep == vStepDis).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).First();
+                            string vname = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == vDocNo && x.htStep == vStepDis).Select(x => x.htTo).FirstOrDefault();
+                            empApprove = _IT.rpEmails.Where(w => w.emName_M365 == vname).Select(x => x.emEmpcode).FirstOrDefault();
+
+
+                        }
+                        _smStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == vStepDis && x.mfFlowNo == "5").Select(x => x.mfSubject).First();
+                        NickNameApprove = empApprove != null ? _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == empApprove).Select(x => x.NICKNAME).First() : @class._ViewceMastMaterialRequest.mrNameApprove;
+                    }
+
+
+
+
+                    vstep = vstep == 8 ? vstep = 0 : vstep;
                     ViewceMastMaterialRequest _ceMastMaterialRequest = new ViewceMastMaterialRequest();
                     if (savetype == "S")
                     {
@@ -658,7 +756,23 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
             {
                 try
                 {
-                    string _smStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == vstep && x.mfFlowNo == "4").Select(x => x.mfSubject).First();
+                    string _smStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == vstep && x.mfFlowNo == "5").Select(x => x.mfSubject).First();
+
+                    //checked dis approve   20/10/2025
+                    int vStepDis = 0;
+                    if (vstep == 8)
+                    {
+                        if (@class._ViewceMastMaterialRequest.mrStep > 1)
+                        {
+                            vStepDis = 1;
+                            vstep = 1;
+                            @class._ViewceHistoryApproved.htTo = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == RunDoc && x.htStep == vStepDis).Select(x => x.htTo).FirstOrDefault();
+                            _smStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == vStepDis && x.mfFlowNo == "4").Select(x => x.mfSubject).First();
+                        }
+                    }
+
+
+
                     vstep = vstep == 8 ? vstep = 0 : vstep;
 
                     if (@class._ViewceHistoryApproved.htCC != null)
@@ -740,7 +854,33 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
 
 
                 string _smStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == vstep && x.mfFlowNo == "5").Select(x => x.mfSubject).First();
-                vstep = vstep == 8 ? vstep = 0 : vstep;
+
+
+                //checked dis approve   20/10/2025
+                if (vstep == 8)
+                {
+                    if (@class._ViewceMastMaterialRequest.mrStep == 1)
+                    {
+                        //wr
+                        string Docsubwr = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNo == RunDoc).Select(x => x.wrDocumentNoSub).FirstOrDefault();
+                        string ccwr = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == Docsubwr && x.htStep == 1).Select(x => x.htTo).FirstOrDefault();
+                        //mat
+                        //string DocsubMat = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == RunDoc).Select(x => x.mrDocumentNoSub).FirstOrDefault();
+                        //string ccMat = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == DocsubMat && x.htStep == 1).Select(x => x.htTo).FirstOrDefault();
+                        //Tool
+                        string DocsubTool = _MK._ViewceMastToolGRRequest.Where(x => x.trDocumentNo == RunDoc).Select(x => x.trDocumentNoSub).FirstOrDefault();
+                        string ccTool = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == DocsubTool && x.htStep == 1).Select(x => x.htTo).FirstOrDefault();
+                        //SM
+                        string DocsubSM = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == RunDoc).Select(x => x.irDocumentNoSub).FirstOrDefault();
+                        string ccSM = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == DocsubSM && x.htStep == 1).Select(x => x.htTo).FirstOrDefault();
+
+                        @class._ViewceHistoryApproved.htCC = @class._ViewceHistoryApproved.htCC + "," + Docsubwr + "," + ccTool + "," + ccSM;
+
+                    }
+                }
+
+
+                    vstep = vstep == 8 ? vstep = 0 : vstep;
 
                 var email = new MimeMessage();
                 ViewrpEmail fromEmailFrom = _IT.rpEmails.Where(w => w.emName_M365 == @class._ViewceHistoryApproved.htFrom).FirstOrDefault();

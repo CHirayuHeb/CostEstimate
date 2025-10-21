@@ -31,6 +31,12 @@ using MailKit.Net.Smtp;
 using System.Data;
 using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Storage;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using System.Drawing;
+
+
+
 
 
 namespace CostEstimate.Controllers.NewMoldOtherWK
@@ -135,46 +141,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                     });
                 }
 
-                //if (@class._ListViewceItemWorkingTimePartName.Count() == 0)
-                //{
-                //    for (int j = 0; j < @class._ListViewceItemPartName.Count(); j++)
-                //    {
-                //        for (int i = 0; i < @class._ListceMastProcess.Count(); i++)
-                //        {
-                //            @class._ListViewceItemWorkingTimePartName.Add(new ViewceItemWorkingTimePartName
-                //            {
-                //                wpDocumentNoSub = @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub,
-                //                wpRunNo = i + 1,
-                //                wpPartName = @class._ListViewceItemPartName[j].ipPartName,
-                //                wpCavityNo = @class._ListViewceItemPartName[j].ipCavityNo,
-                //                wpTypeCavity = @class._ListViewceItemPartName[j].ipTypeCavity,
-                //                wpNoProcess = @class._ListViewceItemPartName[j].ipRunNo,
-                //                wpGroupName = @class._ListceMastProcess[i].mpGroupName.Trim(),
-                //                wpProcessName = @class._ListceMastProcess[i].mpProcessName.Trim(),
-                //                wpWT_Man = 0,
-                //                wpWT_Auto = 0,
-                //                wpEnable_WTMan = @class._ListceMastProcess[i].mpEnable_WTMan,
-                //                wpEnable_WTAuto = @class._ListceMastProcess[i].mpEnable_WTAuto,
-                //                wpTotal = 0,
-                //                wpIssueDate = "",// @class._ListceMastProcess[i].mpProcessName.Trim(),
-                //            });
-                //        }
 
-                //        @class._ListViewceItemWorkingTimeSizeProduct.Add(new ViewceItemWorkingTimeSizeProduct
-                //        {
-                //            wsDocumentNoSub = @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub,
-                //            wsRunNo = j + 1,
-                //            wsPartName = @class._ListViewceItemPartName[j].ipPartName,
-                //            wsCavityNo = @class._ListViewceItemPartName[j].ipCavityNo,
-                //            wsTypeCavity = @class._ListViewceItemPartName[j].ipTypeCavity,
-                //            wsSize = "",
-                //            wsSizeProductX = 0,
-                //            wsSizeProductY = 0,
-                //            wsSizeProductz = 0,
-                //        });
-
-                //    }
-                //}
                 //add group  ipPartName ipCavityNo ipTypeCavity
                 @class._ListGroupPartName = @class._ListViewceItemWorkingTimePartName.GroupBy(x => new { x.wpPartName, x.wpCavityNo, x.wpTypeCavity, x.wpNoProcess })
                             .Select(g => new GroupPartName
@@ -183,7 +150,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                                 wpCavityNo = g.Key.wpCavityNo,
                                 wpTypeCavity = g.Key.wpTypeCavity,
                                 wpProcess = g.Key.wpNoProcess,
-                                _GroupViewceItemWorkingTimePartName = @class._ListViewceItemWorkingTimePartName.Where(x=>  x.wpPartName == g.Key.wpPartName && x.wpCavityNo == g.Key.wpCavityNo
+                                _GroupViewceItemWorkingTimePartName = @class._ListViewceItemWorkingTimePartName.Where(x => x.wpPartName == g.Key.wpPartName && x.wpCavityNo == g.Key.wpCavityNo
                                                                                                                         && x.wpTypeCavity == g.Key.wpTypeCavity && x.wpNoProcess == g.Key.wpNoProcess).ToList(),
 
 
@@ -587,11 +554,105 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                 try
                 {
                     string vDocNo = @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub;
+
                     string _smStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == vstep && x.mfFlowNo == "4").Select(x => x.mfSubject).First();
                     string empApprove = @class._ViewceHistoryApproved != null ? _IT.rpEmails.Where(w => w.emName_M365 == @class._ViewceHistoryApproved.htTo).Select(x => x.emEmpcode).First() : @class._ViewceMastWorkingTimeRequest.wrEmpCodeApprove;
                     string NickNameApprove = empApprove != null ? _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == empApprove).Select(x => x.NICKNAME).First() : @class._ViewceMastWorkingTimeRequest.wrNameApprove;
 
-                    vstep = vstep == 9 ? vstep = 0 : vstep;
+                    //checked dis approve   20/10/2025
+                    int vStepDis = 0;
+                    if (vstep == 8)
+                    {
+                        string vDocNoMain = @class._ViewceMastWorkingTimeRequest.wrDocumentNo;
+                        if (@class._ViewceMastWorkingTimeRequest.wrStep == 1)
+                        {
+                            vStepDis = 8;
+                            empApprove = @class._ViewceMastWorkingTimeRequest.wrEmpCodeRequest;
+                            string vstatusPanding = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "4" && x.mfStep == 9).Select(x => x.mfSubject).FirstOrDefault();
+
+                            //update status
+                            //wr
+                            //ViewceMastWorkingTimeRequest _MastWorkingTimeRequest = new ViewceMastWorkingTimeRequest();
+                            //_MastWorkingTimeRequest = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNo == vDocNo).FirstOrDefault();
+                            //var approvedNameWr = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _MastWorkingTimeRequest.wrDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault();
+                            //var empCodeWr = _IT.rpEmails.Where(y => y.emName_M365 == approvedNameWr).Select(y => y.emEmpcode).FirstOrDefault();
+                            //var nicknameAppWr = _HRMS.AccEMPLOYEE.Where(u => u.EMP_CODE == empCodeWr).Select(u => u.NICKNAME).FirstOrDefault();
+
+                            //_MastWorkingTimeRequest.wrStep = 0;
+                            //_MastWorkingTimeRequest.wrStatus = vstatusPanding;
+                            //_MastWorkingTimeRequest.wrEmpCodeApprove = empCodeWr;//_IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _MastWorkingTimeRequest.wrDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault();
+                            //_MastWorkingTimeRequest.wrNameApprove = nicknameAppWr;// _HRMS.AccEMPLOYEE.Where(u => u.EMP_CODE == _IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _MastWorkingTimeRequest.wrDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault()).Select(x => x.NICKNAME).FirstOrDefault();
+                            //_MK._ViewceMastWorkingTimeRequest.Update(_MastWorkingTimeRequest);
+                            //_MK.SaveChanges();
+
+                            //Mat
+
+
+                            ViewceMastMaterialRequest _ceMastMaterialRequest = new ViewceMastMaterialRequest();
+                            _ceMastMaterialRequest = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == vDocNoMain).FirstOrDefault();
+                            var approvedNameMat = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastMaterialRequest.mrDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault();
+                            var empCodeMat = _IT.rpEmails.Where(y => y.emName_M365 == approvedNameMat).Select(y => y.emEmpcode).FirstOrDefault();
+                            var nicknameAppMat = _HRMS.AccEMPLOYEE .Where(u => u.EMP_CODE == empCodeMat).Select(u => u.NICKNAME) .FirstOrDefault();
+
+
+                            _ceMastMaterialRequest.mrStep = 0;
+                            _ceMastMaterialRequest.mrStatus = vstatusPanding;
+                            _ceMastMaterialRequest.mrEmpCodeApprove = empCodeMat; // _IT.rpEmails.Where(y=>y.emName_M365 ==   _MK._ViewceHistoryApproved.Where(x=>x.htDocNo == _ceMastMaterialRequest.mrDocumentNo && x.htStep==1).Select(x=>x.htTo).FirstOrDefault()).Select(x=>x.emEmpcode).FirstOrDefault();
+                            _ceMastMaterialRequest.mrNameApprove = nicknameAppMat;//_HRMS.AccEMPLOYEE.Where(u=>u.EMP_CODE ==   _IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastMaterialRequest.mrDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault()).Select(x=>x.NICKNAME).FirstOrDefault();
+                            _MK._ViewceMastMaterialRequest.Update(_ceMastMaterialRequest);
+                            _MK.SaveChanges();
+
+                            //Tool
+                            ViewceMastToolGRRequest _ceMastToolGRRequest = new ViewceMastToolGRRequest();
+                            _ceMastToolGRRequest = _MK._ViewceMastToolGRRequest.Where(x => x.trDocumentNo == vDocNoMain).FirstOrDefault();
+                            var approvedNameTool = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastToolGRRequest.trDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault();
+                            var empCodeTool = _IT.rpEmails.Where(y => y.emName_M365 == approvedNameTool).Select(y => y.emEmpcode).FirstOrDefault();
+                            var nicknameAppTool = _HRMS.AccEMPLOYEE.Where(u => u.EMP_CODE == empCodeTool).Select(u => u.NICKNAME).FirstOrDefault();
+
+                            _ceMastToolGRRequest.trStep = 0;
+                            _ceMastToolGRRequest.trStatus = vstatusPanding;
+                            _ceMastToolGRRequest.trEmpCodeApprove = empCodeTool;//_IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastToolGRRequest.trDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault();
+                            _ceMastToolGRRequest.trNameApprove = nicknameAppTool;//_HRMS.AccEMPLOYEE.Where(u => u.EMP_CODE == _IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastToolGRRequest.trDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault()).Select(x => x.NICKNAME).FirstOrDefault();
+                            _MK._ViewceMastToolGRRequest.Update(_ceMastToolGRRequest);
+                            _MK.SaveChanges();
+
+                            //SM
+                            ViewceMastInforSpacMoldRequest _ceMastInforSpacMoldRequest = new ViewceMastInforSpacMoldRequest();
+                            _ceMastInforSpacMoldRequest = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == vDocNoMain).FirstOrDefault();
+                            var approvedNameSM = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastInforSpacMoldRequest.irDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault();
+                            var empCodeSM = _IT.rpEmails.Where(y => y.emName_M365 == approvedNameSM).Select(y => y.emEmpcode).FirstOrDefault();
+                            var nicknameAppSM = _HRMS.AccEMPLOYEE.Where(u => u.EMP_CODE == empCodeSM).Select(u => u.NICKNAME).FirstOrDefault();
+
+                            _ceMastInforSpacMoldRequest.irStep = 0;
+                            _ceMastInforSpacMoldRequest.irStatus = vstatusPanding;
+                            _ceMastInforSpacMoldRequest.irEmpCodeApprove = empCodeSM;//_IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastInforSpacMoldRequest.irDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault();
+                            _ceMastInforSpacMoldRequest.irNameApprove = nicknameAppSM;//_HRMS.AccEMPLOYEE.Where(u => u.EMP_CODE == _IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastInforSpacMoldRequest.irDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault()).Select(x => x.NICKNAME).FirstOrDefault();
+                            _MK._ViewceMastInforSpacMoldRequest.Update(_ceMastInforSpacMoldRequest);
+                            _MK.SaveChanges();
+
+
+                            //re step main other
+                            string reStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "3" && x.mfStep == 1).Select(x => x.mfSubject).FirstOrDefault();
+                            ViewceMastMoldOtherRequest _ViewceMastMoldOtherRequest = new ViewceMastMoldOtherRequest();
+                            _ViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == vDocNoMain).FirstOrDefault();
+                            _ViewceMastMoldOtherRequest.mrStep = 1;
+                            _ViewceMastMoldOtherRequest.mrStatus = reStatus;// _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "3" && x.mfStep == 1).Select(x => x.mfSubject).FirstOrDefault();
+                            _MK._ViewceMastMoldOtherRequest.Update(_ViewceMastMoldOtherRequest);
+                            _MK.SaveChanges();
+
+                        }
+                        else
+                        {
+                            vStepDis = 1;
+                            vstep = 1;
+                            string vname = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == vDocNo && x.htStep == vStepDis).Select(x => x.htTo).FirstOrDefault();
+                            empApprove = _IT.rpEmails.Where(w => w.emName_M365 == vname).Select(x => x.emEmpcode).FirstOrDefault();
+                        }
+                        _smStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == vStepDis && x.mfFlowNo == "4").Select(x => x.mfSubject).First();
+                        NickNameApprove = empApprove != null ? _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == empApprove).Select(x => x.NICKNAME).First() : @class._ViewceMastWorkingTimeRequest.wrNameApprove;
+                    }
+
+                    vstep = vstep == 8 ? vstep = 0 : vstep;
                     //save ceMastWorkingTimeRequest
                     ViewceMastWorkingTimeRequest _ceMastWorkingTimeRequest = new ViewceMastWorkingTimeRequest();
                     if (savetype == "S")
@@ -617,27 +678,6 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                         _MK._ViewceItemWorkingTimePartName.RemoveRange(itemWK);
                         _MK.SaveChanges();
                     }
-                    //for (int i = 0; i < @class._ListViewceItemWorkingTimePartName.Count(); i++)
-                    //{
-                    //    var _ceItemWorkingTimePartName = new ViewceItemWorkingTimePartName()
-                    //    {
-                    //        wpDocumentNoSub = vDocNo,
-                    //        wpRunNo = i + 1,
-                    //        wpPartName = @class._ListViewceItemWorkingTimePartName[i].wpPartName,
-                    //        wpCavityNo = @class._ListViewceItemWorkingTimePartName[i].wpCavityNo,
-                    //        wpTypeCavity = @class._ListViewceItemWorkingTimePartName[i].wpTypeCavity,
-                    //        wpNoProcess = @class._ListViewceItemWorkingTimePartName[i].wpNoProcess,
-                    //        wpGroupName = @class._ListViewceItemWorkingTimePartName[i].wpGroupName,
-                    //        wpProcessName = @class._ListViewceItemWorkingTimePartName[i].wpProcessName,
-                    //        wpWT_Man = @class._ListViewceItemWorkingTimePartName[i].wpWT_Man,
-                    //        wpWT_Auto = @class._ListViewceItemWorkingTimePartName[i].wpWT_Auto,
-                    //        wpEnable_WTMan = @class._ListViewceItemWorkingTimePartName[i].wpEnable_WTMan,
-                    //        wpEnable_WTAuto = @class._ListViewceItemWorkingTimePartName[i].wpEnable_WTAuto,
-                    //        wpTotal = @class._ListViewceItemWorkingTimePartName[i].wpTotal,
-                    //        wpIssueDate = DateTime.Now.ToString("yyyyMMdd HH:mm:ss"),
-                    //    };
-                    //    _MK._ViewceItemWorkingTimePartName.AddAsync(_ceItemWorkingTimePartName);
-                    //}
 
 
                     //SqlBulk insert
@@ -870,6 +910,22 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                 try
                 {
                     string _smStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == vstep && x.mfFlowNo == "4").Select(x => x.mfSubject).First();
+
+
+                    //checked dis approve   20/10/2025
+                    int vStepDis = 0;
+                    if (vstep == 8)
+                    {
+                        if (@class._ViewceMastWorkingTimeRequest.wrStep > 1)
+                        {
+                            vStepDis = 1;
+                            vstep = 1;
+                            @class._ViewceHistoryApproved.htTo = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == RunDoc && x.htStep == vStepDis).Select(x => x.htTo).FirstOrDefault();
+                            _smStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == vStepDis && x.mfFlowNo == "4").Select(x => x.mfSubject).First();
+                        }
+                    }
+
+
                     vstep = vstep == 8 ? vstep = 0 : vstep;
 
                     if (@class._ViewceHistoryApproved.htCC != null)
@@ -949,8 +1005,29 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                                                                                     : @class._ViewceMastWorkingTimeRequest.wrEmpCodeRequest + " : " + @class._ViewceMastWorkingTimeRequest.wrNameRequest;
 
 
-
                 string _smStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == vstep && x.mfFlowNo == "4").Select(x => x.mfSubject).First();
+                //checked dis approve   20/10/2025
+                if (vstep == 8)
+                {
+                    if (@class._ViewceMastWorkingTimeRequest.wrStep == 1)
+                    {
+                        //mat
+                        string DocsubMat = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == RunDoc).Select(x => x.mrDocumentNoSub).FirstOrDefault();
+                        string ccMat = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == DocsubMat && x.htStep == 1).Select(x => x.htTo).FirstOrDefault();
+                        //Tool
+                        string DocsubTool = _MK._ViewceMastToolGRRequest.Where(x => x.trDocumentNo == RunDoc).Select(x => x.trDocumentNoSub).FirstOrDefault();
+                        string ccTool = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == DocsubTool && x.htStep == 1).Select(x => x.htTo).FirstOrDefault();
+                        //SM
+                        string DocsubSM = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == RunDoc).Select(x => x.irDocumentNoSub).FirstOrDefault();
+                        string ccSM = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == DocsubSM && x.htStep == 1).Select(x => x.htTo).FirstOrDefault();
+
+                        @class._ViewceHistoryApproved.htCC = @class._ViewceHistoryApproved.htCC + "," + ccMat + "," + ccTool + "," + ccSM;
+
+                    }
+                }
+
+
+
                 vstep = vstep == 8 ? vstep = 0 : vstep;
 
                 var email = new MimeMessage();
@@ -963,6 +1040,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                 //email.From.Add(MailboxAddress.Parse(_ViewlrHistoryApprove.htFrom));
                 email.From.Add(FromMailFrom);
                 email.To.Add(FromMailTO);
+
 
                 if (@class._ViewceHistoryApproved.htCC != null)
                 {
@@ -1121,6 +1199,296 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
             return Json(new { c1 = config, c2 = msg });
         }
 
+
+        [HttpPost]
+        public IActionResult btnExportExcel(Class @class, string id)
+        {
+            List<ViewceMastMoldOtherRequest> _ListViewceMastMoldOtherRequest = new List<ViewceMastMoldOtherRequest>();
+            @class._ListViewceItemWorkingTimePartName = new List<ViewceItemWorkingTimePartName>();
+            string slipMat = id.ToString() + ":" + DateTime.Now.ToString("yyyyMMdd:HHmmss");
+            string TempPath = Path.GetTempFileName();
+            string fileName = "Export(" + slipMat + ").xlsx";
+
+            @class._ListceMastProcess = _MK._ViewceMastProcess.Where(x => x.mpType == "MoldOtherWK").OrderBy(x => x.mpNo).ToList();
+
+
+            //check ข้อมูลเดิม
+            string vDocNosub = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNo == id).Select(x => x.wrDocumentNoSub).FirstOrDefault();
+            @class._ListViewceItemWorkingTimePartName = _MK._ViewceItemWorkingTimePartName.Where(x => x.wpDocumentNoSub == vDocNosub).ToList();
+
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("ItemPartName");
+                worksheet.Cells.Style.Font.Size = 12;
+
+
+
+
+                //header main
+                worksheet.Cells[1, 1].Value = "Document No";
+                worksheet.Cells[1, 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                worksheet.Cells[1, 2].Value = "Part Name";
+                worksheet.Cells[1, 2].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                worksheet.Cells[1, 3].Value = "Cavity No";
+                worksheet.Cells[1, 3].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                worksheet.Cells[1, 4].Value = "Type Cavity";
+                worksheet.Cells[1, 4].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                worksheet.Cells[1, 5].Value = "Process (ห้ามแก้)";
+                worksheet.Cells[1, 5].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                worksheet.Cells[1, 5].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[1, 5].Style.Fill.BackgroundColor.SetColor(Color.Red);
+                worksheet.Cells[1, 5].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+
+
+                int sRow = 0;
+                int cRow = 0;
+                if (id != null)
+                {
+
+                    //header item
+                    for (int k = 0; k < 3; k++)
+                    {
+                        sRow = 5; //row cell
+                        cRow = 0; // count item
+
+                        for (int i = 0; i < @class._ListceMastProcess.Count(); i++)
+                        {
+                            //mpEnable_WTMan , mpEnable_WTAuto
+                            if (@class._ListceMastProcess[i].mpEnable_WTMan == true)
+                            {
+                                worksheet.Cells[1, sRow + 1].Value = @class._ListceMastProcess[i].mpGroupName;
+                                worksheet.Cells[1, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                                worksheet.Cells[2, sRow + 1].Value = @class._ListceMastProcess[i].mpProcessName;
+                                worksheet.Cells[2, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                                worksheet.Cells[2, sRow + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[2, sRow + 1].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                                worksheet.Cells[2, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                                worksheet.Cells[3, sRow + 1].Value = "MAN";
+                                worksheet.Cells[3, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                                worksheet.Cells[3, sRow + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[3, sRow + 1].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+                                worksheet.Cells[3, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                                sRow += 1;
+                                cRow += 1;
+                            }
+                            if (@class._ListceMastProcess[i].mpEnable_WTAuto == true)
+                            {
+                                worksheet.Cells[1, sRow + 1].Value = @class._ListceMastProcess[i].mpGroupName;
+                                worksheet.Cells[1, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                                worksheet.Cells[2, sRow + 1].Value = @class._ListceMastProcess[i].mpProcessName;
+                                worksheet.Cells[2, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                                worksheet.Cells[2, sRow + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[2, sRow + 1].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                                worksheet.Cells[2, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                                worksheet.Cells[3, sRow + 1].Value = "AUTO";
+                                worksheet.Cells[3, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                                worksheet.Cells[3, sRow + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[3, sRow + 1].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+                                worksheet.Cells[3, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                                sRow += 1;
+                                cRow += 1;
+                            }
+                        }
+                    }
+
+                    try
+                    {
+                        //cRow = cRow / 3;
+                        @class._ListViewceItemPartName = _MK._ViewceItemPartName.Where(x => x.ipDocumentNo == id).OrderBy(x => x.ipRunNo).ToList();
+                        for (int j = 0; j < @class._ListViewceItemPartName.Count(); j++)
+                        {
+                            worksheet.Cells[4 + j, 1].Value = @class._ListViewceItemPartName[j].ipDocumentNo;
+                            worksheet.Cells[4 + j, 2].Value = @class._ListViewceItemPartName[j].ipPartName;
+                            worksheet.Cells[4 + j, 3].Value = @class._ListViewceItemPartName[j].ipCavityNo;
+                            worksheet.Cells[4 + j, 4].Value = @class._ListViewceItemPartName[j].ipTypeCavity;
+                            worksheet.Cells[4 + j, 5].Value = @class._ListViewceItemPartName[j].ipRunNo;
+                            //for (int i = 6; i < cRow + 6; i++)
+                            //{
+                            //    worksheet.Cells[4 + j, i].Value = "0";
+                            //}
+                            sRow = 6;
+                            for (int i = 0; i < @class._ListceMastProcess.Count(); i++)
+                            {
+                                if (@class._ListceMastProcess[i].mpEnable_WTMan == true)
+                                {
+
+                                    //double vMan = @class._ListViewceItemWorkingTimePartName.Where(x => x.wpNoProcess == @class._ListViewceItemPartName[j].ipRunNo
+                                    //                                                && x.wpGroupName == @class._ListceMastProcess[i].mpGroupName
+                                    //                                                && x.wpProcessName == @class._ListceMastProcess[i].mpProcessName).Select(x => x.wpWT_Man).FirstOrDefault();
+                                    double vMan = @class._ListViewceItemWorkingTimePartName.Where(x => x.wpNoProcess == @class._ListViewceItemPartName[j].ipRunNo
+                                                                                             && x.wpGroupName == @class._ListceMastProcess[i].mpGroupName
+                                                                                             && x.wpProcessName == @class._ListceMastProcess[i].mpProcessName)
+                                                                                             .Select(x => x.wpWT_Man)
+                                                                                             .DefaultIfEmpty(0)  // กรณีไม่มีค่า ให้ default เป็น 0
+                                                                                             .First();
+
+
+                                    worksheet.Cells[4 + j, sRow].Value = vMan;
+                                    sRow += 1;
+                                }
+                                if (@class._ListceMastProcess[i].mpEnable_WTAuto == true)
+                                {
+
+                                    double vAuto = @class._ListViewceItemWorkingTimePartName.Where(x => x.wpNoProcess == @class._ListViewceItemPartName[j].ipRunNo
+                                                                                           && x.wpGroupName == @class._ListceMastProcess[i].mpGroupName
+                                                                                           && x.wpProcessName == @class._ListceMastProcess[i].mpProcessName)
+                                                                                           .Select(x => x.wpWT_Auto)
+                                                                                           .DefaultIfEmpty(0)  // กรณีไม่มีค่า ให้ default เป็น 0
+                                                                                           .First();
+
+                                    worksheet.Cells[4 + j, sRow].Value = vAuto;
+                                    sRow += 1;
+                                }
+                            }
+
+
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+
+
+
+
+                }
+
+
+
+                // Auto fit column width
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+                worksheet.Cells.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+
+                // Export เป็น stream
+                var stream = new MemoryStream();
+                package.SaveAs(stream);
+                stream.Position = 0;
+
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+
+        }
+
+
+
+        [HttpPost]
+        public ActionResult ImportDataFile(string _id, List<IFormFile> files, Class @class)
+        {
+            string config = "S";
+            string msg = "Success!!!";
+            string IssueBy = DateTime.Now.ToString("yyyyMMdd HH:mm:ss") + " - " + HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+            @class._ListViewceItemWorkingTimePartName = new List<ViewceItemWorkingTimePartName>();
+            try
+            {
+                if (files == null || files.Count == 0)
+                {
+                    config = "E";
+                    msg = "⚠️ กรุณาเลือกไฟล์ Excel  1 ไฟล์ก่อนอัปโหลด";
+                    return Json(new { c1 = config, c2 = msg });
+                }
+                List<DataTable> allTables = new List<DataTable>();
+
+                try
+                {
+                    foreach (var file in files)
+                    {
+                        if (file.Length > 0)
+                        {
+                            using (var stream = new MemoryStream())
+                            {
+                                file.CopyToAsync(stream);
+                                using (var package = new OfficeOpenXml.ExcelPackage(stream))
+                                {
+                                    var worksheet = package.Workbook.Worksheets[1]; // อ่านเฉพาะ sheet แรก
+                                    int colCount = worksheet.Dimension.End.Column;
+                                    int rowCount = worksheet.Dimension.End.Row;
+
+                                    //DataTable dt = new DataTable(file.FileName); // ใช้ชื่อไฟล์เป็นชื่อ DataTable
+
+                                    if (rowCount > 4)
+                                    {
+                                        int vRow;
+                                        int sumTotal;
+                                        for (int row = 4; row <= rowCount; row++)
+                                        {
+                                            vRow = 0;
+                                            sumTotal = 0;
+                                            for (int vcol = 6; vcol <= colCount; vcol++)
+                                            {
+                                                sumTotal += Convert.ToInt32(worksheet.Cells[row, vcol].Value);
+                                            }
+                                            for (int col = 6; col <= colCount; col++)
+                                            {
+                                                @class._ListViewceItemWorkingTimePartName.Add(new ViewceItemWorkingTimePartName
+                                                {
+                                                    wpDocumentNoSub = worksheet.Cells[row, 1].Text,
+                                                    wpRunNo = vRow += 1,
+                                                    wpPartName = worksheet.Cells[row, 2].Text,
+                                                    wpCavityNo = Convert.ToDouble(worksheet.Cells[row, 3].Value),
+                                                    wpTypeCavity = worksheet.Cells[row, 4].Text,
+                                                    wpNoProcess = Convert.ToInt32(worksheet.Cells[row, 5].Value),
+
+                                                    wpGroupName = worksheet.Cells[1, col].Text,
+                                                    wpProcessName = worksheet.Cells[2, col].Text,
+
+                                                    wpWT_Man = worksheet.Cells[3, col].Text.Contains("MAN") ? Convert.ToDouble(worksheet.Cells[row, col].Value) : 0,
+                                                    wpWT_Auto = worksheet.Cells[3, col + 1].Text.Contains("AUTO") ? Convert.ToDouble(worksheet.Cells[row, col].Value) : 0,
+
+                                                    wpEnable_WTMan = worksheet.Cells[3, col].Text.Contains("MAN") ? true : false,
+                                                    wpEnable_WTAuto = worksheet.Cells[3, col + 1].Text.Contains("AUTO") && worksheet.Cells[row, col + 1].Value != null ? true : false,
+                                                    wpTotal = sumTotal,
+                                                    wpIssueDate = IssueBy, // DateTime.Now.ToString("yyyyMMdd:HHmmss"),
+
+                                                });
+                                                if (worksheet.Cells[3, col + 1].Text.Contains("AUTO")) { col += 1; }
+                                            }
+                                        }
+                                    }
+
+
+                                }
+                            }
+                        }
+                    }
+
+                    //ViewBag.DataList = allTables;
+                    //ViewBag.Message = $"✅ อัปโหลดสำเร็จ {excelFiles.Count} ไฟล์!";
+                }
+                catch (Exception ex)
+                {
+                    //ViewBag.Message = "❌ Error: " + ex.Message;
+                    config = "E";
+                    msg = "Something is wrong !!!!! : " + ex.Message;
+                    return Json(new
+                    {
+                        c1 = config,
+                        c2 = msg
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                config = "E";
+                msg = "Something is wrong !!!!! : " + ex.Message;
+                return Json(new { c1 = config, c2 = msg });
+            }
+            return Json(new { c1 = config, c2 = msg });
+        }
 
 
     }
