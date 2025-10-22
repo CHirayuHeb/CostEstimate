@@ -1066,11 +1066,16 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
 
 
                     var itemTC = _MK._ViewceItemInforTypeOfCut.Where(p => p.icDocumentNoSub == vDocNo).ToList();
-                    if (itemTC.Count > 0)
+                    if (itemTC.Any())
                     {
                         _MK._ViewceItemInforTypeOfCut.RemoveRange(itemTC);
-                        _MK.SaveChanges();
+                        _MK.SaveChangesAsync(); // ✅ ใช้ async และ commit ก่อนเพิ่มข้อมูลใหม่
                     }
+                    // 🔹 เคลียร์ทุก entity ที่ EF จำไว้ (เทียบเท่า ChangeTracker.Clear())
+                    //foreach (var entry in _MK.ChangeTracker.Entries().ToList())
+                    //{
+                    //    entry.State = EntityState.Detached;
+                    //}
                     for (int i = 0; i < @class._ListViewceItemInforTypeOfCut.Count(); i++)
                     {
                         var ceItemInforTypeOfCut = new ViewceItemInforTypeOfCut()

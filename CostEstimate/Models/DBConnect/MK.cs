@@ -131,7 +131,9 @@ namespace CostEstimate.Models.DBConnect
                     k.icRunNo,
                     k.icPartName,
                     k.icCavityNo,
-                    k.icTypeCavity
+                    k.icTypeCavity,
+                    k.icNoProcess
+
                 });
             });
 

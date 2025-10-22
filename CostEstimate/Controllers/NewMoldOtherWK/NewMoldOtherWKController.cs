@@ -480,7 +480,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
             }
             return Json(new { c1 = config, c2 = msg });
         }
-
+         
 
         public string[] chkPermission(Class @class)
         {
@@ -540,6 +540,9 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
 
             }
         }
+
+
+
         public string[] Save(Class @class, int vstep, List<IFormFile> files, string savetype)
         {
             string empissue = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
@@ -1306,9 +1309,10 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                     {
                         //cRow = cRow / 3;
                         @class._ListViewceItemPartName = _MK._ViewceItemPartName.Where(x => x.ipDocumentNo == id).OrderBy(x => x.ipRunNo).ToList();
+                        string vDocSub = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNo == id).Select(x => x.wrDocumentNoSub).FirstOrDefault();
                         for (int j = 0; j < @class._ListViewceItemPartName.Count(); j++)
                         {
-                            worksheet.Cells[4 + j, 1].Value = @class._ListViewceItemPartName[j].ipDocumentNo;
+                            worksheet.Cells[4 + j, 1].Value = vDocSub;//@class._ListViewceItemPartName[j].ipDocumentNo;
                             worksheet.Cells[4 + j, 2].Value = @class._ListViewceItemPartName[j].ipPartName;
                             worksheet.Cells[4 + j, 3].Value = @class._ListViewceItemPartName[j].ipCavityNo;
                             worksheet.Cells[4 + j, 4].Value = @class._ListViewceItemPartName[j].ipTypeCavity;
@@ -1395,12 +1399,19 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
             @class._ListViewceItemWorkingTimePartName = new List<ViewceItemWorkingTimePartName>();
             try
             {
+              
+
+
                 if (files == null || files.Count == 0)
                 {
                     config = "E";
                     msg = "⚠️ กรุณาเลือกไฟล์ Excel  1 ไฟล์ก่อนอัปโหลด";
                     return Json(new { c1 = config, c2 = msg });
                 }
+             
+
+
+
                 List<DataTable> allTables = new List<DataTable>();
 
                 try
@@ -1419,6 +1430,16 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                                     int rowCount = worksheet.Dimension.End.Row;
 
                                     //DataTable dt = new DataTable(file.FileName); // ใช้ชื่อไฟล์เป็นชื่อ DataTable
+                                    string vDocNosub = "";
+
+                                    string[] chkPermis;
+                                    chkPermis = chkPermissionImport(worksheet.Cells[4, 1].Text);
+                                    if (chkPermis[0] != "S")
+                                    {
+                                        config = chkPermis[0];
+                                        msg = chkPermis[1];
+                                        return Json(new { c1 = config, c2 = msg });
+                                    }
 
                                     if (rowCount > 4)
                                     {
@@ -1426,6 +1447,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                                         int sumTotal;
                                         for (int row = 4; row <= rowCount; row++)
                                         {
+                                            vDocNosub = worksheet.Cells[row, 1].Text;
                                             vRow = 0;
                                             sumTotal = 0;
                                             for (int vcol = 6; vcol <= colCount; vcol++)
@@ -1446,8 +1468,8 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                                                     wpGroupName = worksheet.Cells[1, col].Text,
                                                     wpProcessName = worksheet.Cells[2, col].Text,
 
-                                                    wpWT_Man = worksheet.Cells[3, col].Text.Contains("MAN") ? Convert.ToDouble(worksheet.Cells[row, col].Value) : 0,
-                                                    wpWT_Auto = worksheet.Cells[3, col + 1].Text.Contains("AUTO") ? Convert.ToDouble(worksheet.Cells[row, col].Value) : 0,
+                                                    wpWT_Man = worksheet.Cells[3, col].Text.Contains("MAN") ? double.Parse(worksheet.Cells[row, col].Value.ToString()) : 0,
+                                                    wpWT_Auto = worksheet.Cells[3, col + 1].Text.Contains("AUTO") ? double.Parse(worksheet.Cells[row, col+1].Value.ToString()) : 0,
 
                                                     wpEnable_WTMan = worksheet.Cells[3, col].Text.Contains("MAN") ? true : false,
                                                     wpEnable_WTAuto = worksheet.Cells[3, col + 1].Text.Contains("AUTO") && worksheet.Cells[row, col + 1].Value != null ? true : false,
@@ -1456,24 +1478,137 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
 
                                                 });
                                                 if (worksheet.Cells[3, col + 1].Text.Contains("AUTO")) { col += 1; }
+
+                                               
+
                                             }
                                         }
                                     }
 
 
+
+                                    using (var dbContextTransaction = _MK.Database.BeginTransaction())
+                                    {
+                                        try
+                                        {
+                                            var _ceItemWorkingTime = _MK._ViewceItemWorkingTimePartName.Where(x => x.wpDocumentNoSub == vDocNosub).ToList();
+                                            if(_ceItemWorkingTime.Count > 0)
+                                            {
+                                                _MK._ViewceItemWorkingTimePartName.RemoveRange(_ceItemWorkingTime);
+                                                _MK.SaveChanges();
+                                            }
+
+
+                                            var connection = (SqlConnection)_MK.Database.GetDbConnection();
+                                            if (connection.State != ConnectionState.Open)
+                                                connection.Open();
+                                            // ใช้ Transaction เดิมของ EF
+                                            using (var bulkCopy = new SqlBulkCopy(connection, SqlBulkCopyOptions.Default, (SqlTransaction)dbContextTransaction.GetDbTransaction()))
+                                            {
+                                                bulkCopy.DestinationTableName = "ceItemWorkingTimePartName";
+                                                bulkCopy.BatchSize = 5000;
+                                                bulkCopy.BulkCopyTimeout = 0;
+
+                                                DataTable dt = new DataTable();
+                                                dt.Columns.Add("wpDocumentNoSub", typeof(string));
+                                                dt.Columns.Add("wpRunNo", typeof(int));
+                                                dt.Columns.Add("wpPartName", typeof(string));
+                                                dt.Columns.Add("wpCavityNo", typeof(double));
+                                                dt.Columns.Add("wpTypeCavity", typeof(string));
+                                                dt.Columns.Add("wpNoProcess", typeof(int));
+                                                dt.Columns.Add("wpGroupName", typeof(string));
+                                                dt.Columns.Add("wpProcessName", typeof(string));
+                                                dt.Columns.Add("wpWT_Man", typeof(double));
+                                                dt.Columns.Add("wpWT_Auto", typeof(double));
+                                                dt.Columns.Add("wpEnable_WTMan", typeof(bool));
+                                                dt.Columns.Add("wpEnable_WTAuto", typeof(bool));
+                                                dt.Columns.Add("wpTotal", typeof(double));
+                                                dt.Columns.Add("wpIssueDate", typeof(string));
+
+                                                for (int i = 0; i < @class._ListViewceItemWorkingTimePartName.Count; i++)
+                                                {
+                                                    var item = @class._ListViewceItemWorkingTimePartName[i];
+                                                    dt.Rows.Add(
+                                                        item.wpDocumentNoSub,
+                                                        i + 1,
+                                                        item.wpPartName,
+                                                        item.wpCavityNo,
+                                                        item.wpTypeCavity,
+                                                        item.wpNoProcess,
+                                                        item.wpGroupName,
+                                                        item.wpProcessName,
+                                                        item.wpWT_Man,
+                                                        item.wpWT_Auto,
+                                                        item.wpEnable_WTMan,
+                                                        item.wpEnable_WTAuto,
+                                                        item.wpTotal,
+                                                        DateTime.Now.ToString("yyyyMMdd HH:mm:ss")
+                                                    );
+                                                }
+
+                                                // Mapping (กรณีชื่อคอลัมน์ตรง DB อยู่แล้ว อาจไม่ต้องใส่ก็ได้)
+                                                bulkCopy.ColumnMappings.Add("wpDocumentNoSub", "wpDocumentNoSub");
+                                                bulkCopy.ColumnMappings.Add("wpRunNo", "wpRunNo");
+                                                bulkCopy.ColumnMappings.Add("wpPartName", "wpPartName");
+                                                bulkCopy.ColumnMappings.Add("wpCavityNo", "wpCavityNo");
+                                                bulkCopy.ColumnMappings.Add("wpTypeCavity", "wpTypeCavity");
+                                                bulkCopy.ColumnMappings.Add("wpNoProcess", "wpNoProcess");
+                                                bulkCopy.ColumnMappings.Add("wpGroupName", "wpGroupName");
+                                                bulkCopy.ColumnMappings.Add("wpProcessName", "wpProcessName");
+                                                bulkCopy.ColumnMappings.Add("wpWT_Man", "wpWT_Man");
+                                                bulkCopy.ColumnMappings.Add("wpWT_Auto", "wpWT_Auto");
+                                                bulkCopy.ColumnMappings.Add("wpEnable_WTMan", "wpEnable_WTMan");
+                                                bulkCopy.ColumnMappings.Add("wpEnable_WTAuto", "wpEnable_WTAuto");
+                                                bulkCopy.ColumnMappings.Add("wpTotal", "wpTotal");
+                                                bulkCopy.ColumnMappings.Add("wpIssueDate", "wpIssueDate");
+
+                                                bulkCopy.WriteToServer(dt);
+                                            }
+
+                                            _MK.SaveChanges();
+                                            dbContextTransaction.Commit();
+
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            try
+                                            {
+                                                dbContextTransaction.Rollback();
+                                            }
+                                            catch
+                                            {
+                                                config = "E";
+                                                msg = "Insert incorrect :Something is wrong !!!!! : " + ex.Message;
+                                                return Json(new
+                                                {
+                                                    c1 = config,
+                                                    c2 = msg
+                                                });
+                                            }
+                                        }
+                                    }
+
+
+
                                 }
+
+
+
                             }
                         }
                     }
 
-                    //ViewBag.DataList = allTables;
-                    //ViewBag.Message = $"✅ อัปโหลดสำเร็จ {excelFiles.Count} ไฟล์!";
+
+
+
+                   
+                    
                 }
                 catch (Exception ex)
                 {
                     //ViewBag.Message = "❌ Error: " + ex.Message;
                     config = "E";
-                    msg = "Something is wrong !!!!! : " + ex.Message;
+                    msg = "Excel file incorrect : Something is wrong !!!!! : " + ex.Message;
                     return Json(new
                     {
                         c1 = config,
@@ -1484,12 +1619,69 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
             catch (Exception ex)
             {
                 config = "E";
-                msg = "Something is wrong !!!!! : " + ex.Message;
+                msg = "Excel file incorrect : Something is wrong !!!!! : " + ex.Message;
                 return Json(new { c1 = config, c2 = msg });
             }
             return Json(new { c1 = config, c2 = msg });
         }
+        public string[] chkPermissionImport(string id)
+        {
+            string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
+            string _Permiss = User.Claims.FirstOrDefault(s => s.Type == "Permission")?.Value;
+            string message_per = "";
+            string status_per = "";
+            try
+            {
+                var chkData = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNoSub == id).FirstOrDefault();
+                if (chkData != null)
+                {
+                    if (chkData.wrStep != 4)
+                    {
+                        //check operator //check create user
+                        if (chkData.wrStep == 0 && _UserId == chkData.wrEmpCodeRequest)
+                        {
+                            status_per = "S";
+                            message_per = "You have permission ";
+                        }
+                        else if (_UserId == chkData.wrEmpCodeApprove)
+                        {
+                            status_per = "S";
+                            message_per = "You have permission ";
+                        }
+                        else if (chkData.wrStep == 4 && _Permiss.ToUpper() == "ADMIN")
+                        {
+                            status_per = "S";
+                            message_per = "You have permission ";
+                        }
+                        else
+                        {
+                            status_per = "P";
+                            message_per = "You don't have permission to access";
+                        }
+                    }
+                    else
+                    {
+                        status_per = "P";
+                        message_per = "You don't have permission to access";
+                    }
 
+                }
+                else
+                {
+                    status_per = "S";
+                    message_per = "You have permission ";
+                }
+
+                string[] returnvar = { status_per, message_per };
+                return returnvar;
+            }
+            catch (Exception ex)
+            {
+                string[] returnvar = { "E", ex.Message };
+                return returnvar;
+
+            }
+        }
 
     }
 }

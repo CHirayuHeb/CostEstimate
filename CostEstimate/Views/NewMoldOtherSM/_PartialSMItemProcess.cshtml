@@ -34,7 +34,7 @@
 
                     <input type="text" class="form-control left iPartName" asp-for="_ListViewceItemInforRequestPartName[j].ipPartName" style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" readonly>
 
-                    <input type="text" class="form-control left iSprueSystem" asp-for="_ListViewceItemInforRequestPartName[j].ipSlide" style="width:100%;height:80%;font-size:12px;background-color:lightgray;display:none" autocomplete="off" readonly>
+                    @*<input type="text" class="form-control left iSprueSystem" asp-for="_ListViewceItemInforRequestPartName[j].ipSlide" style="width:100%;height:80%;font-size:12px;background-color:lightgray;display:none" autocomplete="off" readonly>*@
 
                 </div>
                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
@@ -266,189 +266,201 @@
                 </div>
 
             </div>
-
-
-            <hr style="margin:10px" />
-            <div class="row">
-                <div class="col-70" style="text-align:left">
-                    @*<span style="font-size:10px;font-weight:800;padding-left:10px">TYPE OF CUT</span>*@
-
-                    <a class="btn btn-link p-0" data-bs-toggle="collapse" href="#collapseTypeofcut_@j" role="button" style="font-size:11px;font-weight:800;">
-                        ▶ TYPE OF CUT
-                    </a>
-
-                </div>
-
-                <div class="col-30" style="text-align:right;">
-                    <input type='button'
-                           class='button btnOrange btnAddRowTypeofcut'
-                           data-table="tbTypeofcut_@j"
-                           value='➕'
-                           style="width:auto;height:28px;vertical-align: sub;margin-left:5px" />
-                </div>
-            </div>
-            <div class="collapse show" id="collapseTypeofcut_@j">
-                @{
-                    var typeOfCuts = (SelectList)ViewBag.listTypeOfCut;
-                }
-                <!-- Template Dropdown (ซ่อนไว้) -->
-                <div id="templateDropdown" style="display:none;" class="icTypeofcut">
-                    <select class="form-control icTypeofcut" autocomplete="off"
-                            style="width:100%;font-size:10px;background-color:yellow;height:80%;">
-                        <option value="">กรุณาเลือก</option>
-                        @foreach (var item in typeOfCuts)
-                        {
-                            <option value="@item.Value">@item.Text</option>
-                        }
-                    </select>
-                </div>
-
-                <table class="tbgreen Typeofcut" id="tbTypeofcut_@j">
-                    <tr>
-                        <th width="10%">No</th>
-                        <th>TYPE</th>
-                        <th width="10%">DEL</th>
-                    </tr>
-                    @{
-                        var row1 = 0;
-                    }
-                    @for (int i = 0; i < Model._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforTypeOfCut.Count(); i++)
-                    {
-                        <tr id='trTypeofcut'>
-                            <td style="text-align:center;">@(row1 += 1)</td>
-                            <td>
-                                @Html.DropDownListFor(m => m._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforTypeOfCut[i].icTypeofcut, (SelectList)ViewBag.listTypeOfCut, "กรุณาเลือก", new { @class = "form-control icTypeofcut", id = "i_NewMold_typeOfCuts" + i, autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;height:80%;" })
-                                <input type="text" class="icDocumentNoSub form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipDocumentNoSub" style="margin-bottom:2px; width:100%;display:none" />
-                                <input type="text" class="icPartName form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipPartName" style="margin-bottom:2px; width:100%;display:none" />
-                                <input type="text" class="icCavityNo form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipCavityNo" style="margin-bottom:2px; width:100%;display:none" />
-                                <input type="text" class="icTypeCavity form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipTypeCavity" style="margin-bottom:2px; width:100%;display:none" />
-                                <input type="text" class="icNoProcess form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipNoProcess" style="margin-bottom:2px; width:100%;display:none" />
-                            </td>
-                            <td style="text-align:center;">
-                                <input type="button" class="btnDel" value="&#x274C" />
-                            </td>
-                        </tr>
-
-
-
-
-                    }
-
-
-                </table>
-            </div>
-            <hr style="margin:10px" />
-            <div class="row">
-                <div class="col-70" style="text-align:left">
-                    @*<span style="font-size:10px;font-weight:800;padding-left:10px">SHIBO</span>*@
-                    <a class="btn btn-link p-0" data-bs-toggle="collapse" href="#collapseSHIBO_@j" role="button" style="font-size:11px;font-weight:800;">
-                        ▶ SHIBO
-                    </a>
-
-                </div>
-                <div class="col-30" style="text-align:right;">
-                    <input type='button'
-                           class='button btnOrange btnAddRowShibo'
-                           data-table="tbShibo_@j"
-                           value='➕'
-                           style="width:auto;height:28px;vertical-align: sub;margin-left:5px" />
-                </div>
-
-            </div>
-            <div class="collapse show" id="collapseSHIBO_@j">
-                @{
-                    var typeShibo = (SelectList)ViewBag.listELECTROFORM;
-                }
-                <!-- Template Dropdown (ซ่อนไว้) -->
-                <div id="templateDropdownShibo" style="display:none;" class="ibShiboType">
-                    <select class="form-control ibShiboType" autocomplete="off"
-                            style="width:100%;font-size:10px;background-color:yellow;height:80%;">
-                        @*<option value="">กรุณาเลือก</option>*@
-                        @foreach (var item in typeShibo)
-                        {
-                            <option value="@item.Value">@item.Text</option>
-                        }
-                    </select>
-                </div>
-
-                <table class="tbgreen typeShibo" id="tbShibo_@j">
-                    <tr>
-                        <th width="10%">No</th>
-                        <th>TYPE</th>
-                        <th width="50%">Description</th>
-                        <th width="10%">DEL</th>
-                    </tr>
-                    @{
-                        var row2 = 0;
-                    }
-                    @for (int i = 0; i < Model._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforShibo.Count(); i++)
-                    {
-                        <tr id='trItemShibo'>
-                            <td style="text-align:center;">@(row2 += 1)</td>
-                            <td>
-                                @Html.DropDownListFor(m => m._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforShibo[i].ibShiboType, (SelectList)ViewBag.listELECTROFORM, "กรุณาเลือก", new { @class = "form-control ibShiboType", id = "i_NewMold_ibShiboType" + i, autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;height:80%;" })
-                                <input type="text" class="ibDocumentNoSub form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipDocumentNoSub" style="margin-bottom:2px; width:100%;display:none" />
-                                <input type="text" class="ibPartName form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipPartName" style="margin-bottom:2px; width:100%;display:none" />
-                                <input type="text" class="ibCavityNo form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipCavityNo" style="margin-bottom:2px; width:100%;display:none" />
-                                <input type="text" class="ibTypeCavity form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipTypeCavity" style="margin-bottom:2px; width:100%;display:none" />
-                                <input type="text" class="ibNoProcess form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipNoProcess" style="margin-bottom:2px; width:100%;display:none" />
-                            </td>
-                            <td>
-                                <input type="text" class="ibSHiboPCS form-control" value="@Model._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforShibo[i].ibSHiboPCS" style="margin-bottom:2px; width:100%;font-size:9px;background-color:yellow;" />
-                            </td>
-                            <td style="text-align:center;">
-                                <input type="button" class="btnDel" value="&#x274C" />
-                            </td>
-
-                        </tr>
-                    }
-
-                </table>
-            </div>
-            <hr style="margin:10px" />
-
-            <div class="row">
-                <div class="col-70" style="text-align:left">
-                    @*<span style="font-size:10px;font-weight:800;padding-left:10px">SHIBO</span>*@
-                    <a class="btn btn-link p-0" data-bs-toggle="collapse" href="#collapseETC_@j" role="button" style="font-size:11px;font-weight:800;">
-                        ▶ ETC
-                    </a>
-
-                </div>
-                <div class="col-30" style="text-align:right;">
-                  
-                </div>
-
-            </div>
-
-            <div class="row center collapse show" id="collapseETC_@j">
+            <div class="row center">
                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                    <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">ELECTROFORM</div>
+                    <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">
+                        SLIDE
+                    </div>
                 </div>
                 <div class="col-30" style=" display: flex;align-items: center; ">
-                    @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipElectroFormType, (SelectList)ViewBag.listELECTROFORM, new { @class = "form-control ipElectroFormType", id = "i_NewMold_ipElectroFormType" + j, autocomplete = "off", @style = "width:100%;font-size:11px;background-color:yellow;height:80%;" })
-                </div>
-                <div class="col-35 " style=" display: flex;align-items: center;">
-                    <input type="number" class="form-control ipElectroFormPcs " asp-for="_ListViewceItemInforRequestPartName[j].ipElectroFormPcs"
-                           style="width:80%;height:100%;font-size:12px;margin-right:5px; " autocomplete="off" id="i_moldOther_ipElectroFormPcs" />
+                    @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipSlide, (SelectList)ViewBag.listGroupMaterial, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_listSlideSystem", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })
 
-                    @*<input type="number"
-                class="form-control"
-                @(Model._ListViewceItemInforRequestPartName[j].ipElectroFormType == false ? "disabled" : "")
-                style="width:80%;height:80%;font-size:12px;background-color:yellow;" />*@
-
-                    <span class="FormPcs" style="font-size:10px;font-weight:600;" id="i_MoldOther_FormPcs" +j>PCS</span>
-                </div>
-                <div class="col-15 " style=" display: flex;align-items: center; ">
                 </div>
             </div>
+
+
+                <hr style="margin:10px" />
+                <div class="row">
+                    <div class="col-70" style="text-align:left">
+                        @*<span style="font-size:10px;font-weight:800;padding-left:10px">TYPE OF CUT</span>*@
+
+                        <a class="btn btn-link p-0" data-bs-toggle="collapse" href="#collapseTypeofcut_@j" role="button" style="font-size:11px;font-weight:800;">
+                            ▶ TYPE OF CUT
+                        </a>
+
+                    </div>
+
+                    <div class="col-30" style="text-align:right;">
+                        <input type='button'
+                               class='button btnOrange btnAddRowTypeofcut'
+                               data-table="tbTypeofcut_@j"
+                               value='➕'
+                               style="width:auto;height:28px;vertical-align: sub;margin-left:5px" />
+                    </div>
+                </div>
+                <div class="collapse show" id="collapseTypeofcut_@j">
+                    @{
+                        var typeOfCuts = (SelectList)ViewBag.listTypeOfCut;
+                    }
+                    <!-- Template Dropdown (ซ่อนไว้) -->
+                    <div id="templateDropdown" style="display:none;" class="icTypeofcut">
+                        <select class="form-control icTypeofcut" autocomplete="off"
+                                style="width:100%;font-size:10px;background-color:yellow;height:80%;">
+                            <option value="">กรุณาเลือก</option>
+                            @foreach (var item in typeOfCuts)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+                    </div>
+
+                    <table class="tbgreen Typeofcut" id="tbTypeofcut_@j">
+                        <tr>
+                            <th width="10%">No</th>
+                            <th>TYPE</th>
+                            <th width="10%">DEL</th>
+                        </tr>
+                        @{
+                            var row1 = 0;
+                        }
+                        @for (int i = 0; i < Model._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforTypeOfCut.Count(); i++)
+                        {
+                            <tr id='trTypeofcut'>
+                                <td style="text-align:center;">@(row1 += 1)</td>
+                                <td >
+                                    @Html.DropDownListFor(m => m._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforTypeOfCut[i].icTypeofcut, (SelectList)ViewBag.listTypeOfCut, "กรุณาเลือก", new { @class = "form-control icTypeofcut", id = "i_NewMold_typeOfCuts" + i, autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;height:80%;" })
+                                    <input type="text" class="icDocumentNoSub form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipDocumentNoSub" style="margin-bottom:2px; width:100%;display:none" />
+                                    <input type="text" class="icPartName form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipPartName" style="margin-bottom:2px; width:100%;display:none" />
+                                    <input type="text" class="icCavityNo form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipCavityNo" style="margin-bottom:2px; width:100%;display:none" />
+                                    <input type="text" class="icTypeCavity form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipTypeCavity" style="margin-bottom:2px; width:100%;display:none" />
+                                    <input type="text" class="icNoProcess form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipNoProcess" style="margin-bottom:2px; width:100%;display:none" />
+                                </td>
+                                <td style="text-align:center;">
+                                    <input type="button" class="btnDel" value="&#x274C" />
+                                </td>
+                            </tr>
+
+
+
+
+                        }
+
+
+                    </table>
+                </div>
+                <hr style="margin:10px" />
+                <div class="row">
+                    <div class="col-70" style="text-align:left">
+                        @*<span style="font-size:10px;font-weight:800;padding-left:10px">SHIBO</span>*@
+                        <a class="btn btn-link p-0" data-bs-toggle="collapse" href="#collapseSHIBO_@j" role="button" style="font-size:11px;font-weight:800;">
+                            ▶ SHIBO
+                        </a>
+
+                    </div>
+                    <div class="col-30" style="text-align:right;">
+                        <input type='button'
+                               class='button btnOrange btnAddRowShibo'
+                               data-table="tbShibo_@j"
+                               value='➕'
+                               style="width:auto;height:28px;vertical-align: sub;margin-left:5px" />
+                    </div>
+
+                </div>
+                <div class="collapse show" id="collapseSHIBO_@j">
+                    @{
+                        var typeShibo = (SelectList)ViewBag.listELECTROFORM;
+                    }
+                    <!-- Template Dropdown (ซ่อนไว้) -->
+                    <div id="templateDropdownShibo" style="display:none;" class="ibShiboType">
+                        <select class="form-control ibShiboType" autocomplete="off"
+                                style="width:100%;font-size:10px;background-color:yellow;height:80%;display:none;">
+                            @*<option value="">กรุณาเลือก</option>*@
+                            @foreach (var item in typeShibo)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+                    </div>
+
+                    <table class="tbgreen typeShibo" id="tbShibo_@j">
+                        <tr>
+                            <th width="10%">No</th>
+                            <th>TYPE</th>
+                            <th width="50%">Description</th>
+                            <th width="10%">DEL</th>
+                        </tr>
+                        @{
+                            var row2 = 0;
+                        }
+                        @for (int i = 0; i < Model._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforShibo.Count(); i++)
+                        {
+                            <tr id='trItemShibo'>
+                                <td style="text-align:center;">@(row2 += 1)</td>
+                                <td style="text-align:center;">
+                                    SHIBO
+                                    @Html.DropDownListFor(m => m._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforShibo[i].ibShiboType, (SelectList)ViewBag.listELECTROFORM, "กรุณาเลือก", new { @class = "form-control ibShiboType", id = "i_NewMold_ibShiboType" + i, autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;height:80%;;display:none" })
+                                    <input type="text" class="ibDocumentNoSub form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipDocumentNoSub" style="margin-bottom:2px; width:100%;display:none" />
+                                    <input type="text" class="ibPartName form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipPartName" style="margin-bottom:2px; width:100%;display:none" />
+                                    <input type="text" class="ibCavityNo form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipCavityNo" style="margin-bottom:2px; width:100%;display:none" />
+                                    <input type="text" class="ibTypeCavity form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipTypeCavity" style="margin-bottom:2px; width:100%;display:none" />
+                                    <input type="text" class="ibNoProcess form-control" value="@Model._ListViewceItemInforRequestPartName[j].ipNoProcess" style="margin-bottom:2px; width:100%;display:none" />
+                                </td>
+                                <td>
+                                    <input type="text" class="ibSHiboPCS form-control" value="@Model._ListGroupViewceMastInforSpacMoldRequest[j].ItemInforShibo[i].ibSHiboPCS" style="margin-bottom:2px; width:100%;font-size:9px;background-color:yellow;" />
+                                </td>
+                                <td style="text-align:center;">
+                                    <input type="button" class="btnDel" value="&#x274C" />
+                                </td>
+
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+                <hr style="margin:10px" />
+
+                <div class="row">
+                    <div class="col-70" style="text-align:left">
+                        @*<span style="font-size:10px;font-weight:800;padding-left:10px">SHIBO</span>*@
+                        <a class="btn btn-link p-0" data-bs-toggle="collapse" href="#collapseETC_@j" role="button" style="font-size:11px;font-weight:800;">
+                            ▶ ETC
+                        </a>
+
+                    </div>
+                    <div class="col-30" style="text-align:right;">
+
+                    </div>
+
+                </div>
+
+                <div class="row center collapse show" id="collapseETC_@j">
+                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                        <div class="grid-item fw-800 center " style="text-align:left;font-size:10px">ELECTROFORM</div>
+                    </div>
+                    <div class="col-30" style=" display: flex;align-items: center; ">
+                        @Html.DropDownListFor(m => m._ListViewceItemInforRequestPartName[j].ipElectroFormType, (SelectList)ViewBag.listELECTROFORM, new { @class = "form-control ipElectroFormType", id = "i_NewMold_ipElectroFormType" + j, autocomplete = "off", @style = "width:100%;font-size:11px;background-color:yellow;height:80%;" })
+                    </div>
+                    <div class="col-35 " style=" display: flex;align-items: center;">
+                        <input type="number" class="form-control ipElectroFormPcs " asp-for="_ListViewceItemInforRequestPartName[j].ipElectroFormPcs"
+                               style="width:80%;height:100%;font-size:12px;margin-right:5px; " autocomplete="off" id="i_moldOther_ipElectroFormPcs" />
+
+                        @*<input type="number"
+                    class="form-control"
+                    @(Model._ListViewceItemInforRequestPartName[j].ipElectroFormType == false ? "disabled" : "")
+                    style="width:80%;height:80%;font-size:12px;background-color:yellow;" />*@
+
+                        <span class="FormPcs" style="font-size:10px;font-weight:600;" id="i_MoldOther_FormPcs" +j>PCS</span>
+                    </div>
+                    <div class="col-15 " style=" display: flex;align-items: center; ">
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            }
         </div>
-
-
-
-
-        }
-    </div>
 </div>
 <script>
     $(document).ready(function () {
@@ -497,14 +509,14 @@
         // นับจำนวนแถว (ไม่รวม header)
         let rowCount = $table.find("tr").length - 1;
 
+        //let ddlHtml = $("#templateDropdownShibo").html();
         let ddlHtml = $("#templateDropdownShibo").html();
-
         // สร้างแถวใหม่
         let newRow = `
             <tr id='trItemShibo'>
                 <td style="text-align:center;">${rowCount + 1}</td>
-                <td>
-                ${ddlHtml}
+                <td style="text-align:center;">
+                ${ddlHtml} SHIBO
                 <input type="text" class="ibDocumentNoSub form-control" value="${DocumentNoSub}" style="margin-bottom:2px; width:100%;display:none"/>
                 <input type="text" class="ibPartName form-control" value="${partName}" style="margin-bottom:2px; width:100%;display:none"/>
                 <input type="text" class="ibCavityNo form-control" value="${cavityNo}" style="margin-bottom:2px; width:100%;display:none"/>
@@ -546,7 +558,7 @@
         let newRow = `
             <tr id='trSlideSystem'>
                 <td style="text-align:center;">${rowCount + 1}</td>
-                <td>
+                <td style="text-align:center;">
                 ${ddlHtml}
                 <input type="text" class="isDocumentNoSub form-control" value="${DocumentNoSub}" style="margin-bottom:2px; width:100%;display:none"/>
                 <input type="text" class="isPartName form-control" value="${partName}" style="margin-bottom:2px; width:100%;display:none"/>

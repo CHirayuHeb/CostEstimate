@@ -57,6 +57,8 @@
                         class="button btnBlue" id="btnUploadFileWK">
                     <img src="~/images/excel.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />Import
                 </button>
+
+
             </div>
             <div>
                 <form id="formMoldOWKRequest" name="formMoldOWKRequest" enctype="multipart/form-data">
@@ -264,7 +266,7 @@
                                                                         {
                                                                             <input type="button" style="font-size:14px" value="&#x274C" disabled>
                                                                         }*@
-                                                                    <input type="button"
+                                                                    <input type="button" 
                                                                            style="font-size:14px"
                                                                            value="&#x274C"
                                                                            onclick="DeleteFileUserWK('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","NewMoldOtherWK")')"
@@ -301,14 +303,15 @@
                                 <form id="formMoldOWKInportFile" name="formMoldOWKInportFile" enctype="multipart/form-data">
                                     <div class="modal-header" style="margin-top:1px">
                                         <h5 class="modal-title">
-                                            <span style="font-weight: bold; font-size: 16px;"><img src="~/images/folders.png" height="35px" width="35px" style="vertical-align:middle" /> Upload Excel File</span>
+                                            <span style="font-weight: bold; font-size: 16px;"><img src="~/images/folders.png" height="35px" width="35px" style="vertical-align:middle" /> Upload Excel File <span style="color:red;font-size:13px">*รบกวนดาวน์โหลด Format excel ใหม่ทุกครั้ง</span></span>
                                         </h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class=" panel-group ir fadeInUp animated wowload animated" style="visibility: visible; animation-name: fadeInUp; margin-bottom: 5px; ">
                                         <div class="panel panel-default property">
                                             <div class="panel-collapse collapse show " style=" height: auto;padding-top: 5px;">
-                                                <span style="color:black">คลิกเพื่อเลือกไฟล์ Excel</span>
+                                                <span style="color:black;font-size:12px;font-weight:600">คลิกเพื่อเลือกไฟล์ Excel </span>
+                                              
                                                 <div class="panel-body center">
 
                                                     <input name="files" type="file" id="filesImport" class="button btnGray " style="width:100%" accept=".xls,.xlsx" required>
@@ -318,10 +321,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="modal-footer" style="width: 100%;">
+                                    <div class="modal-footer " style="width: 30%;">
                                         <input type="button"
-                                               style="font-size:14px"
-                                               value="Upload & Read"
+                                               style="font-size:14px;height:30px;padding:2px"
+                                               value="&#x1F4E4; อัพโหลด"
+                                               class="button"
                                                onclick="Menubar_uploadFileWK('@Url.Action("ImportDataFile","NewMoldOtherWK")')"/>
                                         @*<button class="button" style="width:80%;height:30px;width:100px" onclick="Menubar_uploadFileWK('@Url.Action("ImportDataFile","NewMoldOtherWK")')">Upload & Read</button>*@
                                     </div>
