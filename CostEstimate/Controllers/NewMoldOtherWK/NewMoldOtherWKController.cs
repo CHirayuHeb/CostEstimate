@@ -1397,6 +1397,9 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
             string msg = "Success!!!";
             string IssueBy = DateTime.Now.ToString("yyyyMMdd HH:mm:ss") + " - " + HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
             @class._ListViewceItemWorkingTimePartName = new List<ViewceItemWorkingTimePartName>();
+            string vDocsubMain = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNo == _id).Select(x => x.wrDocumentNoSub).FirstOrDefault();
+
+
             try
             {
               
@@ -1450,6 +1453,14 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                                             vDocNosub = worksheet.Cells[row, 1].Text;
                                             vRow = 0;
                                             sumTotal = 0;
+                                            if(vDocsubMain != vDocNosub)
+                                            {
+                                                config ="E";
+                                                msg = "Excel file incorrect: Please check your file !!!!";
+                                                return Json(new { c1 = config, c2 = msg });
+                                            }
+
+                                            
                                             for (int vcol = 6; vcol <= colCount; vcol++)
                                             {
                                                 sumTotal += Convert.ToInt32(worksheet.Cells[row, vcol].Value);

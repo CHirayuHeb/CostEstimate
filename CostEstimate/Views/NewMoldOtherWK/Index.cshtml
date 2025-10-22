@@ -52,7 +52,7 @@
                 </div>
 
             </div>
-            <div style="text-align:right">
+            <div style="text-align:right; @(Model._ViewceMastWorkingTimeRequest.wrStep == 4  ? "display:none" : "")">
                 <button style="margin-right:5px;font-size:10px;width:100px"
                         class="button btnBlue" id="btnUploadFileWK">
                     <img src="~/images/excel.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />Import
