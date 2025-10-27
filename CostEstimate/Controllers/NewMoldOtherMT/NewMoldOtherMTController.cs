@@ -31,6 +31,9 @@ using MailKit.Net.Smtp;
 using System.Data;
 using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Storage;
+using OfficeOpenXml.Style;
+using OfficeOpenXml;
+using System.Drawing;
 
 namespace CostEstimate.Controllers.NewMoldOtherMT
 {
@@ -459,7 +462,7 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                         {
                             vStepDis = 1;
                             vstep = 1;
-                           // empApprove = _IT.rpEmails.Where(w => w.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == vDocNo && x.htStep == vStepDis).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).First();
+                            // empApprove = _IT.rpEmails.Where(w => w.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == vDocNo && x.htStep == vStepDis).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).First();
                             string vname = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == vDocNo && x.htStep == vStepDis).Select(x => x.htTo).FirstOrDefault();
                             empApprove = _IT.rpEmails.Where(w => w.emName_M365 == vname).Select(x => x.emEmpcode).FirstOrDefault();
 
@@ -880,7 +883,7 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                 }
 
 
-                    vstep = vstep == 8 ? vstep = 0 : vstep;
+                vstep = vstep == 8 ? vstep = 0 : vstep;
 
                 var email = new MimeMessage();
                 ViewrpEmail fromEmailFrom = _IT.rpEmails.Where(w => w.emName_M365 == @class._ViewceHistoryApproved.htFrom).FirstOrDefault();
@@ -1048,6 +1051,471 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
         }
 
 
+        [HttpPost]
+        public IActionResult btnExportExcel(Class @class, string id)
+        {
+            List<ViewceMastMoldOtherRequest> _ListViewceMastMoldOtherRequest = new List<ViewceMastMoldOtherRequest>();
+            @class._ListViewceItemWorkingTimePartName = new List<ViewceItemWorkingTimePartName>();
+            string slipMat = id.ToString() + ":" + DateTime.Now.ToString("yyyyMMdd:HHmmss");
+            string TempPath = Path.GetTempFileName();
+            string fileName = "Export(" + slipMat + ").xlsx";
+
+            //@class._ListceMastProcess = _MK._ViewceMastProcess.Where(x => x.mpType == "MoldOtherWK").OrderBy(x => x.mpNo).ToList();
+            @class._ListceMastModel = _MK._ViewceMastModel.Where(x => x.mmType == "MoldOtherMaterial").OrderBy(x => x.mmNo).ToList();
+
+            //check ข้อมูลเดิม
+            string vDocNosub = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == id).Select(x => x.mrDocumentNoSub).FirstOrDefault();
+            @class._ListViewceItemMaterialRequestPartName = _MK._ViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == vDocNosub).ToList();
+
+            @class._ListViewceItemPartName = new List<ViewceItemPartName>();
+            @class._ListViewceItemPartName = _MK._ViewceItemPartName.Where(x => x.ipDocumentNo == id).OrderBy(x => x.ipRunNo).ToList();
+
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("ItemMat");
+                worksheet.Cells.Style.Font.Size = 12;
+
+                //header main
+                //worksheet.Cells[1, 5].Value = "Process (ห้ามแก้)";
+                //worksheet.Cells[1, 5].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                //worksheet.Cells[1, 5].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                //worksheet.Cells[1, 5].Style.Fill.BackgroundColor.SetColor(Color.Red);
+                //worksheet.Cells[1, 5].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+
+                int eRowMain = 1;
+                int eColMain = 1;
+
+                int eRow = 1;
+                int ecol = 1;
+                if (id != null)
+                {
+                    //for loop hearder 
+                    for (int i = 0; i < @class._ListViewceItemPartName.Count(); i++)
+                    {
+
+                        //+1 col เพื่อขึ้น item อันใหม่
+                        //mpDocumentNoSub
+                        //mpRunNo
+                        //mpPartName
+                        //mpCavityNo
+                        //mpTypeCavity
+                        //mpNoProcess
+                        //mpNo
+                        worksheet.Cells[eRowMain, eColMain].Value = "Document No (ห้ามแก้)";
+                        worksheet.Cells[eRowMain, eColMain].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        worksheet.Cells[eRowMain, eColMain].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[eRowMain, eColMain].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+                        worksheet.Cells[eRowMain, eColMain].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                        worksheet.Cells[eRowMain + 1, eColMain].Value = "Part Name (ห้ามแก้)";
+                        worksheet.Cells[eRowMain + 1, eColMain].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        worksheet.Cells[eRowMain + 1, eColMain].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[eRowMain + 1, eColMain].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+                        worksheet.Cells[eRowMain + 1, eColMain].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                        worksheet.Cells[eRowMain + 2, eColMain].Value = "Cavity No (ห้ามแก้)";
+                        worksheet.Cells[eRowMain + 2, eColMain].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        worksheet.Cells[eRowMain + 2, eColMain].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[eRowMain + 2, eColMain].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+                        worksheet.Cells[eRowMain + 2, eColMain].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                        worksheet.Cells[eRowMain + 3, eColMain].Value = "Type Cavity (ห้ามแก้)";
+                        worksheet.Cells[eRowMain + 3, eColMain].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        worksheet.Cells[eRowMain + 3, eColMain].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[eRowMain + 3, eColMain].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+                        worksheet.Cells[eRowMain + 3, eColMain].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                        worksheet.Cells[eRowMain + 4, eColMain].Value = "Process (ห้ามแก้)";
+                        worksheet.Cells[eRowMain + 4, eColMain].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        worksheet.Cells[eRowMain + 4, eColMain].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[eRowMain + 4, eColMain].Style.Fill.BackgroundColor.SetColor(Color.Red);
+                        worksheet.Cells[eRowMain + 4, eColMain].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+
+                        worksheet.Cells[eRowMain, eColMain + 1].Value = vDocNosub;
+                        worksheet.Cells[eRowMain, eColMain + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        //worksheet.Cells[eRowMain, eColMain + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        // worksheet.Cells[eRowMain + 3, eColMain].Style.Fill.BackgroundColor.SetColor(Color.Red);
+                        worksheet.Cells[eRowMain, eColMain].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                        worksheet.Cells[eRowMain + 1, eColMain + 1].Value = @class._ListViewceItemPartName[i].ipPartName;
+                        worksheet.Cells[eRowMain + 1, eColMain + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        //worksheet.Cells[eRowMain + 1, eColMain + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        // worksheet.Cells[eRowMain + 3, eColMain].Style.Fill.BackgroundColor.SetColor(Color.Red);
+                        worksheet.Cells[eRowMain + 1, eColMain + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+
+                        worksheet.Cells[eRowMain + 2, eColMain + 1].Value = @class._ListViewceItemPartName[i].ipCavityNo;
+                        worksheet.Cells[eRowMain + 2, eColMain + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        //worksheet.Cells[eRowMain + 2, eColMain + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        // worksheet.Cells[eRowMain + 3, eColMain].Style.Fill.BackgroundColor.SetColor(Color.Red);
+                        worksheet.Cells[eRowMain + 2, eColMain + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                        worksheet.Cells[eRowMain + 3, eColMain + 1].Value = @class._ListViewceItemPartName[i].ipTypeCavity;
+                        worksheet.Cells[eRowMain + 3, eColMain + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        //worksheet.Cells[eRowMain + 3, eColMain + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        // worksheet.Cells[eRowMain + 3, eColMain].Style.Fill.BackgroundColor.SetColor(Color.Red);
+                        worksheet.Cells[eRowMain + 3, eColMain + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                        worksheet.Cells[eRowMain + 4, eColMain + 1].Value = @class._ListViewceItemPartName[i].ipRunNo;
+                        worksheet.Cells[eRowMain + 4, eColMain + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        //worksheet.Cells[eRowMain + 4, eColMain + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[eRowMain + 4, eColMain + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                        //No.	ITEM	PCS.	AMOUNT
+                        worksheet.Cells[eRowMain + 5, eColMain].Value = "No";
+                        worksheet.Cells[eRowMain + 5, eColMain].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        worksheet.Cells[eRowMain + 5, eColMain].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[eRowMain + 5, eColMain].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+                        worksheet.Cells[eRowMain + 5, eColMain].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                        worksheet.Cells[eRowMain + 5, eColMain + 1].Value = "ITEM";
+                        worksheet.Cells[eRowMain + 5, eColMain + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        worksheet.Cells[eRowMain + 5, eColMain + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[eRowMain + 5, eColMain + 1].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+                        worksheet.Cells[eRowMain + 5, eColMain + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                        worksheet.Cells[eRowMain + 5, eColMain + 2].Value = "PCS";
+                        worksheet.Cells[eRowMain + 5, eColMain + 2].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        worksheet.Cells[eRowMain + 5, eColMain + 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[eRowMain + 5, eColMain + 2].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+                        worksheet.Cells[eRowMain + 5, eColMain + 2].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                        worksheet.Cells[eRowMain + 5, eColMain + 3].Value = "AMOUNT(BAHT)";
+                        worksheet.Cells[eRowMain + 5, eColMain + 3].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        worksheet.Cells[eRowMain + 5, eColMain + 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[eRowMain + 5, eColMain + 3].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+                        worksheet.Cells[eRowMain + 5, eColMain + 3].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+
+
+
+                        int eRowitem = 7;
+                        for (int j = 0; j < @class._ListceMastModel.Count(); j++)
+                        {
+                            worksheet.Cells[eRowitem, eColMain].Value = j + 1;
+                            worksheet.Cells[eRowitem, eColMain + 1].Value = @class._ListceMastModel[j].mmModelName;
+                            worksheet.Cells[eRowitem, eColMain + 2].Value = @class._ListViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == vDocNosub && x.mpNoProcess == @class._ListViewceItemPartName[i].ipRunNo && x.mpItem.Contains(@class._ListceMastModel[j].mmModelName)).FirstOrDefault() != null ? @class._ListViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == vDocNosub && x.mpNoProcess == @class._ListViewceItemPartName[i].ipRunNo && x.mpItem.Contains(@class._ListceMastModel[j].mmModelName)).Select(x => x.mpPCS).FirstOrDefault() : 0;
+                            worksheet.Cells[eRowitem, eColMain + 3].Value = @class._ListViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == vDocNosub && x.mpNoProcess == @class._ListViewceItemPartName[i].ipRunNo && x.mpItem.Contains(@class._ListceMastModel[j].mmModelName)).FirstOrDefault() != null ? @class._ListViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == vDocNosub && x.mpNoProcess == @class._ListViewceItemPartName[i].ipRunNo && x.mpItem.Contains(@class._ListceMastModel[j].mmModelName)).Select(x => x.mpAmount).FirstOrDefault() * 1000 : 0;
+                            eRowitem += 1;
+                        }
+                        //eRowMain += 5;
+                        eColMain += 5;
+
+                        //item mat
+                    }
+                }
+
+
+
+                // Auto fit column width
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+                worksheet.Cells.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+
+                // Export เป็น stream
+                var stream = new MemoryStream();
+                package.SaveAs(stream);
+                stream.Position = 0;
+
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+
+        }
+        //import
+        [HttpPost]
+        public ActionResult ImportDataFile(string _id, List<IFormFile> files, Class @class)
+        {
+            string config = "S";
+            string msg = "Success!!!";
+            string IssueBy = DateTime.Now.ToString("yyyyMMdd HH:mm:ss") + " - " + HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+            @class._ListViewceItemMaterialRequestPartName = new List<ViewceItemMaterialRequestPartName>();
+            string vDocsubMain = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == _id).Select(x => x.mrDocumentNoSub).FirstOrDefault();
+            try
+            {
+
+                if (files == null || files.Count == 0)
+                {
+                    config = "E";
+                    msg = "⚠️ กรุณาเลือกไฟล์ Excel  1 ไฟล์ก่อนอัปโหลด";
+                    return Json(new { c1 = config, c2 = msg });
+                }
+                foreach (var file in files)
+                {
+                    if (file.Length > 0)
+                    {
+                        using (var stream = new MemoryStream())
+                        {
+                            file.CopyToAsync(stream);
+                            using (var package = new OfficeOpenXml.ExcelPackage(stream))
+                            {
+                                var worksheet = package.Workbook.Worksheets[1]; // อ่านเฉพาะ sheet แรก
+                                int colCount = worksheet.Dimension.End.Column;
+                                int rowCount = worksheet.Dimension.End.Row;
+
+                                //DataTable dt = new DataTable(file.FileName); // ใช้ชื่อไฟล์เป็นชื่อ DataTable
+                                string vDocNosub = "";
+                                string vPartName = "";
+                                double vCavityNo;
+                                string vTypeCavity = "";
+                                int vProcess;
+
+                                string[] chkPermis;
+                                chkPermis = chkPermissionImport(worksheet.Cells[1, 2].Text);
+                                if (chkPermis[0] != "S")
+                                {
+                                    config = chkPermis[0];
+                                    msg = chkPermis[1];
+                                    return Json(new { c1 = config, c2 = msg });
+                                }
+
+                                //check col
+                                if (colCount > 3)
+                                {
+                                    int vRow;
+                                    int sumTotal;
+                                    int cHcol = 2; //header col
+                                    //for loop check col
+                                    for (int c = 1; c <= colCount; c++)
+                                    {
+                                        vDocNosub = worksheet.Cells[1, c + 1].Text; //doc no
+                                        if (vDocsubMain != vDocNosub)
+                                        {
+                                            config = "E";
+                                            msg = "Excel file incorrect: Please check your file !!!!";
+                                            return Json(new { c1 = config, c2 = msg });
+                                        }
+                                        //partname
+                                        vPartName = worksheet.Cells[2, c + 1].Text; // partname
+                                        //type cavity
+                                        vCavityNo = Convert.ToDouble(worksheet.Cells[3, c + 1].Text);   //cavityno
+                                        //vTypeCavity
+                                        vTypeCavity = worksheet.Cells[4, c + 1].Text; // partname
+                                        //process
+                                        vProcess = Convert.ToInt32(worksheet.Cells[5, c + 1].Text); // process
+
+
+                                        //sum //ไม่ต้องเดี๋ยวหน้า ui มันจะบวกเอง
+
+                                        //cHcol +4
+                                        int mRunNo = 0;
+                                        for (int row = 7; row <= rowCount; row++)
+                                        {
+
+                                            @class._ListViewceItemMaterialRequestPartName.Add(new ViewceItemMaterialRequestPartName
+                                            {
+                                                mpDocumentNoSub = vDocNosub,
+                                                mpRunNo = mRunNo + 1,
+                                                mpPartName = vPartName,
+                                                mpCavityNo = vCavityNo,
+                                                mpTypeCavity = vTypeCavity,
+                                                mpNoProcess = vProcess,
+                                                mpNo = mRunNo + 1,
+                                                mpItem = worksheet.Cells[row, c + 1].Text,
+                                                mpPCS = Convert.ToDouble(worksheet.Cells[row, c + 2].Value),
+                                                mpAmount = worksheet.Cells[row, c + 3].Value == null || worksheet.Cells[row, c + 3].Value.ToString() == "" ? 0 : Convert.ToDouble(worksheet.Cells[row, c + 3].Value) / 1000,//Convert.ToDouble(worksheet.Cells[row, c + 3].Value) / 1000,
+                                                mpTotal = 0,
+                                                mpIssueDate = IssueBy,
+                                            });
+                                            mRunNo += 1;
+
+                                        }
+                                        c += 4;
+                                        if (c > colCount)
+                                        {
+                                            c = colCount;
+                                        }
+                                    }
+
+
+
+
+                                    //+col
+                                }
+
+
+
+
+                                using (var dbContextTransaction = _MK.Database.BeginTransaction())
+                                {
+                                    try
+                                    {
+                                        var _ceItemMatPartName = _MK._ViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == vDocNosub).ToList();
+                                        if (_ceItemMatPartName.Count > 0)
+                                        {
+                                            _MK._ViewceItemMaterialRequestPartName.RemoveRange(_ceItemMatPartName);
+                                            _MK.SaveChanges();
+                                        }
+
+
+                                        var connection = (SqlConnection)_MK.Database.GetDbConnection();
+                                        if (connection.State != ConnectionState.Open)
+                                            connection.Open();
+                                        // ใช้ Transaction เดิมของ EF
+                                        using (var bulkCopy = new SqlBulkCopy(connection, SqlBulkCopyOptions.Default, (SqlTransaction)dbContextTransaction.GetDbTransaction()))
+                                        {
+                                            bulkCopy.DestinationTableName = "ceItemMaterialRequestPartName";
+                                            bulkCopy.BatchSize = 5000;
+                                            bulkCopy.BulkCopyTimeout = 0;
+
+                                            DataTable dt = new DataTable();
+                                            dt.Columns.Add("mpDocumentNoSub", typeof(string));
+                                            dt.Columns.Add("mpRunNo", typeof(int));
+                                            dt.Columns.Add("mpPartName", typeof(string));
+                                            dt.Columns.Add("mpCavityNo", typeof(double));
+                                            dt.Columns.Add("mpTypeCavity", typeof(string));
+                                            dt.Columns.Add("mpNoProcess", typeof(int));
+                                            dt.Columns.Add("mpNo", typeof(int));
+                                            dt.Columns.Add("mpItem", typeof(string));
+                                            dt.Columns.Add("mpPCS", typeof(double));
+                                            dt.Columns.Add("mpAmount", typeof(double));
+                                            dt.Columns.Add("mpTotal", typeof(double));
+                                            dt.Columns.Add("mpIssueDate", typeof(string));
+
+                                            for (int i = 0; i < @class._ListViewceItemMaterialRequestPartName.Count; i++)
+                                            {
+                                                var item = @class._ListViewceItemMaterialRequestPartName[i];
+                                                dt.Rows.Add(
+                                                    item.mpDocumentNoSub,
+                                                    item.mpRunNo,
+                                                    item.mpPartName,
+                                                    item.mpCavityNo,
+                                                    item.mpTypeCavity,
+                                                    item.mpNoProcess,
+                                                    item.mpNo,
+                                                    item.mpItem,
+                                                    item.mpPCS,
+                                                    item.mpAmount,
+                                                    item.mpTotal,
+                                                    item.mpIssueDate
+                                                //DateTime.Now.ToString("yyyyMMdd HH:mm:ss")
+                                                );
+                                            }
+
+                                            // Mapping (กรณีชื่อคอลัมน์ตรง DB อยู่แล้ว อาจไม่ต้องใส่ก็ได้)
+                                            bulkCopy.ColumnMappings.Add("mpDocumentNoSub", "mpDocumentNoSub");
+                                            bulkCopy.ColumnMappings.Add("mpRunNo", "mpRunNo");
+                                            bulkCopy.ColumnMappings.Add("mpPartName", "mpPartName");
+                                            bulkCopy.ColumnMappings.Add("mpCavityNo", "mpCavityNo");
+                                            bulkCopy.ColumnMappings.Add("mpTypeCavity", "mpTypeCavity");
+                                            bulkCopy.ColumnMappings.Add("mpNoProcess", "mpNoProcess");
+                                            bulkCopy.ColumnMappings.Add("mpNo", "mpNo");
+                                            bulkCopy.ColumnMappings.Add("mpItem", "mpItem");
+                                            bulkCopy.ColumnMappings.Add("mpPCS", "mpPCS");
+                                            bulkCopy.ColumnMappings.Add("mpAmount", "mpAmount");
+                                            bulkCopy.ColumnMappings.Add("mpTotal", "mpTotal");
+                                            bulkCopy.ColumnMappings.Add("mpIssueDate", "mpIssueDate");
+                                            bulkCopy.WriteToServer(dt);
+                                        }
+
+                                        _MK.SaveChanges();
+                                        dbContextTransaction.Commit();
+
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        try
+                                        {
+                                            dbContextTransaction.Rollback();
+                                        }
+                                        catch
+                                        {
+                                            config = "E";
+                                            msg = "Insert incorrect :Something is wrong !!!!! : " + ex.Message;
+                                            return Json(new
+                                            {
+                                                c1 = config,
+                                                c2 = msg
+                                            });
+                                        }
+                                    }
+                                }
+
+
+
+                            }
+
+
+
+                        }
+                    }
+                }
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+                config = "E";
+                msg = "Excel file incorrect : Something is wrong !!!!! : " + ex.Message;
+                return Json(new { c1 = config, c2 = msg });
+            }
+            return Json(new { c1 = config, c2 = msg });
+        }
+
+
+
+        public string[] chkPermissionImport(string id)
+        {
+            string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
+            string _Permiss = User.Claims.FirstOrDefault(s => s.Type == "Permission")?.Value;
+            string message_per = "";
+            string status_per = "";
+            try
+            {
+                var chkData = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNoSub == id).FirstOrDefault();
+                if (chkData != null)
+                {
+                    if (chkData.mrStep != 4)
+                    {
+                        //check operator //check create user
+                        if (chkData.mrStep == 0 && _UserId == chkData.mrEmpCodeRequest)
+                        {
+                            status_per = "S";
+                            message_per = "You have permission ";
+                        }
+                        else if (_UserId == chkData.mrEmpCodeApprove)
+                        {
+                            status_per = "S";
+                            message_per = "You have permission ";
+                        }
+                        else if (chkData.mrStep == 4 && _Permiss.ToUpper() == "ADMIN")
+                        {
+                            status_per = "S";
+                            message_per = "You have permission ";
+                        }
+                        else
+                        {
+                            status_per = "P";
+                            message_per = "You don't have permission to access";
+                        }
+                    }
+                    else
+                    {
+                        status_per = "P";
+                        message_per = "You don't have permission to access";
+                    }
+
+                }
+                else
+                {
+                    status_per = "S";
+                    message_per = "You have permission ";
+                }
+
+                string[] returnvar = { status_per, message_per };
+                return returnvar;
+            }
+            catch (Exception ex)
+            {
+                string[] returnvar = { "E", ex.Message };
+                return returnvar;
+
+            }
+        }
 
     }
 }

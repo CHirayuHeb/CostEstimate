@@ -5843,6 +5843,75 @@ function DeleteFileUserMT(id, vname, action) {
         }
     });
 }
+function Menubar_uploadFileMT(action) {
+    var getID = document.getElementById("i_NewOtherMT_DocumentNo").value; //txtMIssueID
+    const form1 = document.forms.namedItem("formMoldOMTInportFile");
+    let viewModel1 = new FormData(form1);
+
+
+
+
+    //let vDocNo = document.getElementById("i_NewOtherWK_DocumentNo").value;
+    //console.log("vDocNo" + vDocNo);
+    //let formElement = document.getElementById("formMoldOWKInportFile");
+    //let viewModel1 = new FormData(formElement);
+    viewModel1.append("_id", getID);
+
+    $.ajax({
+        type: 'post',
+        url: action,
+        data: viewModel1,
+        processData: false,
+        contentType: false,
+        success: async function (config) {
+            // alert(config.c1);
+            if (config.c1 == "S") {
+                await $("#myModalNewMoldOtherMTUpload").modal("hide");
+                swal.fire({
+                    title: 'SUCCESS',
+                    icon: 'success',
+                    text: config.c2,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        console.log("getID==> " + getID);
+                        GoNewMoldOtherMTRequest(getID, "");
+
+
+                    }
+                });
+            }
+            else if (config.c1 == "E") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ERROR',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        $("#myModalNewMoldOtherMTUpload").modal("show");
+                    });
+
+            }
+            else if (config.c1 == "P") {
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'warning',
+                    text: config.c2,
+                })
+                    .then((result) => {
+                        $("#myModalNewMoldOtherMTUpload").modal("show");
+                    });
+
+            }
+
+        }
+    });
+
+
+
+}
+
+
 
 //mold other Tool GR
 function Menubar_MoldOtherTGRsaveDraft(action) {

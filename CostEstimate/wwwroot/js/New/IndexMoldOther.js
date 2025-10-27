@@ -111,3 +111,9 @@ $("#btnUploadFileWK").click(function () {
     $('#filesImport').val('');
     $("#myModalNewMoldOtherWKUpload").modal("show");
 });
+
+
+$("#btnUploadFileMT").click(function () {
+    $('#filesImport').val('');
+    $("#myModalNewMoldOtherMTUpload").modal("show");
+});

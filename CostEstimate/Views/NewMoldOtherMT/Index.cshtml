@@ -48,6 +48,14 @@
                     </button>
                 </div>
             </div>
+            <div style="text-align:right; @(Model._ViewceMastMaterialRequest.mrStep == 4  ? "display:none" : "")">
+                <button style="margin-right:5px;font-size:10px;width:100px"
+                        class="button btnBlue" id="btnUploadFileMT">
+                    <img src="~/images/excel.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />Import
+                </button>
+
+
+            </div>
             <form id="formMoldOMTRequest" name="formMoldOMTRequest" enctype="multipart/form-data">
                 @Html.HiddenFor(m => m._ViewceMastMaterialRequest.mrStep, new { id = "step" })
                 @Html.HiddenFor(m => m._ViewceMastMaterialRequest.mrStatus, new { id = "Status" })
@@ -280,6 +288,46 @@
                             <button type="button" class="button btnRed" data-bs-dismiss="modal" style="width:80px;height:30px">Close</button>
 
                         </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal modal fade" id="myModalNewMoldOtherMTUpload" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body" id="myModalBodyNewMoldOtherUpload">
+                            <form id="formMoldOMTInportFile" name="formMoldOMTInportFile" enctype="multipart/form-data">
+                                <div class="modal-header" style="margin-top:1px">
+                                    <h5 class="modal-title">
+                                        <span style="font-weight: bold; font-size: 16px;"><img src="~/images/folders.png" height="35px" width="35px" style="vertical-align:middle" /> Upload Excel File <span style="color:red;font-size:13px">*รบกวนดาวน์โหลด Format excel ใหม่ทุกครั้ง</span></span>
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class=" panel-group ir fadeInUp animated wowload animated" style="visibility: visible; animation-name: fadeInUp; margin-bottom: 5px; ">
+                                    <div class="panel panel-default property">
+                                        <div class="panel-collapse collapse show " style=" height: auto;padding-top: 5px;">
+                                            <span style="color:black;font-size:12px;font-weight:600">คลิกเพื่อเลือกไฟล์ Excel </span>
+
+                                            <div class="panel-body center">
+
+                                                <input name="files" type="file" id="filesImport" class="button btnGray " style="width:100%" accept=".xls,.xlsx" required>
+                                                <br />
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer " style="width: 30%;">
+                                    <input type="button"
+                                           style="font-size:14px;height:30px;padding:2px"
+                                           value="&#x1F4E4; อัพโหลด"
+                                           class="button"
+                                           onclick="Menubar_uploadFileMT('@Url.Action("ImportDataFile","NewMoldOtherMT")')" />
+                                    @*<button class="button" style="width:80%;height:30px;width:100px" onclick="Menubar_uploadFileWK('@Url.Action("ImportDataFile","NewMoldOtherWK")')">Upload & Read</button>*@
+                                </div>
+                            </form>
+
                         </div>
                     </div>
                 </div>

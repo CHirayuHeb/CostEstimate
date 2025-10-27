@@ -13,9 +13,24 @@
 
 }
 <div class="" style="border:0px solid gray;margin-top:10px;padding:2px;">
-    <div class="grid-item fw-800 center " style="text-align:left;font-size:14px;margin-bottom:10px;">
-        Material Detail.
-        <span style="color:#1565C0">ทั้งหมด  @Model._ListGroupViewceItemMaterialRequestPartName.Count() Part</span>
+    <div class="grid-item fw-800 center  row" style="text-align:left;font-size:14px;margin-bottom:10px;">
+        <div class="col-80">
+            Material Detail.
+            <span style="color:#1565C0">ทั้งหมด  @Model._ListGroupViewceItemMaterialRequestPartName.Count() Part</span>
+
+        </div>
+        <div class="col-20" style="text-align:right">
+
+            <button type="submit"
+                    formaction='@Url.Action("btnExportExcel", "NewMoldOtherMT")?id=@Model._ViewceMastMoldOtherRequest.mrDocmentNo'
+                    formmethod="post"
+                    class="button"
+                    style="margin-right:5px;font-size:8px;width:130px">
+                <img src="~/images/excel.png"
+                     style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top:2px;margin-bottom:2px;" />
+                FROMAT EXPORT
+            </button>
+        </div>
     </div>
     <div class="table-groupMatPartName table-containerHM " style="margin:auto">
         @for (int j = 0; j < Model._ListGroupViewceItemMaterialRequestPartName.Count(); j++)
@@ -92,7 +107,7 @@
                             @*<span>@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpPCS</span>*@
                             @if (@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem.Contains("CU, GR") || @Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem.Contains("TOOL"))
                             {
-                                <input class="form-control center input-mpPCS" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpPCS" type="number"  readonly/>
+                                <input class="form-control center input-mpPCS" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpPCS" type="number" readonly />
 
                             }
                             else
@@ -105,7 +120,7 @@
                         <td>
                             @if (@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem.Contains("CU, GR") || @Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem.Contains("TOOL"))
                             {
-                                <input class="form-control center input-mpAmount" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpAmount" type="number"  readonly/>
+                                <input class="form-control center input-mpAmount" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpAmount" type="number" readonly />
 
                             }
                             else
