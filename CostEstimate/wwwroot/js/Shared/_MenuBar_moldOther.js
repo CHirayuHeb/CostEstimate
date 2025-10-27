@@ -4947,11 +4947,11 @@ function Menubar_MoldOtherWKsaveDraft(action, action2) {
                             wpNoProcess: inputNoProcess.value.trim(), //int
                             wpGroupName: inputGroupName.value.trim(),
                             wpProcessName: inputProcessName.value.trim(),
-                            wpWT_Man: parseInt(inputMan.value.trim()) || 0,//double
-                            wpWT_Auto: parseInt(inputAuto.value.trim()) || 0,//double
+                            wpWT_Man: parseFloat(inputMan.value.trim()).toFixed(2) || 0,//double
+                            wpWT_Auto: parseFloat(inputAuto.value.trim()).toFixed(2) || 0,//double
                             wpEnable_WTMan: inputEnableman.value,//bit
                             wpEnable_WTAuto: inputEnableAuto.value,//bit
-                            wpTotal: parseInt(inputtotal.value) || 0,//double
+                            wpTotal: parseFloat(inputtotal.value.trim()).toFixed(2) || 0,//double
                             wpIssueDate: "",
                         });
 
@@ -5246,11 +5246,11 @@ function Menubar_MoldOtherWKsavesendMailData(action, action2) {
                             wpNoProcess: inputNoProcess.value.trim() || 0, //int
                             wpGroupName: inputGroupName.value.trim(),
                             wpProcessName: inputProcessName.value.trim(),
-                            wpWT_Man: parseInt(inputMan.value.trim()) || 0,//double
-                            wpWT_Auto: parseInt(inputAuto.value.trim()) || 0,//double
+                            wpWT_Man: parseFloat(inputMan.value.trim()).toFixed(2) || 0,//double
+                            wpWT_Auto: parseFloat(inputAuto.value.trim()).toFixed(2) || 0,//double
                             wpEnable_WTMan: inputEnableman.value,//bit
                             wpEnable_WTAuto: inputEnableAuto.value,//bit
-                            wpTotal: parseInt(inputtotal) || 0,//double
+                            wpTotal: parseFloat(inputtotal.value.trim()).toFixed(2) || 0,//double
                             wpIssueDate: "",
                         });
 
@@ -5504,9 +5504,9 @@ function Menubar_MoldOtherMTsaveDraft(action) {
                 mpNoProcess: tr.querySelector(".input-mpNoProcess").value.trim(),
                 mpNo: parseFloat(tr.querySelector(".input-mpNo").value.trim()) || 0,
                 mpItem: tr.querySelector(".input-mpItem").value.trim() || 0,
-                mpPCS: parseFloat(tr.querySelector(".input-mpPCS").value.trim()) || 0,
-                mpAmount: parseFloat(tr.querySelector(".input-mpAmount").value.trim()) || 0,
-                mpTotal: totalInput ? parseFloat(totalInput.value.trim()) : 0,
+                mpPCS: parseFloat(tr.querySelector(".input-mpPCS").value.trim()).toFixed(2) || 0,
+                mpAmount: parseFloat(tr.querySelector(".input-mpAmount").value.trim()).toFixed(2) || 0,
+                mpTotal: totalInput ? parseFloat(totalInput.value.trim()).toFixed(2) : 0,
                 mpIssueDate: tr.querySelector(".input-mpIssueDate").value.trim(),
             });
         });
@@ -5724,8 +5724,8 @@ function Menubar_MoldOtherMTsavesendMailData(action) {
                 mpNo: parseFloat(tr.querySelector(".input-mpNo").value.trim()) || 0,
                 mpItem: tr.querySelector(".input-mpItem").value.trim() || 0,
                 mpPCS: parseFloat(tr.querySelector(".input-mpPCS").value.trim()) || 0,
-                mpAmount: parseFloat(tr.querySelector(".input-mpAmount").value.trim()) || 0,
-                mpTotal: totalInput ? parseFloat(totalInput.value.trim()) : 0,
+                mpAmount: parseFloat(tr.querySelector(".input-mpAmount").value.trim()).toFixed(2) || 0,
+                mpTotal: totalInput ? parseFloat(totalInput.value.trim()).toFixed(2) : 0,
                 mpIssueDate: tr.querySelector(".input-mpIssueDate").value.trim(),
             });
         });
