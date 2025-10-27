@@ -34,6 +34,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using OfficeOpenXml.Style;
 using OfficeOpenXml;
 using System.Drawing;
+using System.Globalization;
 
 namespace CostEstimate.Controllers.NewMoldOtherMT
 {
@@ -528,7 +529,7 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                         dt.Columns.Add("mpPCS", typeof(int));
                         dt.Columns.Add("mpAmount", typeof(decimal));
                         dt.Columns.Add("mpTotal", typeof(decimal));
-                        dt.Columns.Add("mpIssueDate", typeof(DateTime));
+                        dt.Columns.Add("mpIssueDate", typeof(string));//  typeof(DateTime));
 
                         foreach (var item in @class._ListViewceItemMaterialRequestPartName)
                         {
@@ -1233,6 +1234,7 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
             string IssueBy = DateTime.Now.ToString("yyyyMMdd HH:mm:ss") + " - " + HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
             @class._ListViewceItemMaterialRequestPartName = new List<ViewceItemMaterialRequestPartName>();
             string vDocsubMain = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == _id).Select(x => x.mrDocumentNoSub).FirstOrDefault();
+            string vissueMain = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == _id).Select(x => x.mrIssueDate).FirstOrDefault();
             try
             {
 
@@ -1263,7 +1265,7 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                                 int vProcess;
 
                                 string[] chkPermis;
-                                chkPermis = chkPermissionImport(worksheet.Cells[1, 2].Text);
+                                chkPermis = chkPermissionImport(vDocsubMain);
                                 if (chkPermis[0] != "S")
                                 {
                                     config = chkPermis[0];
@@ -1317,8 +1319,8 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                                                 mpPCS = Convert.ToDouble(worksheet.Cells[row, c + 2].Value),
                                                 mpAmount = worksheet.Cells[row, c + 3].Value == null || worksheet.Cells[row, c + 3].Value.ToString() == "" ? 0 : Convert.ToDouble(worksheet.Cells[row, c + 3].Value) / 1000,//Convert.ToDouble(worksheet.Cells[row, c + 3].Value) / 1000,
                                                 mpTotal = 0,
-                                                mpIssueDate = IssueBy,
-                                            });
+                                                mpIssueDate = vissueMain,
+                                        });
                                             mRunNo += 1;
 
                                         }
@@ -1372,7 +1374,7 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                                             dt.Columns.Add("mpPCS", typeof(double));
                                             dt.Columns.Add("mpAmount", typeof(double));
                                             dt.Columns.Add("mpTotal", typeof(double));
-                                            dt.Columns.Add("mpIssueDate", typeof(string));
+                                            dt.Columns.Add("mpIssueDate", typeof(DateTime));
 
                                             for (int i = 0; i < @class._ListViewceItemMaterialRequestPartName.Count; i++)
                                             {
@@ -1389,7 +1391,9 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                                                     item.mpPCS,
                                                     item.mpAmount,
                                                     item.mpTotal,
-                                                    item.mpIssueDate
+                                                    DateTime.ParseExact(vissueMain, "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture)
+                                                  
+                                                // item.mpIssueDate
                                                 //DateTime.Now.ToString("yyyyMMdd HH:mm:ss")
                                                 );
                                             }
