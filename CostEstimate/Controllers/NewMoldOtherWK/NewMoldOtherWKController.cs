@@ -1339,6 +1339,10 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
 
 
                                     worksheet.Cells[4 + j, sRow].Value = vMan;
+                                    worksheet.Cells[4 + j, sRow].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                    worksheet.Cells[4 + j, sRow].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+                                    worksheet.Cells[4 + j, sRow].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
                                     sRow += 1;
                                 }
                                 if (@class._ListceMastProcess[i].mpEnable_WTAuto == true)
@@ -1352,6 +1356,9 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                                                                                            .First();
 
                                     worksheet.Cells[4 + j, sRow].Value = vAuto;
+                                    worksheet.Cells[4 + j, sRow].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                    worksheet.Cells[4 + j, sRow].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+                                    worksheet.Cells[4 + j, sRow].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                                     sRow += 1;
                                 }
                             }
@@ -1444,7 +1451,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                                         return Json(new { c1 = config, c2 = msg });
                                     }
 
-                                    if (rowCount > 4)
+                                    if (rowCount > 3)
                                     {
                                         int vRow;
                                         int sumTotal;

@@ -31,7 +31,7 @@
                     </span>
                 </div>
                 <div class="col-40 center" style="text-align:right;">
-                    <button class="button btnBlue" style="margin-right:20px;width:auto; @(Model._ViewceMastMoldOtherRequest.mrStep > 4 ? "" : "display:none")"
+                    <button class="button btnBlue" style="margin-right:20px;width:auto; @(Model._ViewceMastMoldOtherRequest.mrStep > 3 ? "" : "display:none")"
                             onclick="Menubar_PrintMoldOtherQUOTATION('@Url.Action("PrintMoldQUOTATION", "NewMoldOther")','@Model._ViewceMastMoldOtherRequest.mrDocmentNo')">
                         <img src="~/images/printer.png" style="width:33px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
                         REPORT
@@ -264,7 +264,7 @@
                                                     <td width='70px'>
 
                                                         @*<img src='~/images/petition.png' alt='icon' class='imgM' />*@
-                                                        @if (Model._ViewceMastMoldOtherRequest.mrStep == 8)
+                                                        @if (Model._ViewceMastMoldOtherRequest.mrStep >3)
                                                         {
 
                                                             <a href="@Url.Action("Index", "SumRateMoldOther", new { Docno = Model._ListViewceItemPartName[i].ipDocumentNo,vProcess=Model._ListViewceItemPartName[i].ipRunNo })"

@@ -79,22 +79,22 @@ namespace CostEstimate.Controllers.SumRateMoldOther
 
 
                 //update
-             
-             
+
+
                 @class._ViewceMastMaterialRequest = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == Docno).FirstOrDefault();
                 //@class._ViewceItemMaterialRequestPartName = new ViewceItemMaterialRequestPartName();
 
                 ViewceItemMaterialRequestPartName _ceItemMaterialRequestPartNameGP = new ViewceItemMaterialRequestPartName();
                 _ceItemMaterialRequestPartNameGP = _MK._ViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == @class._ViewceMastMaterialRequest.mrDocumentNoSub && x.mpNoProcess == vProcess && x.mpItem.Contains("GP,GB")).FirstOrDefault();
-                _ceItemMaterialRequestPartNameGP.mpPCS = @class._ViewceItemToolGRRequestPartName.tpGrCost;
-                _ceItemMaterialRequestPartNameGP.mpAmount = 0;
+                _ceItemMaterialRequestPartNameGP.mpPCS = 0; //@class._ViewceItemToolGRRequestPartName.tpGrCost;
+                _ceItemMaterialRequestPartNameGP.mpAmount = @class._ViewceItemToolGRRequestPartName.tpToolCost;//0;
                 _MK._ViewceItemMaterialRequestPartName.Update(_ceItemMaterialRequestPartNameGP);
                 _MK.SaveChanges();
 
                 ViewceItemMaterialRequestPartName _ceItemMaterialRequestPartNameTool = new ViewceItemMaterialRequestPartName();
                 _ceItemMaterialRequestPartNameTool = _MK._ViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == @class._ViewceMastMaterialRequest.mrDocumentNoSub && x.mpNoProcess == vProcess && x.mpItem.Contains("TOOL")).FirstOrDefault();
-                _ceItemMaterialRequestPartNameTool.mpPCS = @class._ViewceItemToolGRRequestPartName.tpToolCost;
-                _ceItemMaterialRequestPartNameTool.mpAmount = 0;
+                _ceItemMaterialRequestPartNameTool.mpPCS = 0;// @class._ViewceItemToolGRRequestPartName.tpToolCost;// @class._ViewceItemToolGRRequestPartName.tpToolCost;
+                _ceItemMaterialRequestPartNameTool.mpAmount = @class._ViewceItemToolGRRequestPartName.tpGrCost;//0;// 0;
                 _MK._ViewceItemMaterialRequestPartName.Update(_ceItemMaterialRequestPartNameTool);
                 _MK.SaveChanges();
 
@@ -217,8 +217,8 @@ namespace CostEstimate.Controllers.SumRateMoldOther
                 if (RuleChartRate != null)
                 {
                     //get Man
-                   //var manParts = RuleChartRate.mrManFormula.Split(',', StringSplitOptions.RemoveEmptyEntries);
-                    var manParts = string.IsNullOrEmpty(RuleChartRate.mrManFormula)? Array.Empty<string>(): RuleChartRate.mrManFormula.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    //var manParts = RuleChartRate.mrManFormula.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    var manParts = string.IsNullOrEmpty(RuleChartRate.mrManFormula) ? Array.Empty<string>() : RuleChartRate.mrManFormula.Split(',', StringSplitOptions.RemoveEmptyEntries);
                     foreach (var part in manParts)
                     {
                         var lmanParts = part.Split('#');
@@ -239,7 +239,7 @@ namespace CostEstimate.Controllers.SumRateMoldOther
                     }
                     //get auto
                     //var autoParts =  RuleChartRate.mrAutoFormula.Split(',', StringSplitOptions.RemoveEmptyEntries);
-                    var autoParts = !string.IsNullOrEmpty(RuleChartRate.mrAutoFormula)? RuleChartRate.mrAutoFormula.Split(',', StringSplitOptions.RemoveEmptyEntries): Array.Empty<string>();
+                    var autoParts = !string.IsNullOrEmpty(RuleChartRate.mrAutoFormula) ? RuleChartRate.mrAutoFormula.Split(',', StringSplitOptions.RemoveEmptyEntries) : Array.Empty<string>();
 
 
                     foreach (var part in autoParts)
@@ -268,9 +268,14 @@ namespace CostEstimate.Controllers.SumRateMoldOther
 
                 //DESIGN
                 //NC.
-                double sSumLabour_Cost = listCeCostPlan[i].cpProcessName == "NC." ? crWTTotal * listCeCostPlan[i].cpDP_Rate / 1000 : crWTMan * listCeCostPlan[i].cpDP_Rate / 1000;
-                double sSumDPrCost = listCeCostPlan[i].cpProcessName == "NC." ? crWTTotal * listCeCostPlan[i].cpDP_Rate / 1000 : crWTMan * listCeCostPlan[i].cpDP_Rate / 1000;
-                double sSumME_Cost = listCeCostPlan[i].cpProcessName == "NC." ? crWTTotal * listCeCostPlan[i].cpME_Rate / 1000 : crWTMan * listCeCostPlan[i].cpME_Rate / 1000;
+                //double sSumLabour_Cost = listCeCostPlan[i].cpGroupName == "NC." ? crWTTotal * listCeCostPlan[i].cpDP_Rate / 1000 : crWTMan * listCeCostPlan[i].cpDP_Rate / 1000;
+                //double sSumDPrCost = listCeCostPlan[i].cpGroupName == "NC." ? crWTTotal * listCeCostPlan[i].cpDP_Rate / 1000 : crWTMan * listCeCostPlan[i].cpDP_Rate / 1000;
+                //double sSumME_Cost = listCeCostPlan[i].cpGroupName == "NC." ? crWTTotal * listCeCostPlan[i].cpME_Rate / 1000 : crWTMan * listCeCostPlan[i].cpME_Rate / 1000;
+
+                double sSumLabour_Cost = Math.Round(crWTMan * listCeCostPlan[i].cpLabour_Rate / 1000, 2);
+                double sSumDPrCost = listCeCostPlan[i].cpGroupName == "NC." ? Math.Round(crWTTotal * listCeCostPlan[i].cpDP_Rate / 1000, 2) : Math.Round(crWTMan * listCeCostPlan[i].cpDP_Rate / 1000, 2);
+                double sSumME_Cost = listCeCostPlan[i].cpGroupName == "NC." ? Math.Round(crWTTotal * listCeCostPlan[i].cpME_Rate / 1000, 2) : Math.Round(crWTMan * listCeCostPlan[i].cpME_Rate / 1000, 2);
+
 
 
                 @class._ListViewDetailceMastChartRateOtherReport.Add(new ViewDetailceMastChartRateOtherReport
@@ -282,14 +287,14 @@ namespace CostEstimate.Controllers.SumRateMoldOther
                     crLabour_Rate = listCeCostPlan[i].cpLabour_Rate,
                     crLabour_Cost = Math.Round(crWTMan * listCeCostPlan[i].cpLabour_Rate / 1000, 2),
                     crDP_Rate = listCeCostPlan[i].cpDP_Rate,
-                    crpDP_Cost = listCeCostPlan[i].cpProcessName == "NC." ? Math.Round(crWTTotal * listCeCostPlan[i].cpDP_Rate / 1000, 2) : Math.Round(crWTMan * listCeCostPlan[i].cpDP_Rate / 1000, 2),
+                    crpDP_Cost = listCeCostPlan[i].cpGroupName == "NC." ? Math.Round(crWTTotal * listCeCostPlan[i].cpDP_Rate / 1000, 2) : Math.Round(crWTMan * listCeCostPlan[i].cpDP_Rate / 1000, 2),
                     crME_Rate = listCeCostPlan[i].cpME_Rate,
-                    crME_Cost = listCeCostPlan[i].cpProcessName == "NC." ? Math.Round(crWTTotal * listCeCostPlan[i].cpME_Rate / 1000, 2) : Math.Round(crWTMan * listCeCostPlan[i].cpME_Rate / 1000, 2),
+                    crME_Cost = listCeCostPlan[i].cpGroupName == "NC." ? Math.Round(crWTTotal * listCeCostPlan[i].cpME_Rate / 1000, 2) : Math.Round(crWTMan * listCeCostPlan[i].cpME_Rate / 1000, 2),
                     crTotal_cost = Math.Round(sSumLabour_Cost + sSumDPrCost + sSumME_Cost, 2),
                     crChartRateSub_Local_Rate = listCeCostPlan[i].cpCR_Local_Rate,
-                    crChartRateSub_Local_Cost = listCeCostPlan[i].cpProcessName == "NC." ? Math.Round(crWTTotal * listCeCostPlan[i].cpCR_Local_Rate / 1000, 2) : Math.Round(crWTMan * listCeCostPlan[i].cpCR_Local_Rate / 1000, 2),
+                    crChartRateSub_Local_Cost = listCeCostPlan[i].cpGroupName == "NC." ? Math.Round(crWTTotal * listCeCostPlan[i].cpCR_Local_Rate / 1000, 2) : Math.Round(crWTMan * listCeCostPlan[i].cpCR_Local_Rate / 1000, 2),
                     crChartRateSub_Oversea_Rate = listCeCostPlan[i].cpCR_Oversea_Rate,
-                    crChartRateSub_Oversea_Cost = listCeCostPlan[i].cpProcessName == "NC." ? Math.Round(crWTTotal * listCeCostPlan[i].cpCR_Oversea_Rate / 1000, 2) : Math.Round(crWTMan * listCeCostPlan[i].cpCR_Oversea_Rate / 1000, 2),
+                    crChartRateSub_Oversea_Cost = listCeCostPlan[i].cpGroupName == "NC." ? Math.Round(crWTTotal * listCeCostPlan[i].cpCR_Oversea_Rate / 1000, 2) : Math.Round(crWTMan * listCeCostPlan[i].cpCR_Oversea_Rate / 1000, 2),
                 });
             }
 

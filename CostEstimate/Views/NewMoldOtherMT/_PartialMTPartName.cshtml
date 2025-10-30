@@ -158,7 +158,7 @@
                 var val = parseFloat($(this).val()) || 0;
                 sum += val;
             });
-            $table.find(".input-mpTotal").val(sum);
+            $table.find(".input-mpTotal").val(sum.toFixed(2));
         }
 
         // ผูก event เวลามีการกรอกค่า

@@ -164,7 +164,7 @@
 
 <script type="text/javascript">
     function sumValuesByGroupdsWT_Man() {
-        console.log("ssssss");
+        //console.log("ssssss");
         var groupSumsWT_Man = {};  // Object to store sums for each group
         // Iterate through each group
         $("tr").each(function () {
@@ -710,10 +710,19 @@
             s_Total_cost += value; // บวกค่า
         });
 
+        //let vRateChart = parseFloat(document.getElementById('EsChartRate').value);
+        //console.log("vRateChart===>>>>>>>>>>>>" + vRateChart);
+        //s_Total_cost = parseFloat(s_Total_cost) * vRateChart;
+        //console.log("s_Total_cost===>>>>>>>>>>>>" + s_Total_cost);
+      
         let vRateChart = parseFloat(document.getElementById('EsChartRate').value);
-        s_Total_cost = s_Total_cost * vRateChart;
-        $("#EsTotalCOSTUNTILSH").val(s_Total_cost.toFixed(2));
+        s_Total_cost = parseFloat(s_Total_cost) * vRateChart;
+        //console.log("s_Total_cost===>>>>>>>>>>>>" + s_Total_cost);
 
+
+        $("#EsTotalCOSTUNTILSH").val(s_Total_cost.toFixed(2));
+       // console.log("EsTotalCOSTUNTILSH===>>>>>>>>>>>>" + document.getElementById('EsTotalCOSTUNTILSH').value);
+       // console.log("EsMatCOSTTool===>>>>>>>>>>>>" + document.getElementById('EsMatCOSTTool').value);
         //console.log("EsTotalChLocal_Cost" + document.getElementById('EsTotalChLocal_Cost').value);
         //console.log("EsTotalMatCOSTTool" + document.getElementById('EsTotalMatCOSTTool').value);
         //EsTotalChLocal_Cost + EsTotalMatCOSTTool
@@ -721,22 +730,59 @@
 
         //row3
         //$("#EsTotalCOSTUNTILSH") + EsMatCOSTTool
-        $("#EsE_D_MATERIAL").val((parseFloat(document.getElementById('EsTotalCOSTUNTILSH').value) + parseFloat(document.getElementById('EsMatCOSTTool').value)).toLocaleString());
+        let val1 = parseFloat(document.getElementById('EsTotalCOSTUNTILSH').value) || 0;
+        let val2 = parseFloat(document.getElementById('EsMatCOSTTool').value) || 0;
+
+        //console.log("val1 + val2" + val1 + val2);
+
+        $("#EsE_D_MATERIAL").val((val1 + val2).toLocaleString());
+
+
+        //$("#EsE_D_MATERIAL").val((parseFloat(document.getElementById('EsTotalCOSTUNTILSH').value) + parseFloat(document.getElementById('EsMatCOSTTool').value)).toLocaleString());
 
         //LOCAL MAKER COST UNTIL SH(A x COEFFICIENT) + MAT.
         let result = roundup(
             (parseFloat(document.getElementById('EsTotalChLocal_Cost').value) *
                 parseFloat(document.getElementById('EsChartRate').value))
-            + parseFloat(document.getElementById('EsTotalMatCOSTTool').value), -1
+            + parseFloat(document.getElementById('EsTotalMatCOSTTool').value) + parseFloat(document.getElementById('EsDevelopTHS').value), -1
         ) * 1000;
+
+        
 
         // format แบบมี , เช่น 1,000
         $("#EsLocalMakerCostAxCOEFFICIENT_MAT").val(result.toLocaleString());
 
         //row4
         // parseFloat(document.getElementById('EsE_D_MATERIAL').value))
-        $("#EstotalESTIMATE_COST").val((roundup(parseFloat(document.getElementById('EsE_D_MATERIAL').value), -1) * 1000).toLocaleString());
-        parseFloat(document.getElementById('EsTotalChOversea_Cost').value)
+        //$("#EstotalESTIMATE_COST").val((roundup(parseFloat(document.getElementById('EsE_D_MATERIAL').value), -1) * 1000).toLocaleString());
+        //parseFloat(document.getElementById('EsTotalChOversea_Cost').value)
+
+
+
+        // ดึงค่า input แล้วลบ comma
+        let materialVal = document.getElementById('EsE_D_MATERIAL').value.replace(/,/g, '');
+
+        // แปลงเป็น float
+        let materialNum = parseFloat(materialVal) || 0;
+
+        // ฟังก์ชัน roundup ปัดขึ้นตามจำนวนหลัก
+        function roundup(num, precision) {
+            let factor = Math.pow(10, -precision);
+            return Math.ceil(num / factor) * factor;
+        }
+
+        // ใช้ roundup และคูณ 1000
+        let totalEstimate = roundup(materialNum, -1) * 1000;
+
+        // แสดงผลใน input พร้อม format comma
+        $("#EstotalESTIMATE_COST").val(totalEstimate.toLocaleString());
+
+
+
+
+
+
+
         // roundup(parseFloat(document.getElementById('EsTotalChOversea_Cost').value) +  parseFloat(document.getElementById('EsTotalMatCOSTTool').value),-1)
         $("#EsTotalTargetMakerCostForPU1").val(roundup(parseFloat(document.getElementById('EsTotalChOversea_Cost').value) + parseFloat(document.getElementById('EsTotalMatCOSTTool').value), -1).toLocaleString());
 
@@ -744,15 +790,35 @@
         //row5
         //OVERSEA MAKER COST UNTIL SH   (A x COEFFICIENT)+MAT. EsDevelopTHS
         //EsTotalChOversea_Cost * EsOverseaRate
-        const vEsOverseaMakerCost = roundup((parseFloat(document.getElementById('EsTotalChOversea_Cost').value) * parseFloat(document.getElementById('EsOverseaRate').value))
-            + parseFloat(document.getElementById('EsTotalMatCOSTTool').value) + parseFloat(document.getElementById('EsDevelopTHS').value), -1) * 1000;
-        $("#EsOverseaMakerCost").val((roundup((parseFloat(document.getElementById('EsTotalChOversea_Cost').value) * parseFloat(document.getElementById('EsOverseaRate').value))
-            + parseFloat(document.getElementById('EsTotalMatCOSTTool').value) + parseFloat(document.getElementById('EsDevelopTHS').value), -1) * 1000).toLocaleString()
-       );
-        
+        //const vEsOverseaMakerCost = roundup((parseFloat(document.getElementById('EsTotalChOversea_Cost').value) * parseFloat(document.getElementById('EsOverseaRate').value))
+        //    + parseFloat(document.getElementById('EsTotalMatCOSTTool').value) + parseFloat(document.getElementById('EsDevelopTHS').value), -1) * 1000;
+
+       // $("#EsOverseaMakerCost").val((roundup((parseFloat(document.getElementById('EsTotalChOversea_Cost').value) * parseFloat(document.getElementById('EsOverseaRate').value))
+       //     + parseFloat(document.getElementById('EsTotalMatCOSTTool').value) + parseFloat(document.getElementById('EsDevelopTHS').value), -1) * 1000).toLocaleString()
+       //);
+
+
+
+
+        console.log("EsTotalChOversea_Cost" + document.getElementById('EsTotalChOversea_Cost').value);
+        console.log("EsChartRate" + document.getElementById('EsChartRate').value);
+        console.log("EsTotalMatCOSTTool" + document.getElementById('EsTotalMatCOSTTool').value);
+        console.log("EsDevelopTHS1" + document.getElementById('EsDevelopTHS1').value);
+
+        console.log("1==> " + (parseFloat(document.getElementById('EsTotalChOversea_Cost').value) * parseFloat(document.getElementById('EsChartRate').value)));
+        console.log("2==> " + (parseFloat(document.getElementById('EsTotalMatCOSTTool').value) + parseFloat(document.getElementById('EsDevelopTHS1').value)));
+        console.log("3==> " + ((parseFloat(document.getElementById('EsTotalChOversea_Cost').value) * parseFloat(document.getElementById('EsChartRate').value)) + (parseFloat(document.getElementById('EsTotalMatCOSTTool').value) + parseFloat(document.getElementById('EsDevelopTHS1').value))));
+        let total = roundup(
+            (parseFloat(document.getElementById('EsTotalChOversea_Cost').value) * parseFloat(document.getElementById('EsChartRate').value))
+            + parseFloat(document.getElementById('EsTotalMatCOSTTool').value)
+            + parseFloat(document.getElementById('EsDevelopTHS1').value),
+            -1
+        ) * 1000;
+
+        $("#EsOverseaMakerCost").val(total.toLocaleString());
+
         //row 6 EsOverseaINCLUDERate
-        let vEsOverseaINCLUDERate = parseFloat(vEsOverseaMakerCost) *
-            parseFloat(document.getElementById('EsOverseaINCLUDERate').value);
+        let vEsOverseaINCLUDERate = parseFloat(total) *parseFloat(document.getElementById('EsChartRate').value);
 
         // แสดงผล: มี comma (เช่น 1,000)
         $("#EsOverseaINCLUDETotal").val(vEsOverseaINCLUDERate.toLocaleString());
@@ -761,6 +827,9 @@
         const factor = Math.pow(10, -digits);
         return Math.ceil(value / factor) * factor;
     }
+
+
+
 
 
     async function runFunc() {

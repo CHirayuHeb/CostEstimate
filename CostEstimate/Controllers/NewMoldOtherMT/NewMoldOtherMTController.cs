@@ -1198,7 +1198,16 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                             worksheet.Cells[eRowitem, eColMain].Value = j + 1;
                             worksheet.Cells[eRowitem, eColMain + 1].Value = @class._ListceMastModel[j].mmModelName;
                             worksheet.Cells[eRowitem, eColMain + 2].Value = @class._ListViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == vDocNosub && x.mpNoProcess == @class._ListViewceItemPartName[i].ipRunNo && x.mpItem.Contains(@class._ListceMastModel[j].mmModelName)).FirstOrDefault() != null ? @class._ListViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == vDocNosub && x.mpNoProcess == @class._ListViewceItemPartName[i].ipRunNo && x.mpItem.Contains(@class._ListceMastModel[j].mmModelName)).Select(x => x.mpPCS).FirstOrDefault() : 0;
+                            worksheet.Cells[eRowitem, eColMain + 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            worksheet.Cells[eRowitem, eColMain + 2].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+                            worksheet.Cells[eRowitem, eColMain + 2].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
                             worksheet.Cells[eRowitem, eColMain + 3].Value = @class._ListViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == vDocNosub && x.mpNoProcess == @class._ListViewceItemPartName[i].ipRunNo && x.mpItem.Contains(@class._ListceMastModel[j].mmModelName)).FirstOrDefault() != null ? @class._ListViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == vDocNosub && x.mpNoProcess == @class._ListViewceItemPartName[i].ipRunNo && x.mpItem.Contains(@class._ListceMastModel[j].mmModelName)).Select(x => x.mpAmount).FirstOrDefault() * 1000 : 0;
+                            worksheet.Cells[eRowitem, eColMain + 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            worksheet.Cells[eRowitem, eColMain + 3].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+                            worksheet.Cells[eRowitem, eColMain + 3].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+
                             eRowitem += 1;
                         }
                         //eRowMain += 5;
@@ -1274,7 +1283,7 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                                 }
 
                                 //check col
-                                if (colCount > 3)
+                                if (colCount > 1)
                                 {
                                     int vRow;
                                     int sumTotal;
@@ -1374,7 +1383,7 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                                             dt.Columns.Add("mpPCS", typeof(double));
                                             dt.Columns.Add("mpAmount", typeof(double));
                                             dt.Columns.Add("mpTotal", typeof(double));
-                                            dt.Columns.Add("mpIssueDate", typeof(DateTime));
+                                            dt.Columns.Add("mpIssueDate", typeof(string));
 
                                             for (int i = 0; i < @class._ListViewceItemMaterialRequestPartName.Count; i++)
                                             {
@@ -1391,8 +1400,8 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                                                     item.mpPCS,
                                                     item.mpAmount,
                                                     item.mpTotal,
-                                                    DateTime.ParseExact(vissueMain, "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture)
-                                                  
+                                                  //DateTime.ParseExact(vissueMain, "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture)
+                                                  DateTime.Now.ToString("yyyyMMdd HH:mm:ss")
                                                 // item.mpIssueDate
                                                 //DateTime.Now.ToString("yyyyMMdd HH:mm:ss")
                                                 );
