@@ -983,7 +983,7 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
                         _smStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == vStepDis && x.mfFlowNo == "7").Select(x => x.mfSubject).First();
                         NickNameApprove = empApprove != null ? _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == empApprove).Select(x => x.NICKNAME).First() : @class._ViewceMastInforSpacMoldRequest.irNameApprove;
                     }
-                    
+
                     //vstep = vstep == 9 ? vstep = 0 : vstep;
                     vstep = vstep == 8 ? vstep = 0 : vstep;
                     ViewceMastInforSpacMoldRequest _ceMastInforSpacMoldRequest = new ViewceMastInforSpacMoldRequest();
@@ -1103,7 +1103,7 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
                         var ceItemInforShibo = new ViewceItemInforShibo()
                         {
                             ibDocumentNoSub = @class._ListViewceItemInforShibo[i].ibDocumentNoSub,
-                            ibRunNo = @class._ListViewceItemInforShibo[i].ibRunNo,
+                            ibRunNo = i + 1, //@class._ListViewceItemInforShibo[i].ibRunNo,
                             ibPartName = @class._ListViewceItemInforShibo[i].ibPartName,
                             ibCavityNo = @class._ListViewceItemInforShibo[i].ibCavityNo,
                             ibTypeCavity = @class._ListViewceItemInforShibo[i].ibTypeCavity,
@@ -1159,7 +1159,7 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
                 string _smStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == vstep && x.mfFlowNo == "7").Select(x => x.mfSubject).First();
 
                 //checked dis approve   20/10/2025
-               
+
                 if (vstep == 8)
                 {
                     if (@class._ViewceMastInforSpacMoldRequest.irStep == 1)
@@ -1182,7 +1182,7 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
                     }
                 }
 
-                
+
                 vstep = vstep == 8 ? vstep = 0 : vstep;
 
                 var email = new MimeMessage();
