@@ -871,7 +871,7 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
             string v_msg = "";
             string v_status = "";
 
-            using (var dbContextTransaction = _MK.Database.BeginTransaction())
+            using (var dbContextTransaction =  _MK.Database.BeginTransaction())
             {
                 try
                 {
@@ -1069,7 +1069,7 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
                     if (itemTC.Any())
                     {
                         _MK._ViewceItemInforTypeOfCut.RemoveRange(itemTC);
-                        _MK.SaveChangesAsync(); // ✅ ใช้ async และ commit ก่อนเพิ่มข้อมูลใหม่
+                        _MK.SaveChanges(); // ✅ ใช้ async และ commit ก่อนเพิ่มข้อมูลใหม่
                     }
                     // 🔹 เคลียร์ทุก entity ที่ EF จำไว้ (เทียบเท่า ChangeTracker.Clear())
                     //foreach (var entry in _MK.ChangeTracker.Entries().ToList())
@@ -1093,7 +1093,7 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
 
 
                     var itemSB = _MK._ViewceItemInforShibo.Where(p => p.ibDocumentNoSub == vDocNo).ToList();
-                    if (itemSB.Count > 0)
+                    if (itemSB.Any())
                     {
                         _MK._ViewceItemInforShibo.RemoveRange(itemSB);
                         _MK.SaveChanges();
@@ -1128,7 +1128,9 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
                 {
                     try { dbContextTransaction.Rollback(); } catch { }
                     v_status = "E";
-                    v_msg = "Error Save: " + ex.InnerException.Message;
+                    //v_msg = "Error Save: " + ex.InnerException.Message;
+
+                    v_msg = "Error Save: "  +(ex.InnerException?.Message ?? ex.Message);
                 }
             }
 
