@@ -427,7 +427,7 @@ namespace CostEstimate.Controllers.NewMoldOther
 
                 //_ItemInforRequestPart = ipsprueSys + ipMakerRunHot + vInforSlideSystem + ipGate1 + ipGate2 + ipGate3 + vGMaterial + vitemTypeofcout + vitemSHIBO;
 
-                _ItemInforRequestPart = ipGate1 + ipGate2 + ipGate3  + ipsprueSys + " " + ipMakerRunHot + vInforSlideSystem + vGMaterial + vitemTypeofcout + vitemSHIBO;
+                _ItemInforRequestPart = ipGate1 + ipGate2 + ipGate3 + ipsprueSys + " " + ipMakerRunHot + vInforSlideSystem + vGMaterial + vitemTypeofcout + vitemSHIBO;
 
 
                 //_ItemInforRequestPart = ipsprueSys + " " + ipMakerRunHot + ipGate1 + ipGate2 + ipGate3 + vInforSlideSystem + vGMaterial + vitemTypeofcout + vitemSHIBO;
@@ -1638,7 +1638,7 @@ namespace CostEstimate.Controllers.NewMoldOther
 
 
                     //new revision
-                    if (vstep == 3) //chk step == finish insert to table ceMastChartRateOtherReport
+                    if (vstep > 2 && vstep < 7) //chk step == finish insert to table ceMastChartRateOtherReport
                     {
                         var ceMastChartRateOtherReport = _MK._ViewceMastChartRateOtherReport.Where(x => x.crDocumentNo == RunDoc).ToList();
 

@@ -800,21 +800,23 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                             }
                         }
 
-                        ViewceHistoryApproved _ViewceHistoryApproved = new ViewceHistoryApproved();
-                        _ViewceHistoryApproved.htDocNo = RunDoc;// getSrNo[0].ToString();
-                        _ViewceHistoryApproved.htStep = vstep;
-                        _ViewceHistoryApproved.htStatus = @class._ViewceHistoryApproved.htStatus;
-                        _ViewceHistoryApproved.htFrom = @class._ViewceHistoryApproved.htFrom;
-                        _ViewceHistoryApproved.htTo = @class._ViewceHistoryApproved.htTo;
-                        _ViewceHistoryApproved.htCC = vEmpCodeCCemail;//@class._ViewceHistoryApproved.htCC;
-                        _ViewceHistoryApproved.htDate = DateTime.Now.ToString("yyyy/MM/dd");
-                        _ViewceHistoryApproved.htTime = DateTime.Now.ToString("HH:mm:ss");
-                        _ViewceHistoryApproved.htRemark = @class._ViewceHistoryApproved.htRemark;
-                        _MK._ViewceHistoryApproved.AddAsync(_ViewceHistoryApproved);
-                        _MK.SaveChanges();
+                      
                     }
-
+                    ViewceHistoryApproved _ViewceHistoryApproved = new ViewceHistoryApproved();
+                    _ViewceHistoryApproved.htDocNo = RunDoc;// getSrNo[0].ToString();
+                    _ViewceHistoryApproved.htStep = vstep;
+                    _ViewceHistoryApproved.htStatus = @class._ViewceHistoryApproved.htStatus;
+                    _ViewceHistoryApproved.htFrom = @class._ViewceHistoryApproved.htFrom;
+                    _ViewceHistoryApproved.htTo = @class._ViewceHistoryApproved.htTo;
+                    _ViewceHistoryApproved.htCC = vEmpCodeCCemail;//@class._ViewceHistoryApproved.htCC;
+                    _ViewceHistoryApproved.htDate = DateTime.Now.ToString("yyyy/MM/dd");
+                    _ViewceHistoryApproved.htTime = DateTime.Now.ToString("HH:mm:ss");
+                    _ViewceHistoryApproved.htRemark = @class._ViewceHistoryApproved.htRemark;
+                    _MK._ViewceHistoryApproved.AddAsync(_ViewceHistoryApproved);
                     _MK.SaveChanges();
+
+
+                  
                     dbContextTransaction.Commit();
                 }
                 catch (Exception ex)
