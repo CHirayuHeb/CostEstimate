@@ -1354,65 +1354,67 @@ namespace CostEstimate.Controllers.NewMoldOther
                     else if (status == "Update")
                     {
 
-                        if (@class._ViewceMastMoldOtherRequest.mrStep == 1)
-                        //step แจกจ่าย
-                        //master
-                        //working time
-                        //Material
-                        //tool & gr
-                        //infor spac
+                        //update 
+                        int chkstep = @class._ViewceMastMoldOtherRequest.mrStep;
+                        if (chkstep == 4 || chkstep == 5 || chkstep == 6)
                         {
-
-                            //var itemItemPartName = _MK._ViewceItemPartName.Where(p => p.ipDocumentNo == RunDoc).ToList();
-                            //if (itemItemPartName.Count > 0)
-                            //{
-                            //    _MK._ViewceItemPartName.RemoveRange(itemItemPartName);
-                            //    _MK.SaveChanges();
-
-                            //    if (@class._ListViewceItemPartName.Count > 0)
-                            //    {
-
-                            //        for (int i = 0; i < @class._ListViewceItemPartName.Count(); i++)
-                            //        {
-                            //            ViewceItemPartName _ViewceItemPartName = new ViewceItemPartName();
-                            //            _ViewceItemPartName.ipDocumentNo = RunDoc;
-                            //            _ViewceItemPartName.ipRunNo = @class._ListViewceItemPartName[i].ipRunNo;
-                            //            _ViewceItemPartName.ipPartName = @class._ListViewceItemPartName[i].ipPartName;
-                            //            _ViewceItemPartName.ipCavityNo = @class._ListViewceItemPartName[i].ipCavityNo;
-                            //            _ViewceItemPartName.ipTypeCavity = @class._ListViewceItemPartName[i].ipTypeCavity;
-                            //            _MK._ViewceItemPartName.AddAsync(_ViewceItemPartName);
-                            //            _MK.SaveChanges();
-                            //        }
-                            //    }
-
-                            //}
-                            //else
-                            //{
-                            //    if (@class._ListViewceItemPartName.Count > 0)
-                            //    {
-
-                            //        for (int i = 0; i < @class._ListViewceItemPartName.Count(); i++)
-                            //        {
-                            //            ViewceItemPartName _ViewceItemPartName = new ViewceItemPartName();
-                            //            _ViewceItemPartName.ipDocumentNo = RunDoc;
-                            //            _ViewceItemPartName.ipRunNo = i + 1;// @class._ListViewceItemPartName[i].ipRunNo;
-                            //            _ViewceItemPartName.ipPartName = @class._ListViewceItemPartName[i].ipPartName;
-                            //            _ViewceItemPartName.ipCavityNo = @class._ListViewceItemPartName[i].ipCavityNo;
-                            //            _ViewceItemPartName.ipTypeCavity = @class._ListViewceItemPartName[i].ipTypeCavity;
-                            //            _MK._ViewceItemPartName.AddAsync(_ViewceItemPartName);
-                            //            _MK.SaveChanges();
-                            //        }
-                            //    }
-                            //}
-
                             var itemItemPartName = _MK._ViewceItemPartName.Where(p => p.ipDocumentNo == RunDoc).ToList();
-
                             if (itemItemPartName.Any())
                             {
                                 _MK._ViewceItemPartName.RemoveRange(itemItemPartName);
                                 _MK.SaveChanges();
                             }
+                            if (@class._ListViewceItemPartName.Any())
+                            {
+                                for (int i = 0; i < @class._ListViewceItemPartName.Count; i++)
+                                {
+                                    var part = @class._ListViewceItemPartName[i];
+                                    var _ViewceItemPartName = new ViewceItemPartName
+                                    {
+                                        ipDocumentNo = RunDoc,
+                                        ipRunNo = @class._ListViewceItemPartName[i].ipRunNo,
+                                        ipPartName = part.ipPartName,
+                                        ipCavityNo = part.ipCavityNo,
+                                        ipRateReport = part.ipRateReport,
+                                        ipTypeCavity = part.ipTypeCavity
+                                    };
+                                    _MK._ViewceItemPartName.AddAsync(_ViewceItemPartName);
+                                    _MK.SaveChanges();
+                                }
 
+                            }
+
+
+
+
+                            //for (int i = 0; i < @class._ListViewceItemPartName.Count; i++)
+                            //{
+                            //    var _vitemItemPartName = _MK._ViewceItemPartName.Where(p => p.ipDocumentNo == RunDoc && p.ipRunNo == @class._ListViewceItemPartName[i].ipRunNo).FirstOrDefault();
+                            //    if (_vitemItemPartName != null)
+                            //    {
+                            //        _vitemItemPartName.ipPartName = @class._ListViewceItemPartName[i].ipPartName;
+                            //        _vitemItemPartName.ipCavityNo = @class._ListViewceItemPartName[i].ipCavityNo;
+                            //        _vitemItemPartName.ipTypeCavity = @class._ListViewceItemPartName[i].ipTypeCavity;
+                            //        _vitemItemPartName.ipRateReport = @class._ListViewceItemPartName[i].ipRateReport;
+                            //        _MK._ViewceItemPartName.UpdateRange(_vitemItemPartName);
+                            //        _MK.SaveChanges();
+                            //    }
+
+
+
+                            //}
+
+                        }
+
+
+                        if (@class._ViewceMastMoldOtherRequest.mrStep == 1)
+                        {
+                            var itemItemPartName = _MK._ViewceItemPartName.Where(p => p.ipDocumentNo == RunDoc).ToList();
+                            if (itemItemPartName.Any())
+                            {
+                                _MK._ViewceItemPartName.RemoveRange(itemItemPartName);
+                                _MK.SaveChanges();
+                            }
                             if (@class._ListViewceItemPartName.Any())
                             {
                                 for (int i = 0; i < @class._ListViewceItemPartName.Count; i++)
@@ -1429,11 +1431,8 @@ namespace CostEstimate.Controllers.NewMoldOther
                                     };
                                     _MK._ViewceItemPartName.AddAsync(_ViewceItemPartName);
                                     _MK.SaveChanges();
-
-
-                                    //_MK._ViewceItemPartName.Add(_ViewceItemPartName);
                                 }
-                                //  _MK.SaveChanges();
+
                             }
 
 

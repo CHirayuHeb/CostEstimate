@@ -313,7 +313,7 @@ function PositionY(menu) {
         menu = menu.substring(0, idx);
     }
     console.log(menu); // 👉 "NewMoldOther"
-    
+
     //if (menu.search("New") > -1 && menu.search("NewMoldModify") == -1 && menu.search("NewMoldOther") == -1) {
     //    menu = "New";
     //} else if (menu.search("NewMoldModify") > -1) {
@@ -421,7 +421,7 @@ function PositionY(menu) {
 
 
         case "MyRequestMoldOther":
-     
+
             LoadScript("js/Home/Index.js", "Home");
             LoadScript("js/Home/divShow.js", "Home");
             PY = "114px";
@@ -4369,7 +4369,7 @@ function Menubar_MoldOther_saveDraft(action) {
         document.getElementById("btnAddPartName").focus();
     }
     ceItemPartName = [];
-    if (vstep == 1) {
+    if (vstep == 1 || vstep == 4 || vstep == 5 || vstep == 6) {
         rows.forEach((row, index) => {
             const itemPartNoInput = row.querySelector(".vPartName");
             const itemPartNo = itemPartNoInput.value.trim();
@@ -4757,7 +4757,7 @@ function Menubar_MoldOther_savesendMail(action) {
         document.getElementById("btnAddPartName").focus();
     }
     ceItemPartName = [];
-    if (vstep == 1 && isChecked == true) {
+    if ((vstep == 1 || vstep == 4 || vstep == 5 || vstep == 6) && isChecked == true) {
         rows.forEach((row, index) => {
             const itemPartNoInput = row.querySelector(".vPartName");
             const itemPartNo = itemPartNoInput.value.trim();
@@ -5025,7 +5025,7 @@ function Menubar_MoldOtherWKsaveDraft(action, action2) {
                     text: config.c2,
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        
+
 
                         GoNewMoldOtherWKRequest(getID, "");
                         //GoSideMenu("SearchMoldOther");
@@ -5444,8 +5444,8 @@ function Menubar_uploadFileWK(action) {
                     if (result.isConfirmed) {
                         console.log("getID==> " + getID);
                         GoNewMoldOtherWKRequest(getID, "");
-                      
-                    
+
+
                     }
                 });
             }
@@ -5461,7 +5461,7 @@ function Menubar_uploadFileWK(action) {
 
             }
             else if (config.c1 == "P") {
-              
+
                 Swal.fire({
                     icon: 'warning',
                     title: 'warning',
@@ -5476,7 +5476,7 @@ function Menubar_uploadFileWK(action) {
         }
     });
 
-   
+
 
 }
 
