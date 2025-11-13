@@ -1324,6 +1324,7 @@ namespace CostEstimate.Controllers.NewMoldOther
 
 
 
+
                         ViewceMastMoldOtherRequest _ViewceMastMoldOtherRequest = new ViewceMastMoldOtherRequest();
                         _ViewceMastMoldOtherRequest.mrDocmentNo = RunDoc;
                         _ViewceMastMoldOtherRequest.mrRevision = vrevision;//  @class._ViewceMastMoldOtherRequest.mrRevision;
