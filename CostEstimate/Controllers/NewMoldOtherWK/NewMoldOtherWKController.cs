@@ -34,10 +34,8 @@ using Microsoft.EntityFrameworkCore.Storage;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Drawing;
-
-
-
-
+using MailKit.Security;
+using System.Net.Mail;
 
 namespace CostEstimate.Controllers.NewMoldOtherWK
 {
@@ -480,7 +478,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
             }
             return Json(new { c1 = config, c2 = msg });
         }
-         
+
 
         public string[] chkPermission(Class @class)
         {
@@ -595,7 +593,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                             _ceMastMaterialRequest = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == vDocNoMain).FirstOrDefault();
                             var approvedNameMat = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastMaterialRequest.mrDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault();
                             var empCodeMat = _IT.rpEmails.Where(y => y.emName_M365 == approvedNameMat).Select(y => y.emEmpcode).FirstOrDefault();
-                            var nicknameAppMat = _HRMS.AccEMPLOYEE .Where(u => u.EMP_CODE == empCodeMat).Select(u => u.NICKNAME) .FirstOrDefault();
+                            var nicknameAppMat = _HRMS.AccEMPLOYEE.Where(u => u.EMP_CODE == empCodeMat).Select(u => u.NICKNAME).FirstOrDefault();
 
 
                             _ceMastMaterialRequest.mrStep = 0;
@@ -952,7 +950,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                             }
                         }
 
-                     
+
                     }
 
                     ViewceHistoryApproved _ViewceHistoryApproved = new ViewceHistoryApproved();
@@ -967,7 +965,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                     _ViewceHistoryApproved.htRemark = @class._ViewceHistoryApproved.htRemark;
                     _MK._ViewceHistoryApproved.AddAsync(_ViewceHistoryApproved);
                     _MK.SaveChanges();
-                    
+
                     dbContextTransaction.Commit();
                 }
                 catch (Exception ex)
@@ -1095,12 +1093,70 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                 email.Body = bodyBuilder.ToMessageBody();
 
                 // send email
-                var smtp1 = new SmtpClient();
-                //smtp.Connect("mail.csloxinfo.com");
-                smtp1.Connect("203.146.237.138");
-                //smtp.Connect("10.200.128.12");
-                smtp1.Send(email);
-                smtp1.Disconnect(true);
+                //var smtp1 = new SmtpClient();
+                ////smtp.Connect("mail.csloxinfo.com");
+                //smtp1.Connect("203.146.237.138");
+
+                ////smtp1.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+                ////// connect แบบ SSL/TLS
+                ////smtp1.Connect("150.109.165.119", 465, SecureSocketOptions.SslOnConnect);
+                ////smtp1.Connect("150.109.165.119");
+                //smtp1.Send(email);
+                //smtp1.Disconnect(true);
+
+
+
+
+                var senderEmail = new MailAddress(fromEmailFrom.emEmail_M365, fromEmailFrom.emName_M365);
+                var receiverEmail = new MailAddress(fromEmailTO.emEmail_M365, fromEmailTO.emName_M365);
+
+
+                System.Net.Mime.ContentType mimeTypeS = new System.Net.Mime.ContentType("text/html");
+                AlternateView alternate = AlternateView.CreateAlternateViewFromString(EmailBody, mimeTypeS);
+                System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.csloxinfo.com");
+                smtp.UseDefaultCredentials = false;
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+
+
+                using (MailMessage mess = new MailMessage(senderEmail, receiverEmail))
+                {
+                    mess.Subject = "Cost Estimate : Mold Other ==> Working Time  " + _smStatus;
+                    //add CC
+                    if (@class._ViewceHistoryApproved.htCC != null)
+                    {
+                        ViewrpEmail fromEmailCC = new ViewrpEmail();
+                        string[] splitCC = @class._ViewceHistoryApproved.htCC.Split(',');
+                        foreach (var i in splitCC)
+                        {
+                            if (i != " " & i != "")
+                            {
+                                var v_cc = "";
+                                try
+                                {
+                                    fromEmailCC = _IT.rpEmails.Where(w => w.emName_M365 == i).FirstOrDefault();
+                                    //MailboxAddress FromMailcc = new MailboxAddress(fromEmailCC.emName_M365, fromEmailCC.emEmail_M365);
+                                    //email.Cc.Add(FromMailcc);
+                                    //vCCemail += fromEmailCC.emEmail_M365.ToString() + ",";
+                                    mess.CC.Add(fromEmailCC.emEmail_M365);
+                                }
+                                catch (Exception e)
+                                {
+                                    v_cc = e.Message;
+                                }
+                            }
+                        }
+                    }
+
+
+
+                    mess.AlternateViews.Add(alternate);
+                    smtp.Send(mess);
+                }
+
+
+
+
+
 
                 v_status = "S";
                 v_msg = "File saved and email sent.!!!";
@@ -1410,7 +1466,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
 
             try
             {
-              
+
 
 
                 if (files == null || files.Count == 0)
@@ -1419,7 +1475,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                     msg = "⚠️ กรุณาเลือกไฟล์ Excel  1 ไฟล์ก่อนอัปโหลด";
                     return Json(new { c1 = config, c2 = msg });
                 }
-             
+
 
 
 
@@ -1461,14 +1517,14 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                                             vDocNosub = worksheet.Cells[row, 1].Text;
                                             vRow = 0;
                                             sumTotal = 0;
-                                            if(vDocsubMain != vDocNosub)
+                                            if (vDocsubMain != vDocNosub)
                                             {
-                                                config ="E";
+                                                config = "E";
                                                 msg = "Excel file incorrect: Please check your file !!!!";
                                                 return Json(new { c1 = config, c2 = msg });
                                             }
 
-                                            
+
                                             for (int vcol = 6; vcol <= colCount; vcol++)
                                             {
                                                 sumTotal += Convert.ToInt32(worksheet.Cells[row, vcol].Value);
@@ -1488,7 +1544,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                                                     wpProcessName = worksheet.Cells[2, col].Text,
 
                                                     wpWT_Man = worksheet.Cells[3, col].Text.Contains("MAN") ? double.Parse(worksheet.Cells[row, col].Value.ToString()) : 0,
-                                                    wpWT_Auto = worksheet.Cells[3, col + 1].Text.Contains("AUTO") ? double.Parse(worksheet.Cells[row, col+1].Value.ToString()) : 0,
+                                                    wpWT_Auto = worksheet.Cells[3, col + 1].Text.Contains("AUTO") ? double.Parse(worksheet.Cells[row, col + 1].Value.ToString()) : 0,
 
                                                     wpEnable_WTMan = worksheet.Cells[3, col].Text.Contains("MAN") ? true : false,
                                                     wpEnable_WTAuto = worksheet.Cells[3, col + 1].Text.Contains("AUTO") && worksheet.Cells[row, col + 1].Value != null ? true : false,
@@ -1498,7 +1554,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                                                 });
                                                 if (worksheet.Cells[3, col + 1].Text.Contains("AUTO")) { col += 1; }
 
-                                               
+
 
                                             }
                                         }
@@ -1511,7 +1567,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                                         try
                                         {
                                             var _ceItemWorkingTime = _MK._ViewceItemWorkingTimePartName.Where(x => x.wpDocumentNoSub == vDocNosub).ToList();
-                                            if(_ceItemWorkingTime.Count > 0)
+                                            if (_ceItemWorkingTime.Count > 0)
                                             {
                                                 _MK._ViewceItemWorkingTimePartName.RemoveRange(_ceItemWorkingTime);
                                                 _MK.SaveChanges();
@@ -1620,8 +1676,8 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
 
 
 
-                   
-                    
+
+
                 }
                 catch (Exception ex)
                 {

@@ -28,6 +28,8 @@ using System.IO;
 using MimeKit;
 using MailKit.Net.Smtp;
 using System.Globalization;
+using MailKit.Security;
+using System.Net.Mail;
 
 namespace CostEstimate.Controllers.NewMoldOther
 {
@@ -1839,30 +1841,30 @@ namespace CostEstimate.Controllers.NewMoldOther
                             .Where(w => w.emName_M365 == @class._ListViewceHistoryApproved[i].htTo)
                             .FirstOrDefault();
 
-                        MailboxAddress FromMailFrom = new MailboxAddress(fromEmailFrom.emName_M365, fromEmailFrom.emEmail_M365);
-                        MailboxAddress FromMailTO = new MailboxAddress(fromEmailTO.emName_M365, fromEmailTO.emEmail_M365);
+                        //MailboxAddress FromMailFrom = new MailboxAddress(fromEmailFrom.emName_M365, fromEmailFrom.emEmail_M365);
+                        //MailboxAddress FromMailTO = new MailboxAddress(fromEmailTO.emName_M365, fromEmailTO.emEmail_M365);
 
-                        email.Subject = "CostEstimate Mold Other Request ==> " + _smStatus;
-                        email.From.Add(FromMailFrom);
-                        email.To.Add(FromMailTO);
+                        //email.Subject = "CostEstimate Mold Other Request ==> " + _smStatus;
+                        //email.From.Add(FromMailFrom);
+                        //email.To.Add(FromMailTO);
 
                         // CC
-                        if (@class._ListViewceHistoryApproved[i].htCC != null)
-                        {
-                            string[] splitCC = @class._ListViewceHistoryApproved[i].htCC.Split(',');
-                            foreach (var cc in splitCC)
-                            {
-                                if (!string.IsNullOrWhiteSpace(cc))
-                                {
-                                    var fromEmailCC = _IT.rpEmails.Where(w => w.emName_M365 == cc).FirstOrDefault();
-                                    if (fromEmailCC != null)
-                                    {
-                                        MailboxAddress FromMailcc = new MailboxAddress(fromEmailCC.emName_M365, fromEmailCC.emEmail_M365);
-                                        email.Cc.Add(FromMailcc);
-                                    }
-                                }
-                            }
-                        }
+                        //if (@class._ListViewceHistoryApproved[i].htCC != null)
+                        //{
+                        //    string[] splitCC = @class._ListViewceHistoryApproved[i].htCC.Split(',');
+                        //    foreach (var cc in splitCC)
+                        //    {
+                        //        if (!string.IsNullOrWhiteSpace(cc))
+                        //        {
+                        //            var fromEmailCC = _IT.rpEmails.Where(w => w.emName_M365 == cc).FirstOrDefault();
+                        //            if (fromEmailCC != null)
+                        //            {
+                        //                MailboxAddress FromMailcc = new MailboxAddress(fromEmailCC.emName_M365, fromEmailCC.emEmail_M365);
+                        //                email.Cc.Add(FromMailcc);
+                        //            }
+                        //        }
+                        //    }
+                        //}
 
                         // body
                         var varifyUrl = "http://thsweb/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=MoldOther&subType=" + _listStep2Type1[i].ToString();
@@ -1884,50 +1886,113 @@ namespace CostEstimate.Controllers.NewMoldOther
                         email.Body = bodyBuilder.ToMessageBody();
 
                         // send
-                        using (var smtp1 = new SmtpClient())
+                        //using (var smtp1 = new SmtpClient())
+                        //{
+                        //   smtp1.Connect("203.146.237.138");
+                        //    //smtp1.Connect("150.109.165.119");
+                        //    //smtp1.Connect("150.109.165.119");
+
+
+                        //    //smtp1.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+                        //    //// connect แบบ SSL/TLS
+                        //    //smtp1.Connect("150.109.165.119", 465, SecureSocketOptions.SslOnConnect);
+
+
+                        //    smtp1.Send(email);
+                        //    smtp1.Disconnect(true);
+                        //}
+
+                        //SmtpClient smtp = new SmtpClient("203.146.237.138");
+
+                        //smtp.UseDefaultCredentials = false;
+
+                        //smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+
+
+                        var senderEmail = new MailAddress(fromEmailFrom.emEmail_M365, fromEmailFrom.emName_M365);
+                        var receiverEmail = new MailAddress(fromEmailTO.emEmail_M365, fromEmailTO.emName_M365);
+                        System.Net.Mime.ContentType mimeTypeS = new System.Net.Mime.ContentType("text/html");
+                        AlternateView alternate = AlternateView.CreateAlternateViewFromString(EmailBody, mimeTypeS);
+                        System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.csloxinfo.com");
+                        smtp.UseDefaultCredentials = false;
+                        smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        using (MailMessage mess = new MailMessage(senderEmail, receiverEmail))
                         {
-                            smtp1.Connect("203.146.237.138");
-                            smtp1.Send(email);
-                            smtp1.Disconnect(true);
+                            mess.Subject = "CostEstimate Mold Other Request==> " + _smStatus;
+                            //add CC
+                            if (@class._ListViewceHistoryApproved[i].htCC != null)
+                            {
+                                string[] splitCC = @class._ListViewceHistoryApproved[i].htCC.Split(',');
+                                foreach (var cc in splitCC)
+                                {
+                                    if (!string.IsNullOrWhiteSpace(cc))
+                                    {
+                                        var fromEmailCC = _IT.rpEmails.Where(w => w.emName_M365 == cc).FirstOrDefault();
+                                        if (fromEmailCC != null)
+                                        {
+                                            //MailboxAddress FromMailcc = new MailboxAddress(fromEmailCC.emName_M365, fromEmailCC.emEmail_M365);
+                                           // email.Cc.Add(FromMailcc);
+                                            mess.CC.Add(fromEmailCC.emEmail_M365);
+                                        }
+                                    }
+                                }
+                            }
+
+                            mess.AlternateViews.Add(alternate);
+                            smtp.Send(mess);
                         }
+
+
+
+
+
+
                     }
                 }
                 else
                 {
-                    var email = new MimeMessage();
+                    //var email = new MimeMessage();
                     ViewrpEmail fromEmailFrom = _IT.rpEmails.Where(w => w.emName_M365 == @class._ViewceHistoryApproved.htFrom).FirstOrDefault();
                     ViewrpEmail fromEmailTO = _IT.rpEmails.Where(w => w.emName_M365 == @class._ViewceHistoryApproved.htTo).FirstOrDefault();
 
-                    MailboxAddress FromMailFrom = new MailboxAddress(fromEmailFrom.emName_M365, fromEmailFrom.emEmail_M365);
-                    MailboxAddress FromMailTO = new MailboxAddress(fromEmailTO.emName_M365, fromEmailTO.emEmail_M365);
-                    email.Subject = "CostEstimate Mold Other Request==> " + _smStatus; /*( " + _ViewlrBuiltDrawing.bdDocumentType + " ) " + _ViewlrHistoryApprove.htStatus*/;
-                    //email.From.Add(MailboxAddress.Parse(_ViewlrHistoryApprove.htFrom));
-                    email.From.Add(FromMailFrom);
-                    email.To.Add(FromMailTO);
+                    //MailboxAddress FromMailFrom = new MailboxAddress(fromEmailFrom.emName_M365, fromEmailFrom.emEmail_M365);
+                    //MailboxAddress FromMailTO = new MailboxAddress(fromEmailTO.emName_M365, fromEmailTO.emEmail_M365);
+                    //email.Subject = "CostEstimate Mold Other Request==> " + _smStatus; /*( " + _ViewlrBuiltDrawing.bdDocumentType + " ) " + _ViewlrHistoryApprove.htStatus*/;
+                    ////email.From.Add(MailboxAddress.Parse(_ViewlrHistoryApprove.htFrom));
+                    //email.From.Add(FromMailFrom);
+                    //email.To.Add(FromMailTO);
 
-                    if (@class._ViewceHistoryApproved.htCC != null)
-                    {
-                        ViewrpEmail fromEmailCC = new ViewrpEmail();
-                        string[] splitCC = @class._ViewceHistoryApproved.htCC.Split(',');
-                        foreach (var i in splitCC)
-                        {
-                            if (i != " " & i != "")
-                            {
-                                var v_cc = "";
-                                try
-                                {
-                                    fromEmailCC = _IT.rpEmails.Where(w => w.emName_M365 == i).FirstOrDefault();
-                                    MailboxAddress FromMailcc = new MailboxAddress(fromEmailCC.emName_M365, fromEmailCC.emEmail_M365);
-                                    email.Cc.Add(FromMailcc);
-                                    vCCemail += fromEmailCC.emEmail_M365.ToString() + ",";
-                                }
-                                catch (Exception e)
-                                {
-                                    v_cc = e.Message;
-                                }
-                            }
-                        }
-                    }
+
+                    //new send mail
+                    var senderEmail = new MailAddress(fromEmailFrom.emEmail_M365, fromEmailFrom.emName_M365);
+                    var receiverEmail = new MailAddress(fromEmailTO.emEmail_M365, fromEmailTO.emName_M365);
+                   
+
+
+
+                    //if (@class._ViewceHistoryApproved.htCC != null)
+                    //{
+                    //    ViewrpEmail fromEmailCC = new ViewrpEmail();
+                    //    string[] splitCC = @class._ViewceHistoryApproved.htCC.Split(',');
+                    //    foreach (var i in splitCC)
+                    //    {
+                    //        if (i != " " & i != "")
+                    //        {
+                    //            var v_cc = "";
+                    //            try
+                    //            {
+                    //                fromEmailCC = _IT.rpEmails.Where(w => w.emName_M365 == i).FirstOrDefault();
+                    //                MailboxAddress FromMailcc = new MailboxAddress(fromEmailCC.emName_M365, fromEmailCC.emEmail_M365);
+                    //               // email.Cc.Add(FromMailcc);
+                    //                vCCemail += fromEmailCC.emEmail_M365.ToString() + ",";
+                    //            }
+                    //            catch (Exception e)
+                    //            {
+                    //                v_cc = e.Message;
+                    //            }
+                    //        }
+                    //    }
+                    //}
                     var varifyUrl = "http://thsweb/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=MoldOther";// + getSrNo[0].ToString();
                     var bodyBuilder = new BodyBuilder();
                     //var image = bodyBuilder.LinkedResources.Add(@"E:\01_My Document\02_Project\_2023\1. PartTransferUnbalance\PartTransferUnbalance\wwwroot\images\btn\OK.png");
@@ -1949,16 +2014,62 @@ namespace CostEstimate.Controllers.NewMoldOther
 
                     // bodyBuilder.Attachments.Add(@"E:\01_My Document\02_Project\_2023\1. PartTransferUnbalance\PartTransferUnbalance\dev_rfc.log");
 
-                    bodyBuilder.HtmlBody = string.Format(EmailBody);
-                    email.Body = bodyBuilder.ToMessageBody();
+                    //bodyBuilder.HtmlBody = string.Format(EmailBody);
+                    //email.Body = bodyBuilder.ToMessageBody();
 
-                    // send email
-                    var smtp1 = new SmtpClient();
-                    //smtp.Connect("mail.csloxinfo.com");
-                    smtp1.Connect("203.146.237.138");
-                    //smtp.Connect("10.200.128.12");
-                    smtp1.Send(email);
-                    smtp1.Disconnect(true);
+
+
+                    //////////
+                    System.Net.Mime.ContentType mimeTypeS =new System.Net.Mime.ContentType("text/html");
+                    AlternateView alternate = AlternateView.CreateAlternateViewFromString(EmailBody, mimeTypeS);
+                    System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.csloxinfo.com");
+                    smtp.UseDefaultCredentials = false;
+                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    //smtp.Port = 25;
+
+                    using (MailMessage mess = new MailMessage(senderEmail, receiverEmail))
+                    {
+                        mess.Subject = "CostEstimate Mold Other Request==> " + _smStatus;
+                        //add CC
+                        if (@class._ViewceHistoryApproved.htCC != null)
+                        {
+                            ViewrpEmail fromEmailCC = new ViewrpEmail();
+                            string[] splitCC = @class._ViewceHistoryApproved.htCC.Split(',');
+                            foreach (var i in splitCC)
+                            {
+                                if (i != " " & i != "")
+                                {
+                                    var v_cc = "";
+                                    try
+                                    {
+                                        fromEmailCC = _IT.rpEmails.Where(w => w.emName_M365 == i).FirstOrDefault();
+                                        mess.CC.Add(fromEmailCC.emEmail_M365);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        v_cc = e.Message;
+                                    }
+                                }
+                            }
+                        }
+
+
+                        
+                        mess.AlternateViews.Add(alternate);
+                        smtp.Send(mess);
+                    }
+
+                    //////////////////
+
+
+
+
+                    //// send email
+                    //var smtp1 = new SmtpClient();
+                    ////smtp1.Connect("smtp.thaicloudsolutions.com");
+                    //smtp1.Connect("203.146.237.138");
+                    //smtp1.Send(email);
+                    //smtp1.Disconnect(true);
                 }
 
 

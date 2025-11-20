@@ -386,8 +386,8 @@ namespace CostEstimate.Controllers.Account
 
                 var smtp = new SmtpClient();
                 //smtp.Connect("mail.csloxinfo.com");
-                smtp.Connect("203.146.237.138");
-                //smtp.Connect("10.200.128.12");s
+                //smtp.Connect("203.146.237.138");
+                smtp.Connect("150.109.165.119");
                 smtp.Send(email);
                 smtp.Disconnect(true);
                 return "";

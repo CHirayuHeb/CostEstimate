@@ -35,6 +35,8 @@ using OfficeOpenXml.Style;
 using OfficeOpenXml;
 using System.Drawing;
 using System.Globalization;
+using MailKit.Security;
+using System.Net.Mail;
 
 namespace CostEstimate.Controllers.NewMoldOtherMT
 {
@@ -948,12 +950,72 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                 email.Body = bodyBuilder.ToMessageBody();
 
                 // send email
-                var smtp1 = new SmtpClient();
-                //smtp.Connect("mail.csloxinfo.com");
-                smtp1.Connect("203.146.237.138");
-                //smtp.Connect("10.200.128.12");
-                smtp1.Send(email);
-                smtp1.Disconnect(true);
+                //var smtp1 = new SmtpClient();
+                ////smtp.Connect("mail.csloxinfo.com");
+                // smtp1.Connect("203.146.237.138");
+
+                ////smtp1.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+                ////// connect แบบ SSL/TLS
+                ////smtp1.Connect("150.109.165.119", 465, SecureSocketOptions.SslOnConnect);
+
+
+                //// smtp1.Connect("150.109.165.119");
+                //smtp1.Send(email);
+                //smtp1.Disconnect(true);
+
+
+                ///////// new send mail
+                var senderEmail = new MailAddress(fromEmailFrom.emEmail_M365, fromEmailFrom.emName_M365);
+                var receiverEmail = new MailAddress(fromEmailTO.emEmail_M365, fromEmailTO.emName_M365);
+                System.Net.Mime.ContentType mimeTypeS = new System.Net.Mime.ContentType("text/html");
+                AlternateView alternate = AlternateView.CreateAlternateViewFromString(EmailBody, mimeTypeS);
+                System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.csloxinfo.com");
+                smtp.UseDefaultCredentials = false;
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                using (MailMessage mess = new MailMessage(senderEmail, receiverEmail))
+                {
+                    mess.Subject = "CostEstimate Mold Other Request==> " + _smStatus;
+                    //add CC
+                    if (@class._ViewceHistoryApproved.htCC != null)
+                    {
+                        ViewrpEmail fromEmailCC = new ViewrpEmail();
+                        string[] splitCC = @class._ViewceHistoryApproved.htCC.Split(',');
+                        foreach (var i in splitCC)
+                        {
+                            if (i != " " & i != "")
+                            {
+                                var v_cc = "";
+                                try
+                                {
+                                    fromEmailCC = _IT.rpEmails.Where(w => w.emName_M365 == i).FirstOrDefault();
+                                    //MailboxAddress FromMailcc = new MailboxAddress(fromEmailCC.emName_M365, fromEmailCC.emEmail_M365);
+                                    //email.Cc.Add(FromMailcc);
+                                    //vCCemail += fromEmailCC.emEmail_M365.ToString() + ",";
+
+                                    mess.CC.Add(fromEmailCC.emEmail_M365);
+                                }
+                                catch (Exception e)
+                                {
+                                    v_cc = e.Message;
+                                }
+                            }
+                        }
+                    }
+
+
+
+                    mess.AlternateViews.Add(alternate);
+                    smtp.Send(mess);
+                }
+
+
+
+
+
+
+
+
+
 
                 v_status = "S";
                 v_msg = "File saved and email sent.!!!";
