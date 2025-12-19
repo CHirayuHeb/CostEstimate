@@ -191,8 +191,9 @@ namespace CostEstimate.Controllers.SubHistorysum
                     double sdWT_Man = result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTMan).FirstOrDefault();
                     double sdWT_Auto = result.Where(x => x.GroupName == v_ListceCostPlanning[i].cpGroupName.Trim() && x.ProcessName == v_ListceCostPlanning[i].cpProcessName.Trim()).Select(x => x.TotalWTAuto).FirstOrDefault();
 
-                    bool sdActive_WKMan = _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTMan).First();  //true,
-                    bool sdActive_WKAuto = _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTAuto).First();
+
+                    bool sdActive_WKMan = _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)) is null ? false : _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTMan).FirstOrDefault();  //true,
+                    bool sdActive_WKAuto = _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)) is null ? false : _ListceMastProcess.Where(x => x.mpGroupName.Contains(v_ListceCostPlanning[i].cpGroupName) && x.mpProcessName.Contains(v_ListceCostPlanning[i].cpProcessName)).Select(x => x.mpEnable_WTAuto).FirstOrDefault();
 
 
 
@@ -296,6 +297,8 @@ namespace CostEstimate.Controllers.SubHistorysum
             }
             catch (Exception ex)
             {
+                string msg;
+                msg = ex.InnerException.Message;
 
             }
             return View(@class);

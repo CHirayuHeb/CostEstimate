@@ -876,7 +876,7 @@ namespace CostEstimate.Controllers.New
             //User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
             string v_msg = "";
             string v_status = "";
-            
+
             using (var dbContextTransaction = _MK.Database.BeginTransaction())
             {
                 try
@@ -1101,7 +1101,7 @@ namespace CostEstimate.Controllers.New
 
 
                         //new check 01 disible 00 old version  Order No.​ lot no
-                        if (vstep == 7 && vRevision !="00")
+                        if (vstep == 7 && vRevision != "00")
                         {
                             var _RViewceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smOrderNo == @class._ViewceMastSubMakerRequest.smOrderNo && x.smLotNo == @class._ViewceMastSubMakerRequest.smLotNo && x.smRevision != vRevision).ToList();
                             if (_RViewceMastSubMakerRequest.Count > 0)
@@ -1131,7 +1131,7 @@ namespace CostEstimate.Controllers.New
                 }
                 catch (Exception ex)
                 {
-                   // dbContextTransaction.Rollback();
+                    // dbContextTransaction.Rollback();
 
                     try
                     {
@@ -1145,7 +1145,7 @@ namespace CostEstimate.Controllers.New
                     // v_msg = "Error" + ex.InnerException?.InnerException?.Message;
                     v_msg = "Error Save: " + ex.InnerException.Message;
                     //UnderlyingTransaction
-                   
+
 
 
 
@@ -1164,10 +1164,10 @@ namespace CostEstimate.Controllers.New
             var chkData = _MK._ViewceMastSubMakerRequest.Where(x => x.smDocumentNo == @class._ViewceMastSubMakerRequest.smDocumentNo).FirstOrDefault();
             try
             {
-              
-                
 
-                    if (chkData != null)
+
+
+                if (chkData != null)
                 {
                     //check operator //check create user
                     if (chkData.smStep == 0 && _UserId == chkData.smEmpCodeRequest)
@@ -1180,7 +1180,7 @@ namespace CostEstimate.Controllers.New
                         status_per = "S";
                         message_per = "You have permission ";
                     }
-                    else if(chkData.smStep == 7  && _Permiss.ToUpper() == "ADMIN")
+                    else if (chkData.smStep == 7 && _Permiss.ToUpper() == "ADMIN")
                     {
                         status_per = "S";
                         message_per = "You have permission ";
@@ -1514,6 +1514,19 @@ namespace CostEstimate.Controllers.New
 
                     @class._ViewceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smDocumentNo == mpNo).FirstOrDefault();
 
+
+
+                    //revise issue data get 
+                    string tbHistoryIssueDate = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 4).OrderByDescending(x => x.htNo).Select(x => x.htDate).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 4).OrderByDescending(x => x.htNo).Select(x => x.htDate).FirstOrDefault();
+                    if (tbHistoryIssueDate != "" && tbHistoryIssueDate != null)
+                    {
+                        DateTime dt = DateTime.ParseExact(tbHistoryIssueDate, "yyyy/MM/dd", null);
+                        // แปลง DateTime กลับเป็นสตริงรูปแบบ dd/MM/yyyy
+                        string output = dt.ToString("dd/MM/yyyy");
+                        @class._ViewceMastSubMakerRequest.smIssueDate = output;
+                    }
+
+
                     @class._ViewOperaterCP.IssueBy = vIssueBy;
                     @class._ViewOperaterCP.CheckedByTL = vCheckByTL;
                     @class._ViewOperaterCP.CheckedByTM = vCheckByTM;
@@ -1523,6 +1536,10 @@ namespace CostEstimate.Controllers.New
                     @class._ViewOperaterCP.empCheckedByTL = tbHistoryCheckedGLEMPCODE;
                     @class._ViewOperaterCP.empCheckedByTM = tbHistoryCheckedEMPCODE;
                     @class._ViewOperaterCP.empApproveBy = tbHistoryApproveByEMPCODE;
+
+
+
+
 
                 }
 

@@ -294,6 +294,21 @@ namespace CostEstimate.Controllers.NewMoldModify
 
                     @class._ViewceMastModifyRequest = _MK._ViewceMastModifyRequest.Where(x => x.mfCENo == mpNo).FirstOrDefault();
 
+
+                    //revise issue data get 
+                    string tbHistoryIssueDate = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 3).OrderByDescending(x => x.htNo).Select(x => x.htDate).FirstOrDefault() is null ? "" : _MK._ViewceHistoryApproved.Where(x => x.htDocNo == mpNo && x.htStep == 3).OrderByDescending(x => x.htNo).Select(x => x.htDate).FirstOrDefault();
+                    if (tbHistoryIssueDate != "" && tbHistoryIssueDate != null)
+                    {
+                        DateTime dt = DateTime.ParseExact(tbHistoryIssueDate, "yyyy/MM/dd", null);
+                        // แปลง DateTime กลับเป็นสตริงรูปแบบ dd/MM/yyyy
+                        string output = dt.ToString("dd/MM/yyyy");
+                        @class._ViewceMastModifyRequest.mfIssueDate = output;
+                    }
+
+
+
+
+
                     @class._ViewOperaterCP.IssueBy = vIssueBy;
                     @class._ViewOperaterCP.CheckedByTL = vCheckByTL;
                     @class._ViewOperaterCP.CheckedByTM = vCheckByTM;
