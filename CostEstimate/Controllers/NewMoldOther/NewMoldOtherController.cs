@@ -1941,12 +1941,7 @@ namespace CostEstimate.Controllers.NewMoldOther
                             mess.AlternateViews.Add(alternate);
                             smtp.Send(mess);
                         }
-
-
-
-
-
-
+                        
                     }
                 }
                 else

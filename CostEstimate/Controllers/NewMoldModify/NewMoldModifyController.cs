@@ -1729,7 +1729,6 @@ _MOLD._ViewLLLedger
                     msg = chkSave[1];
                 }
 
-
                 string vlotNo = @class._ViewceMastModifyRequest.mfLotNo;
                 string vRefNo = @class._ViewceMastModifyRequest.mfRefNo;
                 string vRevno = @class._ViewceMastModifyRequest.mfRevision is null ? "00" : @class._ViewceMastModifyRequest.mfRevision;

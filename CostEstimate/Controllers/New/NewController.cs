@@ -189,8 +189,8 @@ namespace CostEstimate.Controllers.New
         public ActionResult SearchMold_Ledger_Number(string term)
         {
             {
-                //List<ViewLLLedger> __ViewLLLedger = new List<ViewLLLedger>();
-                //__ViewLLLedger = _MOLD._ViewLLLedger.Where(p => p.LGLegNo.Contains(term)).ToList();
+                List<ViewLLLedger> __ViewLLLedger = new List<ViewLLLedger>();
+                __ViewLLLedger = _MOLD._ViewLLLedger.Where(p => p.LGLegNo.Contains(term)).ToList();
                 // _MOLD._ViewLLLedger.Where(p => p.LGLegNo.Contains(term)).Select(p => p.LGLegNo + "" + p.LGTypeCode + "|" + p.LGCustomer + "|" + p.LGMoldName + "" + p.LGMoldNo + "|" + "0"+ "|" + p.LGIcsName).ToList());
 
                 return Json(_MOLD._ViewLLLedger.Where(p => p.LGLegNo.Contains(term)).Select(p => p.LGLegNo + "" + p.LGTypeCode + "|" + p.LGCustomer + "|" + p.LGMoldNo + "/" + p.LGMoldName + "|" + "0" + "|" + (p.LGIcsName ?? "") + "|" + (p.LGPart ?? "-")).ToList());
