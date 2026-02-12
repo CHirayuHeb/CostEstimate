@@ -567,12 +567,14 @@ namespace CostEstimate.Models.Table.MK
     {
 
         public string glDocNo { get; set; }
+    
         public List<ViewceDetailSubMakerRequest> gllistDetail { get; set; }
     }
 
     public class GroupedListceDetailSub
     {
         public string glDocNo { get; set; }
+        public double glCostSUB { get; set; }
         public List<GroupedListceDetailSubMakerRequest> listGroupViewceDetailSubMakerRequest { get; set; }
     }
 

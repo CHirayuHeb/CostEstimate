@@ -304,7 +304,7 @@
                         </tr>
                         <tr style="background-color:palegreen">
                             @{
-                                sumPWTCostSUB = (sumPWTProcess - sumPWTManNc) * 1000;
+                                sumPWTCostSUB = @group.glCostSUB * 1000;  //   (sumPWTProcess - sumPWTManNc) * 1000;
                                 sumPCostsubMaker = sumPCostsubMaker + sumPWTCostSUB;
 
 

@@ -107,10 +107,12 @@ namespace CostEstimate.Controllers.SubHistorysum
                     .Select(group1 => new GroupedListceDetailSub
                     {
                         glDocNo = group1.Key,
+                        glCostSUB = _MK._ViewceMastSubMakerRequest.Where(y => y.smDocumentNo == group1.Key).Select(z => z.smRoundUp).FirstOrDefault(),
                         listGroupViewceDetailSubMakerRequest = group1
                             .GroupBy(x => x.dsGroupName) // Group ชั้นที่ 2
                             .Select(group2 => new GroupedListceDetailSubMakerRequest
                             {
+
                                 glDocNo = group2.Key,
                                 gllistDetail = group2.ToList() // ชั้นสุดท้าย
                             }).ToList()
@@ -579,6 +581,7 @@ namespace CostEstimate.Controllers.SubHistorysum
                     .Select(group1 => new GroupedListceDetailSub
                     {
                         glDocNo = group1.Key,
+                        glCostSUB = _MK._ViewceMastSubMakerRequest.Where(y => y.smDocumentNo == group1.Key).Select(z => z.smRoundUp).FirstOrDefault(),
                         listGroupViewceDetailSubMakerRequest = group1
                             .GroupBy(x => x.dsGroupName) // Group ชั้นที่ 2
                             .Select(group2 => new GroupedListceDetailSubMakerRequest
@@ -1336,7 +1339,7 @@ namespace CostEstimate.Controllers.SubHistorysum
 
                             //worksheet2.Cells[W2_rowW, W2_colW].Value = "TOTAL ";
                         }
-                        sumPWTCostSUB = (sumPWTProcessD - sumPWTManNc) * 1000;
+                        sumPWTCostSUB = _MK._ViewceMastSubMakerRequest.Where(y => y.smDocumentNo == row.glDocNo).Select(z => z.smRoundUp * 1000).FirstOrDefault(); //   row.glDocNo  // (sumPWTProcessD - sumPWTManNc) * 1000;
                         worksheet2.Cells[W2_rowWSum, W2_colD].Value = sumPWTProcessD.ToString("N0");
                         worksheet2.Cells[W2_rowWSum, W2_colD].Style.Font.Bold = true;
 
