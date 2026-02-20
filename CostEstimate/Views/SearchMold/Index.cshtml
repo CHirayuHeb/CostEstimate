@@ -3,6 +3,12 @@
     ViewData["Title"] = "Search | Thai Stanley";
     //Layout = "~/Views/Shared/_MenuBar.cshtml";
     Layout = "~/Views/Shared/_MenuBar_mold.cshtml";
+    string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
 }
 <link href="~/css/Home/siteHome.css" rel="stylesheet" />
 
@@ -316,10 +322,11 @@
                                             <th style="text-align:center">Lead Time</th>
                                             <th style="text-align:center">Issue By,Date</th>
                                             @*<th style="text-align:center">Material Out/Date​</th>
-                                                <th style="text-align:center">Delivery/Date​</th>*@
+        <th style="text-align:center">Delivery/Date​</th>*@
                                             <th style="text-align:center">Waiting Approve​</th>
                                             <th style="text-align:center">Status​</th>
                                             <th style="text-align:center">Action​</th>
+                                            <th style="text-align:center;@( _Permission?.ToUpper() != "ADMIN" ? "display:none;" : "" )">Delete</th>
                                         </tr>
                                     </thead>
 
@@ -330,67 +337,70 @@
                                         var row = 0;
                                         @foreach (var item in @Model._ListViewceMastModifyRequest)
                                         {
-                                            <tr>
-                                                <td> <tlabel>@(row += 1)</tlabel></td>
+                                    <tr>
+                                        <td> <tlabel>@(row += 1)</tlabel></td>
 
-                                                <td style="text-align:center">@item.mfCENo</td>
-                                                <td style="text-align:center">@item.mfRefNo</td>
-                                                <td style="text-align:center">@item.mfLotNo​</td>
-                                                <td style="text-align:center">@item.mfCustomerName</td>
-                                                <td style="text-align:center">@item.mfRevision</td>
-                                                <td style="text-align:center">@item.mfModelName</td>
-                                                <td style="text-align:center">@item.mfFunction</td>
-                                                <td style="text-align:center">@item.mfMoldMass</td>
-                                                <td style="text-align:center">@item.mfMoldNoOrMoldName</td>
-                                                <td style="text-align:center">@item.mfTypeCavity</td>
-                                                <td style="text-align:center">@item.mfLeadTime</td>
-                                                <td style="text-align:center">@item.mfEmpCodeRequest @item.mfNameRequest @item.mfIssueDate</td>
-                                                @*<td style="text-align:center">@item.smMatOutDate @item.smMatOutTime</td>
-                                                    <td style="text-align:center">@item.smDeliveryDate   @item.smDeliveryTime</td>*@
-                                                <td style="text-align:center">
-                                                    @if (@item.mfStep < 6)
-                                                    {
-                                                        @item.mfEmpCodeApprove
-                                                        <span></span>
-                                                        @item.mfNameApprove
-                                                    }
-                                                </td>
-                                                <td style="text-align:center">
-                                                    @*@item.smStep*@
-                                                    @if (@item.mfStep == 0 && @item.mfStatus.Contains("Disapprove"))
-                                                    {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
-                                                    else if (@item.mfStep == 0) /*//new*/
-                                                    {
-                                                        @*<img src="~/images/1.png" alt="icon" style="height: 23px; width: 23px;" />*@
+                                        <td style="text-align:center">@item.mfCENo</td>
+                                        <td style="text-align:center">@item.mfRefNo</td>
+                                        <td style="text-align:center">@item.mfLotNo​</td>
+                                        <td style="text-align:center">@item.mfCustomerName</td>
+                                        <td style="text-align:center">@item.mfRevision</td>
+                                        <td style="text-align:center">@item.mfModelName</td>
+                                        <td style="text-align:center">@item.mfFunction</td>
+                                        <td style="text-align:center">@item.mfMoldMass</td>
+                                        <td style="text-align:center">@item.mfMoldNoOrMoldName</td>
+                                        <td style="text-align:center">@item.mfTypeCavity</td>
+                                        <td style="text-align:center">@item.mfLeadTime</td>
+                                        <td style="text-align:center">@item.mfEmpCodeRequest @item.mfNameRequest @item.mfIssueDate</td>
+                                        @*<td style="text-align:center">@item.smMatOutDate @item.smMatOutTime</td>
+        <td style="text-align:center">@item.smDeliveryDate   @item.smDeliveryTime</td>*@
+                                        <td style="text-align:center">
+                                            @if (@item.mfStep < 6)
+                                            {
+                                                @item.mfEmpCodeApprove
+                                                <span></span>
+                                                @item.mfNameApprove
+                                            }
+                                        </td>
+                                        <td style="text-align:center">
+                                            @*@item.smStep*@
+                                            @if (@item.mfStep == 0 && @item.mfStatus.Contains("Disapprove"))
+                                            {<img src="~/images/stepDis.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                            else if (@item.mfStep == 0) /*//new*/
+                                            {
+                                                @*<img src="~/images/1.png" alt="icon" style="height: 23px; width: 23px;" />*@
 
-                                                        <img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />
-                                                    }
-                                                    else if (@item.mfStep == 1)
-                                                    { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
-                                                    else if (@item.mfStep == 2)
-                                                    { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                    else if (@item.mfStep == 3)/*//issue*/
-                                                    { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                    else if (@item.mfStep == 4)
-                                                    { <img src="~/images/5.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                    else if (@item.mfStep == 5)
-                                                    { <img src="~/images/6.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                    @*else if (@item.mfStep == 6)
-                                                        { <img src="~/images/7.png" alt="icon" style="height: 23px; width: 23px;" />}*@
-                                                    else if (@item.mfStep == 6)
-                                                    { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
+                                                <img src="~/images/draft2.png" alt="icon" style="height: 30px; width: 30px;" />
+                                            }
+                                            else if (@item.mfStep == 1)
+                                            { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
+                                            else if (@item.mfStep == 2)
+                                            { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.mfStep == 3)/*//issue*/
+                                            { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.mfStep == 4)
+                                            { <img src="~/images/5.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            else if (@item.mfStep == 5)
+                                            { <img src="~/images/6.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                            @*else if (@item.mfStep == 6)
+            { <img src="~/images/7.png" alt="icon" style="height: 23px; width: 23px;" />}*@
+                                            else if (@item.mfStep == 6)
+                                            { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
 
-                                                </td>
+                                        </td>
 
-                                                <td style="text-align:center">
-                                                    @if (@item.mfStep == 6)
-                                                    {
-                                                        <img src="~/images/revision.png" alt="icon" onclick="GoNewMoldRevision('@item.mfCENo','@item.mfRevision')" class="imgM" />
+                                        <td style="text-align:center">
+                                            @if (@item.mfStep == 6)
+                                            {
+                                                <img src="~/images/revision.png" alt="icon" onclick="GoNewMoldRevision('@item.mfCENo','@item.mfRevision')" class="imgM" />
 
-                                                    }
-                                                    <input type="button" style="font-size:18px" value="&#x1F50E;" onclick="GoNewMoldRequest('@item.mfCENo')">
-                                                </td>
-                                            </tr>
+                                            }
+                                            <input type="button" style="font-size:18px" value="&#x1F50E;" onclick="GoNewMoldRequest('@item.mfCENo')">
+                                        </td>
+                                        <td style="@( _Permission?.ToUpper() != "ADMIN" ? "display:none;" : "" )">
+                                            <input type="button" style="font-size:13px;@( @item.mfStep == 6 ? "display:none;" : "" )" value="&#x274c;" onclick="Menubar_Deleteitem('@item.mfCENo','@Url.Action("DeleteDocNo","SearchMold")')">
+                                        </td>
+                                    </tr>
 
                                         }
 

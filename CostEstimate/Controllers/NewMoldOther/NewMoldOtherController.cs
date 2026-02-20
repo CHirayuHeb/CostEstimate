@@ -96,18 +96,12 @@ namespace CostEstimate.Controllers.NewMoldOther
                 if (vstepmain == 2) //Waiting Checked By WORKING TIME (OPG) , MATERIAL(DG MOLD), TOOL(CAM), INFORMATION(DRG)
                 {
                     chk = UpdateStatusDoc(id);
-
-
                 }
                 if (vstepmain == 4) //Waiting Checked By WORKING TIME (OPG) , MATERIAL(DG MOLD), TOOL(CAM), INFORMATION(DRG)
                 {
                     chkTool = UpdateToolGR(id);
                 }
-
-
-
-
-
+                
                 @class._ViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == id).FirstOrDefault();
                 @class._ListViewceItemPartName = _MK._ViewceItemPartName.Where(x => x.ipDocumentNo == id).OrderBy(x => x.ipRunNo).ToList();
 

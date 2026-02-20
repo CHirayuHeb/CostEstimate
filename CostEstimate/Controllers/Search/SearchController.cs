@@ -582,7 +582,28 @@ namespace CostEstimate.Controllers.Search
 
         }
 
+        public ActionResult DeleteDocNo(string smDocumentNo)
+        {
+            try
+            {
+                ViewceMastSubMakerRequest _ViewceMastSubMakerRequest = _MK._ViewceMastSubMakerRequest.Where(x => x.smDocumentNo == smDocumentNo).FirstOrDefault();
+                //cerunCostPalnning
+                //ViewceMastProcess vRun = _MK._ViewceMastProcess.Where(x => x.mpNo == mpNo && x.mpType == "MoldOther").FirstOrDefault();
+                if (_ViewceMastSubMakerRequest != null)
+                {
+                    _MK._ViewceMastSubMakerRequest.Remove(_ViewceMastSubMakerRequest);
+                }
+                _MK.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return Json(new { res = "error: " + ex.Message });
 
+            }
+            return Json(new { res = "success" });
+
+
+        }
 
     }
 }

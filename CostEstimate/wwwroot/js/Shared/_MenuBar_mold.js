@@ -4188,3 +4188,43 @@ function Menubar_DeleteMHourChage(mhid, action) {
         }
     });
 }
+
+
+function Menubar_Deleteitem(mfCENo, action) {
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure delete DocNo: " + mfCENo + " ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { mfCENo: mfCENo },
+                success: function (res) {
+                    swal.fire({
+                        title: 'แจ้งเตือน',
+                        icon: res.res,
+                        text: res.res,
+                    })
+                        .then((result) => {
+                            // $("#myModal3").modal("hide");
+                            GoSideMenu("SearchMold");
+                            // GoNewRequest(getID)
+                            //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                        });
+
+
+
+                }
+            });
+        } else {
+            //console.log('Cancel');
+            return false;
+        }
+    });
+}

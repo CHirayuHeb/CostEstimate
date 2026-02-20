@@ -2511,3 +2511,43 @@ function updateStatusHissum(action) {
         }
     });
 }
+
+
+function Menubar_Deleteitem(smDocumentNo, action) {
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure delete DocNo: " + smDocumentNo+ " ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { smDocumentNo: smDocumentNo },
+                success: function (res) {
+                    swal.fire({
+                        title: 'แจ้งเตือน',
+                        icon: res.res,
+                        text: res.res,
+                    })
+                        .then((result) => {
+                            // $("#myModal3").modal("hide");
+                            GoSideMenu("Search");
+                            // GoNewRequest(getID)
+                            //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                        });
+
+
+
+                }
+            });
+        } else {
+            //console.log('Cancel');
+            return false;
+        }
+    });
+}

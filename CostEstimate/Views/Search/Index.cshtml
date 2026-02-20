@@ -559,6 +559,7 @@
                                             <th style="text-align:center">Status​</th>
                                             <th style="text-align:center">Step​</th>
                                             <th style="text-align:center">Action​</th>
+                                            <th style="text-align:center;@( _Permission?.ToUpper() != "ADMIN" ? "display:none;" : "" )">Delete</th>
                                         </tr>
                                     </thead>
 
@@ -648,6 +649,9 @@
                                                         <img src="~/images/revision.png" alt="icon" onclick="GoNewRevision('@item.smDocumentNo','@item.smRevision')" class="img" />
                                                     }
                                                     <input type="button" style="font-size:18px" value="&#x1F50E;" onclick="GoNewRequest('@item.smDocumentNo')">
+                                                </td>
+                                                <td style="@( _Permission?.ToUpper() != "ADMIN" ? "display:none;" : "" )">
+                                                    <input type="button" style="font-size:13px;@( @item.smStep  == 7 ? "display:none;" : "" )" value="&#x274c;" onclick="Menubar_Deleteitem('@item.smDocumentNo','@Url.Action("DeleteDocNo","Search")')">
                                                 </td>
                                             </tr>
 
