@@ -1280,10 +1280,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
             {
                 var worksheet = package.Workbook.Worksheets.Add("ItemPartName");
                 worksheet.Cells.Style.Font.Size = 12;
-
-
-
-
+                
                 //header main
                 worksheet.Cells[1, 1].Value = "Document No";
                 worksheet.Cells[1, 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);

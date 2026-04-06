@@ -130,6 +130,8 @@ namespace CostEstimate.Controllers.AddCost
                 if (vRun != null)
                 {
                     _MK._ViewcceRunCostpalnning.Remove(vRun);
+
+
                 }
 
 
@@ -143,7 +145,7 @@ namespace CostEstimate.Controllers.AddCost
 
 
 
-                //ceCostPlanning
+                //ceCostPlanning ceCostPlanning
                 var products = _MK._ViewceCostPlanning.Where(p => p.cpCostPlanningNo == DocNo).ToList();
                 if (products != null)
                 {

@@ -150,8 +150,18 @@ namespace CostEstimate.Models.DBConnect
 
                 });
             });
+            modelBuilder.Entity<ViewcceRunCostpalnning>(entity =>
+            {
+                entity.HasKey(k => new
+                {
+                    k.rcRunNo,
+                    k.rcDocCode,
+                    k.rcYear
 
+                });
+            });
 
+           
         }
 
         public DbSet<ViewLoginPgm> _ViewLoginPgm { get; set; }
