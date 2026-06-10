@@ -43,6 +43,12 @@ namespace CostEstimate.Controllers.AddOModel
         {
             @class._ListceMastModel = new List<ViewceMastModel>();
             @class._ListceMastModel = _MK._ViewceMastModel.Where(x => x.mmType == "MoldOtherMaterial").OrderBy(z => z.mmModelName.Trim()).ToList();
+            //_listTypeMold
+            List<string> _listTypeMold = _MK._ViewceMastType.Where(x => x.mtType.Contains("TypeMold") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+            SelectList _TypeMold = new SelectList(_listTypeMold);
+            ViewBag._TypeMold = _TypeMold;
+
+
             return View(@class);
         }
         [HttpPost]
@@ -50,6 +56,11 @@ namespace CostEstimate.Controllers.AddOModel
         {
             try
             {
+                //_listTypeMold
+                List<string> _listTypeMold = _MK._ViewceMastType.Where(x => x.mtType.Contains("TypeMold") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+                SelectList _TypeMold = new SelectList(_listTypeMold);
+                ViewBag._TypeMold = _TypeMold;
+
                 @class._ViewceMastProcess = new ViewceMastProcess();
                 if (mmNo > 0 && ModelName != null)
                 {
@@ -110,6 +121,7 @@ namespace CostEstimate.Controllers.AddOModel
                         if (_ViewceMastModel != null)
                         {
                             _ViewceMastModel.mmModelName = @class._ViewceMastModel.mmModelName;
+                            _ViewceMastModel.mmGroup = @class._ViewceMastModel.mmGroup;
                             _ViewceMastModel.mmType = "MoldOtherMaterial";
                             _ViewceMastModel.mcUpdateBy = IssueBy;
                             _MK._ViewceMastModel.Update(_ViewceMastModel);
@@ -120,6 +132,7 @@ namespace CostEstimate.Controllers.AddOModel
                         ViewceMastModel _ViewceMastModel = new ViewceMastModel();
                         // _ViewceMastModel.mpProcessName = @class._ViewceMastProcess.mpProcessName;
                         _ViewceMastModel.mmModelName = @class._ViewceMastModel.mmModelName;
+                        _ViewceMastModel.mmGroup = @class._ViewceMastModel.mmGroup;
                         _ViewceMastModel.mmType = "MoldOtherMaterial";
                         _ViewceMastModel.mcIssueBy = IssueBy;
                         _ViewceMastModel.mcUpdateBy = IssueBy;

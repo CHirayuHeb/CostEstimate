@@ -46,6 +46,7 @@ namespace CostEstimate.Models.Common
         public List<ViewceDetailSubMakerRequest> _ListceDetailSubMakerRequest { get; set; }
         public List<ViewceDetailSubMakerRequest> _ListceDetailSubMakerRequestHisSum { get; set; }
         public List<ViewceMastProcess> _ListceMastProcess { get; set; }
+        public List<ViewceMastProcess> _ListceMastProcessMaker { get; set; }
         public List<ViewceCostPlanning> _ListceCostPlanning { get; set; }
         public List<ViewceMastCostModel> _ListceMastCostModel { get; set; }
         public List<ViewceMastModel> _ListceMastModel { get; set; }
@@ -214,6 +215,7 @@ namespace CostEstimate.Models.Common
         public List<ViewceMastWorkingTimeRequest> _ListViewceMastWorkingTimeRequest { get; set; }
         public ViewceItemWorkingTimePartName _ViewceItemWorkingTimePartName { get; set; }
         public List<ViewceItemWorkingTimePartName> _ListViewceItemWorkingTimePartName { get; set; }
+        public List<ViewceItemWorkingTimePartName> _ListViewceItemWorkingTimePartNameMaker { get; set; }
         public GroupPartName _GroupPartName { get; set; }
         public List<GroupPartName> _ListGroupPartName { get; set; }
         public GroupViewceItemWorkingTimePartName _GroupViewceItemWorkingTimePartName { get; set; }
@@ -298,12 +300,14 @@ namespace CostEstimate.Models.Common
         public List<UserActivity> _ListUserActivity { get; set; }
 
 
+        public List<FYCostPlanning> _listFYCostPlanning { get; set; }
+        public FYCostPlanning _ViewFYCostPlanning { get; set; }
+
         //for report mold other
         public string rMoldGO { get; set; }
         public string rMoldTry1 { get; set; }
         public string rMoldMass1 { get; set; }
         public string rMoldMass { get; set; }
-
 
 
 

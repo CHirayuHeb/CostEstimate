@@ -44,6 +44,18 @@ namespace CostEstimate.Controllers.AddOProcessWK
             @class._ListceMastProcess = new List<ViewceMastProcess>();
             @class._ListceMastProcess = _MK._ViewceMastProcess.Where(x => x.mpType == "MoldOtherWK").OrderBy(z => z.mpGroupName.Trim()).ToList();
 
+
+            //MoldTypeProcess
+            List<string> _listMoldTypeProcess = _MK._ViewceMastType.Where(x => x.mtType.Contains("MoldTypeProcess") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+            SelectList _TypeMoldTypeProcess = new SelectList(_listMoldTypeProcess);
+            ViewBag._TypeMoldTypeProcess = _TypeMoldTypeProcess;
+
+            //TypeShipmentProcess
+            List<string> _listShipmentProcess = _MK._ViewceMastType.Where(x => x.mtType.Contains("shipmentProcess") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+            SelectList _TypeShipmentProcess = new SelectList(_listShipmentProcess);
+            ViewBag._TypeShipmentProcess = _TypeShipmentProcess;
+
+
             return View(@class);
         }
         public ActionResult DeleteMasterProcess(int mpNo)
@@ -74,6 +86,17 @@ namespace CostEstimate.Controllers.AddOProcessWK
         {
             try
             {
+
+                //MoldTypeProcess
+                List<string> _listMoldTypeProcess = _MK._ViewceMastType.Where(x => x.mtType.Contains("MoldTypeProcess") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+                SelectList _TypeMoldTypeProcess = new SelectList(_listMoldTypeProcess);
+                ViewBag._TypeMoldTypeProcess = _TypeMoldTypeProcess;
+
+                //TypeShipmentProcess
+                List<string> _listShipmentProcess = _MK._ViewceMastType.Where(x => x.mtType.Contains("shipmentProcess") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+                SelectList _TypeShipmentProcess = new SelectList(_listShipmentProcess);
+                ViewBag._TypeShipmentProcess = _TypeShipmentProcess;
+
                 @class._ViewceMastProcess = new ViewceMastProcess();
                 if (mpNo > 0)
                 {
@@ -114,6 +137,8 @@ namespace CostEstimate.Controllers.AddOProcessWK
                             _viewceMastProcess.mpEnable_WTMan = @class._ViewceMastProcess.mpEnable_WTMan;
                             _viewceMastProcess.mpEnable_WTAuto = @class._ViewceMastProcess.mpEnable_WTAuto;
                             _viewceMastProcess.mpType = "MoldOtherWK";
+                            _viewceMastProcess.mpMoldType = @class._ViewceMastProcess.mpMoldType;
+                            _viewceMastProcess.mpshipment = @class._ViewceMastProcess.mpshipment;
                             _viewceMastProcess.mpUpdateBy = IssueBy;
                             _MK._ViewceMastProcess.Update(_viewceMastProcess);
                         }
@@ -126,6 +151,8 @@ namespace CostEstimate.Controllers.AddOProcessWK
                         _viewceMastProcess.mpEnable_WTMan = @class._ViewceMastProcess.mpEnable_WTMan;
                         _viewceMastProcess.mpEnable_WTAuto = @class._ViewceMastProcess.mpEnable_WTAuto;
                         _viewceMastProcess.mpType = "MoldOtherWK";
+                        _viewceMastProcess.mpMoldType = @class._ViewceMastProcess.mpMoldType;
+                        _viewceMastProcess.mpshipment = @class._ViewceMastProcess.mpshipment;
                         _viewceMastProcess.mpIssueBy = IssueBy;
                         _viewceMastProcess.mpUpdateBy = IssueBy;
                         _MK._ViewceMastProcess.Add(_viewceMastProcess);

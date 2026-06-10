@@ -60,7 +60,6 @@ namespace CostEstimate.Controllers.NewMoldOther
         [Authorize("Checked")]
         public IActionResult Index(Class @class, string id, string Rev)
         {
-
             @class._ViewOperaterCP = new ViewOperaterCP();
 
             @class._listAttachment = new List<ViewAttachment>();
@@ -76,6 +75,31 @@ namespace CostEstimate.Controllers.NewMoldOther
             List<string> _listTypeofCavity = _MK._ViewceMastType.Where(x => x.mtType.Contains("Cavity") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
             SelectList _TypeofCavity = new SelectList(_listTypeofCavity);
             ViewBag.TypeofCavity = _TypeofCavity;
+
+            //CustomerRequest
+            List<string> _listCustomerRequest = _MK._ViewceMastType.Where(x => x.mtType.Contains("CustomerRequest") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+            SelectList _TypeCustomerRequest = new SelectList(_listCustomerRequest);
+            ViewBag._TypeCustomerRequest = _TypeCustomerRequest;
+
+            //FunctionRequest
+            List<string> _listFunctionRequest = _MK._ViewceMastType.Where(x => x.mtType.Contains("FunctionRequest") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+            SelectList _TypeFunctionRequest = new SelectList(_listFunctionRequest);
+            ViewBag._TypeFunctionRequest = _TypeFunctionRequest;
+
+            //ModelNameRequest
+            List<string> _listModelNameRequest = _MK._ViewceMastType.Where(x => x.mtType.Contains("ModelNameRequest") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+            SelectList _TypeModelNameRequest = new SelectList(_listModelNameRequest);
+            ViewBag._TypeModelNameRequest = _TypeModelNameRequest;
+
+            //chart rate
+            List<string> _listChartRate = _MK._ViewceCostPlanning.Select(x => x.cpDescription).Distinct().ToList();
+            SelectList _TypeChartRate = new SelectList(_listChartRate);
+            ViewBag._TypeChartRate = _TypeChartRate;
+
+            List<string> _listTypeMold = _MK._ViewceMastType.Where(x => x.mtType.Contains("TypeMold") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+            SelectList _TypeMold = new SelectList(_listTypeMold);
+            ViewBag.TypeMold = _TypeMold;
+
 
             @class._ViewceMastMoldOtherRequest = new ViewceMastMoldOtherRequest();
             @class._ViewceItemPartName = new ViewceItemPartName();
@@ -101,7 +125,7 @@ namespace CostEstimate.Controllers.NewMoldOther
                 {
                     chkTool = UpdateToolGR(id);
                 }
-                
+
                 @class._ViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == id).FirstOrDefault();
                 @class._ListViewceItemPartName = _MK._ViewceItemPartName.Where(x => x.ipDocumentNo == id).OrderBy(x => x.ipRunNo).ToList();
 
@@ -111,26 +135,6 @@ namespace CostEstimate.Controllers.NewMoldOther
                 @class._ViewceMastToolGRRequest = _MK._ViewceMastToolGRRequest.Where(x => x.trDocumentNo == id).FirstOrDefault();
                 @class._ViewceMastInforSpacMoldRequest = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == id).FirstOrDefault();
                 @class._listAttachment = _IT.Attachment.Where(x => x.fnNo == id).ToList();
-
-
-
-                //for report Quataion 22/09/2025 
-                //@class._ListViewMoldOtherDatailQuotation = getDatailQuotation(id, @class);
-
-                //@class._ListViewMoldOtherDatailQuotation = new List<ViewMoldOtherDatailQuotation>();
-                //for (int i = 0; i < @class._ListViewceItemPartName.Count(); i++)
-                //{
-                //    @class._ListViewMoldOtherDatailQuotation.Add(new ViewMoldOtherDatailQuotation
-                //    {
-                //        dMoldNoName = @class._ListViewceItemPartName[i].ipPartName,
-                //        dCavityNo = @class._ListViewceItemPartName[i].ipCavityNo,
-                //        dTypeCavity = @class._ListViewceItemPartName[i].ipTypeCavity,
-                //        dDetail = "2 PLATE TYPE",
-
-                //    });
-                //}
-
-
 
             }
 
@@ -236,228 +240,242 @@ namespace CostEstimate.Controllers.NewMoldOther
         {
             List<ViewMoldOtherDatailQuotation> _ListViewMoldOtherDatailQuotation = new List<ViewMoldOtherDatailQuotation>();
             //for report Quataion 22 / 09 / 2025
-
-            for (int i = 0; i < @class._ListViewceItemPartName.Count(); i++)
+            try
             {
-
-                //ceMastInforSpacMoldRequest
-                //ceItemInforRequestPartName
-                //ceItemInforSlideSystem
-                //ceItemInforTypeOfCut
-                //ceItemInforShibo
-                var DocNoSub = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == id).Select(x => x.irDocumentNoSub).FirstOrDefault();
-
-
-                string _ItemInforRequestPart = "";
-
-
-                string ipGateType1 = "";
-                string ipGateType2 = "";
-                string ipGateType3 = "";
-                string ipGateTypeMain = "";
-
-                string ipNUMBER_POINT1 = "";
-                string ipNUMBER_POINT2 = "";
-                string ipNUMBER_POINT3 = "";
-                string ipNUMBER_POINTMain = "";
-
-
-                string ipGate1 = "";
-                string ipGate2 = "";
-                string ipGate3 = "";
-                string ipsprueSys = "";
-                string ipMakerRunHot = "";
-
-                string vInforSlideSystem = "";
-
-                string vGMaterial = "";
-                string ipBaseCavity = "";
-                string ipInsertCavity = "";
-                string ipBaseCode = "";
-                string ipInsertCode = "";
-                string ipSLIDE = "";
-
-
-                string vitemTypeofcout = "";
-
-
-                string vitemSHIBO = "";
-                string ELECTROFORM = "";
-
-                var _listViewceItemInforRequestPartName = _MK._ViewceItemInforRequestPartName.Where(x => x.ipDocumentNoSub == DocNoSub && x.ipNoProcess == @class._ListViewceItemPartName[i].ipRunNo).ToList();
-                for (int j = 0; j < _listViewceItemInforRequestPartName.Count(); j++)
+                for (int i = 0; i < @class._ListViewceItemPartName.Count(); i++)
                 {
-                    ipGate1 += _listViewceItemInforRequestPartName[j].ipGateType1 != null && _listViewceItemInforRequestPartName[j].ipGateType1 != "" ? _listViewceItemInforRequestPartName[j].ipGateType1 + "(" + _listViewceItemInforRequestPartName[j].ipNumberPoint1.ToString() + " DROP), " : "";
-                    ipGate2 += _listViewceItemInforRequestPartName[j].ipGateType2 != null && _listViewceItemInforRequestPartName[j].ipGateType2 != "" ? _listViewceItemInforRequestPartName[j].ipGateType2 + "(" + _listViewceItemInforRequestPartName[j].ipNumberPoint2.ToString() + " DROP), " : "";
-                    ipGate3 += _listViewceItemInforRequestPartName[j].ipGateType3 != null && _listViewceItemInforRequestPartName[j].ipGateType3 != "" ? _listViewceItemInforRequestPartName[j].ipGateType3 + "(" + _listViewceItemInforRequestPartName[j].ipNumberPoint3.ToString() + " DROP), " : "";
+
+                    //ceMastInforSpacMoldRequest
+                    //ceItemInforRequestPartName
+                    //ceItemInforSlideSystem
+                    //ceItemInforTypeOfCut
+                    //ceItemInforShibo
+                    var DocNoSub = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == id).Select(x => x.irDocumentNoSub).FirstOrDefault();
 
 
-                    //ipGateType1 += _listViewceItemInforRequestPartName[j].ipGateType1 != null && _listViewceItemInforRequestPartName[j].ipGateType1 != "" ? _listViewceItemInforRequestPartName[j].ipGateType1 : "";
-                    //ipGateType2 += _listViewceItemInforRequestPartName[j].ipGateType2 != null && _listViewceItemInforRequestPartName[j].ipGateType2 != "" ? " + " + _listViewceItemInforRequestPartName[j].ipGateType2 : "";
-                    //ipGateType3 += _listViewceItemInforRequestPartName[j].ipGateType3 != null && _listViewceItemInforRequestPartName[j].ipGateType3 != "" ? " + " + _listViewceItemInforRequestPartName[j].ipGateType3 : "";
-
-                    //ipGateTypeMain = ipGateType1 + ipGateType2 + ipGateType3;
+                    string _ItemInforRequestPart = "";
 
 
-                    //ipNUMBER_POINT1 += _listViewceItemInforRequestPartName[j].ipGateType1 != null && _listViewceItemInforRequestPartName[j].ipGateType1 != "" ? "" + _listViewceItemInforRequestPartName[j].ipNumberPoint1.ToString() : "";
-                    //ipNUMBER_POINT2 += _listViewceItemInforRequestPartName[j].ipGateType2 != null && _listViewceItemInforRequestPartName[j].ipGateType2 != "" ? "+ " + _listViewceItemInforRequestPartName[j].ipNumberPoint2.ToString() : "";
-                    //ipNUMBER_POINT3 += _listViewceItemInforRequestPartName[j].ipGateType3 != null && _listViewceItemInforRequestPartName[j].ipGateType3 != "" ? "+ " + _listViewceItemInforRequestPartName[j].ipNumberPoint3.ToString() : "";
+                    string ipGateType1 = "";
+                    string ipGateType2 = "";
+                    string ipGateType3 = "";
+                    string ipGateTypeMain = "";
 
-                    //ipNUMBER_POINTMain = _listViewceItemInforRequestPartName[j].ipGateType1 != null && _listViewceItemInforRequestPartName[j].ipGateType1 != "" ? " (" + ipNUMBER_POINT1 + ipNUMBER_POINT2 + ipNUMBER_POINT3 + " DROP), " : "";
-
-
-
-
-                    //ipsprueSys = _listViewceItemInforRequestPartName[0].ipSprueSystem != null && _listViewceItemInforRequestPartName[0].ipSprueSystem != "" ?
-                    //                                        _listViewceItemInforRequestPartName[0].ipSprueSystem : "";
-                    //ipMakerRunHot = _listViewceItemInforRequestPartName[0].ipMakerHotRunner != null && _listViewceItemInforRequestPartName[0].ipMakerHotRunner != "" ? "(" + _listViewceItemInforRequestPartName[0].ipMakerHotRunner + "), " : ", ";
+                    string ipNUMBER_POINT1 = "";
+                    string ipNUMBER_POINT2 = "";
+                    string ipNUMBER_POINT3 = "";
+                    string ipNUMBER_POINTMain = "";
 
 
+                    string ipGate1 = "";
+                    string ipGate2 = "";
+                    string ipGate3 = "";
+                    string ipsprueSys = "";
+                    string ipMakerRunHot = "";
 
-                    //ถ้าเป็น Cold Sprue ให้ขึ้นคำว่า " Cold Sprue System " แต่ถ้าเป็น Hot sprue และ Runner เป็น cold Runner ให้ขึ้นเป็น " Hot sprue System "  
-                    //และถ้าเป็น Hot sprue และ Runner เป็น Hot Runner ให้ขึ้นเป็น " Hot Runner System " ครับนี่เป็นเงื่อนไขครับ
+                    string vInforSlideSystem = "";
 
-                    if (_listViewceItemInforRequestPartName[0].ipSprueSystem.Contains("COLD"))
+                    string vGMaterial = "";
+                    string ipBaseCavity = "";
+                    string ipInsertCavity = "";
+                    string ipBaseCode = "";
+                    string ipInsertCode = "";
+                    string ipSLIDE = "";
+                    bool ipedit = true;
+
+
+                    string vitemTypeofcout = "";
+
+
+                    string vitemSHIBO = "";
+                    string ELECTROFORM = "";
+
+                    var _listViewceItemInforRequestPartName = _MK._ViewceItemInforRequestPartName.Where(x => x.ipDocumentNoSub == DocNoSub && x.ipNoProcess == @class._ListViewceItemPartName[i].ipRunNo).ToList();
+                    ipedit = _listViewceItemInforRequestPartName != null ? _listViewceItemInforRequestPartName[0].ipEditStatus : true;
+
+                    for (int j = 0; j < _listViewceItemInforRequestPartName.Count(); j++)
                     {
-                        ipsprueSys = _listViewceItemInforRequestPartName[0].ipSprueSystem ?? "";
-                    }
-                    else //HOT SPRUE SYSTEM
-                    {
-                        //แต่ถ้าเป็น Hot sprue และ Runner เป็น cold Runner ให้ขึ้นเป็น " Hot sprue System
-                        if (_listViewceItemInforRequestPartName[0].ipMakerHotRunner.Contains("COLD"))
+                        ipGate1 += _listViewceItemInforRequestPartName[j].ipGateType1 != null && _listViewceItemInforRequestPartName[j].ipGateType1 != "" ? _listViewceItemInforRequestPartName[j].ipGateType1 + "(" + _listViewceItemInforRequestPartName[j].ipNumberPoint1.ToString() + " DROP), " : "";
+                        ipGate2 += _listViewceItemInforRequestPartName[j].ipGateType2 != null && _listViewceItemInforRequestPartName[j].ipGateType2 != "" ? _listViewceItemInforRequestPartName[j].ipGateType2 + "(" + _listViewceItemInforRequestPartName[j].ipNumberPoint2.ToString() + " DROP), " : "";
+                        ipGate3 += _listViewceItemInforRequestPartName[j].ipGateType3 != null && _listViewceItemInforRequestPartName[j].ipGateType3 != "" ? _listViewceItemInforRequestPartName[j].ipGateType3 + "(" + _listViewceItemInforRequestPartName[j].ipNumberPoint3.ToString() + " DROP), " : "";
+
+
+                        //ipGateType1 += _listViewceItemInforRequestPartName[j].ipGateType1 != null && _listViewceItemInforRequestPartName[j].ipGateType1 != "" ? _listViewceItemInforRequestPartName[j].ipGateType1 : "";
+                        //ipGateType2 += _listViewceItemInforRequestPartName[j].ipGateType2 != null && _listViewceItemInforRequestPartName[j].ipGateType2 != "" ? " + " + _listViewceItemInforRequestPartName[j].ipGateType2 : "";
+                        //ipGateType3 += _listViewceItemInforRequestPartName[j].ipGateType3 != null && _listViewceItemInforRequestPartName[j].ipGateType3 != "" ? " + " + _listViewceItemInforRequestPartName[j].ipGateType3 : "";
+
+                        //ipGateTypeMain = ipGateType1 + ipGateType2 + ipGateType3;
+
+
+                        //ipNUMBER_POINT1 += _listViewceItemInforRequestPartName[j].ipGateType1 != null && _listViewceItemInforRequestPartName[j].ipGateType1 != "" ? "" + _listViewceItemInforRequestPartName[j].ipNumberPoint1.ToString() : "";
+                        //ipNUMBER_POINT2 += _listViewceItemInforRequestPartName[j].ipGateType2 != null && _listViewceItemInforRequestPartName[j].ipGateType2 != "" ? "+ " + _listViewceItemInforRequestPartName[j].ipNumberPoint2.ToString() : "";
+                        //ipNUMBER_POINT3 += _listViewceItemInforRequestPartName[j].ipGateType3 != null && _listViewceItemInforRequestPartName[j].ipGateType3 != "" ? "+ " + _listViewceItemInforRequestPartName[j].ipNumberPoint3.ToString() : "";
+
+                        //ipNUMBER_POINTMain = _listViewceItemInforRequestPartName[j].ipGateType1 != null && _listViewceItemInforRequestPartName[j].ipGateType1 != "" ? " (" + ipNUMBER_POINT1 + ipNUMBER_POINT2 + ipNUMBER_POINT3 + " DROP), " : "";
+
+
+
+
+                        //ipsprueSys = _listViewceItemInforRequestPartName[0].ipSprueSystem != null && _listViewceItemInforRequestPartName[0].ipSprueSystem != "" ?
+                        //                                        _listViewceItemInforRequestPartName[0].ipSprueSystem : "";
+                        //ipMakerRunHot = _listViewceItemInforRequestPartName[0].ipMakerHotRunner != null && _listViewceItemInforRequestPartName[0].ipMakerHotRunner != "" ? "(" + _listViewceItemInforRequestPartName[0].ipMakerHotRunner + "), " : ", ";
+
+
+
+                        //ถ้าเป็น Cold Sprue ให้ขึ้นคำว่า " Cold Sprue System " แต่ถ้าเป็น Hot sprue และ Runner เป็น cold Runner ให้ขึ้นเป็น " Hot sprue System "  
+                        //และถ้าเป็น Hot sprue และ Runner เป็น Hot Runner ให้ขึ้นเป็น " Hot Runner System " ครับนี่เป็นเงื่อนไขครับ
+
+                        if (_listViewceItemInforRequestPartName[0].ipSprueSystem.Contains("COLD"))
                         {
                             ipsprueSys = _listViewceItemInforRequestPartName[0].ipSprueSystem ?? "";
                         }
-                        else
+                        else //HOT SPRUE SYSTEM
                         {
-                            ipsprueSys = " HOT RUNNER SYSTEM";
+                            //แต่ถ้าเป็น Hot sprue และ Runner เป็น cold Runner ให้ขึ้นเป็น " Hot sprue System
+                            if (_listViewceItemInforRequestPartName[0].ipMakerHotRunner.Contains("COLD"))
+                            {
+                                ipsprueSys = _listViewceItemInforRequestPartName[0].ipSprueSystem ?? "";
+                            }
+                            else
+                            {
+                                ipsprueSys = " HOT RUNNER SYSTEM";
+                            }
+                        }
+
+
+
+                        //ipsprueSys = _listViewceItemInforRequestPartName[0].ipSprueSystem ?? "";
+                        ipMakerRunHot = string.IsNullOrEmpty(_listViewceItemInforRequestPartName[0].ipRunner)
+                        ? ", "
+                            : $" ({_listViewceItemInforRequestPartName[0].ipMakerHotRunner}), ";
+
+                    }
+
+                    var _listViewceItemInforSlideSystem = _MK._ViewceItemInforSlideSystem.Where(x => x.isDocumentNoSub == DocNoSub && x.isNoProcess == @class._ListViewceItemPartName[i].ipRunNo).ToList();
+                    if (_listViewceItemInforSlideSystem.Count > 0)
+                    {
+                        for (int j = 0; j < _listViewceItemInforSlideSystem.Count(); j++)
+                        {
+                            vInforSlideSystem += _listViewceItemInforSlideSystem[j].isSlideSystemType + "(" + _listViewceItemInforSlideSystem[j].isSlideSystemCount.ToString() + " PCS) ,";
                         }
                     }
-
-
-
-                    //ipsprueSys = _listViewceItemInforRequestPartName[0].ipSprueSystem ?? "";
-                    ipMakerRunHot = string.IsNullOrEmpty(_listViewceItemInforRequestPartName[0].ipRunner)
-                    ? ", "
-                        : $" ({_listViewceItemInforRequestPartName[0].ipMakerHotRunner}), ";
-
-                }
-
-                var _listViewceItemInforSlideSystem = _MK._ViewceItemInforSlideSystem.Where(x => x.isDocumentNoSub == DocNoSub && x.isNoProcess == @class._ListViewceItemPartName[i].ipRunNo).ToList();
-                if (_listViewceItemInforSlideSystem.Count > 0)
-                {
-                    for (int j = 0; j < _listViewceItemInforSlideSystem.Count(); j++)
+                    else
                     {
-                        vInforSlideSystem += _listViewceItemInforSlideSystem[j].isSlideSystemType + "(" + _listViewceItemInforSlideSystem[j].isSlideSystemCount.ToString() + " PCS) ,";
+                        //vInforSlideSystem = "NO SLIDE, ";
+                        vInforSlideSystem = "";
                     }
-                }
-                else
-                {
-                    //vInforSlideSystem = "NO SLIDE, ";
-                    vInforSlideSystem = "";
-                }
 
 
-                //GROUP MATERIAL
-                for (int j = 0; j < _listViewceItemInforRequestPartName.Count(); j++)
-                {
-                    ipBaseCavity = _listViewceItemInforRequestPartName[j].ipBaseCavity != null ? "BASE CAVITY(" + _listViewceItemInforRequestPartName[j].ipBaseCavity + ") ," : "";
-                    ipInsertCavity = _listViewceItemInforRequestPartName[j].ipInsertCavity != null ? "INSERT CAVITY(" + _listViewceItemInforRequestPartName[j].ipInsertCavity + ") ," : "";
-                    ipBaseCode = _listViewceItemInforRequestPartName[j].ipBaseCode != null ? "BASE CORE(" + _listViewceItemInforRequestPartName[j].ipBaseCode + ") ," : "";
-                    ipInsertCode = _listViewceItemInforRequestPartName[j].ipInsertCode != null ? "INSERT CORE(" + _listViewceItemInforRequestPartName[j].ipInsertCode + ") ," : "";
-                    ipSLIDE = _listViewceItemInforRequestPartName[j].ipSlide != null ? "SLIDE(" + _listViewceItemInforRequestPartName[j].ipSlide + ") ," : "";
-                }
-
-                //GROUP MATERIAL
-
-                vGMaterial = ipBaseCavity + ipInsertCavity + ipBaseCode + ipInsertCode + ipSLIDE;
-
-
-                //TYPE OF CUT
-                var _listItemInforTypeOfCut = _MK._ViewceItemInforTypeOfCut.Where(x => x.icDocumentNoSub == DocNoSub && x.icNoProcess == @class._ListViewceItemPartName[i].ipRunNo).ToList();
-                if (_listItemInforTypeOfCut.Count > 0)
-                {
-                    vitemTypeofcout = "*HAVE ";
-                    for (int j = 0; j < _listItemInforTypeOfCut.Count(); j++)
+                    //GROUP MATERIAL
+                    for (int j = 0; j < _listViewceItemInforRequestPartName.Count(); j++)
                     {
+                        ipBaseCavity = _listViewceItemInforRequestPartName[j].ipBaseCavity != null ? "BASE CAVITY(" + _listViewceItemInforRequestPartName[j].ipBaseCavity + ") ," : "";
+                        ipInsertCavity = _listViewceItemInforRequestPartName[j].ipInsertCavity != null ? "INSERT CAVITY(" + _listViewceItemInforRequestPartName[j].ipInsertCavity + ") ," : "";
+                        ipBaseCode = _listViewceItemInforRequestPartName[j].ipBaseCode != null ? "BASE CORE(" + _listViewceItemInforRequestPartName[j].ipBaseCode + ") ," : "";
+                        ipInsertCode = _listViewceItemInforRequestPartName[j].ipInsertCode != null ? "INSERT CORE(" + _listViewceItemInforRequestPartName[j].ipInsertCode + ") ," : "";
+                        ipSLIDE = _listViewceItemInforRequestPartName[j].ipSlide != null ? "SLIDE(" + _listViewceItemInforRequestPartName[j].ipSlide + ") ," : "";
 
-                        vitemTypeofcout += _listItemInforTypeOfCut[j].icTypeofcut;
-                        if (j < _listItemInforTypeOfCut.Count() - 1)
+                    }
+
+                    //GROUP MATERIAL
+
+                    vGMaterial = ipBaseCavity + ipInsertCavity + ipBaseCode + ipInsertCode + ipSLIDE;
+
+
+                    //TYPE OF CUT
+                    var _listItemInforTypeOfCut = _MK._ViewceItemInforTypeOfCut.Where(x => x.icDocumentNoSub == DocNoSub && x.icNoProcess == @class._ListViewceItemPartName[i].ipRunNo).ToList();
+                    if (_listItemInforTypeOfCut.Count > 0)
+                    {
+                        vitemTypeofcout = "*HAVE ";
+                        for (int j = 0; j < _listItemInforTypeOfCut.Count(); j++)
                         {
-                            vitemTypeofcout += " && ";
+
+                            vitemTypeofcout += _listItemInforTypeOfCut[j].icTypeofcut;
+                            if (j < _listItemInforTypeOfCut.Count() - 1)
+                            {
+                                vitemTypeofcout += " && ";
+                            }
                         }
+                        vitemTypeofcout += " = 0.33 mm";
                     }
-                    vitemTypeofcout += " = 0.33 mm";
-                }
-                else
-                {
-                    //vitemTypeofcout = "*DONT HAVE,";
-                    vitemTypeofcout = "";
-                }
-
-
-                //SHIBO
-                var _listItemShibo = _MK._ViewceItemInforShibo.Where(x => x.ibDocumentNoSub == DocNoSub && x.ibNoProcess == @class._ListViewceItemPartName[i].ipRunNo).ToList();
-                if (_listItemShibo.Count > 0)
-                {
-                    vitemSHIBO = "*HAVE SHIBO ";
-                    for (int j = 0; j < _listItemShibo.Count(); j++)
+                    else
                     {
-
-                        vitemSHIBO += _listItemShibo[j].ibSHiboPCS;
-                        if (j < _listItemInforTypeOfCut.Count() - 1)
-                        {
-                            vitemSHIBO += ", ";
-                        }
+                        //vitemTypeofcout = "*DONT HAVE,";
+                        vitemTypeofcout = "";
                     }
 
+
+                    //SHIBO
+                    var _listItemShibo = _MK._ViewceItemInforShibo.Where(x => x.ibDocumentNoSub == DocNoSub && x.ibNoProcess == @class._ListViewceItemPartName[i].ipRunNo).ToList();
+                    if (_listItemShibo.Count > 0)
+                    {
+                        vitemSHIBO = "*HAVE SHIBO ";
+                        for (int j = 0; j < _listItemShibo.Count(); j++)
+                        {
+
+                            vitemSHIBO += _listItemShibo[j].ibSHiboPCS;
+                            if (j < _listItemInforTypeOfCut.Count() - 1)
+                            {
+                                vitemSHIBO += ", ";
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        //vitemSHIBO = "*DONT HAVE SHIBO";
+                        vitemSHIBO = "";
+                    }
+
+
+
+
+                    //_ItemInforRequestPart = ipsprueSys + ipMakerRunHot + vInforSlideSystem + ipGate1 + ipGate2 + ipGate3 + vGMaterial + vitemTypeofcout + vitemSHIBO;
+
+                    _ItemInforRequestPart =
+                                            ipedit is false ? "CAN NOT MAKE MOLD" :
+                                            ipGate1 + ipGate2 + ipGate3 + ipsprueSys + " " + ipMakerRunHot + vInforSlideSystem + vGMaterial + vitemTypeofcout + vitemSHIBO;
+
+
+                    //_ItemInforRequestPart = ipsprueSys + " " + ipMakerRunHot + ipGate1 + ipGate2 + ipGate3 + vInforSlideSystem + vGMaterial + vitemTypeofcout + vitemSHIBO;
+
+
+
+                    //cal dEstimateCost TOTAL MT.
+
+                    @class._ListViewDetailceMastChartRateOtherReport = getListViewDetailceMastChartRateOtherReport(id, @class._ListViewceItemPartName[i].ipRunNo);
+
+
+                    @class._ViewceMastMaterialRequest = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == id).FirstOrDefault();
+                    @class._ListViewceItemMaterialRequestPartName = _MK._ViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == @class._ViewceMastMaterialRequest.mrDocumentNoSub && x.mpNoProcess == @class._ListViewceItemPartName[i].ipRunNo).ToList();
+
+
+                    double vRate = @class._ListViewceItemPartName[i].ipRateReport;
+                    double vTotalCost = Math.Round(@class._ListViewDetailceMastChartRateOtherReport.Sum(x => x.crTotal_cost), 2);
+                    double vCalTotal = Math.Round(vTotalCost * vRate, 2);
+                    double vTOTALMT = @class._ListViewceItemMaterialRequestPartName[0].mpTotal;
+                    double resultsum = vCalTotal + vTOTALMT;
+
+                    double result = Math.Ceiling(resultsum / 10.0) * 10 * 1000;
+
+
+                    _ListViewMoldOtherDatailQuotation.Add(new ViewMoldOtherDatailQuotation
+                    {
+                        dMoldNoName = @class._ListViewceItemPartName[i].ipPartName,
+                        dCavityNo = @class._ListViewceItemPartName[i].ipCavityNo,
+                        dTypeCavity = @class._ListViewceItemPartName[i].ipTypeCavity,
+                        dEstimateCost = ipedit is false ? "-" : result.ToString("N0"),
+                        dDetail = _ItemInforRequestPart,
+
+                    });
                 }
-                else
-                {
-                    //vitemSHIBO = "*DONT HAVE SHIBO";
-                    vitemSHIBO = "";
-                }
 
-
-
-
-                //_ItemInforRequestPart = ipsprueSys + ipMakerRunHot + vInforSlideSystem + ipGate1 + ipGate2 + ipGate3 + vGMaterial + vitemTypeofcout + vitemSHIBO;
-
-                _ItemInforRequestPart = ipGate1 + ipGate2 + ipGate3 + ipsprueSys + " " + ipMakerRunHot + vInforSlideSystem + vGMaterial + vitemTypeofcout + vitemSHIBO;
-
-
-                //_ItemInforRequestPart = ipsprueSys + " " + ipMakerRunHot + ipGate1 + ipGate2 + ipGate3 + vInforSlideSystem + vGMaterial + vitemTypeofcout + vitemSHIBO;
-
-
-
-                //cal dEstimateCost TOTAL MT.
-
-                @class._ListViewDetailceMastChartRateOtherReport = getListViewDetailceMastChartRateOtherReport(id, @class._ListViewceItemPartName[i].ipRunNo);
-
-
-                @class._ViewceMastMaterialRequest = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == id).FirstOrDefault();
-                @class._ListViewceItemMaterialRequestPartName = _MK._ViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == @class._ViewceMastMaterialRequest.mrDocumentNoSub && x.mpNoProcess == @class._ListViewceItemPartName[i].ipRunNo).ToList();
-
-
-                double vRate = @class._ListViewceItemPartName[i].ipRateReport;
-                double vTotalCost = Math.Round(@class._ListViewDetailceMastChartRateOtherReport.Sum(x => x.crTotal_cost), 2);
-                double vCalTotal = Math.Round(vTotalCost * vRate, 2);
-                double vTOTALMT = @class._ListViewceItemMaterialRequestPartName[0].mpTotal;
-                double resultsum = vCalTotal + vTOTALMT;
-
-                double result = Math.Ceiling(resultsum / 10.0) * 10 * 1000;
-
-
-                _ListViewMoldOtherDatailQuotation.Add(new ViewMoldOtherDatailQuotation
-                {
-                    dMoldNoName = @class._ListViewceItemPartName[i].ipPartName,
-                    dCavityNo = @class._ListViewceItemPartName[i].ipCavityNo,
-                    dTypeCavity = @class._ListViewceItemPartName[i].ipTypeCavity,
-                    dEstimateCost = result.ToString("N0"),
-                    dDetail = _ItemInforRequestPart,
-
-                });
             }
+            catch (Exception ex)
+            {
+                string msg = ex.Message;
+            }
+
 
             return _ListViewMoldOtherDatailQuotation;
         }
@@ -1302,12 +1320,6 @@ namespace CostEstimate.Controllers.NewMoldOther
                         _MK._ViewceRunDocument.AddAsync(_ViewceRunDocument);
 
 
-                        //check new mrRevision by  Customer Name Function Model Name
-                        //int n_Rev = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrCustomerName == @class._ViewceMastMoldOtherRequest.mrCustomerName &&
-                        //                                                  x.mrFunction == @class._ViewceMastMoldOtherRequest.mrFunction &&
-                        //                                                  x.mrModelName == @class._ViewceMastMoldOtherRequest.mrModelName).Select(x => (x.mrRevision)).FirstOrDefault();
-
-
 
                         var vRev = _MK._ViewceMastMoldOtherRequest
                                             .Where(x => x.mrCustomerName == @class._ViewceMastMoldOtherRequest.mrCustomerName
@@ -1317,8 +1329,6 @@ namespace CostEstimate.Controllers.NewMoldOther
                                             .Max();
 
                         int vrevision = vRev == null ? 0 : vRev.Value + 1;
-
-
 
 
                         ViewceMastMoldOtherRequest _ViewceMastMoldOtherRequest = new ViewceMastMoldOtherRequest();
@@ -1340,6 +1350,7 @@ namespace CostEstimate.Controllers.NewMoldOther
                         _ViewceMastMoldOtherRequest.mrEmpCodeApprove = savetype == "D" ? "" : empApprove;
                         _ViewceMastMoldOtherRequest.mrNameApprove = savetype == "D" ? "" : NickNameApprove;
                         _ViewceMastMoldOtherRequest.mrFlowNo = 3;
+                        _ViewceMastMoldOtherRequest.mrChartRate = @class._ViewceMastMoldOtherRequest.mrChartRate;
                         _MK._ViewceMastMoldOtherRequest.AddAsync(_ViewceMastMoldOtherRequest);
 
 
@@ -1350,6 +1361,11 @@ namespace CostEstimate.Controllers.NewMoldOther
                     // status Old
                     else if (status == "Update")
                     {
+
+                        //update chartrate
+                        var _MoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == RunDoc).FirstOrDefault();
+                        _MoldOtherRequest.mrChartRate = @class._ViewceMastMoldOtherRequest.mrChartRate;
+                        _MK.SaveChanges();
 
                         //update 
                         int chkstep = @class._ViewceMastMoldOtherRequest.mrStep;
@@ -1373,16 +1389,14 @@ namespace CostEstimate.Controllers.NewMoldOther
                                         ipPartName = part.ipPartName,
                                         ipCavityNo = part.ipCavityNo,
                                         ipRateReport = part.ipRateReport,
-                                        ipTypeCavity = part.ipTypeCavity
+                                        ipTypeCavity = part.ipTypeCavity,
+                                        ipTypeMold = part.ipTypeMold
                                     };
                                     _MK._ViewceItemPartName.AddAsync(_ViewceItemPartName);
                                     _MK.SaveChanges();
                                 }
 
                             }
-
-
-
 
                             //for (int i = 0; i < @class._ListViewceItemPartName.Count; i++)
                             //{
@@ -1424,7 +1438,8 @@ namespace CostEstimate.Controllers.NewMoldOther
                                         ipPartName = part.ipPartName,
                                         ipCavityNo = part.ipCavityNo,
                                         ipRateReport = part.ipRateReport,
-                                        ipTypeCavity = part.ipTypeCavity
+                                        ipTypeCavity = part.ipTypeCavity,
+                                        ipTypeMold = part.ipTypeMold,
                                     };
                                     _MK._ViewceItemPartName.AddAsync(_ViewceItemPartName);
                                     _MK.SaveChanges();
@@ -1645,10 +1660,27 @@ namespace CostEstimate.Controllers.NewMoldOther
                         }
                         //insert to 
                         var ceMastCostModel = _MK._ViewceMastCostModel.Where(x => x.mcModelName == @class._ViewceMastMoldOtherRequest.mrModelName).OrderByDescending(x => x.mcCostPlanningNo).Select(x => x.mcCostPlanningNo).FirstOrDefault();
+
+                        @class._listFYCostPlanning = new List<FYCostPlanning>();
+
+
+                        //List<ViewcceRunCostpalnning> _ViewcceRunCostpalnning = _MK._ViewcceRunCostpalnning.OrderBy(x => x.rcYear).ThenBy(x => x.rcRunNo).Distinct().ToList();
+                        //_listFYCostPlanning = _MOLD.ViewceCostPlanning.Where(x=>x.)
+
+                        @class._ViewFYCostPlanning = _MK._ViewceCostPlanning.GroupBy(x => new { x.cpCostPlanningNo, x.cpDescription })
+                                                        .Select(g => new FYCostPlanning
+                                                        {
+                                                            mcCostPlanningNo = g.Key.cpCostPlanningNo,
+                                                            mcDescription = g.Key.cpDescription
+                                                        }).Where(x => x.mcDescription == @class._ViewceMastMoldOtherRequest.mrChartRate).FirstOrDefault();
+
+
                         ViewceMastChartRateOtherReport _ViewceMastChartRateOtherReport = new ViewceMastChartRateOtherReport();
                         //_ViewceMastChartRateOtherReport.crRunno = 1; run auto
                         _ViewceMastChartRateOtherReport.crDocumentNo = RunDoc;
-                        _ViewceMastChartRateOtherReport.crCostPlanningNo = ceMastCostModel;
+                        _ViewceMastChartRateOtherReport.crCostPlanningNo = @class._ViewFYCostPlanning?.mcCostPlanningNo ?? ""; //  ceMastCostModel;
+
+
                         _MK._ViewceMastChartRateOtherReport.AddAsync(_ViewceMastChartRateOtherReport);
                         _MK.SaveChanges();
 
@@ -1925,7 +1957,7 @@ namespace CostEstimate.Controllers.NewMoldOther
                                         if (fromEmailCC != null)
                                         {
                                             //MailboxAddress FromMailcc = new MailboxAddress(fromEmailCC.emName_M365, fromEmailCC.emEmail_M365);
-                                           // email.Cc.Add(FromMailcc);
+                                            // email.Cc.Add(FromMailcc);
                                             mess.CC.Add(fromEmailCC.emEmail_M365);
                                         }
                                     }
@@ -1935,7 +1967,7 @@ namespace CostEstimate.Controllers.NewMoldOther
                             mess.AlternateViews.Add(alternate);
                             smtp.Send(mess);
                         }
-                        
+
                     }
                 }
                 else
@@ -1955,7 +1987,7 @@ namespace CostEstimate.Controllers.NewMoldOther
                     //new send mail
                     var senderEmail = new MailAddress(fromEmailFrom.emEmail_M365, fromEmailFrom.emName_M365);
                     var receiverEmail = new MailAddress(fromEmailTO.emEmail_M365, fromEmailTO.emName_M365);
-                   
+
 
 
 
@@ -2009,7 +2041,7 @@ namespace CostEstimate.Controllers.NewMoldOther
 
 
                     //////////
-                    System.Net.Mime.ContentType mimeTypeS =new System.Net.Mime.ContentType("text/html");
+                    System.Net.Mime.ContentType mimeTypeS = new System.Net.Mime.ContentType("text/html");
                     AlternateView alternate = AlternateView.CreateAlternateViewFromString(EmailBody, mimeTypeS);
                     System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.csloxinfo.com");
                     smtp.UseDefaultCredentials = false;
@@ -2043,7 +2075,7 @@ namespace CostEstimate.Controllers.NewMoldOther
                         }
 
 
-                        
+
                         mess.AlternateViews.Add(alternate);
                         smtp.Send(mess);
                     }

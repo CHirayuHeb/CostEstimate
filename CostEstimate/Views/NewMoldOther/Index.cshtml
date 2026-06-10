@@ -79,7 +79,9 @@
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Customer Name.</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_CusName" asp-for="_ViewceMastMoldOtherRequest.mrCustomerName">
+                                    @Html.DropDownListFor(m => m._ViewceMastMoldOtherRequest.mrCustomerName, (SelectList)ViewBag._TypeCustomerRequest, "กรุณาเลือก", new { @class = "form-control ", id = "i_NewOther_CusName", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
+
+                                    @*<input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_CusName" asp-for="_ViewceMastMoldOtherRequest.mrCustomerName">*@
                                 </div>
 
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
@@ -89,8 +91,6 @@
                                     <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_DocumentNo" asp-for="_ViewceMastMoldOtherRequest.mrDocmentNo" readonly>
 
                                 </div>
-
-
                                 <div class="col-5 " style="">
                                 </div>
                             </div>
@@ -103,7 +103,9 @@
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Function</div>
                                 </div>
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_Function" maxlength="20" asp-for="_ViewceMastMoldOtherRequest.mrFunction">
+                                    @Html.DropDownListFor(m => m._ViewceMastMoldOtherRequest.mrFunction, (SelectList)ViewBag._TypeFunctionRequest, "กรุณาเลือก", new { @class = "form-control ", id = "i_NewOther_Function", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
+
+                                    @*<input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_Function" maxlength="20" asp-for="_ViewceMastMoldOtherRequest.mrFunction">*@
 
                                 </div>
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
@@ -125,8 +127,10 @@
                                     <div class="grid-item fw-800 center  " style="text-align:left;font-size:12px">Model Name</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
+                                    @Html.DropDownListFor(m => m._ViewceMastMoldOtherRequest.mrModelName, (SelectList)ViewBag._TypeModelNameRequest, "กรุณาเลือก", new { @class = "form-control", id = "i_NewOther_ModelName", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
+
                                     @*@Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfIssueDept, (SelectList)ViewBag.TypeofRequestBy, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_RequestBy", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })*@
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_ModelName" asp-for="_ViewceMastMoldOtherRequest.mrModelName">
+                                    @*<input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_ModelName" asp-for="_ViewceMastMoldOtherRequest.mrModelName">*@
 
                                 </div>
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
@@ -199,9 +203,11 @@
                                         <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_ReferenceNo" asp-for="_ViewceMastMoldOtherRequest.mrIssueDate" value="@(Model._ViewceMastMoldOtherRequest.mrIssueDate == null && Model._ViewceMastMoldOtherRequest.mrStep == 1 ? DateTime.Now.ToString("dd/MM/yyyy") : Model._ViewceMastMoldOtherRequest.mrIssueDate)" readonly>
                                     </div>
                                     <div class="col-20 " style=" display: flex;align-items: center;">
+                                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Chart Rate</div>
                                     </div>
                                     <div class="col-25" style=" display: flex;align-items: center; ">
-
+                                        @Html.DropDownListFor(m => m._ViewceMastMoldOtherRequest.mrChartRate, (SelectList)ViewBag._TypeChartRate, "กรุณาเลือก", new { @class = "form-control", id = "i_NewOther_ChartRate", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
+                                        @*@Html.DropDownListFor(m => m._ViewceMastMoldOtherRequest.mrChartRate, ViewBag._TypeChartRate as SelectList, "กรุณาเลือก", new { @class = "form-control", id = "i_NewOther_ChartRate", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })*@
                                     </div>
 
                                     <div class="col-5 " style="">
@@ -209,6 +215,14 @@
                                         <select id="template_TypeCavity" style="display:none">
                                             <option value="">กรุณาเลือก</option>
                                             @foreach (var item in (SelectList)ViewBag.TypeofCavity)
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        </select>
+
+                                        <select id="template_TypeMold" style="display:none">
+                                            <option value="">กรุณาเลือก</option>
+                                            @foreach (var item in (SelectList)ViewBag.TypeMold)
                                             {
                                                 <option value="@item.Value">@item.Text</option>
                                             }
@@ -227,6 +241,7 @@
                                             <th style="text-align:center;display:none" width='70px'>RunNo​</th>
                                             <th style="text-align:center" width='100px'>Cavity No.​</th>
                                             <th style="text-align:center">Type of Cavity.​</th>
+                                            <th style="text-align:center" width='100px'>Type Mold.​</th>
                                             <th style="text-align:center" width='80px'>COEFFICIENT.​</th>
                                             <th style="text-align:center">View Report​</th>
                                             <th style="text-align:center">Delete</th>
@@ -237,55 +252,50 @@
                                             }
                                             @for (int i = 0; i < Model._ListViewceItemPartName.Count(); i++)
                                             {
-                                                <tr>
-                                                    <td>@(row += 1)</td>
-                                                    <td>
-                                                        <input type='text' class='vPartName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipPartName"
-                                                               readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 && Model._ViewceMastMoldOtherRequest.mrStep != 4 && Model._ViewceMastMoldOtherRequest.mrStep != 5 && Model._ViewceMastMoldOtherRequest.mrStep != 6)">
-                                                    </td>
-                                                    <td style="display:none"><input type='text' class='vRunNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgrey;' asp-for="_ListViewceItemPartName[i].ipRunNo" readonly></td>
-                                                    <td width='100px'>
-                                                        <input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipCavityNo"
-                                                               readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 && Model._ViewceMastMoldOtherRequest.mrStep != 4 && Model._ViewceMastMoldOtherRequest.mrStep != 5 && Model._ViewceMastMoldOtherRequest.mrStep != 6)">
-                                                        @*<input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;display:none' asp-for="_ListViewceItemPartName[i].ipCavityNo">*@
-                                                    <td style="pointer-events:@(Model._ViewceMastMoldOtherRequest.mrStep != 1 && Model._ViewceMastMoldOtherRequest.mrStep != 4 && Model._ViewceMastMoldOtherRequest.mrStep != 5 && Model._ViewceMastMoldOtherRequest.mrStep != 6 ? "none" : "auto");">
-                                                        @Html.DropDownListFor(m => m._ListViewceItemPartName[i].ipTypeCavity, (SelectList)ViewBag.TypeofCavity, "กรุณาเลือก", new { @class = "form-control vTypeCavity", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
-                                                    </td>
-                                                    <td>
-                                                        @*<input type='number' class='vRateReport form-control txt-right' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipRateReport"
-                                                                                                    readonly="@( !(Model._ViewceMastMoldOtherRequest.mrStep == 1 ||
-                                                            Model._ViewceMastMoldOtherRequest.mrStep == 4 ||
-                                                            Model._ViewceMastMoldOtherRequest.mrStep == 5 ||
-                                                            Model._ViewceMastMoldOtherRequest.mrStep == 6 ||
-                                                            Model._ViewceMastMoldOtherRequest.mrStep == 7) ? "" : "readonly" )" />*@
+                                            <tr>
+                                                <td>@(row += 1)</td>
+                                                <td>
+                                                    <input type='text' class='vPartName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipPartName"
+                                                           readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 && Model._ViewceMastMoldOtherRequest.mrStep != 4 && Model._ViewceMastMoldOtherRequest.mrStep != 5 && Model._ViewceMastMoldOtherRequest.mrStep != 6)">
+                                                </td>
+                                                <td style="display:none"><input type='text' class='vRunNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgrey;' asp-for="_ListViewceItemPartName[i].ipRunNo" readonly></td>
+                                                <td width='100px'>
+                                                    <input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipCavityNo"
+                                                           readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 && Model._ViewceMastMoldOtherRequest.mrStep != 4 && Model._ViewceMastMoldOtherRequest.mrStep != 5 && Model._ViewceMastMoldOtherRequest.mrStep != 6)">
+                                                    @*<input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;display:none' asp-for="_ListViewceItemPartName[i].ipCavityNo">*@
+                                                <td style="pointer-events:@(Model._ViewceMastMoldOtherRequest.mrStep != 1 && Model._ViewceMastMoldOtherRequest.mrStep != 4 && Model._ViewceMastMoldOtherRequest.mrStep != 5 && Model._ViewceMastMoldOtherRequest.mrStep != 6 ? "none" : "auto");">
+                                                    @Html.DropDownListFor(m => m._ListViewceItemPartName[i].ipTypeCavity, (SelectList)ViewBag.TypeofCavity, "กรุณาเลือก", new { @class = "form-control vTypeCavity", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
+                                                </td>
+                                                <td >
+                                                    @Html.DropDownListFor(m => m._ListViewceItemPartName[i].ipTypeMold, (SelectList)ViewBag.TypeMold, "กรุณาเลือก", new { @class = "form-control vTypeMold", id = "ipMold", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
+                                                </td>
+                                                <td>
+                                                    <input type='number' class='vRateReport form-control txt-right' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgray;' asp-for="_ListViewceItemPartName[i].ipRateReport"
+                                                           readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 && Model._ViewceMastMoldOtherRequest.mrStep != 4 && Model._ViewceMastMoldOtherRequest.mrStep != 5 && Model._ViewceMastMoldOtherRequest.mrStep != 6)">
+                                                </td>
+                                                <td width='70px'>
 
-                                                        <input type='number' class='vRateReport form-control txt-right' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgray;' asp-for="_ListViewceItemPartName[i].ipRateReport"
-                                                               readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 && Model._ViewceMastMoldOtherRequest.mrStep != 4 && Model._ViewceMastMoldOtherRequest.mrStep != 5 && Model._ViewceMastMoldOtherRequest.mrStep != 6)">
+                                                    @*<img src='~/images/petition.png' alt='icon' class='imgM' />*@
+                                                    @if (Model._ViewceMastMoldOtherRequest.mrStep > 3)
+                                                    {
 
-                                                    </td>
-                                                    <td width='70px'>
+                                                        <a href="@Url.Action("Index", "SumRateMoldOther", new { Docno = Model._ListViewceItemPartName[i].ipDocumentNo,vProcess=Model._ListViewceItemPartName[i].ipRunNo })"
+                                                           target="_blank"
+                                                           style="font-size:15px;text-decoration:none;">
+                                                            <img src="~/images/petition.png" alt="icon" class="imgM" />
+                                                        </a>
 
-                                                        @*<img src='~/images/petition.png' alt='icon' class='imgM' />*@
-                                                        @if (Model._ViewceMastMoldOtherRequest.mrStep > 3)
-                                                        {
+                                                    }
 
-                                                            <a href="@Url.Action("Index", "SumRateMoldOther", new { Docno = Model._ListViewceItemPartName[i].ipDocumentNo,vProcess=Model._ListViewceItemPartName[i].ipRunNo })"
-                                                               target="_blank"
-                                                               style="font-size:15px;text-decoration:none;">
-                                                                <img src="~/images/petition.png" alt="icon" class="imgM" />
-                                                            </a>
-
-                                                        }
-
-                                                    </td>
-                                                    <td align='Center'>
-                                                        <input type="button"
-                                                               class="RemoveRow"
-                                                               value="&#x274C"
-                                                               style="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "cursor:not-allowed" : "cursor:pointer")"
-                                                               @(Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "disabled='disabled'" : "") />
-                                                    </td>
-                                                </tr>
+                                                </td>
+                                                <td align='Center'>
+                                                    <input type="button"
+                                                           class="RemoveRow"
+                                                           value="&#x274C"
+                                                           style="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "cursor:not-allowed" : "cursor:pointer")"
+                                                           @(Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "disabled='disabled'" : "") />
+                                                </td>
+                                            </tr>
                                             }
 
                                         </tbody>
@@ -1130,6 +1140,7 @@
         htmls += " <td width='100px'> <input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow ;' value ='0' min='0'>";
         htmls +=" <input type='text' class='vCustomerName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;display:None' value =''></td > ";
         htmls += "<td>" + document.getElementById("template_TypeCavity").outerHTML.replace('template_TypeCavity', 'i_NewMold_TypeCavity').replace('style="display:none"', 'class="vTypeCavity form-control" style="width:100%;font-size:10px;background-color:yellow;"') + "</td>";
+        htmls += "<td>" + document.getElementById("template_TypeMold").outerHTML.replace('template_TypeMold', 'i_NewMold_TypeMold').replace('style="display:none"', 'class="vTypeMold form-control" style="width:100%;font-size:10px;background-color:yellow;"') + "</td>";
         htmls += " <td><input type='number' class='vRateReport form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgray ;' value ='1.1' readonly></td>";
 
         //htmls += " <td width='70px'><img src='" + imgSrc + "' alt='icon' class='imgM' /></td>";

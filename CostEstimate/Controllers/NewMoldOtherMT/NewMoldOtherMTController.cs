@@ -72,11 +72,12 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
             @class._ViewceMastMoldOtherRequest = new ViewceMastMoldOtherRequest();
             @class._ViewceMastMaterialRequest = new ViewceMastMaterialRequest();
             @class._ListceMastModel = new List<ViewceMastModel>();
+            List<ViewceMastModel> _ListMastModel = new List<ViewceMastModel>();
             @class._ListViewceItemMaterialRequestPartName = new List<ViewceItemMaterialRequestPartName>();
 
             if (Docno != null)
             {
-                @class._ListceMastModel = _MK._ViewceMastModel.Where(x => x.mmType == "MoldOtherMaterial").OrderBy(x => x.mmNo).ToList();
+                _ListMastModel = _MK._ViewceMastModel.Where(x => x.mmType == "MoldOtherMaterial").OrderBy(x => x.mmNo).ToList();
 
                 @class._ViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == Docno).FirstOrDefault();
                 @class._ViewceMastMaterialRequest = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == Docno).FirstOrDefault();
@@ -84,11 +85,14 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                 @class._ListViewceItemPartName = _MK._ViewceItemPartName.Where(x => x.ipDocumentNo == Docno).OrderBy(x => x.ipRunNo).ToList();
                 for (int j = 0; j < @class._ListViewceItemPartName.Count(); j++)
                 {
+                    @class._ListceMastModel = _ListMastModel.ToList();  //.Where(x => (x.mmGroup == "" || x.mmGroup is null) || x.mmGroup == @class._ListViewceItemPartName[j].ipTypeMold).ToList();
+
                     for (int i = 0; i < @class._ListceMastModel.Count(); i++)
                     {
                         var _ceMastMaterialRequest = _MK._ViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == @class._ViewceMastMaterialRequest.mrDocumentNoSub
                                                                                           && x.mpNoProcess == @class._ListViewceItemPartName[j].ipRunNo
-                                                                                          && x.mpItem.StartsWith(@class._ListceMastModel[i].mmModelName.ToString())
+                                                                                          && x.mpItem.StartsWith(@class._ListceMastModel[i].mmModelName.ToString()
+                                                                                          )
                                                                                           ).FirstOrDefault();
                         @class._ListViewceItemMaterialRequestPartName.Add(new ViewceItemMaterialRequestPartName
                         {
@@ -104,18 +108,22 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                             mpAmount = _ceMastMaterialRequest != null ? _ceMastMaterialRequest.mpAmount : 0,
                             mpTotal = _ceMastMaterialRequest != null ? _ceMastMaterialRequest.mpTotal : 0,
                             mpIssueDate = @class._ViewceMastMoldOtherRequest != null ? @class._ViewceMastMoldOtherRequest.mrIssueDate : DateTime.Now.ToString("yyyy/MM/dd"),    //_ceMastMaterialRequest != null ? _ceMastMaterialRequest.mpIssueDate : DateTime.Now.ToString("yyyy/MM/dd"),
+                            mpTypeMold = @class._ListViewceItemPartName[j].ipTypeMold,
+                            mmTypeGroup = @class._ListceMastModel[i].mmGroup,
+
                         });
                     }
                 }
 
                 @class._ListGroupViewceItemMaterialRequestPartName = new List<GroupViewceItemMaterialRequestPartName>();
-                @class._ListGroupViewceItemMaterialRequestPartName = @class._ListViewceItemMaterialRequestPartName.GroupBy(x => new { x.mpPartName, x.mpCavityNo, x.mpTypeCavity, x.mpNoProcess })
+                @class._ListGroupViewceItemMaterialRequestPartName = @class._ListViewceItemMaterialRequestPartName.GroupBy(x => new { x.mpPartName, x.mpCavityNo, x.mpTypeCavity, x.mpNoProcess, x.mpTypeMold })
                                                                         .Select(g => new GroupViewceItemMaterialRequestPartName
                                                                         {
                                                                             mpPartName = g.Key.mpPartName,
                                                                             mpCavityNo = g.Key.mpCavityNo,
                                                                             mpTypeCavity = g.Key.mpTypeCavity,
                                                                             mpNoProcess = g.Key.mpNoProcess,
+                                                                            mpTypeMold = g.Key.mpTypeMold,
                                                                             ItemMaterialRequestPartName = g.ToList()
                                                                         }).ToList();
 
@@ -571,7 +579,6 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
 
 
 
-
                     _MK.SaveChanges();
                     dbContextTransaction.Commit();
 
@@ -802,7 +809,7 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                             }
                         }
 
-                      
+
                     }
                     ViewceHistoryApproved _ViewceHistoryApproved = new ViewceHistoryApproved();
                     _ViewceHistoryApproved.htDocNo = RunDoc;// getSrNo[0].ToString();
@@ -818,7 +825,7 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                     _MK.SaveChanges();
 
 
-                  
+
                     dbContextTransaction.Commit();
                 }
                 catch (Exception ex)
@@ -890,40 +897,40 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
 
                 vstep = vstep == 8 ? vstep = 0 : vstep;
 
-                var email = new MimeMessage();
+                //var email = new MimeMessage();
                 ViewrpEmail fromEmailFrom = _IT.rpEmails.Where(w => w.emName_M365 == @class._ViewceHistoryApproved.htFrom).FirstOrDefault();
                 ViewrpEmail fromEmailTO = _IT.rpEmails.Where(w => w.emName_M365 == @class._ViewceHistoryApproved.htTo).FirstOrDefault();
 
-                MailboxAddress FromMailFrom = new MailboxAddress(fromEmailFrom.emName_M365, fromEmailFrom.emEmail_M365);
-                MailboxAddress FromMailTO = new MailboxAddress(fromEmailTO.emName_M365, fromEmailTO.emEmail_M365);
-                email.Subject = "Cost Estimate : Mold Other ==> Material   " + _smStatus; /*( " + _ViewlrBuiltDrawing.bdDocumentType + " ) " + _ViewlrHistoryApprove.htStatus*/;
-                //email.From.Add(MailboxAddress.Parse(_ViewlrHistoryApprove.htFrom));
-                email.From.Add(FromMailFrom);
-                email.To.Add(FromMailTO);
+                //MailboxAddress FromMailFrom = new MailboxAddress(fromEmailFrom.emName_M365, fromEmailFrom.emEmail_M365);
+                //MailboxAddress FromMailTO = new MailboxAddress(fromEmailTO.emName_M365, fromEmailTO.emEmail_M365);
+                //email.Subject = "Cost Estimate : Mold Other ==> Material   " + _smStatus; /*( " + _ViewlrBuiltDrawing.bdDocumentType + " ) " + _ViewlrHistoryApprove.htStatus*/;
+                ////email.From.Add(MailboxAddress.Parse(_ViewlrHistoryApprove.htFrom));
+                //email.From.Add(FromMailFrom);
+                //email.To.Add(FromMailTO);
 
-                if (@class._ViewceHistoryApproved.htCC != null)
-                {
-                    ViewrpEmail fromEmailCC = new ViewrpEmail();
-                    string[] splitCC = @class._ViewceHistoryApproved.htCC.Split(',');
-                    foreach (var i in splitCC)
-                    {
-                        if (i != " " & i != "")
-                        {
-                            var v_cc = "";
-                            try
-                            {
-                                fromEmailCC = _IT.rpEmails.Where(w => w.emName_M365 == i).FirstOrDefault();
-                                MailboxAddress FromMailcc = new MailboxAddress(fromEmailCC.emName_M365, fromEmailCC.emEmail_M365);
-                                email.Cc.Add(FromMailcc);
-                                vCCemail += fromEmailCC.emEmail_M365.ToString() + ",";
-                            }
-                            catch (Exception e)
-                            {
-                                v_cc = e.Message;
-                            }
-                        }
-                    }
-                }
+                //if (@class._ViewceHistoryApproved.htCC != null)
+                //{
+                //    ViewrpEmail fromEmailCC = new ViewrpEmail();
+                //    string[] splitCC = @class._ViewceHistoryApproved.htCC.Split(',');
+                //    foreach (var i in splitCC)
+                //    {
+                //        if (i != " " & i != "")
+                //        {
+                //            var v_cc = "";
+                //            try
+                //            {
+                //                fromEmailCC = _IT.rpEmails.Where(w => w.emName_M365 == i).FirstOrDefault();
+                //                MailboxAddress FromMailcc = new MailboxAddress(fromEmailCC.emName_M365, fromEmailCC.emEmail_M365);
+                //                email.Cc.Add(FromMailcc);
+                //                vCCemail += fromEmailCC.emEmail_M365.ToString() + ",";
+                //            }
+                //            catch (Exception e)
+                //            {
+                //                v_cc = e.Message;
+                //            }
+                //        }
+                //    }
+                //}
                 var varifyUrl = "http://thsweb/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=MoldOther&subType=M";
                 //var varifyUrl = "http://thsweb/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=MoldOther";// + getSrNo[0].ToString();
                 var bodyBuilder = new BodyBuilder();
@@ -946,24 +953,9 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
 
                 // bodyBuilder.Attachments.Add(@"E:\01_My Document\02_Project\_2023\1. PartTransferUnbalance\PartTransferUnbalance\dev_rfc.log");
 
-                bodyBuilder.HtmlBody = string.Format(EmailBody);
-                email.Body = bodyBuilder.ToMessageBody();
-
-                // send email
-                //var smtp1 = new SmtpClient();
-                ////smtp.Connect("mail.csloxinfo.com");
-                // smtp1.Connect("203.146.237.138");
-
-                ////smtp1.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-                ////// connect แบบ SSL/TLS
-                ////smtp1.Connect("150.109.165.119", 465, SecureSocketOptions.SslOnConnect);
-
-
-                //// smtp1.Connect("150.109.165.119");
-                //smtp1.Send(email);
-                //smtp1.Disconnect(true);
-
-
+                //bodyBuilder.HtmlBody = string.Format(EmailBody);
+                //email.Body = bodyBuilder.ToMessageBody();
+                
                 ///////// new send mail
                 var senderEmail = new MailAddress(fromEmailFrom.emEmail_M365, fromEmailFrom.emName_M365);
                 var receiverEmail = new MailAddress(fromEmailTO.emEmail_M365, fromEmailTO.emName_M365);
@@ -1393,7 +1385,7 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                                                 mpAmount = worksheet.Cells[row, c + 3].Value == null || worksheet.Cells[row, c + 3].Value.ToString() == "" ? 0 : Convert.ToDouble(worksheet.Cells[row, c + 3].Value) / 1000,//Convert.ToDouble(worksheet.Cells[row, c + 3].Value) / 1000,
                                                 mpTotal = 0,
                                                 mpIssueDate = vissueMain,
-                                        });
+                                            });
                                             mRunNo += 1;
 
                                         }

@@ -41,10 +41,6 @@
         <div class="input-group ig-property">
             <span class="input-group-text w-25" style="font-size: 13px;">
                 To
-                @*@if (@Model._ViewceMastSubMakerRequest.smStep == 0)
-                    {
-                        <span style="padding-left:5px">DM up.</span>
-                    }*@
             </span>
             <input type="text" class="form-control" id="searchInputTO" asp-for="_ViewceHistoryApproved.htTo" required style="font-size: 13px;" readonly="@(ViewBag.step == 6  ?  "readonly" : null)" />
             @*<input type="text" class="form-control" id="searchInputTO" />*@

@@ -35,7 +35,7 @@
     <div class="table-groupMatPartName table-containerHM " style="margin:auto">
         @for (int j = 0; j < Model._ListGroupViewceItemMaterialRequestPartName.Count(); j++)
         {
-            <table class="tbgreen MatPartName" style="width:100%;margin-right:10px;min-width:350px" data-index="@j">
+            <table class="tbgreen MatPartName" style="max-width:600px;margin-right:10px;min-width:300px;" data-index="@j">
                 <tr>
                     <th colspan="2">
                         <span>PartName</span>
@@ -66,13 +66,24 @@
                         </span>
                     </td>
                 </tr>
-                <tr>
+                @*<tr>
                     <th colspan="2">
                         <span>Issue Date</span>
                     </th>
                     <td colspan="2">
                         <span style="font-size:12px">
-                            @Html.DisplayFor(x => x._ViewceMastMoldOtherRequest.mrIssueDate)
+                            <span>@Model._ListGroupViewceItemMaterialRequestPartName[j].mpTypeCavity</span>
+                        </span>
+
+                    </td>
+                </tr>*@
+                <tr>
+                    <th colspan="2">
+                        <span>Type MOLD</span>
+                    </th>
+                    <td colspan="2">
+                        <span style="font-size:12px">
+                            <span>@Model._ListGroupViewceItemMaterialRequestPartName[j].mpTypeMold</span>
                         </span>
 
                     </td>
@@ -86,8 +97,8 @@
 
                 @for (int g = 0; g < Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName.Count(); g++)
                 {
-                    <tr id="trbodyMatPartName">
-                        <td style="text-align:left">
+                    <tr id="trbodyMatPartName" style=" @(Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mmTypeGroup != null ?"border:1.5px solid #191970;":"")">
+                        <td style="text-align:left; @(Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mmTypeGroup != null ?"background :#FFDEAD;":"")">
                             <input class="form-control center input-mpDocumentNoSub" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpDocumentNoSub" type="text" />
                             <input class="form-control center input-mpRunNo" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpRunNo" type="number" />
                             <input class="form-control center input-mpPartName" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpPartName" type="text" />
@@ -95,39 +106,89 @@
                             <input class="form-control center input-mpTypeCavity" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpTypeCavity" type="text" />
                             <input class="form-control center input-mpNoProcess" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpNoProcess" type="text" />
                             <input class="form-control center input-mpIssueDate" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpIssueDate" type="text" />
-
                             <span>@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpNo</span>
                             <input class="form-control center input-mpNo" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpNo" type="text" />
                         </td>
-                        <td style="text-align:left">
-                            <span>@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem</span>
+                        <td style="text-align:left;@(Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mmTypeGroup != null ?"background :#FFDEAD;":"")">
+                            <span style=" @(Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mmTypeGroup != null ?"font-weight:600;font-size: 11px;":"")">@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem</span>
                             <input class="form-control center input-mpItem" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem" type="text" />
                         </td>
-                        <td>
-                            @*<span>@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpPCS</span>*@
-                            @if (@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem.Contains("CU, GR") || @Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem.Contains("TOOL"))
-                            {
-                                <input class="form-control center input-mpPCS" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpPCS" type="number" readonly />
+                        <td style="@(Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mmTypeGroup != null ?"background :#FFDEAD;":"")">
+                            @{
+                                var currentItem = Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g];
 
-                            }
-                            else
-                            {
-                                <input class="form-control center input-mpPCS" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:yellow" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpPCS" type="number" />
+                                // เช็กเงื่อนไขตามที่คุณส่งมาล่าสุด
+                                bool isReadOnly = (currentItem.mpItem.Contains("CU") && currentItem.mpItem.Contains("GR")) ||
+                                                  currentItem.mpItem.Contains("TOOL")
+                                                  ||
+                                                  currentItem.mmTypeGroup != null
+                                                  || currentItem.mpTypeMold.Contains("Maker")  //SUB Maker
+                                                  ;
 
+                                string bgColor = isReadOnly ? "lightgray" : "yellow";
                             }
+                            <input class="form-control center input-mpPCS"
+                                   autocomplete="off"
+                                   type="number"
+                                   style="width:100%; height:80%; font-size:10px; background-color:@bgColor"
+                                   value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpPCS"
+                                   @(isReadOnly ? "readonly" : "") />
+                            @*@if (@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem.Contains("CU, GR") || @Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem.Contains("TOOL") || @Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mmTypeGroup  is not null)
+                                {
+                                    <input class="form-control center input-mpPCS" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpPCS" type="number" readonly />
+                                }
+                                else
+                                {
+                                    <input class="form-control center input-mpPCS" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:yellow" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpPCS" type="number" />
+
+                                }*@
 
                         </td>
-                        <td>
-                            @if (@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem.Contains("CU, GR") || @Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem.Contains("TOOL"))
-                            {
-                                <input class="form-control center input-mpAmount" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpAmount" type="number" readonly />
+                        <td style="@(Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mmTypeGroup != null ?"background :#FFDEAD;":"")">
 
-                            }
-                            else
-                            {
-                                <input class="form-control center input-mpAmount" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:yellow" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpAmount" type="number" />
+                            @{
+                                // เปลี่ยนชื่อตัวแปรให้สื่อถึง "ข้อมูลรายการวัสดุที่ขอ" (Material Request Item)
+                                var materialRequest = Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g];
 
+                                //(!materialRequest.mmTypeGroup.Contains("THS")
+                                //&& materialRequest.mpTypeMold.Contains("IN THS")
+
+
+                                // เปลี่ยนชื่อตัวแปรให้ชัดเจนว่าเป็นการล็อกไม่ให้แก้ไข
+                                bool isLocked = ((materialRequest.mpItem?.Contains("CU") ?? false) && (materialRequest.mpItem?.Contains("GR") ?? false)) ||
+                                                (materialRequest.mpItem?.Contains("TOOL") ?? false)
+                                                ||
+                                               (materialRequest.mpTypeMold.Contains("SUB Maker") && materialRequest.mmTypeGroup == null) ||
+                                               (materialRequest.mpTypeMold.Contains("SUB Maker") && materialRequest.mmTypeGroup.Contains("IN THS")) ||
+
+                                               ((materialRequest.mpTypeMold?.Contains("IN THS") ?? false) && (materialRequest.mmTypeGroup?.Contains("SUB Maker") ?? false))
+
+                                               // ||
+                                               // materialRequest.mmTypeGroup == null ||
+                                               //( materialRequest.mpTypeMold != "SUB Maker" &&  materialRequest.mmTypeGroup != "IN THS")||
+                                               //(materialRequest.mpTypeMold != "IN THS" && materialRequest.mmTypeGroup != "SUB Maker")
+                                               ;
+
+                                // กำหนดสีตามสถานะการล็อก
+                                string inputBgColor = isLocked ? "lightgray" : "yellow";
                             }
+                            <input class="form-control center input-mpAmount"
+                                   autocomplete="off"
+                                   type="number"
+                                   style="width:100%; height:80%; font-size:10px; background-color:@inputBgColor"
+                                   value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpAmount" 
+                                   @(isLocked ? "readonly" : "") />
+
+                            @*@if (@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem.Contains("CU, GR") || @Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem.Contains("TOOL"))
+                                {
+                                    <input class="form-control center input-mpAmount" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpAmount" type="number" readonly />
+
+                                }
+                                else
+                                {
+                                    <input class="form-control center input-mpAmount" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:yellow" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpAmount" type="number" />
+
+                                }*@
 
                             @*<span>@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpAmount</span>*@
                         </td>

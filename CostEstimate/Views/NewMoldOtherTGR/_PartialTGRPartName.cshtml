@@ -33,7 +33,7 @@
 
                 <th>
                     <span style="font-size:10px">
-                       Function
+                        Function
                     </span>
                 </th>
                 <th>
@@ -49,6 +49,11 @@
                 <th>
                     <span style="font-size:10px">
                         Type Cavity.
+                    </span>
+                </th>
+                <th>
+                    <span style="font-size:10px">
+                        Type Mold.
                     </span>
                 </th>
                 <th>
@@ -70,7 +75,7 @@
             <tr id="trbodyTGRPartName">
                 <td width="80px">@(row += 1)</td>
                 <td width="100px" style="text-align:center">
-                    <span style="font-size:10px;font-weight:600">  @Html.DisplayFor(x => x._ViewceMastMoldOtherRequest.mrFunction)</span> 
+                    <span style="font-size:10px;font-weight:600">  @Html.DisplayFor(x => x._ViewceMastMoldOtherRequest.mrFunction)</span>
                 </td>
                 <td style="text-align:left">
                     <input class="form-control center input-DocumentNoSub" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" asp-for="_ListViewceItemToolGRRequestPartName[i].tpDocumentNoSub" type="text" />
@@ -89,7 +94,11 @@
                     <input class="form-control  input-TypeCavity" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgrey" asp-for="_ListViewceItemToolGRRequestPartName[i].tpTypeCavity" type="text" readonly />
 
                 </td>
-                <td style="text-align:left" width="110px">
+                <td style="text-align:left">
+                    <input class="form-control  input-tpTypeMold" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgrey" asp-for="_ListViewceItemToolGRRequestPartName[i].tpTypeMold" type="text" readonly />
+
+                </td>
+                <td style="text-align:left" width="100px">
                     <input class="form-control center input-ToolCost" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:yellow" asp-for="_ListViewceItemToolGRRequestPartName[i].tpToolCost" type="number" />
 
                 </td>

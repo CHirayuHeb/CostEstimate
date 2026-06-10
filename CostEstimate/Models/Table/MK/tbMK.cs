@@ -127,7 +127,17 @@ namespace CostEstimate.Models.Table.MK
         public string mpIssueBy { get; set; }
         public string mpUpdateBy { get; set; }
         public string mpType { get; set; } //subMaker,MoldModify
+        public string mpMoldType { get; set; } //'MoldTHS', 'MoldMaker', 'ALL'
+        public string mpshipment { get; set; } //start-try0 try0-ship
 
+        [NotMapped]
+        public bool mpMoldTHS{ get; set; }
+
+        [NotMapped]
+        public bool mpMoldMaker { get; set; }
+
+        [NotMapped]
+        public bool mpMoldALL { get; set; }
 
     }
     [Table("ceCostPlanning")]
@@ -172,6 +182,16 @@ namespace CostEstimate.Models.Table.MK
 
     }
 
+    public class FYCostPlanning
+    {
+        [Key]
+
+        public string mcCostPlanningNo { get; set; }
+        public string mcDescription { get; set; }
+
+    }
+
+
     [Table("ceMastModel")]
     public class ViewceMastModel
     {
@@ -182,6 +202,8 @@ namespace CostEstimate.Models.Table.MK
         public string mcIssueBy { get; set; }
         public string mcUpdateBy { get; set; }
         public string mmType { get; set; } //subMaker,MoldModify
+
+        public string mmGroup { get; set; } // type mold IN THS ,SUB MARKER
     }
 
     [Table("ceMastFlowApprove")]
@@ -567,7 +589,7 @@ namespace CostEstimate.Models.Table.MK
     {
 
         public string glDocNo { get; set; }
-    
+
         public List<ViewceDetailSubMakerRequest> gllistDetail { get; set; }
     }
 
@@ -671,7 +693,7 @@ namespace CostEstimate.Models.Table.MK
         public string mrNameApprove { get; set; }
         public int mrFlowNo { get; set; } = 3;
 
-
+        public string mrChartRate { get; set; }
 
 
     }
@@ -685,6 +707,7 @@ namespace CostEstimate.Models.Table.MK
         public double ipCavityNo { get; set; }
         public string ipTypeCavity { get; set; }
         public double ipRateReport { get; set; } = 1.1;
+        public string ipTypeMold { get; set; }
 
     }
 
@@ -722,6 +745,16 @@ namespace CostEstimate.Models.Table.MK
         public bool wpEnable_WTAuto { get; set; }
         public double wpTotal { get; set; }
         public string wpIssueDate { get; set; }
+        public string wpshipment { get; set; }
+        
+
+        [NotMapped]
+        public string wpTypeMold { get; set; }
+
+        [NotMapped]
+        public bool wpshow { get; set; }
+
+      
     }
 
     public class GroupPartName
@@ -731,8 +764,9 @@ namespace CostEstimate.Models.Table.MK
         public double wpCavityNo { get; set; }
         public string wpTypeCavity { get; set; }
         public int wpProcess { get; set; }
+        public string wpTypeMold { get; set; }
         public List<ViewceItemWorkingTimePartName> _GroupViewceItemWorkingTimePartName { get; set; }
-        // public List<GroupViewceItemWorkingTimePartName> _GroupViewceItemWorkingTimePartName { get; set; }
+        public List<ViewceItemWorkingTimePartName> _GroupViewceItemWorkingTimePartNameSubMaker { get; set; }
         public List<ViewceItemWorkingTimeSizeProduct> _GroupViewItemWorkingTimeSizeProduct { get; set; }
     }
 
@@ -754,6 +788,9 @@ namespace CostEstimate.Models.Table.MK
         public double wsSizeProductX { get; set; }
         public double wsSizeProductY { get; set; }
         public double wsSizeProductz { get; set; }
+
+        [NotMapped]
+        public string wsTypeMold { get; set; }
     }
     public class GroupViewItemWorkingTimeSizeProduct
     {
@@ -800,7 +837,11 @@ namespace CostEstimate.Models.Table.MK
         public double mpTotal { get; set; }
         public string mpIssueDate { get; set; }
 
+        [NotMapped]
+        public string mpTypeMold { get; set; }
 
+        [NotMapped]
+        public string mmTypeGroup { get; set; }
     }
 
     public class GroupViewceItemMaterialRequestPartName
@@ -809,6 +850,7 @@ namespace CostEstimate.Models.Table.MK
         public double mpCavityNo { get; set; }
         public string mpTypeCavity { get; set; }
         public int mpNoProcess { get; set; }
+        public string mpTypeMold { get; set; }
         public List<ViewceItemMaterialRequestPartName> ItemMaterialRequestPartName { get; set; }
     }
 
@@ -841,6 +883,9 @@ namespace CostEstimate.Models.Table.MK
         public double tpToolCost { get; set; }
         public double tpGrCost { get; set; }
         public string tpIssueDate { get; set; }
+
+        [NotMapped]
+        public string tpTypeMold { get; set; }
 
     }
 
@@ -888,6 +933,10 @@ namespace CostEstimate.Models.Table.MK
         public string ipSlide { get; set; } = "";
         public bool ipElectroFormType { get; set; } = true;
         public double ipElectroFormPcs { get; set; } = 0;
+        public bool ipEditStatus { get; set; } = true;
+
+        [NotMapped]
+        public string ipTypeMold { get; set; }
     }
     [Table("ceItemInforSlideSystem")]
     public class ViewceItemInforSlideSystem
@@ -954,12 +1003,14 @@ namespace CostEstimate.Models.Table.MK
     }
 
 
-        public class GroupViewceMastInforSpacMoldRequest
+    public class GroupViewceMastInforSpacMoldRequest
     {
         public string ipPartName { get; set; }
         public double ipCavityNo { get; set; }
         public string ipTypeCavity { get; set; }
         public int ipNoProcess { get; set; }
+        public string ipTypeMold { get; set; }
+        public bool ipEditStatus { get; set; } = true;
         public List<ViewceItemInforRequestPartName> InforRequestPartName { get; set; }
         public List<ViewceItemInforSlideSystem> ItemInforSlideSystem { get; set; }
         public List<ViewceItemInforTypeOfCut> ItemInforTypeOfCut { get; set; }
@@ -1078,4 +1129,4 @@ namespace CostEstimate.Models.Table.MK
 
 
 
-    }
+}

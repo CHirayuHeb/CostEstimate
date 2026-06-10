@@ -127,19 +127,38 @@
                     <div class="col-5 " style="">
                     </div>
                 </div>
+                <div class="row center">
+                    <div class="col-5 " style="">
+                    </div>
+                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Type Mold.</div>
+                    </div>
+                    <div class="col-25" style=" display: flex;align-items: center; ">
+                        <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceItemPartName.ipTypeMold" readonly>
+                    </div>
+                    <div class="col-20 " style=" display: flex;align-items: center;">
+                    </div>
+                    <div class="col-25 " style=" display: flex;align-items: center; ">
+                       
+                    </div>
+
+
+                    <div class="col-5 " style="">
+                    </div>
+                </div>
                 <br />
                 @*<div>
-                @await Html.PartialAsync("_PartialSumRateProcess", Model)
-            </div>*@
+            @await Html.PartialAsync("_PartialSumRateProcess", Model)
+        </div>*@
 
                 @*<div class="row">
-                <div class="col-80">
-                    @await Html.PartialAsync("_PartialSumRateProcess", Model)
-                </div>
-                <div class="col-20">
-                    @await Html.PartialAsync("_PartialSumRateMaterial", Model)
-                </div>
-            </div>*@
+            <div class="col-80">
+                @await Html.PartialAsync("_PartialSumRateProcess", Model)
+            </div>
+            <div class="col-20">
+                @await Html.PartialAsync("_PartialSumRateMaterial", Model)
+            </div>
+        </div>*@
 
 
 

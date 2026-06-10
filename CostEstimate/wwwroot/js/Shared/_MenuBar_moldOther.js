@@ -4377,6 +4377,9 @@ function Menubar_MoldOther_saveDraft(action) {
             const itemTypeCavityNoInput = row.querySelector(".vTypeCavity");
             const itemTypeCavity = itemTypeCavityNoInput.options[itemTypeCavityNoInput.selectedIndex].text.trim();
 
+            const itemTypeMoldNoInput = row.querySelector(".vTypeMold");
+            const itemTypeMold = itemTypeMoldNoInput.options[itemTypeMoldNoInput.selectedIndex].text.trim();
+
             //const itemCavityNoInput = row.querySelector(".vCavityNo");
             //const itemCavityNo = itemCavityNoInput.value.trim();
 
@@ -4392,6 +4395,11 @@ function Menubar_MoldOther_saveDraft(action) {
                 itemTypeCavityNoInput.focus(); // optional: focus ช่องนั้น
                 throw new Error("Type of Cavity.​ is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
             }
+            if (itemTypeMold.includes("กรุณาเลือก")) {
+                alert(`กรุณาเลือก Type of Type Mold  (บรรทัดที่ ${index + 1})`);
+                itemTypeMoldNoInput.focus(); // optional: focus ช่องนั้น
+                throw new Error("Type of Cavity.​ is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
+            }
 
             ceItemPartName.push({
                 ipDocumentNo: "",
@@ -4400,6 +4408,7 @@ function Menubar_MoldOther_saveDraft(action) {
                 ipCavityNo: parseInt(row.querySelector(".vCavityNo").value) || 0,
                 ipRateReport: parseFloat(row.querySelector(".vRateReport").value) || 0,
                 ipTypeCavity: itemTypeCavityNoInput.options[itemTypeCavityNoInput.selectedIndex].text.trim(),   //row.querySelector(".vTypeCavity").value.trim(),
+                ipTypeMold: itemTypeMoldNoInput.options[itemTypeMoldNoInput.selectedIndex].text.trim(),   //row.querySelector(".vTypeCavity").value.trim(),
             });
         });
 
@@ -4765,6 +4774,8 @@ function Menubar_MoldOther_savesendMail(action) {
             const itemTypeCavityNoInput = row.querySelector(".vTypeCavity");
             const itemTypeCavity = itemTypeCavityNoInput.options[itemTypeCavityNoInput.selectedIndex].text.trim();
 
+            const itemTypeMoldNoInput = row.querySelector(".vTypeMold");
+            const itemTypeMold = itemTypeMoldNoInput.options[itemTypeMoldNoInput.selectedIndex].text.trim();
             //const itemCavityNoInput = row.querySelector(".vCavityNo");
             //const itemCavityNo = itemCavityNoInput.value.trim();
 
@@ -4780,6 +4791,12 @@ function Menubar_MoldOther_savesendMail(action) {
                 itemTypeCavityNoInput.focus(); // optional: focus ช่องนั้น
                 throw new Error("Type of Cavity.​ is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
             }
+            if (itemTypeMold.includes("กรุณาเลือก")) {
+                alert(`กรุณาเลือก Type of Type Mold  (บรรทัดที่ ${index + 1})`);
+                itemTypeCavityNoInput.focus(); // optional: focus ช่องนั้น
+                throw new Error("Type of Cavity.​ is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
+            }
+
 
             ceItemPartName.push({
                 ipDocumentNo: "",
@@ -4788,6 +4805,9 @@ function Menubar_MoldOther_savesendMail(action) {
                 ipCavityNo: parseInt(row.querySelector(".vCavityNo").value) || 0,
                 ipRateReport: parseFloat(row.querySelector(".vRateReport").value) || 0,
                 ipTypeCavity: itemTypeCavityNoInput.options[itemTypeCavityNoInput.selectedIndex].text.trim(),   //row.querySelector(".vTypeCavity").value.trim(),
+                ipTypeMold: itemTypeMoldNoInput.options[itemTypeMoldNoInput.selectedIndex].text.trim(),   //row.querySelector(".vTypeCavity").value.trim(),
+
+
             });
         });
 
@@ -4906,6 +4926,7 @@ function Menubar_MoldOtherWKsaveDraft(action, action2) {
 
 
     _ItemWorkingTimePartName = [];
+    _ItemWorkingTimePartNameMaker = [];
     _ItemWorkingTimeSizeProduct = [];
 
 
@@ -4953,6 +4974,61 @@ function Menubar_MoldOtherWKsaveDraft(action, action2) {
                             wpEnable_WTAuto: inputEnableAuto.value,//bit
                             wpTotal: parseFloat(inputtotal.value.trim()).toFixed(2) || 0,//double
                             wpIssueDate: "",
+                            wpshipment: "start-try0",
+                        });
+
+
+
+
+                    }
+                }
+
+            });
+
+        });
+
+
+        const tableItemNameM = div.querySelector('table.ItemNameTry0-Ship'); // ดึง table ภายใน
+        const rowsTrM = tableItemNameM.querySelectorAll('tr#trbodyItemNameTry0-Ship');
+        //if (!tableItemName) return; // ถ้าไม่มี table ข้ามไป
+        rowsTrM.forEach((tr, rowIndex) => {
+            //console.log("22222");
+            //    // ดึงทุก td ของ tr นี้
+            const tds = tr.querySelectorAll('td');
+            const inputtotal = tr.querySelector('input.input-total');
+            console.log("✅ เจอ input inputtotal: " + inputtotal.value.trim());
+            tds.forEach((td, tdIndex) => {
+                const inputDocumentNo = td.querySelector('input.input-DocumentNo');
+                const inputPartName = td.querySelector('input.input-PartName');
+                const inputCavityNo = td.querySelector('input.input-CavityNo');
+                const inputTypeCavity = td.querySelector('input.input-TypeCavity');
+                const inputNoProcess = td.querySelector('input.input-NoProcess');
+                const inputGroupName = td.querySelector('input.input-GroupName');
+                const inputProcessName = td.querySelector('input.input-ProcessName');
+                const inputMan = td.querySelector('input.input-man');
+                const inputAuto = td.querySelector('input.input-auto');
+                const inputEnableman = td.querySelector('input.input-Enableman');
+                const inputEnableAuto = td.querySelector('input.input-EnableAuto');
+                if (inputAuto && inputMan) {
+                    if (inputAuto.value.trim() !== "") {
+                        console.log("✅ เจอ input: " + inputAuto.value.trim() + ": " + inputMan.value.trim());
+                        console.log("✅ เจอ input: " + inputEnableman.value + ": " + inputEnableAuto.value);
+                        _ItemWorkingTimePartName.push({
+                            wpDocumentNoSub: inputDocumentNo.value.trim(),
+                            wpRunNo: 0, //int
+                            wpPartName: inputPartName.value.trim(),
+                            wpCavityNo: inputCavityNo.value.trim(),
+                            wpTypeCavity: inputTypeCavity.value.trim(),
+                            wpNoProcess: inputNoProcess.value.trim(), //int
+                            wpGroupName: inputGroupName.value.trim(),
+                            wpProcessName: inputProcessName.value.trim(),
+                            wpWT_Man: parseFloat(inputMan.value.trim()).toFixed(2) || 0,//double
+                            wpWT_Auto: parseFloat(inputAuto.value.trim()).toFixed(2) || 0,//double
+                            wpEnable_WTMan: inputEnableman.value,//bit
+                            wpEnable_WTAuto: inputEnableAuto.value,//bit
+                            wpTotal: parseFloat(inputtotal.value.trim()).toFixed(2) || 0,//double
+                            wpIssueDate: "",
+                            wpshipment: "try0-ship",
                         });
 
 
@@ -4997,6 +5073,7 @@ function Menubar_MoldOtherWKsaveDraft(action, action2) {
     });
 
     viewModel1.append("_ItemWorkingTimePartName", JSON.stringify(_ItemWorkingTimePartName));
+   // viewModel1.append("_ItemWorkingTimePartNameMaker", JSON.stringify(_ItemWorkingTimePartNameMaker));
     viewModel1.append("_ItemWorkingTimeSizeProduct", JSON.stringify(_ItemWorkingTimeSizeProduct));
 
     $.ajax({
@@ -5252,6 +5329,7 @@ function Menubar_MoldOtherWKsavesendMailData(action, action2) {
                             wpEnable_WTAuto: inputEnableAuto.value,//bit
                             wpTotal: parseFloat(inputtotal.value.trim()).toFixed(2) || 0,//double
                             wpIssueDate: "",
+                            wpshipment: "start-try0",
                         });
 
 
@@ -5264,6 +5342,60 @@ function Menubar_MoldOtherWKsavesendMailData(action, action2) {
 
         });
 
+
+
+        const tableItemNameM = div.querySelector('table.ItemNameTry0-Ship'); // ดึง table ภายใน
+        const rowsTrM = tableItemNameM.querySelectorAll('tr#trbodyItemNameTry0-Ship');
+        //if (!tableItemName) return; // ถ้าไม่มี table ข้ามไป
+        rowsTrM.forEach((tr, rowIndex) => {
+            //console.log("22222");
+            //    // ดึงทุก td ของ tr นี้
+            const tds = tr.querySelectorAll('td');
+            const inputtotal = tr.querySelector('input.input-total');
+            console.log("✅ เจอ input inputtotal: " + inputtotal.value.trim());
+            tds.forEach((td, tdIndex) => {
+                const inputDocumentNo = td.querySelector('input.input-DocumentNo');
+                const inputPartName = td.querySelector('input.input-PartName');
+                const inputCavityNo = td.querySelector('input.input-CavityNo');
+                const inputTypeCavity = td.querySelector('input.input-TypeCavity');
+                const inputNoProcess = td.querySelector('input.input-NoProcess');
+                const inputGroupName = td.querySelector('input.input-GroupName');
+                const inputProcessName = td.querySelector('input.input-ProcessName');
+                const inputMan = td.querySelector('input.input-man');
+                const inputAuto = td.querySelector('input.input-auto');
+                const inputEnableman = td.querySelector('input.input-Enableman');
+                const inputEnableAuto = td.querySelector('input.input-EnableAuto');
+                if (inputAuto && inputMan) {
+                    if (inputAuto.value.trim() !== "") {
+                        console.log("✅ เจอ input: " + inputAuto.value.trim() + ": " + inputMan.value.trim());
+                        console.log("✅ เจอ input: " + inputEnableman.value + ": " + inputEnableAuto.value);
+                        _ItemWorkingTimePartName.push({
+                            wpDocumentNoSub: inputDocumentNo.value.trim(),
+                            wpRunNo: 0, //int
+                            wpPartName: inputPartName.value.trim(),
+                            wpCavityNo: inputCavityNo.value.trim(),
+                            wpTypeCavity: inputTypeCavity.value.trim(),
+                            wpNoProcess: inputNoProcess.value.trim(), //int
+                            wpGroupName: inputGroupName.value.trim(),
+                            wpProcessName: inputProcessName.value.trim(),
+                            wpWT_Man: parseFloat(inputMan.value.trim()).toFixed(2) || 0,//double
+                            wpWT_Auto: parseFloat(inputAuto.value.trim()).toFixed(2) || 0,//double
+                            wpEnable_WTMan: inputEnableman.value,//bit
+                            wpEnable_WTAuto: inputEnableAuto.value,//bit
+                            wpTotal: parseFloat(inputtotal.value.trim()).toFixed(2) || 0,//double
+                            wpIssueDate: "",
+                            wpshipment: "try0-ship",
+                        });
+
+
+
+
+                    }
+                }
+
+            });
+
+        });
 
 
 
@@ -6341,77 +6473,80 @@ function Menubar_MoldOtherSMsavesendMailData(action) {
 
     const groupDivs = document.querySelectorAll('div.divMastInforSpac');
     groupDivs.forEach(div => {
+        const selectEditStatus = div.querySelector(".ipEditStatus");
+        const bselectEditStatus = selectEditStatus.options[selectEditStatus.selectedIndex].value;
+        console.log(" EditStatus: " + bselectEditStatus);
+        if (bselectEditStatus == "true") {
+            console.log("true: " + bselectEditStatus);
+
+            const selectSprueSystem = div.querySelector(".ipSprueSystem");
+            const bselect = selectSprueSystem.options[selectSprueSystem.selectedIndex].text.trim();
 
 
-        //const v_ipSprueSystem = div.querySelector(".ipSprueSystem");
+            if (bselect == "กรุณาเลือก") {
+                alert(`กรุณาเลือก Sprue System`);
+                selectSprueSystem.focus();
+                throw new Error("Sprue System.​ is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
+            }
 
-        const selectSprueSystem = div.querySelector(".ipSprueSystem");
-        const bselect = selectSprueSystem.options[selectSprueSystem.selectedIndex].text.trim();
-
-
-        //console.log("vipSprueSystem: " + v_ipSprueSystem.value);
-        //console.log("bselect: " + bselect);
+            const rowsTrSlideSystem = div.querySelectorAll('tr#trSlideSystem'); // แก้ id ให้ตรง
+            const rowsTrShibo = div.querySelectorAll('tr#trItemShibo'); // แก้ id ให้ตรง
+            const rowsTrTypeofcut = div.querySelectorAll('tr#trTypeofcut'); // แก้ id ให้ตรง
 
 
 
+            rowsTrSlideSystem.forEach((tr, index) => {
+                const select = tr.querySelector(".isSlideSystemType");
+                //check value null
+                _ceItemInforSlideSystem.push({
+                    isDocumentNoSub: tr.querySelector(".isDocumentNoSub").value.trim() || "",
+                    isRunNo: index + 1, // 1,2,3... ในแต่ละ div
+                    isPartName: tr.querySelector(".isPartName").value.trim() || "",
+                    isCavityNo: tr.querySelector(".isCavityNo").value.trim() || "",
+                    isTypeCavity: tr.querySelector(".isTypeCavity").value.trim() || "",
+                    isNoProcess: tr.querySelector(".isNoProcess").value.trim() || "",
+                    isSlideSystemType: select ? select.options[select.selectedIndex].text.trim() : "",//tr.querySelector(".isSlideSystemType").value.trim() || "",
+                    isSlideSystemCount: parseFloat(tr.querySelector(".isSlideSystemCount").value.trim() || 0) || 0,
+                });
+            });
 
-        if (bselect == "กรุณาเลือก") {
-            alert(`กรุณาเลือก Sprue System`);
-            selectSprueSystem.focus();
-            throw new Error("Sprue System.​ is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
+            rowsTrTypeofcut.forEach((tr, index) => {
+                const select = tr.querySelector(".icTypeofcut");
+
+                _ceItemInforTypeOfCut.push({
+                    icDocumentNoSub: tr.querySelector(".icDocumentNoSub").value.trim() || "",
+                    icRunNo: index + 1, // 1,2,3... ในแต่ละ div
+                    icPartName: tr.querySelector(".icPartName").value.trim() || "",
+                    icCavityNo: tr.querySelector(".icCavityNo").value.trim() || "",
+                    icTypeCavity: tr.querySelector(".icTypeCavity").value.trim() || "",
+                    icNoProcess: tr.querySelector(".icNoProcess").value.trim() || "",
+                    icTypeofcut: select ? select.options[select.selectedIndex].text.trim() : "", // tr.querySelector(".icTypeofcut").value.trim() || "",
+
+                });
+            });
+
+            rowsTrShibo.forEach((tr, index) => {
+                const select = tr.querySelector(".ibShiboType");
+                const bselect = select ?
+                    select.options[select.selectedIndex].text.trim() == "YES" ? true : false
+                    : "";
+                _ceItemInforShibo.push({
+                    ibDocumentNoSub: tr.querySelector(".ibDocumentNoSub").value.trim() || "",
+                    ibRunNo: index + 1, // 1,2,3... ในแต่ละ div
+                    ibPartName: tr.querySelector(".ibPartName").value.trim() || "",
+                    ibCavityNo: tr.querySelector(".ibCavityNo").value.trim() || "",
+                    ibTypeCavity: tr.querySelector(".ibTypeCavity").value.trim() || "",
+                    ibNoProcess: tr.querySelector(".ibNoProcess").value.trim() || "",
+                    ibShiboType: bselect,//  select ? select.options[select.selectedIndex].text.trim() : "", // tr.querySelector(".icTypeofcut").value.trim() || "",
+                    ibSHiboPCS: tr.querySelector(".ibSHiboPCS").value.trim() || "",
+                });
+            });
+        }
+        else {
+            console.log("false: " + bselectEditStatus);
         }
 
-        const rowsTrSlideSystem = div.querySelectorAll('tr#trSlideSystem'); // แก้ id ให้ตรง
-        const rowsTrShibo = div.querySelectorAll('tr#trItemShibo'); // แก้ id ให้ตรง
-        const rowsTrTypeofcut = div.querySelectorAll('tr#trTypeofcut'); // แก้ id ให้ตรง
 
-
-
-        rowsTrSlideSystem.forEach((tr, index) => {
-            const select = tr.querySelector(".isSlideSystemType");
-            _ceItemInforSlideSystem.push({
-                isDocumentNoSub: tr.querySelector(".isDocumentNoSub").value.trim() || "",
-                isRunNo: index + 1, // 1,2,3... ในแต่ละ div
-                isPartName: tr.querySelector(".isPartName").value.trim() || "",
-                isCavityNo: tr.querySelector(".isCavityNo").value.trim() || "",
-                isTypeCavity: tr.querySelector(".isTypeCavity").value.trim() || "",
-                isNoProcess: tr.querySelector(".isNoProcess").value.trim() || "",
-                isSlideSystemType: select ? select.options[select.selectedIndex].text.trim() : "",//tr.querySelector(".isSlideSystemType").value.trim() || "",
-                isSlideSystemCount: parseFloat(tr.querySelector(".isSlideSystemCount").value.trim() || 0) || 0,
-            });
-        });
-
-        rowsTrTypeofcut.forEach((tr, index) => {
-            const select = tr.querySelector(".icTypeofcut");
-
-            _ceItemInforTypeOfCut.push({
-                icDocumentNoSub: tr.querySelector(".icDocumentNoSub").value.trim() || "",
-                icRunNo: index + 1, // 1,2,3... ในแต่ละ div
-                icPartName: tr.querySelector(".icPartName").value.trim() || "",
-                icCavityNo: tr.querySelector(".icCavityNo").value.trim() || "",
-                icTypeCavity: tr.querySelector(".icTypeCavity").value.trim() || "",
-                icNoProcess: tr.querySelector(".icNoProcess").value.trim() || "",
-                icTypeofcut: select ? select.options[select.selectedIndex].text.trim() : "", // tr.querySelector(".icTypeofcut").value.trim() || "",
-
-            });
-        });
-
-        rowsTrShibo.forEach((tr, index) => {
-            const select = tr.querySelector(".ibShiboType");
-            const bselect = select ?
-                select.options[select.selectedIndex].text.trim() == "YES" ? true : false
-                : "";
-            _ceItemInforShibo.push({
-                ibDocumentNoSub: tr.querySelector(".ibDocumentNoSub").value.trim() || "",
-                ibRunNo: index + 1, // 1,2,3... ในแต่ละ div
-                ibPartName: tr.querySelector(".ibPartName").value.trim() || "",
-                ibCavityNo: tr.querySelector(".ibCavityNo").value.trim() || "",
-                ibTypeCavity: tr.querySelector(".ibTypeCavity").value.trim() || "",
-                ibNoProcess: tr.querySelector(".ibNoProcess").value.trim() || "",
-                ibShiboType: bselect,//  select ? select.options[select.selectedIndex].text.trim() : "", // tr.querySelector(".icTypeofcut").value.trim() || "",
-                ibSHiboPCS: tr.querySelector(".ibSHiboPCS").value.trim() || "",
-            });
-        });
 
 
     });
@@ -6419,6 +6554,7 @@ function Menubar_MoldOtherSMsavesendMailData(action) {
     viewModel1.append("_ceItemInforSlideSystem", JSON.stringify(_ceItemInforSlideSystem));
     viewModel1.append("_ceItemInforTypeOfCut", JSON.stringify(_ceItemInforTypeOfCut));
     viewModel1.append("_ceItemInforShibo", JSON.stringify(_ceItemInforShibo));
+
     $.ajax({
         type: "POST",
         url: action,

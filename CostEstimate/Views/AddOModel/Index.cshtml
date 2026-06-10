@@ -65,6 +65,7 @@
                                                 <tr>
                                                     <th style="text-align:center" width="5%">NO</th>
                                                     <th style="text-align:center">Model Name</th>
+                                                    <th style="text-align:center">Type</th>
                                                     <th style="text-align:center" width="15%">แก้ไข</th>
                                                     <th style="text-align:center" width="15%">ลบ</th>
                                                 </tr>
@@ -81,7 +82,9 @@
                                                             <td>
                                                                 @item.mmModelName
                                                             </td>
-
+                                                            <td>
+                                                                @item.mmGroup
+                                                            </td>
                                                             <td>
                                                                 @*&#128221; &#128203;*@
                                                                 <input type="button" style="font-size:15px" value="&#128221;" onclick="Menubar_EditMasterOModel('@item.mmNo','@item.mmModelName','@Url.Action("SearchMastModel","AddOModel")')">

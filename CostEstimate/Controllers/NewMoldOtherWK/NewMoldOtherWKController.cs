@@ -81,7 +81,11 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
             @class._ListViewceItemWorkingTimeSizeProduct = new List<ViewceItemWorkingTimeSizeProduct>();
 
 
-            @class._ListceMastProcess = _MK._ViewceMastProcess.Where(x => x.mpType == "MoldOtherWK").OrderBy(x => x.mpNo).ToList();
+            @class._ListceMastProcess = _MK._ViewceMastProcess.Where(x => x.mpType == "MoldOtherWK" && x.mpshipment.Contains("start-try0")).OrderBy(x => x.mpNo).ToList();
+            @class._ListceMastProcessMaker = _MK._ViewceMastProcess.Where(x => x.mpType == "MoldOtherWK" && x.mpshipment.Contains("try0-ship")).OrderBy(x => x.mpNo).ToList();
+
+
+
             List<ViewceItemWorkingTimePartName> _ListViewceItemWorkingTimePartName = new List<ViewceItemWorkingTimePartName>();
 
             if (Docno != null)
@@ -89,10 +93,9 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                 @class._ViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == Docno).FirstOrDefault();
                 @class._ViewceMastWorkingTimeRequest = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNo == Docno).FirstOrDefault();
                 @class._ListViewceItemWorkingTimePartName = new List<ViewceItemWorkingTimePartName>();//  _MK._ViewceItemWorkingTimePartName.Where(x => x.wpDocumentNoSub == @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub).ToList();
-
+                @class._ListViewceItemWorkingTimePartNameMaker = new List<ViewceItemWorkingTimePartName>();
                 @class._ListViewceItemPartName = _MK._ViewceItemPartName.Where(x => x.ipDocumentNo == Docno).OrderBy(x => x.ipRunNo).ToList();
                 //@class._ListViewceItemWorkingTimeSizeProduct = _MK._ViewceItemWorkingTimeSizeProduct.Where(x => x.wsDocumentNoSub == @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub).ToList();
-
                 for (int j = 0; j < @class._ListViewceItemPartName.Count(); j++)
                 {
                     for (int i = 0; i < @class._ListceMastProcess.Count(); i++)
@@ -100,9 +103,24 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                         var _ViewceItemPartName = _MK._ViewceItemWorkingTimePartName.Where(x => x.wpDocumentNoSub == @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub &&
                                                                                       x.wpNoProcess == @class._ListViewceItemPartName[j].ipRunNo &&
                                                                                       x.wpGroupName == @class._ListceMastProcess[i].mpGroupName &&
-                                                                                      x.wpProcessName == @class._ListceMastProcess[i].mpProcessName
+                                                                                      x.wpProcessName == @class._ListceMastProcess[i].mpProcessName &&
+                                                                                      x.wpshipment == "start-try0"
                                                                                 //wpPartName wpCavityNo wpTypeCavity ไม่ได้ ต้องจับ  ipRunNo อย่างเดียวเพราะว่าเขาบอกมันจะเปลี่ยนแน่นอน
                                                                                 ).OrderBy(x => x.wpRunNo).FirstOrDefault();
+                        bool bshow = false;
+                        //ALL 1
+                        if (@class._ListceMastProcess[i].mpMoldType.Contains("ALL"))
+                        { bshow = true; }
+                        //THS  == THS 1
+                        else if (@class._ListceMastProcess[i].mpMoldType.ToUpper().Contains("THS") && @class._ListViewceItemPartName[j].ipTypeMold.ToUpper().Contains("THS"))
+                        { bshow = true; }
+                        //MAKER == MAKER 1
+                        else if (@class._ListceMastProcess[i].mpMoldType.ToUpper().Contains("MAKER") && @class._ListViewceItemPartName[j].ipTypeMold.ToUpper().Contains("MAKER"))
+                        { bshow = true; }
+                        //0
+                        else { bshow = false; }
+
+
                         @class._ListViewceItemWorkingTimePartName.Add(new ViewceItemWorkingTimePartName
                         {
                             wpDocumentNoSub = @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub,
@@ -119,9 +137,63 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                             wpEnable_WTAuto = _ViewceItemPartName != null ? _ViewceItemPartName.wpEnable_WTAuto : @class._ListceMastProcess[i].mpEnable_WTAuto,
                             wpTotal = _ViewceItemPartName != null ? _ViewceItemPartName.wpTotal : 0,
                             wpIssueDate = _ViewceItemPartName != null ? _ViewceItemPartName.wpIssueDate : "",// @class._ListceMastProcess[i].mpProcessName.Trim(),
+                            wpTypeMold = @class._ListViewceItemPartName[j].ipTypeMold,
+                            wpshipment = "start-try0",
+                            wpshow = bshow,
+
+                        });
+                    }
+
+                    for (int i = 0; i < @class._ListceMastProcessMaker.Count(); i++)
+                    {
+                        var _ViewceItemPartName = _MK._ViewceItemWorkingTimePartName.Where(x => x.wpDocumentNoSub == @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub &&
+                                                                                      x.wpNoProcess == @class._ListViewceItemPartName[j].ipRunNo &&
+                                                                                      x.wpGroupName == @class._ListceMastProcessMaker[i].mpGroupName &&
+                                                                                      x.wpProcessName == @class._ListceMastProcessMaker[i].mpProcessName &&
+                                                                                      x.wpshipment == "try0-ship"
+                                                                                //wpPartName wpCavityNo wpTypeCavity ไม่ได้ ต้องจับ  ipRunNo อย่างเดียวเพราะว่าเขาบอกมันจะเปลี่ยนแน่นอน
+                                                                                ).OrderBy(x => x.wpRunNo).FirstOrDefault();
+                        bool bshow = false;
+                        //ALL 1
+                        if (@class._ListceMastProcessMaker[i].mpMoldType.Contains("ALL"))
+                        { bshow = true; }
+                        //THS  == THS 1
+                        else if (@class._ListceMastProcessMaker[i].mpMoldType.ToUpper().Contains("THS") && @class._ListViewceItemPartName[j].ipTypeMold.ToUpper().Contains("THS"))
+                        { bshow = true; }
+                        //MAKER == MAKER 1
+                        else if (@class._ListceMastProcessMaker[i].mpMoldType.ToUpper().Contains("MAKER") && @class._ListViewceItemPartName[j].ipTypeMold.ToUpper().Contains("MAKER"))
+                        { bshow = true; }
+                        //0
+                        else { bshow = false; }
+
+
+                        @class._ListViewceItemWorkingTimePartNameMaker.Add(new ViewceItemWorkingTimePartName
+                        {
+                            wpDocumentNoSub = @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub,
+                            wpRunNo = i + 1,
+                            wpPartName = @class._ListViewceItemPartName[j].ipPartName,
+                            wpCavityNo = @class._ListViewceItemPartName[j].ipCavityNo,
+                            wpTypeCavity = @class._ListViewceItemPartName[j].ipTypeCavity,
+                            wpNoProcess = @class._ListViewceItemPartName[j].ipRunNo,
+                            wpGroupName = @class._ListceMastProcessMaker[i].mpGroupName.Trim(),
+                            wpProcessName = @class._ListceMastProcessMaker[i].mpProcessName.Trim(),
+                            wpWT_Man = _ViewceItemPartName != null ? _ViewceItemPartName.wpWT_Man : 0,
+                            wpWT_Auto = _ViewceItemPartName != null ? _ViewceItemPartName.wpWT_Auto : 0,
+                            wpEnable_WTMan = _ViewceItemPartName != null ? _ViewceItemPartName.wpEnable_WTMan : @class._ListceMastProcessMaker[i].mpEnable_WTMan,
+                            wpEnable_WTAuto = _ViewceItemPartName != null ? _ViewceItemPartName.wpEnable_WTAuto : @class._ListceMastProcessMaker[i].mpEnable_WTAuto,
+                            wpTotal = _ViewceItemPartName != null ? _ViewceItemPartName.wpTotal : 0,
+                            wpIssueDate = _ViewceItemPartName != null ? _ViewceItemPartName.wpIssueDate : "",// @class._ListceMastProcess[i].mpProcessName.Trim(),
+                            wpTypeMold = @class._ListViewceItemPartName[j].ipTypeMold,
+                            wpshipment = "try0-ship",
+                            wpshow = bshow,
+
                         });
                     }
                 }
+
+
+
+
                 for (int j = 0; j < @class._ListViewceItemPartName.Count(); j++)
                 {
                     var _ceItemWorkingTimeSizeProduct = _MK._ViewceItemWorkingTimeSizeProduct.Where(x => x.wsDocumentNoSub == @class._ViewceMastWorkingTimeRequest.wrDocumentNoSub && x.wsRunNo == @class._ListViewceItemPartName[j].ipRunNo).FirstOrDefault();
@@ -136,20 +208,24 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                         wsSizeProductX = _ceItemWorkingTimeSizeProduct != null ? _ceItemWorkingTimeSizeProduct.wsSizeProductX : 0,
                         wsSizeProductY = _ceItemWorkingTimeSizeProduct != null ? _ceItemWorkingTimeSizeProduct.wsSizeProductY : 0,
                         wsSizeProductz = _ceItemWorkingTimeSizeProduct != null ? _ceItemWorkingTimeSizeProduct.wsSizeProductz : 0,
+                        wsTypeMold = @class._ListViewceItemPartName[j].ipTypeMold,
                     });
                 }
 
 
                 //add group  ipPartName ipCavityNo ipTypeCavity
-                @class._ListGroupPartName = @class._ListViewceItemWorkingTimePartName.GroupBy(x => new { x.wpPartName, x.wpCavityNo, x.wpTypeCavity, x.wpNoProcess })
+                @class._ListGroupPartName = @class._ListViewceItemWorkingTimePartName.GroupBy(x => new { x.wpPartName, x.wpCavityNo, x.wpTypeCavity, x.wpNoProcess, x.wpTypeMold })
                             .Select(g => new GroupPartName
                             {
                                 wpPartName = g.Key.wpPartName,
                                 wpCavityNo = g.Key.wpCavityNo,
                                 wpTypeCavity = g.Key.wpTypeCavity,
                                 wpProcess = g.Key.wpNoProcess,
+                                wpTypeMold = g.Key.wpTypeMold,
                                 _GroupViewceItemWorkingTimePartName = @class._ListViewceItemWorkingTimePartName.Where(x => x.wpPartName == g.Key.wpPartName && x.wpCavityNo == g.Key.wpCavityNo
-                                                                                                                        && x.wpTypeCavity == g.Key.wpTypeCavity && x.wpNoProcess == g.Key.wpNoProcess).ToList(),
+                                                                                                                        && x.wpTypeCavity == g.Key.wpTypeCavity && x.wpNoProcess == g.Key.wpNoProcess
+                                                                                                                        && x.wpTypeMold == g.Key.wpTypeMold
+                                                                                                                        ).ToList(),
 
 
                                 //_GroupViewceItemWorkingTimePartName = g
@@ -164,6 +240,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                                                                               && x.wsPartName == g.Key.wpPartName
                                                                               && x.wsCavityNo == g.Key.wpCavityNo
                                                                               && x.wsTypeCavity == g.Key.wpTypeCavity
+                                                                              && x.wsTypeMold == g.Key.wpTypeMold
                                                                                 ).Select(y => new ViewceItemWorkingTimeSizeProduct
                                                                                 {
                                                                                     wsDocumentNoSub = y.wsDocumentNoSub,
@@ -174,8 +251,15 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                                                                                     wsSize = y.wsSize,
                                                                                     wsSizeProductX = y.wsSizeProductX,
                                                                                     wsSizeProductY = y.wsSizeProductY,
-                                                                                    wsSizeProductz = y.wsSizeProductz
+                                                                                    wsSizeProductz = y.wsSizeProductz,
+                                                                                    wsTypeMold = y.wsTypeMold
                                                                                 }).ToList(),
+
+                                _GroupViewceItemWorkingTimePartNameSubMaker = @class._ListViewceItemWorkingTimePartNameMaker.Where(x => x.wpPartName == g.Key.wpPartName && x.wpCavityNo == g.Key.wpCavityNo
+                                                                                                                           && x.wpTypeCavity == g.Key.wpTypeCavity && x.wpNoProcess == g.Key.wpNoProcess
+                                                                                                                           && x.wpTypeMold == g.Key.wpTypeMold
+                                                                                                                        ).ToList(),
+
                             })
                             .ToList();
 
@@ -707,7 +791,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                         dt.Columns.Add("wpEnable_WTAuto", typeof(bool));
                         dt.Columns.Add("wpTotal", typeof(double));
                         dt.Columns.Add("wpIssueDate", typeof(string));
-
+                        dt.Columns.Add("wpshipment", typeof(string));
                         for (int i = 0; i < @class._ListViewceItemWorkingTimePartName.Count; i++)
                         {
                             var item = @class._ListViewceItemWorkingTimePartName[i];
@@ -725,7 +809,8 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                                 item.wpEnable_WTMan,
                                 item.wpEnable_WTAuto,
                                 item.wpTotal,
-                                DateTime.Now.ToString("yyyyMMdd HH:mm:ss")
+                                DateTime.Now.ToString("yyyyMMdd HH:mm:ss"),
+                                item.wpshipment
                             );
                         }
 
@@ -744,7 +829,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                         bulkCopy.ColumnMappings.Add("wpEnable_WTAuto", "wpEnable_WTAuto");
                         bulkCopy.ColumnMappings.Add("wpTotal", "wpTotal");
                         bulkCopy.ColumnMappings.Add("wpIssueDate", "wpIssueDate");
-
+                        bulkCopy.ColumnMappings.Add("wpshipment", "wpshipment");
                         bulkCopy.WriteToServer(dt);
                     }
 
@@ -1280,7 +1365,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
             {
                 var worksheet = package.Workbook.Worksheets.Add("ItemPartName");
                 worksheet.Cells.Style.Font.Size = 12;
-                
+
                 //header main
                 worksheet.Cells[1, 1].Value = "Document No";
                 worksheet.Cells[1, 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);

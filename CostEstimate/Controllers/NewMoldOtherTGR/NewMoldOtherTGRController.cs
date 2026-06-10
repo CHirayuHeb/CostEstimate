@@ -87,6 +87,7 @@ namespace CostEstimate.Controllers.NewMoldOtherTGR
                         tpToolCost = _ceItemToolGRRequestPartName != null ? _ceItemToolGRRequestPartName.tpToolCost : 0,
                         tpGrCost = _ceItemToolGRRequestPartName != null ? _ceItemToolGRRequestPartName.tpGrCost : 0,
                         tpIssueDate = _ceItemToolGRRequestPartName != null ? _ceItemToolGRRequestPartName.tpIssueDate : DateTime.Now.ToString("yyyy/MM/dd"),
+                        tpTypeMold = @class._ListViewceItemPartName[j].ipTypeMold,
                     });
 
                 }

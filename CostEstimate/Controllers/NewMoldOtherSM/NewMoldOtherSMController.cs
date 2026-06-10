@@ -148,6 +148,8 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
                         ipSlide = _ceItemInforRequestPartName != null ? _ceItemInforRequestPartName.ipSlide : "",
                         ipElectroFormType = _ceItemInforRequestPartName != null ? _ceItemInforRequestPartName.ipElectroFormType : false,
                         ipElectroFormPcs = _ceItemInforRequestPartName != null ? _ceItemInforRequestPartName.ipElectroFormPcs : 0,
+                        ipTypeMold = @class._ListViewceItemPartName[j].ipTypeMold,
+                        ipEditStatus = _ceItemInforRequestPartName != null ? _ceItemInforRequestPartName.ipEditStatus :true,
                     });
 
                     var _ceItemInforSlideSystem = _MK._ViewceItemInforSlideSystem.Where(x => x.isNoProcess == @class._ListViewceItemPartName[j].ipRunNo && x.isDocumentNoSub == @class._ViewceMastInforSpacMoldRequest.irDocumentNoSub).ToList();
@@ -161,13 +163,15 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
 
                 }
 
-                @class._ListGroupViewceMastInforSpacMoldRequest = @class._ListViewceItemInforRequestPartName.GroupBy(x => new { x.ipPartName, x.ipCavityNo, x.ipTypeCavity, x.ipNoProcess })
+                @class._ListGroupViewceMastInforSpacMoldRequest = @class._ListViewceItemInforRequestPartName.GroupBy(x => new { x.ipPartName, x.ipCavityNo, x.ipTypeCavity, x.ipNoProcess,x.ipTypeMold,x.ipEditStatus })
                       .Select(g => new GroupViewceMastInforSpacMoldRequest
                       {
                           ipPartName = g.Key.ipPartName,
                           ipCavityNo = g.Key.ipCavityNo,
                           ipTypeCavity = g.Key.ipTypeCavity,
                           ipNoProcess = g.Key.ipNoProcess,
+                          ipTypeMold = g.Key.ipTypeMold,
+                          ipEditStatus = g.Key.ipEditStatus,
                           InforRequestPartName = g.ToList(),
                           ItemInforSlideSystem = @class._ListViewceItemInforSlideSystem.Where(x => x.isNoProcess == g.Key.ipNoProcess).ToList(),
                           ItemInforTypeOfCut = @class._ListViewceItemInforTypeOfCut.Where(x => x.icNoProcess == g.Key.ipNoProcess).ToList(),
@@ -1037,10 +1041,10 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
                             ipSlide = @class._ListViewceItemInforRequestPartName[i].ipSlide,
                             ipElectroFormType = @class._ListViewceItemInforRequestPartName[i].ipElectroFormType,
                             ipElectroFormPcs = @class._ListViewceItemInforRequestPartName[i].ipElectroFormPcs,
+                            ipEditStatus = @class._ListViewceItemInforRequestPartName[i].ipEditStatus
 
                         };
                         _MK._ViewceItemInforRequestPartName.AddAsync(_ceItemInforRequestPartName);
-
                     }
 
 

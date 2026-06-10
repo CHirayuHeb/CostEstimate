@@ -54,7 +54,18 @@
 
                         </td>
                     </tr>
-
+                    <tr>
+                        <th style="text-align:left;" width="40%">Mold Type Process</th>
+                        <td style="text-align:center;font-size:9px">
+                            @Html.DropDownListFor(m => m._ViewceMastProcess.mpMoldType, (SelectList)ViewBag._TypeMoldTypeProcess, "กรุณาเลือก", new { @class = "form-control ", id = "idmpType", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="text-align:left;" width="40%">Shipment Process</th>
+                        <td style="text-align:center;font-size:9px">
+                            @Html.DropDownListFor(m => m._ViewceMastProcess.mpshipment, (SelectList)ViewBag._TypeShipmentProcess, "กรุณาเลือก", new { @class = "form-control ", id = "idmpshipment", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
+                        </td>
+                    </tr>
                 </table>
                 <br />
                 <div class="modal-footer">

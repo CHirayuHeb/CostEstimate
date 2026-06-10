@@ -750,17 +750,21 @@ col-100 {
 
 /* ใช้ flexbox */
 .table-containerHM {
-    /*display: flex;*/ /* ใช้ flexbox */
-    /*gap: 20px;*/ /* ระยะห่างระหว่างตาราง */
-    /*flex-wrap: wrap;*/ /* ถ้าแคบจะขึ้นบรรทัดใหม่ */
     display: flex;
-    flex-wrap: nowrap; /* ❗ ห้ามขึ้นบรรทัดใหม่ */
-    overflow-x: auto; /* ✅ ให้เลื่อนแนวนอนได้ถ้าเกิน */
+    flex-wrap: nowrap; 
+    overflow-x: auto; 
     gap: 10px;
-    /*border: 1px solid #ccc;
-    padding: 10px;*/
     padding: 5px;
 }
+
+.table-containerWK {
+   
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 5px;
+}
+
 
 .my-table {
     border: 1px solid #cbeff7;
