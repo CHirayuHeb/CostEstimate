@@ -14,7 +14,7 @@
 
 }
 <link href="~/css/Home/siteHome.css" rel="stylesheet" />
-<script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("AddOModel"); } }</script>
+<script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("AddOMaster"); } }</script>
 <div class="home-content">
     <div id="DisplayContent" class="content-box">
         <br />
@@ -135,7 +135,7 @@
                             <div class="modal-body">
                                 <br />
                                 <div id="loadingIndicatorOModel" style="display: block; position: absolute; left: 50%; transform: translate(-50%, -50%); z-index: 9999;margin:0px">
-                                    @*<div class="loader"></div>*@
+    
                                     <img src="~/images/wait1.gif" alt="Loading..." width="100px"><span style="font-weight:600">Loading...</span>
                                 </div>
                                 <div id="ResultMastOModel" style="display: none;">
@@ -143,11 +143,7 @@
                                 </div>
 
                             </div>
-                            <!-- Modal Footer -->
-                            @*<div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-
-                                </div>*@
+                        
                         </div>
                     </div>
                 </div>

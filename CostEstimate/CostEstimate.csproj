@@ -115,6 +115,9 @@
     <Content Update="Views\Shared\_MenuBarMain.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\SumRateMoldOtherSub\_PartialSumRateSubProcessSub.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,56 @@
+﻿@using System.Security.Claims;
+@model CostEstimate.Models.Common.Class;
+@using CostEstimate.Models.Common;
+
+@{
+    string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+    string _admin = GlobalVariable.perAdmin.ToUpper();
+}
+<table class="tbgreen" style="font-size:8px">
+    <tr>
+        <th width="5%">No.</th>
+        <th width="40%">
+            ITEM
+        </th>
+        <th width="50px">
+            PCS.
+        </th>
+        <th width="50px">
+            AMOUNT(KB)
+        </th>
+
+    </tr>
+    @{
+        var vrow = 0;
+    }
+    @for (int i = 0; i < Model._ListViewceItemMaterialRequestPartName.Count; i++)
+    {
+        <tr>
+            <td>
+                @(vrow += 1)
+            </td>
+            <td>
+                <span style="font-size:9px">
+                    @Model._ListViewceItemMaterialRequestPartName[i].mpItem
+                </span>
+            </td>
+            <td>
+                <input class="form-control center input-mpPCS" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@Model._ListViewceItemMaterialRequestPartName[i].mpPCS" type="text" readonly />
+            </td>
+            <td>
+                <input class="form-control center input-mpAmount" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@Model._ListViewceItemMaterialRequestPartName[i].mpAmount" type="text" readonly />
+            </td>
+        </tr>
+    }
+    <tr>
+        <td colspan="3" style="font-weight:800">TOTAL MT.</td>
+        <td>
+            <input class="form-control center input-mpTotal" id="MtTOTAL" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@Model._ListViewceItemMaterialRequestPartName[0].mpTotal" type="text" readonly />
+        </td>
+    </tr>
+</table>

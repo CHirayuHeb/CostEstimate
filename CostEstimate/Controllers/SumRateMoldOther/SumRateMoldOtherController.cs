@@ -116,8 +116,10 @@ namespace CostEstimate.Controllers.SumRateMoldOther
 
 
                 //select CE mast cost
-
                 @class._ListGroupViewceMastChartRateOtherReport = getListGroupViewceMastChartRateOtherReport(Docno, vProcess);
+
+
+
 
             }
             catch (Exception ex)
@@ -297,8 +299,6 @@ namespace CostEstimate.Controllers.SumRateMoldOther
                     crChartRateSub_Oversea_Cost = listCeCostPlan[i].cpGroupName == "NC." ? Math.Round(crWTTotal * listCeCostPlan[i].cpCR_Oversea_Rate / 1000, 2) : Math.Round(crWTMan * listCeCostPlan[i].cpCR_Oversea_Rate / 1000, 2),
                 });
             }
-
-
 
 
             @class._ListGroupViewceMastChartRateOtherReport = @class._ListViewDetailceMastChartRateOtherReport.GroupBy(p => p.crGroupName).Select(g => new GroupViewceMastChartRateOtherReport

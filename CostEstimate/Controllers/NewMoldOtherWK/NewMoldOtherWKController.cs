@@ -1346,7 +1346,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
 
 
         [HttpPost]
-        public IActionResult btnExportExcel(Class @class, string id)
+        public IActionResult btnExportExcel1(Class @class, string id)
         {
             List<ViewceMastMoldOtherRequest> _ListViewceMastMoldOtherRequest = new List<ViewceMastMoldOtherRequest>();
             @class._ListViewceItemWorkingTimePartName = new List<ViewceItemWorkingTimePartName>();
@@ -1355,6 +1355,11 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
             string fileName = "Export(" + slipMat + ").xlsx";
 
             @class._ListceMastProcess = _MK._ViewceMastProcess.Where(x => x.mpType == "MoldOtherWK").OrderBy(x => x.mpNo).ToList();
+
+
+
+            @class._ListceMastProcess = _MK._ViewceMastProcess.Where(x => x.mpType == "MoldOtherWK" && x.mpshipment.Contains("start-try0")).OrderBy(x => x.mpNo).ToList();
+            @class._ListceMastProcessMaker = _MK._ViewceMastProcess.Where(x => x.mpType == "MoldOtherWK" && x.mpshipment.Contains("try0-ship")).OrderBy(x => x.mpNo).ToList();
 
 
             //check ข้อมูลเดิม
@@ -1379,11 +1384,14 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                 worksheet.Cells[1, 4].Value = "Type Cavity";
                 worksheet.Cells[1, 4].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
-                worksheet.Cells[1, 5].Value = "Process (ห้ามแก้)";
+                worksheet.Cells[1, 5].Value = "Type Mold";
                 worksheet.Cells[1, 5].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                worksheet.Cells[1, 5].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[1, 5].Style.Fill.BackgroundColor.SetColor(Color.Red);
-                worksheet.Cells[1, 5].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                worksheet.Cells[1, 6].Value = "Process (ห้ามแก้)";
+                worksheet.Cells[1, 6].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                worksheet.Cells[1, 6].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[1, 6].Style.Fill.BackgroundColor.SetColor(Color.Red);
+                worksheet.Cells[1, 6].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
 
 
@@ -1395,7 +1403,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                     //header item
                     for (int k = 0; k < 3; k++)
                     {
-                        sRow = 5; //row cell
+                        sRow = 6; //row cell
                         cRow = 0; // count item
 
                         for (int i = 0; i < @class._ListceMastProcess.Count(); i++)
@@ -1460,7 +1468,7 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                             //{
                             //    worksheet.Cells[4 + j, i].Value = "0";
                             //}
-                            sRow = 6;
+                            sRow = 7;
                             for (int i = 0; i < @class._ListceMastProcess.Count(); i++)
                             {
                                 if (@class._ListceMastProcess[i].mpEnable_WTMan == true)
@@ -1501,9 +1509,6 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
                                     sRow += 1;
                                 }
                             }
-
-
-
                         }
                     }
                     catch (Exception ex)
@@ -1533,6 +1538,243 @@ namespace CostEstimate.Controllers.NewMoldOtherWK
             }
 
         }
+
+        [HttpPost]
+        public IActionResult btnExportExcel(Class @class, string id)
+        {
+            List<ViewceMastMoldOtherRequest> _ListViewceMastMoldOtherRequest = new List<ViewceMastMoldOtherRequest>();
+            @class._ListViewceItemWorkingTimePartName = new List<ViewceItemWorkingTimePartName>();
+            string slipMat = id.ToString() + ":" + DateTime.Now.ToString("yyyyMMdd:HHmmss");
+            string TempPath = Path.GetTempFileName();
+            string fileName = "Export(" + slipMat + ").xlsx";
+
+           // @class._ListceMastProcess = _MK._ViewceMastProcess.Where(x => x.mpType == "MoldOtherWK").OrderBy(x => x.mpNo).ToList();
+
+
+
+            @class._ListceMastProcess = _MK._ViewceMastProcess.Where(x => x.mpType == "MoldOtherWK" && x.mpshipment.Contains("start-try0")).OrderBy(x => x.mpNo).ToList();
+            @class._ListceMastProcessMaker = _MK._ViewceMastProcess.Where(x => x.mpType == "MoldOtherWK" && x.mpshipment.Contains("try0-ship")).OrderBy(x => x.mpNo).ToList();
+
+
+            //check ข้อมูลเดิม
+            string vDocNosub = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNo == id).Select(x => x.wrDocumentNoSub).FirstOrDefault();
+            @class._ListViewceItemWorkingTimePartName = _MK._ViewceItemWorkingTimePartName.Where(x => x.wpDocumentNoSub == vDocNosub).ToList();
+
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("ItemPartName");
+                worksheet.Cells.Style.Font.Size = 12;
+
+                //header main
+                worksheet.Cells[1, 1].Value = "Process (ห้ามแก้)";
+                worksheet.Cells[1, 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                worksheet.Cells[1, 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[1, 1].Style.Fill.BackgroundColor.SetColor(Color.Red);
+                worksheet.Cells[1, 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+    
+                worksheet.Cells[1, 2].Value = "Document No";
+                worksheet.Cells[1, 2].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                worksheet.Cells[1, 3].Value = "Part Name";
+                worksheet.Cells[1, 3].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                worksheet.Cells[1, 4].Value = "Cavity No";
+                worksheet.Cells[1, 4].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                worksheet.Cells[1, 5].Value = "Type Cavity";
+                worksheet.Cells[1, 5].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                worksheet.Cells[1, 6].Value = "Type Mold";
+                worksheet.Cells[1, 6].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                worksheet.Cells[1, 7].Value = "TARGET (ST-T0) (PO)";
+                worksheet.Cells[1, 7].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                int nRowS = 1;
+                int nRow;
+                for (int j = 0; j < @class._ListViewceItemPartName.Count(); j++)
+                {
+                    //4 row THS
+                    //8 row  maker
+                    //check type mold
+                    if (@class._ListViewceItemPartName[j].ipTypeMold.ToLower().Contains("maker"))
+                    {
+                        //2 loop
+                        int targetRow = nRowS + 4;
+                        for (; nRowS < targetRow; nRowS++)
+                        {
+                            // This will run exactly 4 times per outer loop item.
+                            // e.g., j=0: nRowS will go 1, 2, 3, 4 (stops before 5)
+                            //       j=1: nRowS will go 5, 6, 7, 8 (stops before 9)
+
+
+                        }
+                        nRowS += 5; //new row
+
+
+
+
+                    }
+                    else //THS
+                    {
+                        //1 loop
+
+                    }
+
+                   
+
+
+                    
+                }
+
+
+
+
+
+
+                int sRow, cRow;
+                if (id != null)
+                {
+
+                    //header item
+                    for (int k = 0; k < 3; k++)
+                    {
+                        sRow = 6; //row cell
+                        cRow = 0; // count item
+
+                        for (int i = 0; i < @class._ListceMastProcess.Count(); i++)
+                        {
+                            //mpEnable_WTMan , mpEnable_WTAuto
+                            if (@class._ListceMastProcess[i].mpEnable_WTMan == true)
+                            {
+                                worksheet.Cells[1, sRow + 1].Value = @class._ListceMastProcess[i].mpGroupName;
+                                worksheet.Cells[1, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                                worksheet.Cells[2, sRow + 1].Value = @class._ListceMastProcess[i].mpProcessName;
+                                worksheet.Cells[2, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                                worksheet.Cells[2, sRow + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[2, sRow + 1].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                                worksheet.Cells[2, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                                worksheet.Cells[3, sRow + 1].Value = "MAN";
+                                worksheet.Cells[3, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                                worksheet.Cells[3, sRow + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[3, sRow + 1].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+                                worksheet.Cells[3, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                                sRow += 1;
+                                cRow += 1;
+                            }
+                            if (@class._ListceMastProcess[i].mpEnable_WTAuto == true)
+                            {
+                                worksheet.Cells[1, sRow + 1].Value = @class._ListceMastProcess[i].mpGroupName;
+                                worksheet.Cells[1, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                                worksheet.Cells[2, sRow + 1].Value = @class._ListceMastProcess[i].mpProcessName;
+                                worksheet.Cells[2, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                                worksheet.Cells[2, sRow + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[2, sRow + 1].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                                worksheet.Cells[2, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                                worksheet.Cells[3, sRow + 1].Value = "AUTO";
+                                worksheet.Cells[3, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                                worksheet.Cells[3, sRow + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[3, sRow + 1].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+                                worksheet.Cells[3, sRow + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                                sRow += 1;
+                                cRow += 1;
+                            }
+                        }
+                    }
+
+                    try
+                    {
+                        //cRow = cRow / 3;
+                        @class._ListViewceItemPartName = _MK._ViewceItemPartName.Where(x => x.ipDocumentNo == id).OrderBy(x => x.ipRunNo).ToList();
+                        string vDocSub = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNo == id).Select(x => x.wrDocumentNoSub).FirstOrDefault();
+                        for (int j = 0; j < @class._ListViewceItemPartName.Count(); j++)
+                        {
+                            worksheet.Cells[4 + j, 1].Value = vDocSub;//@class._ListViewceItemPartName[j].ipDocumentNo;
+                            worksheet.Cells[4 + j, 2].Value = @class._ListViewceItemPartName[j].ipPartName;
+                            worksheet.Cells[4 + j, 3].Value = @class._ListViewceItemPartName[j].ipCavityNo;
+                            worksheet.Cells[4 + j, 4].Value = @class._ListViewceItemPartName[j].ipTypeCavity;
+                            worksheet.Cells[4 + j, 5].Value = @class._ListViewceItemPartName[j].ipRunNo;
+                            //for (int i = 6; i < cRow + 6; i++)
+                            //{
+                            //    worksheet.Cells[4 + j, i].Value = "0";
+                            //}
+                            sRow = 7;
+                            for (int i = 0; i < @class._ListceMastProcess.Count(); i++)
+                            {
+                                if (@class._ListceMastProcess[i].mpEnable_WTMan == true)
+                                {
+
+                                    //double vMan = @class._ListViewceItemWorkingTimePartName.Where(x => x.wpNoProcess == @class._ListViewceItemPartName[j].ipRunNo
+                                    //                                                && x.wpGroupName == @class._ListceMastProcess[i].mpGroupName
+                                    //                                                && x.wpProcessName == @class._ListceMastProcess[i].mpProcessName).Select(x => x.wpWT_Man).FirstOrDefault();
+                                    double vMan = @class._ListViewceItemWorkingTimePartName.Where(x => x.wpNoProcess == @class._ListViewceItemPartName[j].ipRunNo
+                                                                                             && x.wpGroupName == @class._ListceMastProcess[i].mpGroupName
+                                                                                             && x.wpProcessName == @class._ListceMastProcess[i].mpProcessName)
+                                                                                             .Select(x => x.wpWT_Man)
+                                                                                             .DefaultIfEmpty(0)  // กรณีไม่มีค่า ให้ default เป็น 0
+                                                                                             .First();
+
+
+                                    worksheet.Cells[4 + j, sRow].Value = vMan;
+                                    worksheet.Cells[4 + j, sRow].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                    worksheet.Cells[4 + j, sRow].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+                                    worksheet.Cells[4 + j, sRow].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                                    sRow += 1;
+                                }
+                                if (@class._ListceMastProcess[i].mpEnable_WTAuto == true)
+                                {
+
+                                    double vAuto = @class._ListViewceItemWorkingTimePartName.Where(x => x.wpNoProcess == @class._ListViewceItemPartName[j].ipRunNo
+                                                                                           && x.wpGroupName == @class._ListceMastProcess[i].mpGroupName
+                                                                                           && x.wpProcessName == @class._ListceMastProcess[i].mpProcessName)
+                                                                                           .Select(x => x.wpWT_Auto)
+                                                                                           .DefaultIfEmpty(0)  // กรณีไม่มีค่า ให้ default เป็น 0
+                                                                                           .First();
+
+                                    worksheet.Cells[4 + j, sRow].Value = vAuto;
+                                    worksheet.Cells[4 + j, sRow].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                    worksheet.Cells[4 + j, sRow].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+                                    worksheet.Cells[4 + j, sRow].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                                    sRow += 1;
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+
+
+
+
+                }
+
+
+
+                // Auto fit column width
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+                worksheet.Cells.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+
+                // Export เป็น stream
+                var stream = new MemoryStream();
+                package.SaveAs(stream);
+                stream.Position = 0;
+
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+
+        }
+
 
 
 

@@ -122,8 +122,7 @@ namespace CostEstimate
                 app.UseDeveloperExceptionPage();
             }
             else
-            {
-                app.UseExceptionHandler("/Home/Error");
+            {app.UseExceptionHandler("/Home/Error");
             }
 
 

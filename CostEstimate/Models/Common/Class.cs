@@ -50,6 +50,7 @@ namespace CostEstimate.Models.Common
         public List<ViewceCostPlanning> _ListceCostPlanning { get; set; }
         public List<ViewceMastCostModel> _ListceMastCostModel { get; set; }
         public List<ViewceMastModel> _ListceMastModel { get; set; }
+        public List<ViewceMastType> _ListceMastType { get; set; }
         public List<ViewceMastFlowApprove> _ListceMastFlowApprove { get; set; }
         public List<ViewceHistoryApproved> _ListceHistoryApproved { get; set; }
         public List<ViewceRunDocument> _ListViewceRunDocument { get; set; }
@@ -62,6 +63,7 @@ namespace CostEstimate.Models.Common
         public ViewceCostPlanning _ViewceCostPlanning { get; set; }
         public ViewceMastCostModel _ViewceMastCostModel { get; set; }
         public ViewceMastModel _ViewceMastModel { get; set; }
+        public ViewceMastType _ViewceMastType { get; set; }
         public ViewceMastFlowApprove _ViewceMastFlowApprove { get; set; }
         public ViewceHistoryApproved _ViewceHistoryApproved { get; set; }
         public List<ViewceHistoryApproved> _ListViewceHistoryApproved { get; set; }
@@ -263,9 +265,9 @@ namespace CostEstimate.Models.Common
         public ViewDetailceMastChartRateOtherReport _ViewDetailceMastChartRateOtherReport { get; set; }
 
 
-        public List<GroupViewceMastChartRateOtherReport> _ListGroupViewceMastChartRateOtherReport { get; set; }
+        public List<GroupViewceMastChartRateOtherReport> _ListGroupViewceMastChartRateOtherReport { get; set; } // start-try0
 
-
+        public List<GroupViewceMastChartRateOtherReport> _ListGroupViewceMastChartRateOtherReportShip { get; set; } //try0-ship
 
         public List<ViewceMastWorkingTimeRequestDetail> _ListViewceMastWorkingTimeRequestDetail { get; set; }
         public List<ViewceMastMaterialRequestDetail> _ListViewceMastMaterialRequestDetail { get; set; }

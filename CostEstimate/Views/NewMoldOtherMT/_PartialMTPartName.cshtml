@@ -16,8 +16,8 @@
     <div class="grid-item fw-800 center  row" style="text-align:left;font-size:14px;margin-bottom:10px;">
         <div class="col-80">
             Material Detail.
-            <span style="color:#1565C0">ทั้งหมด  @Model._ListGroupViewceItemMaterialRequestPartName.Count() Part</span>
-
+       
+            <span style="color:#1565C0">ทั้งหมด @(Model._ListGroupViewceItemMaterialRequestPartName?.Count() ?? 0) Part</span>
         </div>
         <div class="col-20" style="text-align:right">
 

@@ -306,29 +306,16 @@ function PositionY(menu) {
             break;
         case "Administrator":
             PY = "238px";
-            //LoadScript("js\\Admin\\Index.js", "AdminSetting");
             opacity = "opacity-dot-3";
             break;
         case "MasterCost":
-            //LoadScript("js/New/Index.js", "NewItem");
-            //LoadScript("js/New/EventMore.js", "EventNewMore");
             LoadScript("js/Home/Index.js", "Home");
-            //LoadScript("js/New/Index.js", "New");
-            //LoadScript("js/Home/Hour.js", "EventHomeHour");
-            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
-            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
             PY = "265px";
             //PY = "333px";
             opacity = "opacity-dot-3";
             break;
         case "AddCost":
-            //LoadScript("js/New/Index.js", "NewItem");
-            //LoadScript("js/New/EventMore.js", "EventNewMore");
             LoadScript("js/Home/Index.js", "Home");
-            //LoadScript("js/New/Index.js", "New");
-            //LoadScript("js/Home/Hour.js", "EventHomeHour");
-            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
-            //LoadScript("js\\" + "Home\\Search\\HourControl.js", "HourControl");
             PY = "265px";
             // PY = "331px";
             opacity = "opacity-dot-3";

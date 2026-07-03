@@ -75,61 +75,70 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
             List<ViewceMastModel> _ListMastModel = new List<ViewceMastModel>();
             @class._ListViewceItemMaterialRequestPartName = new List<ViewceItemMaterialRequestPartName>();
 
-            if (Docno != null)
+            try
             {
-                _ListMastModel = _MK._ViewceMastModel.Where(x => x.mmType == "MoldOtherMaterial").OrderBy(x => x.mmNo).ToList();
-
-                @class._ViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == Docno).FirstOrDefault();
-                @class._ViewceMastMaterialRequest = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == Docno).FirstOrDefault();
-
-                @class._ListViewceItemPartName = _MK._ViewceItemPartName.Where(x => x.ipDocumentNo == Docno).OrderBy(x => x.ipRunNo).ToList();
-                for (int j = 0; j < @class._ListViewceItemPartName.Count(); j++)
+                if (Docno != null)
                 {
-                    @class._ListceMastModel = _ListMastModel.ToList();  //.Where(x => (x.mmGroup == "" || x.mmGroup is null) || x.mmGroup == @class._ListViewceItemPartName[j].ipTypeMold).ToList();
+                    _ListMastModel = _MK._ViewceMastModel.Where(x => x.mmType == "MoldOtherMaterial").OrderBy(x => x.mmNo).ToList();
 
-                    for (int i = 0; i < @class._ListceMastModel.Count(); i++)
+                    @class._ViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == Docno).FirstOrDefault();
+                    @class._ViewceMastMaterialRequest = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == Docno).FirstOrDefault();
+
+                    @class._ListViewceItemPartName = _MK._ViewceItemPartName.Where(x => x.ipDocumentNo == Docno).OrderBy(x => x.ipRunNo).ToList();
+                    for (int j = 0; j < @class._ListViewceItemPartName.Count(); j++)
                     {
-                        var _ceMastMaterialRequest = _MK._ViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == @class._ViewceMastMaterialRequest.mrDocumentNoSub
-                                                                                          && x.mpNoProcess == @class._ListViewceItemPartName[j].ipRunNo
-                                                                                          && x.mpItem.StartsWith(@class._ListceMastModel[i].mmModelName.ToString()
-                                                                                          )
-                                                                                          ).FirstOrDefault();
-                        @class._ListViewceItemMaterialRequestPartName.Add(new ViewceItemMaterialRequestPartName
+                        @class._ListceMastModel = _ListMastModel.ToList();  //.Where(x => (x.mmGroup == "" || x.mmGroup is null) || x.mmGroup == @class._ListViewceItemPartName[j].ipTypeMold).ToList();
+
+                        for (int i = 0; i < @class._ListceMastModel.Count(); i++)
                         {
-                            mpDocumentNoSub = @class._ViewceMastMaterialRequest.mrDocumentNoSub,
-                            mpRunNo = _ceMastMaterialRequest != null ? _ceMastMaterialRequest.mpRunNo : i + 1,
-                            mpPartName = @class._ListViewceItemPartName[j].ipPartName,
-                            mpCavityNo = @class._ListViewceItemPartName[j].ipCavityNo,
-                            mpTypeCavity = @class._ListViewceItemPartName[j].ipTypeCavity,
-                            mpNoProcess = @class._ListViewceItemPartName[j].ipRunNo,  // id master partname
-                            mpNo = i + 1,
-                            mpItem = @class._ListceMastModel[i].mmModelName,
-                            mpPCS = _ceMastMaterialRequest != null ? _ceMastMaterialRequest.mpPCS : 0,
-                            mpAmount = _ceMastMaterialRequest != null ? _ceMastMaterialRequest.mpAmount : 0,
-                            mpTotal = _ceMastMaterialRequest != null ? _ceMastMaterialRequest.mpTotal : 0,
-                            mpIssueDate = @class._ViewceMastMoldOtherRequest != null ? @class._ViewceMastMoldOtherRequest.mrIssueDate : DateTime.Now.ToString("yyyy/MM/dd"),    //_ceMastMaterialRequest != null ? _ceMastMaterialRequest.mpIssueDate : DateTime.Now.ToString("yyyy/MM/dd"),
-                            mpTypeMold = @class._ListViewceItemPartName[j].ipTypeMold,
-                            mmTypeGroup = @class._ListceMastModel[i].mmGroup,
+                            var _ceMastMaterialRequest = _MK._ViewceItemMaterialRequestPartName.Where(x => x.mpDocumentNoSub == @class._ViewceMastMaterialRequest.mrDocumentNoSub
+                                                                                              && x.mpNoProcess == @class._ListViewceItemPartName[j].ipRunNo
+                                                                                              && x.mpItem.StartsWith(@class._ListceMastModel[i].mmModelName.ToString()
+                                                                                              )
+                                                                                              ).FirstOrDefault();
+                            @class._ListViewceItemMaterialRequestPartName.Add(new ViewceItemMaterialRequestPartName
+                            {
+                                mpDocumentNoSub = @class._ViewceMastMaterialRequest.mrDocumentNoSub,
+                                mpRunNo = _ceMastMaterialRequest != null ? _ceMastMaterialRequest.mpRunNo : i + 1,
+                                mpPartName = @class._ListViewceItemPartName[j].ipPartName,
+                                mpCavityNo = @class._ListViewceItemPartName[j].ipCavityNo,
+                                mpTypeCavity = @class._ListViewceItemPartName[j].ipTypeCavity,
+                                mpNoProcess = @class._ListViewceItemPartName[j].ipRunNo,  // id master partname
+                                mpNo = i + 1,
+                                mpItem = @class._ListceMastModel[i].mmModelName,
+                                mpPCS = _ceMastMaterialRequest != null ? _ceMastMaterialRequest.mpPCS : 0,
+                                mpAmount = _ceMastMaterialRequest != null ? _ceMastMaterialRequest.mpAmount : 0,
+                                mpTotal = _ceMastMaterialRequest != null ? _ceMastMaterialRequest.mpTotal : 0,
+                                mpIssueDate = @class._ViewceMastMoldOtherRequest != null ? @class._ViewceMastMoldOtherRequest.mrIssueDate : DateTime.Now.ToString("yyyy/MM/dd"),    //_ceMastMaterialRequest != null ? _ceMastMaterialRequest.mpIssueDate : DateTime.Now.ToString("yyyy/MM/dd"),
+                                mpTypeMold = @class._ListViewceItemPartName[j].ipTypeMold,
+                                mmTypeGroup = @class._ListceMastModel[i].mmGroup,
 
-                        });
+                            });
+                        }
                     }
+
+                    @class._ListGroupViewceItemMaterialRequestPartName = new List<GroupViewceItemMaterialRequestPartName>();
+                    @class._ListGroupViewceItemMaterialRequestPartName = @class._ListViewceItemMaterialRequestPartName.GroupBy(x => new { x.mpPartName, x.mpCavityNo, x.mpTypeCavity, x.mpNoProcess, x.mpTypeMold })
+                                                                            .Select(g => new GroupViewceItemMaterialRequestPartName
+                                                                            {
+                                                                                mpPartName = g.Key.mpPartName,
+                                                                                mpCavityNo = g.Key.mpCavityNo,
+                                                                                mpTypeCavity = g.Key.mpTypeCavity,
+                                                                                mpNoProcess = g.Key.mpNoProcess,
+                                                                                mpTypeMold = g.Key.mpTypeMold,
+                                                                                ItemMaterialRequestPartName = g.ToList()
+                                                                            }).ToList();
+
+                    @class._listAttachment = _IT.Attachment.Where(x => x.fnNo == @class._ViewceMastMaterialRequest.mrDocumentNoSub).ToList();
+
                 }
-
-                @class._ListGroupViewceItemMaterialRequestPartName = new List<GroupViewceItemMaterialRequestPartName>();
-                @class._ListGroupViewceItemMaterialRequestPartName = @class._ListViewceItemMaterialRequestPartName.GroupBy(x => new { x.mpPartName, x.mpCavityNo, x.mpTypeCavity, x.mpNoProcess, x.mpTypeMold })
-                                                                        .Select(g => new GroupViewceItemMaterialRequestPartName
-                                                                        {
-                                                                            mpPartName = g.Key.mpPartName,
-                                                                            mpCavityNo = g.Key.mpCavityNo,
-                                                                            mpTypeCavity = g.Key.mpTypeCavity,
-                                                                            mpNoProcess = g.Key.mpNoProcess,
-                                                                            mpTypeMold = g.Key.mpTypeMold,
-                                                                            ItemMaterialRequestPartName = g.ToList()
-                                                                        }).ToList();
-
-                @class._listAttachment = _IT.Attachment.Where(x => x.fnNo == @class._ViewceMastMaterialRequest.mrDocumentNoSub).ToList();
-
             }
+            catch (Exception ex)
+            {
+                var msgr = ex.Message;
+            }
+
+         
 
             return View(@class);
         }

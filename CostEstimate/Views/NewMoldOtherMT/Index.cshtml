@@ -48,7 +48,7 @@
                     </button>
                 </div>
             </div>
-            <div style="text-align:right; @(Model._ViewceMastMaterialRequest.mrStep == 4  ? "display:none" : "")">
+            <div style="text-align:right; @(Model._ViewceMastMaterialRequest?.mrStep == 4  ? "display:none" : "")">
                 <button style="margin-right:5px;font-size:10px;width:100px"
                         class="button btnBlue" id="btnUploadFileMT">
                     <img src="~/images/excel.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />Import
@@ -263,7 +263,7 @@
                                                                        style="font-size:14px"
                                                                        value="&#x274C"
                                                                        onclick="DeleteFileUserMT('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","NewMoldOtherMT")')"
-                                                                       @( (_UserId == Model._ViewceMastMaterialRequest.mrEmpCodeApprove && Model._ViewceMastMaterialRequest.mrStep < 4) ? "" : "disabled") />
+                                                                       @( (_UserId == Model._ViewceMastMaterialRequest.mrEmpCodeApprove && Model._ViewceMastMaterialRequest?.mrStep < 4) ? "" : "disabled") />
 
                                                             </td>
                                                         </tr>

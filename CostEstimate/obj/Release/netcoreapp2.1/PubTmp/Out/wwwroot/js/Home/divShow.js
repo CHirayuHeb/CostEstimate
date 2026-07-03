@@ -47,3 +47,7 @@ bindTableSearch("searchInputtbWK", "tbWK");
 bindTableSearch("searchInputtbMT", "tbMT");
 bindTableSearch("searchInputtbTGR", "tbTGR");
 bindTableSearch("searchInputtbSM", "tbSM");
+
+
+//Mold other
+bindTableSearch("searchInputtbOmaster", "tbOmaster");

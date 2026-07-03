@@ -791,6 +791,10 @@ namespace CostEstimate.Models.Table.MK
 
         [NotMapped]
         public string wsTypeMold { get; set; }
+
+        [NotMapped]
+        public string wsSizeValues { get; set; }
+      
     }
     public class GroupViewItemWorkingTimeSizeProduct
     {

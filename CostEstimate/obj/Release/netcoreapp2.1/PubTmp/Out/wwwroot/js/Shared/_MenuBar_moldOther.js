@@ -459,6 +459,13 @@ function PositionY(menu) {
             // PY = "331px";
             opacity = "opacity-dot-3";
             break;
+        case "AddOMaster":
+            LoadScript("js/Home/Index.js", "Home");
+            LoadScript("js/Home/divShow.js", "Home");
+            PY = "265px";
+            // PY = "331px";
+            opacity = "opacity-dot-3";
+            break;
 
 
 
@@ -5073,7 +5080,7 @@ function Menubar_MoldOtherWKsaveDraft(action, action2) {
     });
 
     viewModel1.append("_ItemWorkingTimePartName", JSON.stringify(_ItemWorkingTimePartName));
-   // viewModel1.append("_ItemWorkingTimePartNameMaker", JSON.stringify(_ItemWorkingTimePartNameMaker));
+    // viewModel1.append("_ItemWorkingTimePartNameMaker", JSON.stringify(_ItemWorkingTimePartNameMaker));
     viewModel1.append("_ItemWorkingTimeSizeProduct", JSON.stringify(_ItemWorkingTimeSizeProduct));
 
     $.ajax({
@@ -6494,9 +6501,22 @@ function Menubar_MoldOtherSMsavesendMailData(action) {
             const rowsTrTypeofcut = div.querySelectorAll('tr#trTypeofcut'); // แก้ id ให้ตรง
 
 
+            //const rowsTrSlideSystem = div.querySelectorAll('tr.trSlideSystem');
 
+         
             rowsTrSlideSystem.forEach((tr, index) => {
                 const select = tr.querySelector(".isSlideSystemType");
+
+                if (select.options[select.selectedIndex].text.trim() == "กรุณาเลือก") {
+                    // แก้ไขตรง ${index + 1} ให้แสดงผลถูกต้อง
+                    alert(`หมวด SLIDE SYSTEM กรุณาเลือก System Type แถวที่ ${index + 1}`);
+
+                    if (select) select.focus();
+                    throw new Error("System Type is required.");
+                }
+              
+
+                //check value null
                 _ceItemInforSlideSystem.push({
                     isDocumentNoSub: tr.querySelector(".isDocumentNoSub").value.trim() || "",
                     isRunNo: index + 1, // 1,2,3... ในแต่ละ div
@@ -6511,6 +6531,15 @@ function Menubar_MoldOtherSMsavesendMailData(action) {
 
             rowsTrTypeofcut.forEach((tr, index) => {
                 const select = tr.querySelector(".icTypeofcut");
+
+                if (select.options[select.selectedIndex].text.trim() == "กรุณาเลือก") {
+                    // แก้ไขตรง ${index + 1} ให้แสดงผลถูกต้อง
+                    alert(`หมวด Type of Cut กรุณาเลือก  Type แถวที่ ${index + 1}`);
+
+                    if (select) select.focus();
+                    throw new Error("Type of cut is required.");
+                }
+
 
                 _ceItemInforTypeOfCut.push({
                     icDocumentNoSub: tr.querySelector(".icDocumentNoSub").value.trim() || "",
@@ -6529,6 +6558,24 @@ function Menubar_MoldOtherSMsavesendMailData(action) {
                 const bselect = select ?
                     select.options[select.selectedIndex].text.trim() == "YES" ? true : false
                     : "";
+
+                // 1. ดึง Element มาเก็บไว้ก่อน (เอาไว้ใช้สั่ง focus)
+                const inputSHiboPCS = tr.querySelector(".ibSHiboPCS");
+                // 2. ดึงค่า Value ออกมาเช็คความว่างเปล่า
+                const vibSHiboPCS = inputSHiboPCS ? inputSHiboPCS.value.trim() : "";
+
+                if (vibSHiboPCS === "") {
+                    // แสดงลำดับแถวที่ถูกต้อง (บวก 1 เสมอเพื่อให้ตรงกับที่ผู้ใช้เห็น)
+                    alert(`หมวด Shibo กรุณากรอก Description แถวที่ ${index + 1}`);
+
+                    // สั่ง focus ไปที่ตัว Element (ไม่ใช่ตัวแปรที่เป็น String)
+                    if (inputSHiboPCS) {
+                        inputSHiboPCS.focus();
+                    }
+
+                    throw new Error("Type of cut is required.");
+                }
+
                 _ceItemInforShibo.push({
                     ibDocumentNoSub: tr.querySelector(".ibDocumentNoSub").value.trim() || "",
                     ibRunNo: index + 1, // 1,2,3... ในแต่ละ div
@@ -7343,6 +7390,170 @@ function Menubar_AddMasterOModel(action) {
 
 }
 
+
+
+function Menubar_DeleteMasterOMaster(mtId, ModelName, action) {
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure delete Master Other Item?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { mtId: mtId, ModelName: ModelName },
+                success: function (res) {
+                    swal.fire({
+                        title: 'แจ้งเตือน',
+                        icon: res.res,
+                        text: res.res,
+                    })
+                        .then((result) => {
+                            // $("#myModal3").modal("hide");
+                            GoSideMenu("AddOMaster");
+                            // GoNewRequest(getID)
+                            //GoNewRequest(getID, getEvent, vaction, vForm, vTeam, vSubject, vSrNo)
+                        });
+
+
+
+                }
+            });
+        } else {
+            //console.log('Cancel');
+            return false;
+        }
+    });
+}
+function Menubar_EditMasterOMaster(mtId, itemNname, action) {
+    console.log("Menubar_AddMast Other Master item");
+    // let mydata = $("#formRequestCost").serialize();
+    //'@Url.Action("SearchbyModelName", "New")',
+    $.ajax({
+        url: action,//'/New/SearchbyModelName', // URL ของ Controller
+        type: 'POST',
+        data: {
+            mtId: mtId,
+            itemNname: itemNname,
+        },
+        beforeSend: function () {
+            console.log("Showing loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorOMaster").css("display", "block"); // แสดง Loader
+            $("#ResultMastOMaster").css("display", "none"); // ซ่อน Loader
+        },
+        success: function (response) {
+            $("#ResultMastOMaster").css("display", "block"); // แสดง Loader
+            $("#ResultMastOMaster").html(response); // เอา HTML Partial View มาใส่ใน Div
+        },
+        error: function () {
+            alert("Error!!");
+        },
+        complete: function () {
+            // ซ่อนรูปโหลดเมื่อ request เสร็จ
+            console.log("Hiding loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorOMaster").css("display", "none"); // ซ่อน Loader
+        }
+    });
+
+    $("#myModalOmaster").modal("show");
+}
+function Menubar_AddMasterOMaster(action) {
+    let formData = document.forms.namedItem("formMastOMaster");
+    let viewModel = new FormData(formData);
+
+
+    var msg = "";
+    if (document.getElementById("i_NewOther_mtName").value == "" || document.getElementById("i_NewOther_mtType").value == "") {
+        msg = "กรุณากรอกข้อมูลให้ครบถ้วน !!!";
+        // document.getElementById("i_NewOther_mtName").focus();
+    }
+
+
+    if (msg != "") {
+        swal.fire({
+            title: 'แจ้งเตือน',
+            icon: 'warning',
+            text: msg,
+        })
+            .then((result) => {
+
+            });
+    }
+    else {
+
+        $.each(formData, function (index, input) {
+            viewModel.append(input.name, input.value);
+        });
+
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: viewModel,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                swal.fire({
+                    html: '<h5>Loading...</h5>',
+                    showConfirmButton: false,
+                    onRender: function () {
+                        // there will only ever be one sweet alert open.
+                        //$('.swal2-content').prepend(sweet_loader);
+                    }
+                });
+            },
+            success: async function (config) {
+                // alert(config.c1);
+                if (config.c1 == "S") {
+                    // $("#loaderDiv").hide();
+                    await $("#myModalOmaster").modal("hide");
+                    swal.fire({
+                        title: 'SUCCESS',
+                        icon: 'success',
+                        text: config.c2,
+                    }).then((result) => {
+                        //if (result.isConfirmed) {
+                        //    console.log("config.c3" + config.c3);
+                        GoSideMenu("AddOMaster");
+                        //}
+                    });
+                }
+                else if (config.c1 == "E") {
+                    //$("#loaderDiv").hide();
+                    //await $("#myModal1").modal("hide");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ERROR',
+                        text: config.c2,
+                    })
+                        .then((result) => {
+                            $("#myModalOmaster").modal("show");
+                        });
+
+                }
+                else if (config.c1 == "N") {
+                    //$("#loaderDiv").hide();
+                    //await $("#myModal1").modal("hide");
+                    Swal.fire({
+                        icon: 'แจ้งเตือน',
+                        title: 'warning',
+                        text: config.c2,
+                    })
+                        .then((result) => {
+                            $("#myModalOmaster").modal("show");
+                        });
+
+                }
+            }
+        });
+    }
+
+
+}
 
 
 

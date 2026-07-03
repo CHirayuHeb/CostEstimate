@@ -106,7 +106,7 @@
 
 
     <div class="modal-footer" style="width: 100%;">
-        <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="Menubar_MoldOtherTGRsavesendMailData('@Url.Action("chkSaveData", "NewMoldOtherTGR")')" style="@(@ViewBag.step == 4  ? "display:none" : "")">Send mail</button>
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="Menubar_MoldOtherSMsavesendMailData('@Url.Action("chkSaveData", "NewMoldOtherSM")')" style="@(@ViewBag.step == 4  ? "display:none" : "")">Send mail</button>
         @*<button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="Menubar_save_sendMailBG('@Url.Action("SaveForm_SendMail", "NewMoldModify")')" style="@(@ViewBag.step == 6  ? "display:none" : "")">Send mail</button>*@
         @*<button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="sendmailsubmit('@Url.Action("SendMail_post", "RequestForm", new { vform = @ViewBag.vForm,vSR= @ViewBag.SRno})')">Send mail</button>*@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

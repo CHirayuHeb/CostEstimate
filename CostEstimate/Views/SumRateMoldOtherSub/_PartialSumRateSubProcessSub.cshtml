@@ -1,0 +1,625 @@
+﻿@using System.Security.Claims;
+@model CostEstimate.Models.Common.Class;
+@using CostEstimate.Models.Common;
+
+@{
+    string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+    string _admin = GlobalVariable.perAdmin.ToUpper();
+
+}
+<div>
+    <table class="tbgreen center" id="tbDetailChartRate" style="font-size:9px">
+        <tr>
+            <th colspan="10">
+                CP-COST PLANNING DIVISION <span style="font-size:14px;color:floralwhite">COST T0-SH</span>
+            </th>
+            @*<th colspan="2">
+                    LOCAL MAKER
+                </th>
+                <th colspan="2">
+                    OVERSEA MAKER
+                </th>*@
+        </tr>
+        <tr>
+            <th rowspan="2" width="3%">MOTHOD</th>
+            <th colspan="2" width="10%">WT</th>
+            <th colspan="2" width="10%">LABOUR (L)</th>
+            <th colspan="2" width="10%">DEPRECIATION (DP)</th>
+            <th colspan="2" width="10%">MANUFACTURING  EXPENSES(ME)</th>
+            <th width="5%">TOTAL COST</th>
+            @*<th colspan="2" width="10%">CHART RATE SUB LOCAL 2024</th>
+                <th colspan="2" width="10%">CHART RATE SUB OVERSEA 2024</th>*@
+        </tr>
+        <tr>
+            <td>(MAN)</td>
+            <td>(TOTAL)</td>
+            <td>RATE</td>
+            <td>COST(KB)</td>
+            <td>RATE</td>
+            <td>COST(KB)</td>
+            <td>RATE</td>
+            <td>COST(KB)</td>
+            <td>COST(KB)</td>
+            @*<td>RATE</td>
+                <td>COST(KB)</td>
+                <td>RATE</td>
+                <td>COST(KB)</td>*@
+        </tr>
+
+
+        @foreach (var group in @Model._ListGroupViewceMastChartRateOtherReportShip)
+        {
+            @for (int i = 0; i < group.DetailceMastChartRateOtherReport.Count(); i++)
+            {
+                <tr class="@group.GroupName.Trim()">
+                    <td>
+                        <span style="font-size:10px">@group.DetailceMastChartRateOtherReport[i].cpProcessName</span>
+
+                    </td>
+                    <td>
+                        @*<input class="form-control center WT_Man" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@group.DetailceMastChartRateOtherReport[i].crWTMan" type="number" min="0" readonly />*@
+
+                        <input class="form-control center crSubWTMan @group.DetailceMastChartRateOtherReport[i].cpProcessName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@group.DetailceMastChartRateOtherReport[i].crWTMan" type="text" readonly min="0" />
+
+                        @*<span style="font-size:10px">@group.DetailceMastChartRateOtherReport[i].crWTMan</span>*@
+
+                    </td>
+                    <td>
+                        <input class="form-control center crSubWTTotal @group.DetailceMastChartRateOtherReport[i].cpProcessName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@group.DetailceMastChartRateOtherReport[i].crWTTotal" type="text" min="0" readonly />
+
+                        @*<span style="font-size:10px">@group.DetailceMastChartRateOtherReport[i].crWTTotal</span>*@
+
+                    </td>
+                    <td>
+                        <input class="form-control center crSubLabour_Rate @group.DetailceMastChartRateOtherReport[i].cpProcessName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@group.DetailceMastChartRateOtherReport[i].crLabour_Rate" type="text" min="0" readonly />
+
+                        @*<span style="font-size:10px">@group.DetailceMastChartRateOtherReport[i].crLabour_Rate</span>*@
+                    </td>
+                    <td>
+                        <input class="form-control center crSubLabour_Cost @group.DetailceMastChartRateOtherReport[i].cpProcessName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@group.DetailceMastChartRateOtherReport[i].crLabour_Cost" type="text" min="0" readonly />
+
+                        @*<span style="font-size:10px">@group.DetailceMastChartRateOtherReport[i].crLabour_Cost</span>*@
+                    </td>
+                    <td>
+                        <input class="form-control center crSubDP_Rate @group.DetailceMastChartRateOtherReport[i].cpProcessName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@group.DetailceMastChartRateOtherReport[i].crDP_Rate" type="text" min="0" readonly />
+
+                        @*<span style="font-size:10px">@group.DetailceMastChartRateOtherReport[i].crDP_Rate</span>*@
+                    </td>
+                    <td>
+                        <input class="form-control center crSubDP_Cost" @group.DetailceMastChartRateOtherReport[i].cpProcessName autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@group.DetailceMastChartRateOtherReport[i].crpDP_Cost" type="text" min="0" readonly />
+
+                        @*<span style="font-size:10px">@group.DetailceMastChartRateOtherReport[i].crpDP_Cost</span>*@
+                    </td>
+                    <td>
+                        <input class="form-control center crSubME_Rate @group.DetailceMastChartRateOtherReport[i].cpProcessName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@group.DetailceMastChartRateOtherReport[i].crME_Rate" type="text" min="0" readonly />
+
+                        @*<span style="font-size:10px">@group.DetailceMastChartRateOtherReport[i].crME_Rate</span>*@
+                    </td>
+                    <td>
+                        <input class="form-control center crSubME_Cost @group.DetailceMastChartRateOtherReport[i].cpProcessName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@group.DetailceMastChartRateOtherReport[i].crME_Cost" type="text" min="0" readonly />
+
+                        @*<span style="font-size:10px">@group.DetailceMastChartRateOtherReport[i].crME_Cost</span>*@
+                    </td>
+                    <td>
+                        <input class="form-control center crSubTotal_cost @group.DetailceMastChartRateOtherReport[i].cpProcessName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@group.DetailceMastChartRateOtherReport[i].crTotal_cost" type="text" min="0" readonly />
+
+                        @*<span style="font-size:10px">@group.DetailceMastChartRateOtherReport[i].crTotal_cost</span>*@
+                    </td>
+                    @*<td>
+                            <input class="form-control center crCHSub_Local_Rate @group.DetailceMastChartRateOtherReport[i].cpProcessName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@group.DetailceMastChartRateOtherReport[i].crChartRateSub_Local_Rate" type="text" min="0" readonly />
+                        </td>
+                        <td>
+                            <input class="form-control center crCH_Local_Cost @group.DetailceMastChartRateOtherReport[i].cpProcessName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@group.DetailceMastChartRateOtherReport[i].crChartRateSub_Local_Cost" type="text" min="0" readonly />
+
+                        </td>
+                        <td>
+                            <input class="form-control center crCH_Oversea_Rate @group.DetailceMastChartRateOtherReport[i].cpProcessName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@group.DetailceMastChartRateOtherReport[i].crChartRateSub_Oversea_Rate" type="text" min="0" readonly />
+
+                        </td>
+                        <td>
+                            <input class="form-control center crCH_Oversea_Cost @group.DetailceMastChartRateOtherReport[i].cpProcessName" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@group.DetailceMastChartRateOtherReport[i].crChartRateSub_Oversea_Cost" type="text" min="0" readonly />
+
+                        </td>*@
+                </tr>
+
+            }
+
+            <tr style="background-color:lightgray">
+                <td style="text-align:left"><span style="font-weight:600;font-size:8px">TOTAL:  @group.GroupName.Trim()</span></td>
+                <td style="text-align:left"><input class="form-control center dsSubWT_Man @group.GroupName.Trim()" id="dsWT_Man @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px;" type="text" min="0" readonly /></td>
+                <td style="text-align:left"><input class="form-control center dsSubWT_Auto @group.GroupName.Trim()" id="dsWT_Auto @group.GroupName" autocomplete="off" style="width:100%;height:80%;font-size:10px" type="text" min="0" readonly /></td>
+                <td style="text-align:left"><input class="form-control center dsSubLabour_Rate @group.GroupName.Trim()" id="dsLabour_Rate @group.GroupName.Trim()" autocomplete="off" style="width:100%;height:80%;font-size:10px;" type="text" min="0" readonly /></td>
+                <td style="text-align:left"><input class="form-control center dsSubLabour_Cost @group.GroupName.Trim()" id="dsLabour_Cost @group.GroupName.Trim()" autocomplete="off" style="width:100%;height:80%;font-size:10px;" type="text" min="0" readonly /></td>
+                <td style="text-align:left"><input class="form-control center dsSubDP_Rate @group.GroupName.Trim()" id="dsDP_Rate @group.GroupName.Trim()" autocomplete="off" style="width:100%;height:80%;font-size:10px;" type="text" min="0" readonly /></td>
+                <td style="text-align:left"><input class="form-control center dsSubDP_Cost @group.GroupName.Trim()" id="dsDP_Cost @group.GroupName.Trim()" autocomplete="off" style="width:100%;height:80%;font-size:10px;" type="text" min="0" readonly /></td>
+                <td style="text-align:left"><input class="form-control center dsSubME_Rate @group.GroupName.Trim()" id="dsME_Rate @group.GroupName.Trim()" autocomplete="off" style="width:100%;height:80%;font-size:10px;" type="text" min="0" readonly /></td>
+                <td style="text-align:left"><input class="form-control center dsSubME_Cost @group.GroupName.Trim()" id="dsME_Cost @group.GroupName.Trim()" autocomplete="off" style="width:100%;height:80%;font-size:10px;" type="text" min="0" readonly /></td>
+                <td style="text-align:left"><input class="form-control center dsSubTotal @group.GroupName.Trim()" id="dsTotal @group.GroupName.Trim()" autocomplete="off" style="width:100%;height:80%;font-size:10px;" type="text" min="0" readonly /></td>
+                @*<td style="text-align:left"><input class="form-control center dsCRLocal_Rate @group.GroupName.Trim()" id="dsCRLocal_Rate @group.GroupName.Trim()" autocomplete="off" style="width:100%;height:80%;font-size:10px;" type="text" min="0" readonly /></td>
+                    <td style="text-align:left"><input class="form-control center dsCRLocal_Cost @group.GroupName.Trim()" id="dsCRLocal_Cost @group.GroupName.Trim()" autocomplete="off" style="width:100%;height:80%;font-size:10px;" type="text" min="0" readonly /></td>
+                    <td style="text-align:left"><input class="form-control center dsCROversea_Rate @group.GroupName.Trim()" id="dsCROversea_Rate @group.GroupName.Trim()" autocomplete="off" style="width:100%;height:80%;font-size:10px;" type="text" min="0" readonly /></td>
+                    <td style="text-align:left"><input class="form-control center dsCROversea_Cost @group.GroupName.Trim()" id="dsCROversea_Cost @group.GroupName.Trim()" autocomplete="off" style="width:100%;height:80%;font-size:10px;" type="text" min="0" readonly /></td>*@
+
+            </tr>
+        }
+
+
+
+
+
+
+
+    </table>
+</div>
+
+
+<script type="text/javascript">
+    function sumValuesByGroupdsWT_ManSub() {
+        //console.log("ssssss");
+        var groupSumsWT_Man = {};  // Object to store sums for each group
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".crSubWTMan").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsWT_Man[groupClass]) {
+                    groupSumsWT_Man[groupClass] = 0;
+                }
+
+                groupSumsWT_Man[groupClass] += rowWT_Man;
+            }
+        });
+
+        $.each(groupSumsWT_Man, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            //console.log('group' + group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            //console.log('WT_Man <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsSubWT_Man" + "." + str).each(function () {
+                // parseFloat(total).toFixed(2);
+                $(this).val(parseFloat(total).toFixed(2));
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+
+    }
+    function sumValuesByGroupdsWT_AutoSub() {
+        var groupSumsWT_Man = {};  // Object to store sums for each group
+        var groupSumsWT_Auto = {};
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".crSubWTTotal").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsWT_Auto[groupClass]) {
+                    groupSumsWT_Auto[groupClass] = 0;
+                }
+                groupSumsWT_Auto[groupClass] += rowWT_Man;
+            }
+        });
+        $.each(groupSumsWT_Auto, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            //console.log('group' + group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            // console.log('dsWT_Auto <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsSubWT_Auto" + "." + str).each(function () {
+                // $(this).val(total);
+                $(this).val(parseFloat(total).toFixed(2));
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+
+
+    }
+    function sumValuesByGroupdsLabour_RateSub() {
+        var groupSumsWT_Man = {};  // Object to store sums for each group
+        var groupSumsWT_Auto = {};
+        var groupSumsLabour_Rate = {};
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".crSubLabour_Rate").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsLabour_Rate[groupClass]) {
+                    groupSumsLabour_Rate[groupClass] = 0;
+                }
+                groupSumsLabour_Rate[groupClass] += rowWT_Man;
+            }
+        });
+        $.each(groupSumsLabour_Rate, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            // console.log('group' + group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            //console.log('dsLabour_Rate <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsSubLabour_Rate" + "." + str).each(function () {
+                // $(this).val(total);
+                $(this).val(parseFloat(total).toFixed(2));
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+
+
+    }
+    function sumValuesByGroupdsLabour_CostSub() {
+        var groupSumsLabour_Rate = {};
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".crSubLabour_Cost").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsLabour_Rate[groupClass]) {
+                    groupSumsLabour_Rate[groupClass] = 0;
+                }
+                groupSumsLabour_Rate[groupClass] += rowWT_Man;
+            }
+        });
+        $.each(groupSumsLabour_Rate, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            //console.log('group' + group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            // console.log('dsLabour_Cost <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsSubLabour_Cost" + "." + str).each(function () {
+                // $(this).val(total);
+                $(this).val(parseFloat(total).toFixed(2));
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+
+
+    }
+
+    function sumValuesByGroupdsDP_RateSub() {
+
+        var groupSumsLabour_Rate = {};
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".crSubDP_Rate").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsLabour_Rate[groupClass]) {
+                    groupSumsLabour_Rate[groupClass] = 0;
+                }
+                groupSumsLabour_Rate[groupClass] += rowWT_Man;
+            }
+        });
+        $.each(groupSumsLabour_Rate, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            // console.log('group' + group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            //console.log('dsDP_Rate <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsSubDP_Rate" + "." + str).each(function () {
+                //$(this).val(total);
+                $(this).val(parseFloat(total).toFixed(2));
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+
+
+    }
+    function sumValuesByGroupdsDP_CostSub() {
+        var groupSumsLabour_Rate = {};
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".crSubDP_Cost").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsLabour_Rate[groupClass]) {
+                    groupSumsLabour_Rate[groupClass] = 0;
+                }
+                groupSumsLabour_Rate[groupClass] += rowWT_Man;
+            }
+        });
+        $.each(groupSumsLabour_Rate, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            //console.log('group' + group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            //console.log('dsDP_Cost <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsSubDP_Cost" + "." + str).each(function () {
+                // $(this).val(total);
+                $(this).val(parseFloat(total).toFixed(2));
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+
+
+    }
+    function sumValuesByGroupdsME_RateSub() {
+        var groupSumsLabour_Rate = {};
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".crSubME_Rate").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsLabour_Rate[groupClass]) {
+                    groupSumsLabour_Rate[groupClass] = 0;
+                }
+                groupSumsLabour_Rate[groupClass] += rowWT_Man;
+            }
+        });
+        $.each(groupSumsLabour_Rate, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            // console.log('group' + group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            // console.log('dsME_Rate <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsSubME_Rate" + "." + str).each(function () {
+                // $(this).val(total);
+                $(this).val(parseFloat(total).toFixed(2));
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+
+
+    }
+    function sumValuesByGroupdsME_CostSub() {
+        var groupSumsLabour_Rate = {};
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".crSubME_Cost").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsLabour_Rate[groupClass]) {
+                    groupSumsLabour_Rate[groupClass] = 0;
+                }
+                groupSumsLabour_Rate[groupClass] += rowWT_Man;
+            }
+        });
+        $.each(groupSumsLabour_Rate, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            // console.log('group' + group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            //console.log('dsME_Cost <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsSubME_Cost" + "." + str).each(function () {
+                // $(this).val(total);
+                $(this).val(parseFloat(total).toFixed(2));
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+
+
+    }
+    function sumValuesByGroupTotal_CostSub() {
+        var groupSumsLabour_Rate = {};
+        // Iterate through each group
+        $("tr").each(function () {
+            var groupClass = $(this).attr("class");  // Get the class of the current row (group)
+            if (groupClass) {
+                var rowWT_Man = 0;
+                var rowWT_Auto = 0;
+                // Sum the values of .WT_Man and .WT_Auto in the current row
+                $(this).find(".crSubTotal_cost").each(function () {
+                    rowWT_Man += parseFloat($(this).val()) || 0;  // Add value, default to 0 if invalid
+                });
+                if (!groupSumsLabour_Rate[groupClass]) {
+                    groupSumsLabour_Rate[groupClass] = 0;
+                }
+                groupSumsLabour_Rate[groupClass] += rowWT_Man;
+            }
+        });
+        $.each(groupSumsLabour_Rate, function (group, total) {
+            //dsWT_Auto HW.
+            let str = group;
+            // console.log('group' + group);
+            // Find the last index of the period
+            let lastIndex = str.lastIndexOf('.');
+            if (lastIndex !== -1) {
+                // Replace the last period with "\\."
+                str = str.slice(0, lastIndex) + "\\." + str.slice(lastIndex + 1);
+            }
+            //console.log('dsME_Cost <p>' + str + ' Total: ' + total + '</p>');
+            $(".dsSubTotal" + "." + str).each(function () {
+                // $(this).val(total);
+                $(this).val(parseFloat(total).toFixed(2));
+                // console.log("Value of textbox with classes 'dsWT_Man DESIGN': " + $(this).val());
+            });
+        });
+    }
+
+
+    //cal CostSTTO
+    function sumEstimateCostCostSTTO() {
+        $("#EssumI").val(parseFloat(document.getElementById('MtTOTAL').value) || 0);
+        let s_Labour_CostA = 0;
+        let s_DP_CostB = 0;
+        let s_ME_CostC = 0;
+        $(".crLabour_Cost").each(function () {
+            let value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
+            s_Labour_CostA += value; // บวกค่า
+        });
+
+        $(".crDP_Cost").each(function () {
+            let value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
+            s_DP_CostB += value; // บวกค่า
+        });
+
+        $(".crME_Cost").each(function () {
+            let value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
+            s_ME_CostC += value; // บวกค่า
+        });
+        $("#EsLaborCostA").val(s_Labour_CostA.toFixed(2));
+        $("#EsDPCostB").val(s_DP_CostB.toFixed(2));
+        $("#EsMECostC").val(s_ME_CostC.toFixed(2));
+
+        let valA = parseFloat(document.getElementById('EsLaborCostA').value) || 0;
+        let valB = parseFloat(document.getElementById('EsDPCostB').value) || 0;
+        let valC = parseFloat(document.getElementById('EsMECostC').value) || 0;
+
+        //console.log("val1 + val2" + val1 + val2);
+
+        $("#EssumABC").val((valA + valB + valC).toLocaleString());
+
+    }
+    //cal CostTOSH
+    function sumEstimateCostCostTOSH() {
+
+        let s_Labour_CostA = 0;
+        let s_DP_CostB = 0;
+        let s_ME_CostC = 0;
+        $(".crSubLabour_Cost").each(function () {
+            let value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
+            s_Labour_CostA += value; // บวกค่า
+        });
+
+        $(".crSubDP_Cost").each(function () {
+            let value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
+            s_DP_CostB += value; // บวกค่า
+        });
+
+        $(".crSubME_Cost").each(function () {
+            let value = parseFloat($(this).val()) || 0; // อ่านค่า + เช็คถ้าไม่มีให้เป็น 0
+            s_ME_CostC += value; // บวกค่า
+        });
+        $("#EsLaborCostE").val(s_Labour_CostA.toFixed(2));
+        $("#EsDPCostF").val(s_DP_CostB.toFixed(2));
+        $("#EsMECostG").val(s_ME_CostC.toFixed(2));
+
+        let valA = parseFloat(document.getElementById('EsLaborCostE').value) || 0;
+        let valB = parseFloat(document.getElementById('EsDPCostF').value) || 0;
+        let valC = parseFloat(document.getElementById('EsMECostG').value) || 0;
+
+        //console.log("val1 + val2" + val1 + val2);
+
+        $("#EssumEFG").val((valA + valB + valC).toLocaleString());
+
+    }
+
+    //cal TotalCOSTMOLD
+    function sumEstimateCostCostMOLD() {
+
+        let valA = parseFloat(document.getElementById('EssumABC').value.replace(/,/g, '')) || 0;
+        let valB = parseFloat(document.getElementById('EssumEFG').value.replace(/,/g, '')) || 0;
+        let valC = parseFloat(document.getElementById('EssumI').value.replace(/,/g, '')) || 0;
+
+        //console.log("val1 + val2" + val1 + val2);
+        //console.log("(valA" + valA);
+        //console.log("(valB" + valB);
+        //console.log("(valC" + valC);
+        //console.log("(valA + valB + valC).toLocaleString()" + (valA + valB + valC).toLocaleString());
+
+        $("#EssumJ").val((valA + valB + valC).toLocaleString());
+
+        let valTotal = parseFloat(document.getElementById('EssumJ').value.replace(/,/g, '')) || 0;
+        let total = roundup(valTotal, -1) * 1000;
+
+        $("#EssumCOST").val(total.toLocaleString());
+
+
+    }
+
+    async function runFunc2() {
+        await sumValuesByGroupdsWT_ManSub();
+        await sumValuesByGroupdsWT_AutoSub();
+        await sumValuesByGroupdsLabour_RateSub();
+        await sumValuesByGroupdsLabour_CostSub();
+        await sumValuesByGroupdsDP_RateSub();
+        await sumValuesByGroupdsDP_CostSub();
+        await sumValuesByGroupdsME_RateSub();
+        await sumValuesByGroupdsME_CostSub();
+        await sumValuesByGroupTotal_CostSub();
+
+        await sumEstimateCostCostSTTO();
+
+        await sumEstimateCostCostTOSH();
+
+        await sumEstimateCostCostMOLD();
+    }
+
+    //$(document).ready(function () {
+    //    runFunc2();
+    //});
+
+
+
+</script>
