@@ -44,10 +44,6 @@ namespace CostEstimate.Controllers.AddOMaster
         {
             @class._ListceMastType = new List<ViewceMastType>();
             @class._ListceMastType = _MK._ViewceMastType.Where(x => x.mtProgram == "MoldOther").OrderBy(z => z.mtType.Trim()).ToList();
-            ////_listTypeMold
-            //List<string> _listTypeMold = _MK._ViewceMastType.Where(x => x.mtType.Contains("TypeMold") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
-            //SelectList _TypeMold = new SelectList(_listTypeMold);
-            //ViewBag._TypeMold = _TypeMold;
 
             List<string> _listmtType = _MK._ViewceMastType.Where(x => x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtType).Select(x => x.mtType).Distinct().ToList();
             SelectList _TypemtType = new SelectList(_listmtType);

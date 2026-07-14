@@ -228,8 +228,11 @@ namespace CostEstimate.Models.DBConnect
 
 
         public DbSet<ViewceMastMappingRuleChartRate> _ViewceMastMappingRuleChartRate { get; set; }
-        
 
+
+        //Master 
+        public DbSet<ViewceMaster> _ViewceMaster { get; set; }
+        public DbSet<ViewceMaster_Type> _ViewceMaster_Type { get; set; }
 
         //public DbSet<GroupedResult> _GroupedResult { get; set; }
         //public DbSet<ProcessResult> _ProcessResult { get; set; }

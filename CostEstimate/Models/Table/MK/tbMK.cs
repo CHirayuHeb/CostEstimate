@@ -1130,7 +1130,33 @@ namespace CostEstimate.Models.Table.MK
 
     }
 
+    //for master
+    [Table("ceMaster")]
+    public class ViewceMaster
+    {
+        [Key]
+        public int msid { get; set; }
+        public string msItem { get; set; }
+        public string msDes { get; set; }
+        public bool msIsActive { get; set; }
+        public string msProgram { get; set; }
+        public string msCreateBy { get; set; }
+        public string msUpdateBy { get; set; }
 
+    }
+    [Table("ceMaster_Type")]
+    public class ViewceMaster_Type
+    {
+        [Key]
+        public int mtid { get; set; }
+        public string mtParent_id { get; set; }
+        public string mtItem { get; set; }
+        public string mtDes { get; set; }
+        public bool mtIsActive { get; set; }
+        public string mtProgram { get; set; }
+        public string mtCreateBy { get; set; }
+        public string mtUpdateBy { get; set; }
 
+    }
 
 }

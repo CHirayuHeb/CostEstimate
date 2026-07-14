@@ -312,6 +312,12 @@ namespace CostEstimate.Models.Common
         public string rMoldMass { get; set; }
 
 
+        //Master
+        public ViewceMaster _ViewceMaster { get; set; }
+        public List<ViewceMaster> _ListViewceMaster { get; set; }
+        public ViewceMaster_Type _ViewceMaster_Type { get; set; }
+        public List<ViewceMaster_Type> _ListViewceMaster_Type { get; set; }
+
 
     }
     public class UserActivity

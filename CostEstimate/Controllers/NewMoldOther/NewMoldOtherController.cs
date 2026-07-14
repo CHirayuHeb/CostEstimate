@@ -99,7 +99,20 @@ namespace CostEstimate.Controllers.NewMoldOther
             List<string> _listTypeMold = _MK._ViewceMastType.Where(x => x.mtType.Contains("TypeMold") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
             SelectList _TypeMold = new SelectList(_listTypeMold);
             ViewBag.TypeMold = _TypeMold;
+            
 
+
+            List<string> _listCustomerName = _MK._ViewceMaster.Where(x => x.msDes.Contains("CustomerName") && x.msProgram.Contains("MoldOther")).OrderBy(x => x.msItem).Select(x => x.msItem).ToList();
+            SelectList _TypeCustomerName = new SelectList(_listCustomerName);
+            ViewBag.TypeCustomerName = _TypeCustomerName;
+
+            List<string> _listModelName = _MK._ViewceMaster_Type.Where(x => x.mtDes.Contains("ModelName") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtItem).Select(x => x.mtItem).ToList();
+            SelectList _TypeModelName = new SelectList(_listModelName);
+            ViewBag.TypeModelName = _TypeModelName;
+
+            List<string> _listFunction = _MK._ViewceMaster_Type.Where(x => x.mtDes.Contains("Function") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtItem).Select(x => x.mtItem).ToList();
+            SelectList _TypeFunction = new SelectList(_listFunction);
+            ViewBag.TypeFunction = _TypeFunction;
 
             @class._ViewceMastMoldOtherRequest = new ViewceMastMoldOtherRequest();
             @class._ViewceItemPartName = new ViewceItemPartName();
@@ -140,6 +153,58 @@ namespace CostEstimate.Controllers.NewMoldOther
 
 
             return View(@class);
+        }
+
+        [HttpGet]
+        public JsonResult GetModelsByCustomer(string customerName)
+        {
+            // 1. หา id ของ Customer มาก่อน (ได้ค่าเป็น int)
+            int vid = _MK._ViewceMaster
+                         .Where(x => x.msItem == customerName)
+                         .Select(x => x.msid)
+                         .FirstOrDefault();
+
+            // แปลง id เป็น string รอไว้ เพื่อป้องกัน Error ตอน Query กับ Database
+            string strVid = vid.ToString();
+
+            // 2. ดึงข้อมูล Model โดยใช้ค่า strVid ไปเทียบกับ mtParent_id (ไม่ต้องใช้ int.Parse แล้ว)
+            var models = _MK._ViewceMaster_Type
+                             .Where(m => m.mtParent_id == strVid && m.mtProgram.Contains("MoldOther") && m.mtDes.Contains("ModelName"))
+                             .OrderBy(m => m.mtItem) // เรียงลำดับตามชื่อเพื่อความสวยงามเหมือนตอนโหลดครั้งแรก
+                             .Select(m => new SelectListItem
+                             {
+                                 Value = m.mtItem,
+                                 Text = m.mtItem
+                             })
+                             .ToList();
+
+            // 3. ส่งข้อมูลกลับไปเป็น JSON (.NET Core / 5+ ใช้แบบนี้ได้เลย)
+            return Json(models);
+        }
+
+     
+        [HttpPost]
+        public JsonResult GetDetailMoldMassGoTry(string customerName, string modelName, string fuctionName)
+        {
+
+            var _DetailMoldOther = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrCustomerName.Contains(customerName) && x.mrModelName.Contains(modelName) && x.mrFunction.Contains(fuctionName) && x.mrStep == 8).OrderByDescending(x => x.mrDocmentNo).FirstOrDefault();
+
+            // 1. จำลองหรือดึงข้อมูล 3 ค่าที่คุณต้องการ
+            string vMoldGo = _DetailMoldOther?.mrMoldGo ?? string.Empty;
+            string vTry1 = _DetailMoldOther?.mrTry1 ?? string.Empty;
+            string vMoldMass = _DetailMoldOther?.mrMoldMass ?? string.Empty;
+            string vChartRate = _DetailMoldOther?.mrChartRate ?? string.Empty;
+            // ตัวอย่างการดึงจริงจาก DB (ถ้ามี)
+            // var detail = _MK.SomeTable.FirstOrDefault(x => x.Cus == customerName && x.Model == modelName);
+
+            // 2. ส่งกลับเป็น JSON แบบมัดรวม 3 ค่า
+            return Json(new
+            {
+                resultvMoldGo = vMoldGo,
+                resultvTry1 = vTry1,
+                resultvMoldMass = vMoldMass,
+                resultChartRate = vChartRate
+            });
         }
 
         public string UpdateStatusDoc(string id)
@@ -325,23 +390,57 @@ namespace CostEstimate.Controllers.NewMoldOther
                         //ถ้าเป็น Cold Sprue ให้ขึ้นคำว่า " Cold Sprue System " แต่ถ้าเป็น Hot sprue และ Runner เป็น cold Runner ให้ขึ้นเป็น " Hot sprue System "  
                         //และถ้าเป็น Hot sprue และ Runner เป็น Hot Runner ให้ขึ้นเป็น " Hot Runner System " ครับนี่เป็นเงื่อนไขครับ
 
-                        if (_listViewceItemInforRequestPartName[0].ipSprueSystem.Contains("COLD"))
-                        {
-                            ipsprueSys = _listViewceItemInforRequestPartName[0].ipSprueSystem ?? "";
-                        }
-                        else //HOT SPRUE SYSTEM
-                        {
-                            //แต่ถ้าเป็น Hot sprue และ Runner เป็น cold Runner ให้ขึ้นเป็น " Hot sprue System
-                            if (_listViewceItemInforRequestPartName[0].ipMakerHotRunner.Contains("COLD"))
-                            {
-                                ipsprueSys = _listViewceItemInforRequestPartName[0].ipSprueSystem ?? "";
-                            }
-                            else
-                            {
-                                ipsprueSys = " HOT RUNNER SYSTEM";
-                            }
-                        }
+                        //if (_listViewceItemInforRequestPartName?[0].ipSprueSystem != null)
+                        //{
 
+                        //    if (_listViewceItemInforRequestPartName[0].ipSprueSystem.Contains("COLD"))
+                        //    {
+                        //        ipsprueSys = _listViewceItemInforRequestPartName[0].ipSprueSystem ?? "";
+                        //    }
+                        //    else //HOT SPRUE SYSTEM
+                        //    {
+                        //        //แต่ถ้าเป็น Hot sprue และ Runner เป็น cold Runner ให้ขึ้นเป็น " Hot sprue System
+                        //        if (_listViewceItemInforRequestPartName[0].ipMakerHotRunner.Contains("COLD"))
+                        //        {
+                        //            ipsprueSys = _listViewceItemInforRequestPartName[0].ipSprueSystem ?? "";
+                        //        }
+                        //        else
+                        //        {
+                        //            ipsprueSys = " HOT RUNNER SYSTEM";
+                        //        }
+                        //    }
+
+                        //}
+                        var firstItem = _listViewceItemInforRequestPartName?[0];
+
+                        if (firstItem?.ipSprueSystem != null)
+                        {
+                            string sprueSys = firstItem.ipSprueSystem;
+
+                            if (sprueSys.Contains("COLD"))
+                            {
+                                ipsprueSys = sprueSys;
+                            }
+                            else // HOT SPRUE SYSTEM
+                            {
+                                // เพิ่มการกัน null สำหรับ ipMakerHotRunner ก่อนใช้ Contains
+                                string hotRunner = firstItem.ipMakerHotRunner ?? "";
+
+                                if (hotRunner.Contains("COLD"))
+                                {
+                                    ipsprueSys = sprueSys;
+                                }
+                                else
+                                {
+                                    ipsprueSys = " HOT RUNNER SYSTEM";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // กำหนดค่า default ในกรณีที่ข้อมูลเป็น null (สามารถเปลี่ยนเป็นค่าอื่นได้ตามต้องการ)
+                            ipsprueSys = "";
+                        }
 
 
                         //ipsprueSys = _listViewceItemInforRequestPartName[0].ipSprueSystem ?? "";

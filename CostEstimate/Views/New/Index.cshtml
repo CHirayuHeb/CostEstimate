@@ -45,17 +45,18 @@
                     <button class="button btnGray" style="width:auto"
                             onclick="Menubar_saveDraft('@Url.Action("SaveDraft","New")')">
                         <img src="~/images/savedaft.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                      SAVE DRAFT
+                        SAVE DRAFT
                     </button>
 
 
                     @*<button class="button btnRed" style="width:auto">
-                            <img src="~/images/cancel.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
-                            CANCEL
-                        </button>*@
+                    <img src="~/images/cancel.png" style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
+                    CANCEL
+                </button>*@
                 </div>
             </div>
-            @*<form action="" id="formRequest" name="formData" style="@(@Model._ViewceMastSubMakerRequest != null ?( @Model._ViewceMastSubMakerRequest.smEmpCodeApprove != null &&( @Model._ViewceMastSubMakerRequest.smStep == 5 || @Model._ViewceMastSubMakerRequest.smEmpCodeApprove != _UserId ) ? "pointer-events: none;" : ""):"")">*@
+            @*<form action="" id="formRequest" name="formData" style="@(@Model._ViewceMastS
+        <a href="~/Views/New/_PartialStepFlowNew.cshtml">~/Views/New/_PartialStepFlowNew.cshtml</a>ubMakerRequest != null ?( @Model._ViewceMastSubMakerRequest.smEmpCodeApprove != null &&( @Model._ViewceMastSubMakerRequest.smStep == 5 || @Model._ViewceMastSubMakerRequest.smEmpCodeApprove != _UserId ) ? "pointer-events: none;" : ""):"")">*@
             <form action="" id="formRequest" name="formData">
 
                 <div id="divSearchMain" style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:10px;border-radius:2px;">
@@ -80,9 +81,9 @@
                     </div>
 
                     @*<div class="row center" style="@(Model._ViewceMastSubMakerRequest.smStep == 7
-                        || (Model._ViewceMastSubMakerRequest.smStep == 0 && (Model._ViewceMastSubMakerRequest.smEmpCodeRequest != null && Model._ViewceMastSubMakerRequest.smEmpCodeRequest != "") && Model._ViewceMastSubMakerRequest.smEmpCodeRequest != _UserId )
-                        || (Model._ViewceMastSubMakerRequest.smStep > 0 && (Model._ViewceMastSubMakerRequest.smEmpCodeApprove != null && Model._ViewceMastSubMakerRequest.smEmpCodeApprove != "") && Model._ViewceMastSubMakerRequest.smEmpCodeApprove != _UserId )
-                        ? "pointer-events: none;" : "")">*@
+                || (Model._ViewceMastSubMakerRequest.smStep == 0 && (Model._ViewceMastSubMakerRequest.smEmpCodeRequest != null && Model._ViewceMastSubMakerRequest.smEmpCodeRequest != "") && Model._ViewceMastSubMakerRequest.smEmpCodeRequest != _UserId )
+                || (Model._ViewceMastSubMakerRequest.smStep > 0 && (Model._ViewceMastSubMakerRequest.smEmpCodeApprove != null && Model._ViewceMastSubMakerRequest.smEmpCodeApprove != "") && Model._ViewceMastSubMakerRequest.smEmpCodeApprove != _UserId )
+                ? "pointer-events: none;" : "")">*@
                     <div class="row center" style="@(( Model._ViewceMastSubMakerRequest.smStep == 7|| (Model._ViewceMastSubMakerRequest.smStep == 0 && !string.IsNullOrEmpty(Model._ViewceMastSubMakerRequest.smEmpCodeRequest) && Model._ViewceMastSubMakerRequest.smEmpCodeRequest != _UserId) || (Model._ViewceMastSubMakerRequest.smStep > 0 && !string.IsNullOrEmpty(Model._ViewceMastSubMakerRequest.smEmpCodeApprove) && Model._ViewceMastSubMakerRequest.smEmpCodeApprove != _UserId) ) && (_Permission?.ToUpper() != "ADMIN")? "pointer-events: none;" : "") ">
 
 
@@ -118,9 +119,9 @@
                             <div class="col-25" style=" display: flex;align-items: center; ">
                                 <input type="text" class="form-control" id="i_New_LotNo" style="font-size:12px;width:100%;background-color:yellow" autocomplete="off" asp-for="_ViewceMastSubMakerRequest.smLotNo" />
                                 @*<button class="button btnGray" style="width:auto" onclick="Menubar_SearchLedger($('#i_New_OrderNo').val(),'@Url.Action("SearchLedger","New")')">
-                                        <img src="~/images/search.png" style="width:22px;height:22px;padding-right:0px;margin-right:3px;margin-top: 2px;margin-bottom: 2px;" />
-                                        ค้นหา
-                                    </button>*@
+                                <img src="~/images/search.png" style="width:22px;height:22px;padding-right:0px;margin-right:3px;margin-top: 2px;margin-bottom: 2px;" />
+                                ค้นหา
+                            </button>*@
 
                                 @*@Html.DropDownListFor(m => m._ViewceDetailSubMakerRequest.dsLotNo, (SelectList)ViewBag.vbformMaster_Mold_Control, "กรุณาเลือก", new { @class = "form-control", id = "ipCodeDept", autocomplete = "off", @style = "width:100%;font-size:13px" })*@
                                 @*<input type="text" class="form-control left" style="width:100%;height:80%" autocomplete="off">*@
@@ -334,9 +335,6 @@
                         @await Html.PartialAsync("_PartialNewSummary", Model)
                     </div>
                 </div>
-
-
-
                 <!-- Modal send mail -->
                 <div class="modal modal-lg fade" id="myModal1" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">

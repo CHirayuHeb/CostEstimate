@@ -466,8 +466,14 @@ function PositionY(menu) {
             // PY = "331px";
             opacity = "opacity-dot-3";
             break;
-
-
+        case "AddOMasterReq":
+            LoadScript("js/Home/Index.js", "Home");
+            LoadScript("js/Home/divShow.js", "Home");
+            PY = "265px";
+            // PY = "331px";
+            opacity = "opacity-dot-3";
+            break;
+            
 
 
 
@@ -7591,5 +7597,75 @@ function Menubar_PrintMoldOtherQUOTATION(action, mpNo) {
         }
     });
     $("#myModalMoldOtherQUOTATION").modal("show");
+}
+
+
+
+function Menubar_EditMasterOMasterReq(msId, action) {
+    console.log("Menubar Edit Master OMaster Req");
+    $.ajax({
+        url: action,
+        type: 'POST',
+        data: {
+            msId: msId
+           
+        },
+        beforeSend: function () {
+            console.log("Showing loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorOMasterReq").css("display", "block"); // แสดง Loader
+            $("#ResultMastOMasterReq").css("display", "none"); // ซ่อน Loader
+        },
+        success: function (response) {
+            $("#ResultMastOMasterReq").css("display", "block"); // แสดง Loader
+            $("#ResultMastOMasterReq").html(response); // เอา HTML Partial View มาใส่ใน Div
+        },
+        error: function () {
+            alert("Error!!");
+        },
+        complete: function () {
+            // ซ่อนรูปโหลดเมื่อ request เสร็จ
+            console.log("Hiding loader..."); // ตรวจสอบว่าทำงานจริง
+            $("#loadingIndicatorOMasterReq").css("display", "none"); // ซ่อน Loader
+        }
+    });
+
+    $("#myModalOmasterReq").modal("show");
+}
+function Menubar_DeleteMasterOMasterReq(msId,action) {
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure delete Master Other Item Request?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { msId: msId },
+                success: function (res) {
+                    swal.fire({
+                        title: 'แจ้งเตือน',
+                        icon: res.res,
+                        text: res.res,
+                    })
+                        .then((result) => {
+                           
+                            GoSideMenu("AddOMasterReq");
+                         
+                        });
+
+
+
+                }
+            });
+        } else {
+            //console.log('Cancel');
+            return false;
+        }
+    });
 }
 

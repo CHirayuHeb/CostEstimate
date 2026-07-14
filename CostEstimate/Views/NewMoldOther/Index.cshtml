@@ -79,7 +79,7 @@
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Customer Name.</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    @Html.DropDownListFor(m => m._ViewceMastMoldOtherRequest.mrCustomerName, (SelectList)ViewBag._TypeCustomerRequest, "กรุณาเลือก", new { @class = "form-control ", id = "i_NewOther_CusName", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
+                                    @Html.DropDownListFor(m => m._ViewceMastMoldOtherRequest.mrCustomerName, (SelectList)ViewBag.TypeCustomerName, "กรุณาเลือก", new { @class = "form-control ", id = "i_NewOther_CusName", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
 
                                     @*<input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_CusName" asp-for="_ViewceMastMoldOtherRequest.mrCustomerName">*@
                                 </div>
@@ -103,7 +103,7 @@
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Function</div>
                                 </div>
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    @Html.DropDownListFor(m => m._ViewceMastMoldOtherRequest.mrFunction, (SelectList)ViewBag._TypeFunctionRequest, "กรุณาเลือก", new { @class = "form-control ", id = "i_NewOther_Function", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
+                                    @Html.DropDownListFor(m => m._ViewceMastMoldOtherRequest.mrFunction, (SelectList)ViewBag.TypeFunction, "กรุณาเลือก", new { @class = "form-control ", id = "i_NewOther_Function", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
 
                                     @*<input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_Function" maxlength="20" asp-for="_ViewceMastMoldOtherRequest.mrFunction">*@
 
@@ -127,10 +127,7 @@
                                     <div class="grid-item fw-800 center  " style="text-align:left;font-size:12px">Model Name</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    @Html.DropDownListFor(m => m._ViewceMastMoldOtherRequest.mrModelName, (SelectList)ViewBag._TypeModelNameRequest, "กรุณาเลือก", new { @class = "form-control", id = "i_NewOther_ModelName", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
-
-                                    @*@Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfIssueDept, (SelectList)ViewBag.TypeofRequestBy, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMold_RequestBy", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })*@
-                                    @*<input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow" autocomplete="off" id="i_NewOther_ModelName" asp-for="_ViewceMastMoldOtherRequest.mrModelName">*@
+                                    @Html.DropDownListFor(m => m._ViewceMastMoldOtherRequest.mrModelName, (SelectList)ViewBag.TypeModelName, "กรุณาเลือก", new { @class = "form-control", id = "i_NewOther_ModelName", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
 
                                 </div>
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
@@ -252,63 +249,63 @@
                                             }
                                             @for (int i = 0; i < Model._ListViewceItemPartName.Count(); i++)
                                             {
-                                            <tr>
-                                                <td>@(row += 1)</td>
-                                                <td>
-                                                    <input type='text' class='vPartName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipPartName"
-                                                           readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 && Model._ViewceMastMoldOtherRequest.mrStep != 4 && Model._ViewceMastMoldOtherRequest.mrStep != 5 && Model._ViewceMastMoldOtherRequest.mrStep != 6)">
-                                                </td>
-                                                <td style="display:none"><input type='text' class='vRunNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgrey;' asp-for="_ListViewceItemPartName[i].ipRunNo" readonly></td>
-                                                <td width='100px' >
-                                                    <input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipCavityNo"
-                                                           readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 && Model._ViewceMastMoldOtherRequest.mrStep != 4 && Model._ViewceMastMoldOtherRequest.mrStep != 5 && Model._ViewceMastMoldOtherRequest.mrStep != 6)">
-                                                    @*<input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;display:none' asp-for="_ListViewceItemPartName[i].ipCavityNo">*@
-                                                <td style="pointer-events:@(Model._ViewceMastMoldOtherRequest.mrStep != 1 && Model._ViewceMastMoldOtherRequest.mrStep != 4 && Model._ViewceMastMoldOtherRequest.mrStep != 5 && Model._ViewceMastMoldOtherRequest.mrStep != 6 ? "none" : "auto");">
-                                                    @Html.DropDownListFor(m => m._ListViewceItemPartName[i].ipTypeCavity, (SelectList)ViewBag.TypeofCavity, "กรุณาเลือก", new { @class = "form-control vTypeCavity", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
-                                                </td>
-                                                <td >
-                                                    @Html.DropDownListFor(m => m._ListViewceItemPartName[i].ipTypeMold, (SelectList)ViewBag.TypeMold, "กรุณาเลือก", new { @class = "form-control vTypeMold", id = "ipMold", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
-                                                </td>
-                                                <td>
-                                                    <input type='number' class='vRateReport form-control txt-right' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgray; @(Model._ListViewceItemPartName[i].ipTypeMold.ToLower().Contains("maker")?"display:none":"")'  asp-for="_ListViewceItemPartName[i].ipRateReport"
-                                                           readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 && Model._ViewceMastMoldOtherRequest.mrStep != 4 && Model._ViewceMastMoldOtherRequest.mrStep != 5 && Model._ViewceMastMoldOtherRequest.mrStep != 6)">
-                                                </td>
-                                                <td width='70px'>
+                                                <tr>
+                                                    <td>@(row += 1)</td>
+                                                    <td>
+                                                        <input type='text' class='vPartName form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipPartName"
+                                                               readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 && Model._ViewceMastMoldOtherRequest.mrStep != 4 && Model._ViewceMastMoldOtherRequest.mrStep != 5 && Model._ViewceMastMoldOtherRequest.mrStep != 6)">
+                                                    </td>
+                                                    <td style="display:none"><input type='text' class='vRunNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgrey;' asp-for="_ListViewceItemPartName[i].ipRunNo" readonly></td>
+                                                    <td width='100px'>
+                                                        <input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;' asp-for="_ListViewceItemPartName[i].ipCavityNo"
+                                                               readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 && Model._ViewceMastMoldOtherRequest.mrStep != 4 && Model._ViewceMastMoldOtherRequest.mrStep != 5 && Model._ViewceMastMoldOtherRequest.mrStep != 6)">
+                                                        @*<input type='number' class='vCavityNo form-control ' min='0' style='width:100%;height:90%;font-size:10px;background-color:yellow;display:none' asp-for="_ListViewceItemPartName[i].ipCavityNo">*@
+                                                    <td style="pointer-events:@(Model._ViewceMastMoldOtherRequest.mrStep != 1 && Model._ViewceMastMoldOtherRequest.mrStep != 4 && Model._ViewceMastMoldOtherRequest.mrStep != 5 && Model._ViewceMastMoldOtherRequest.mrStep != 6 ? "none" : "auto");">
+                                                        @Html.DropDownListFor(m => m._ListViewceItemPartName[i].ipTypeCavity, (SelectList)ViewBag.TypeofCavity, "กรุณาเลือก", new { @class = "form-control vTypeCavity", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
+                                                    </td>
+                                                    <td>
+                                                        @Html.DropDownListFor(m => m._ListViewceItemPartName[i].ipTypeMold, (SelectList)ViewBag.TypeMold, "กรุณาเลือก", new { @class = "form-control vTypeMold", id = "ipMold", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
+                                                    </td>
+                                                    <td>
+                                                        <input type='number' class='vRateReport form-control txt-right' min='0' style='width:100%;height:90%;font-size:10px;background-color:lightgray; @(Model._ListViewceItemPartName[i].ipTypeMold.ToLower().Contains("maker")?"display:none":"")' asp-for="_ListViewceItemPartName[i].ipRateReport"
+                                                               readonly="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 && Model._ViewceMastMoldOtherRequest.mrStep != 4 && Model._ViewceMastMoldOtherRequest.mrStep != 5 && Model._ViewceMastMoldOtherRequest.mrStep != 6)">
+                                                    </td>
+                                                    <td width='70px'>
 
-                                                    @*<img src='~/images/petition.png' alt='icon' class='imgM' />*@
-                                                    @if (Model._ViewceMastMoldOtherRequest.mrStep > 3)
-                                                    {
-                                                        var currentItem = Model._ListViewceItemPartName[i];
-                                                        bool isThs = currentItem.ipTypeMold?.Contains("THS") ?? false;
-
-                                                        // เลือก Controller ตามเงื่อนไข
-                                                        string targetController = isThs ? "SumRateMoldOther" : "SumRateMoldOtherSub";
-
-                                                        // สร้าง Route Parameters
-                                                        var routeValues = new
+                                                        @*<img src='~/images/petition.png' alt='icon' class='imgM' />*@
+                                                        @if (Model._ViewceMastMoldOtherRequest.mrStep > 3)
                                                         {
-                                                            Docno = currentItem.ipDocumentNo,
-                                                            vProcess = currentItem.ipRunNo
-                                                        };
+                                                            var currentItem = Model._ListViewceItemPartName[i];
+                                                            bool isThs = currentItem.ipTypeMold?.Contains("THS") ?? false;
 
-                                                        <a href="@Url.Action("Index", targetController, routeValues)"
-                                                           target="_blank"
-                                                           style="font-size: 15px; text-decoration: none;">
-                                                            <img src="~/images/petition.png" alt="icon" class="imgM" />
-                                                        </a>
+                                                            // เลือก Controller ตามเงื่อนไข
+                                                            string targetController = isThs ? "SumRateMoldOther" : "SumRateMoldOtherSub";
+
+                                                            // สร้าง Route Parameters
+                                                            var routeValues = new
+                                                            {
+                                                                Docno = currentItem.ipDocumentNo,
+                                                                vProcess = currentItem.ipRunNo
+                                                            };
+
+                                                            <a href="@Url.Action("Index", targetController, routeValues)"
+                                                               target="_blank"
+                                                               style="font-size: 15px; text-decoration: none;">
+                                                                <img src="~/images/petition.png" alt="icon" class="imgM" />
+                                                            </a>
 
 
-                                                    }
+                                                        }
 
-                                                </td>
-                                                <td align='Center'>
-                                                    <input type="button"
-                                                           class="RemoveRow"
-                                                           value="&#x274C"
-                                                           style="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "cursor:not-allowed" : "cursor:pointer")"
-                                                           @(Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "disabled='disabled'" : "") />
-                                                </td>
-                                            </tr>
+                                                    </td>
+                                                    <td align='Center'>
+                                                        <input type="button"
+                                                               class="RemoveRow"
+                                                               value="&#x274C"
+                                                               style="@(Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "cursor:not-allowed" : "cursor:pointer")"
+                                                               @(Model._ViewceMastMoldOtherRequest.mrStep != 1 ? "disabled='disabled'" : "") />
+                                                    </td>
+                                                </tr>
                                             }
 
                                         </tbody>
@@ -825,19 +822,6 @@
                                 document.getElementById("i_NewOther_SLotNo").focus();
                             });
                     }
-
-
-
-
-
-
-
-
-
-
-
-
-
                     var terms = split(this.value);
                     //remove the current input
                     terms.pop();
@@ -855,7 +839,7 @@
 
 
 
-        $("#i_NewOther_CusName")
+        @*$("#i_NewOther_CusName")
             //don't navigate away from the field on tab when selecting an item
             .on("keydown", function (event) {
                 console.log("OK");
@@ -909,7 +893,7 @@
                     }
                 }
 
-            });
+            });*@
 
 
         $("#i_NewOther_Function")
@@ -965,7 +949,7 @@
                 }
             });
 
-        $("#i_NewOther_ModelName")
+        @*$("#i_NewOther_ModelName")
             //don't navigate away from the field on tab when selecting an item
             .on("keydown", function (event) {
                 console.log("OK");
@@ -1017,7 +1001,7 @@
                     }
                 }
 
-            });
+            });*@
 
 
         $("#i_NewOther_Event")
@@ -1166,7 +1150,87 @@
     }
 
 
+    $(document).ready(function () {
+    
+    // ==========================================
+    // 1. เหตุการณ์เมื่อเปลี่ยน Customer -> โหลด Model
+    // ==========================================
+    $('#i_NewOther_CusName').change(function () {
+        var customerName = $(this).val(); 
+        var $modelDd = $('#i_NewOther_ModelName'); 
 
+        // ล้างข้อมูลเก่าออกก่อน
+        $modelDd.empty().append('<option value="">กรุณาเลือก</option>');
+
+        if (customerName) {
+            $.ajax({
+                url: '@Url.Action("GetModelsByCustomer", "NewMoldOther")', 
+                type: 'GET',
+                data: { customerName: customerName },
+                success: function (data) {
+                    console.log("ข้อมูลที่ส่งกลับมา:", data);
+                    if (data && data.length > 0) {
+                        $.each(data, function (index, item) {
+                            var optionValue = item.value || item.Value;
+                            var optionText = item.text || item.Text;
+
+                            $modelDd.append($('<option>', {
+                                value: optionValue,
+                                text: optionText
+                            }));
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("เกิดข้อผิดพลาดในการดึงข้อมูล Model: " + error);
+                }
+            });
+        }
+    });
+
+    // ==========================================
+    // 2. เหตุการณ์เมื่อเปลี่ยน Model หรือ Function -> ดึงรายละเอียด 3 ค่า
+    // ==========================================
+    // ใช้ Selector แบบคู่ไอดี '#i_NewOther_ModelName, #i_NewOther_Function' เพื่อดักจับทั้งสองฝั่ง
+    $('#i_NewOther_ModelName, #i_NewOther_Function').change(function () {
+        var customerName = $('#i_NewOther_CusName').val();
+        var ModelName = $('#i_NewOther_ModelName').val();
+        var fuctionName = $('#i_NewOther_Function').val();
+
+        // ตรวจสอบว่าผู้ใช้งานกรอก/เลือก ครบทั้ง 3 ช่องหรือยัง
+        if (customerName && ModelName && fuctionName) {
+            $.ajax({
+                url: '@Url.Action("GetDetailMoldMassGoTry", "NewMoldOther")',
+                type: 'POST', 
+                data: { 
+                    customerName: customerName, 
+                    ModelName: ModelName, 
+                    fuctionName: fuctionName
+                },
+                success: function (response) {
+                    console.log("รายละเอียดที่ส่งกลับมา:", response);
+
+                    // แยกผลลัพธ์ 3 ค่า (ดักพิจารทั้งตัวเล็ก-ตัวใหญ่)
+                    var val1 = response.resultvMoldGo || response.resultvMoldGo;
+                    var val2 = response.resultvTry1 || response.resultvTry1;
+                    var val3 = response.resultvMoldMass || response.resultvMoldMass;
+                    var val4 = response.resultChartRate || response.resultChartRate;
+                    // แสดงผลลงใน Input ต่างๆ
+                    $('#i_NewOther_MoldGo').val(val1);
+                    $('#i_NewOther_Try1').val(val2);
+                    $('#i_NewOther_MoldMass').val(val3);
+                    $('#i_NewOther_ChartRate').val(val4);
+                    
+                   
+                },
+                error: function (xhr, status, error) {
+                    console.error("เกิดข้อผิดพลาดในการดึงรายละเอียด: " + error);
+                }
+            });
+        }
+    });
+
+});
 
 
 
