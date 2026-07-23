@@ -27,7 +27,6 @@ C:\Users\ths015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project
 C:\Users\ths015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\AddMProcess\Index.g.cshtml.cs
 C:\Users\ths015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\AddMProcess\_PartialMastMProcessView.g.cshtml.cs
 C:\Users\ths015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\AddOMasterReq\Index.g.cshtml.cs
-C:\Users\ths015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\AddOMasterReq\_PartialMastMaster.g.cshtml.cs
 C:\Users\ths015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\AddOMaster\Index.g.cshtml.cs
 C:\Users\ths015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\AddOMaster\_PartialMastMaster.g.cshtml.cs
 C:\Users\ths015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\AddOModel\Index.g.cshtml.cs
@@ -180,3 +179,6 @@ C:\Users\ths015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project
 C:\Users\ths015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\CostEstimate.dll
 C:\Users\ths015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\CostEstimate.pdb
 C:\Users\ths015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\CostEstimate.csproj.CopyComplete
+C:\Users\ths015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\AddOMasterReq\_PartialMastMasterReq.g.cshtml.cs
+C:\Users\ths015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\CostEstimate.csprojAssemblyReference.cache
+C:\Users\ths015142\OneDrive - STANLEY ELECTRIC CO., LTD\Desktop\Work\MVC Project\CostEstimate\CostEstimate\obj\Release\netcoreapp2.1\Razor\Views\AddOMasterReq\_PartialMastAddMasterReq.g.cshtml.cs

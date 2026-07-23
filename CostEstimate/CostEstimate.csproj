@@ -28,7 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\AddOMasterReq\_PartialMastMaster.cshtml">
+    <Content Update="Views\AddOMasterReq\_PartialMastAddMasterReq.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\AddOMasterReq\_PartialMastMasterReq.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\AddOModel\_PartialMastModel.cshtml">

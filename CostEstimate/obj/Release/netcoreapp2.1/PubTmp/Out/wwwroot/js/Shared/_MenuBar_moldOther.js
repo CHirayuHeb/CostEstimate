@@ -473,7 +473,7 @@ function PositionY(menu) {
             // PY = "331px";
             opacity = "opacity-dot-3";
             break;
-            
+
 
 
 
@@ -6509,7 +6509,7 @@ function Menubar_MoldOtherSMsavesendMailData(action) {
 
             //const rowsTrSlideSystem = div.querySelectorAll('tr.trSlideSystem');
 
-         
+
             rowsTrSlideSystem.forEach((tr, index) => {
                 const select = tr.querySelector(".isSlideSystemType");
 
@@ -6520,7 +6520,7 @@ function Menubar_MoldOtherSMsavesendMailData(action) {
                     if (select) select.focus();
                     throw new Error("System Type is required.");
                 }
-              
+
 
                 //check value null
                 _ceItemInforSlideSystem.push({
@@ -7600,7 +7600,43 @@ function Menubar_PrintMoldOtherQUOTATION(action, mpNo) {
 }
 
 
+function Menubar_DeleteMasterOMasterReq(msId, action) {
 
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure delete Master Other Item Request?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { msId: msId },
+                success: function (res) {
+                    swal.fire({
+                        title: 'แจ้งเตือน',
+                        icon: res.res,
+                        text: res.res,
+                    })
+                        .then((result) => {
+
+                            GoSideMenu("AddOMasterReq");
+
+                        });
+
+
+
+                }
+            });
+        } else {
+            //console.log('Cancel');
+            return false;
+        }
+    });
+}
 function Menubar_EditMasterOMasterReq(msId, action) {
     console.log("Menubar Edit Master OMaster Req");
     $.ajax({
@@ -7608,7 +7644,7 @@ function Menubar_EditMasterOMasterReq(msId, action) {
         type: 'POST',
         data: {
             msId: msId
-           
+
         },
         beforeSend: function () {
             console.log("Showing loader..."); // ตรวจสอบว่าทำงานจริง
@@ -7631,41 +7667,218 @@ function Menubar_EditMasterOMasterReq(msId, action) {
 
     $("#myModalOmasterReq").modal("show");
 }
-function Menubar_DeleteMasterOMasterReq(msId,action) {
+function Menubar_AddMasterOMasterReq(action) {
+    let formData = document.forms.namedItem("formMastOMasterReq");
+    let viewModel = new FormData(formData);
 
+
+    var msg = "";
+    if (document.getElementById("i_NewOther_msItem").value == "" || document.getElementById("i_NewOther_msDes").value == "") {
+        msg = "กรุณากรอกข้อมูลให้ครบถ้วน !!!";
+        // document.getElementById("i_NewOther_mtName").focus();
+    }
+
+
+    if (msg != "") {
+        swal.fire({
+            title: 'แจ้งเตือน',
+            icon: 'warning',
+            text: msg,
+        })
+            .then((result) => {
+
+            });
+    }
+    else {
+
+        $.each(formData, function (index, input) {
+            viewModel.append(input.name, input.value);
+        });
+
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: viewModel,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                swal.fire({
+                    html: '<h5>Loading...</h5>',
+                    showConfirmButton: false,
+                    onRender: function () {
+                        // there will only ever be one sweet alert open.
+                        //$('.swal2-content').prepend(sweet_loader);
+                    }
+                });
+            },
+            success: async function (config) {
+                // alert(config.c1);
+                if (config.c1 == "S") {
+                    // $("#loaderDiv").hide();
+                    await $("#myModalOmasterReq").modal("hide");
+                    swal.fire({
+                        title: 'SUCCESS',
+                        icon: 'success',
+                        text: config.c2,
+                    }).then((result) => {
+                        //if (result.isConfirmed) {
+                        //    console.log("config.c3" + config.c3);
+                        GoSideMenu("AddOMasterReq");
+                        //}
+                    });
+                }
+                else if (config.c1 == "E") {
+                    //$("#loaderDiv").hide();
+                    //await $("#myModal1").modal("hide");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ERROR',
+                        text: config.c2,
+                    })
+                        .then((result) => {
+                            $("#myModalOmasterReq").modal("show");
+                        });
+
+                }
+                else if (config.c1 == "N") {
+                    //$("#loaderDiv").hide();
+                    //await $("#myModal1").modal("hide");
+                    Swal.fire({
+                        icon: 'แจ้งเตือน',
+                        title: 'warning',
+                        text: config.c2,
+                    })
+                        .then((result) => {
+                            $("#myModalOmasterReq").modal("show");
+                        });
+
+                }
+            }
+        });
+    }
+
+
+}
+
+
+
+function Menubar_DeleteItemRequest(mtid, url, btnElement) {
     Swal.fire({
         title: "Are you sure?",
         text: "Are you sure delete Master Other Item Request?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Yes",
-        cancelButtonText: "No"
+        cancelButtonText: "No",
+        confirmButtonColor: "#d33", // สีปุ่มยืนยัน (สีแดง)
+        cancelButtonColor: "#3085d6"  // สีปุ่มยกเลิก (สีฟ้า)
     }).then((result) => {
-        if (result['isConfirmed']) {
-            $.ajax({
-                type: 'post',
-                url: action,
-                data: { msId: msId },
-                success: function (res) {
-                    swal.fire({
-                        title: 'แจ้งเตือน',
-                        icon: res.res,
-                        text: res.res,
-                    })
-                        .then((result) => {
-                           
-                            GoSideMenu("AddOMasterReq");
-                         
+        // 2. ถ้าผู้ใช้กดปุ่ม "Yes"
+        if (result.isConfirmed) {
+            const deleteUrl = `${url}?id=${mtid}`;
+
+            fetch(deleteUrl, {
+                method: 'POST'
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // ลบแถว <tr> ออกจากหน้าเว็บทันที
+                        const row = btnElement.closest('tr');
+                        if (row) row.remove();
+
+                        // แจ้งเตือนเมื่อลบสำเร็จ
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Your item has been deleted.",
+                            icon: "success",
+                            timer: 1500,
+                            showConfirmButton: false
                         });
-
-
-
-                }
-            });
-        } else {
-            //console.log('Cancel');
-            return false;
+                    } else {
+                        Swal.fire("Error", data.message || "Failed to delete item.", "error");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire("Error", "Unable to connect to the server.", "error");
+                });
         }
     });
 }
+function Menubar_AddMasterOMasterReqParent(url, deleteUrl) {
+    // 1. ดึง Elements
+    const parentIdInput = document.getElementById('txtparentId');
+    const itemNameInput = document.getElementById('txtItemName');
 
+    const parentId = parentIdInput ? parentIdInput.value : '';
+    const itemName = itemNameInput.value.trim();
+
+    // 2. Validate ข้อมูลก่อนส่ง
+    if (!itemName) {
+        Swal.fire("Warning", "Please enter item name", "warning");
+        return;
+    }
+
+    // 3. แนบข้อมูลลงใน params
+    const params = new URLSearchParams();
+    params.append('msid', parentId);
+    params.append('name', itemName);
+
+    // 4. ส่ง Request
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: params
+    })
+        .then(response => {
+            if (!response.ok) throw new Error('Network error');
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // URL สำหรับการลบรายการที่เพิ่งสร้างใหม่
+               // const deleteUrl = '/AddOMasterReq/DeleteMasterItemParent';
+
+                // สร้าง Row ใหม่แทรกในตาราง
+                const newRowHtml = `
+                <tr id="row-${data.item.mtid}">
+                    <td>${data.item.mtid}</td>
+                    <td>${data.item.mtItem}</td>
+                    <td>${data.item.mtDes}</td>
+                  
+                    <td>
+                        <input type="button" style="font-size:15px" value="&#x274c;" 
+                               onclick="Menubar_DeleteItemRequest('${data.item.mtid}', '${deleteUrl}', this)">
+                    </td>
+                </tr>
+            `;
+
+                // แทรก Row ใหม่ลงใน <tbody>
+                document.getElementById('masterTableBodyParent').insertAdjacentHTML('beforeend', newRowHtml);
+
+                // เคลียร์ Textbox
+                itemNameInput.value = '';
+
+                // แจ้งเตือนสำเร็จ
+                Swal.fire({
+                    title: "Added!",
+                    text: "New item has been added successfully.",
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            } else {
+                Swal.fire("Error", data.message || "Failed to add item.", "error");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire("Error", "Unable to connect to the server.", "error");
+        });
+}

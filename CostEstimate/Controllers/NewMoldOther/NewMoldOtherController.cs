@@ -169,7 +169,7 @@ namespace CostEstimate.Controllers.NewMoldOther
 
             // 2. ดึงข้อมูล Model โดยใช้ค่า strVid ไปเทียบกับ mtParent_id (ไม่ต้องใช้ int.Parse แล้ว)
             var models = _MK._ViewceMaster_Type
-                             .Where(m => m.mtParent_id == strVid && m.mtProgram.Contains("MoldOther") && m.mtDes.Contains("ModelName"))
+                             .Where(m => m.mtParent_id == vid && m.mtProgram.Contains("MoldOther") && m.mtDes.Contains("ModelName"))
                              .OrderBy(m => m.mtItem) // เรียงลำดับตามชื่อเพื่อความสวยงามเหมือนตอนโหลดครั้งแรก
                              .Select(m => new SelectListItem
                              {

@@ -10,32 +10,32 @@
 }
 <link href="~/css/Home/siteHome.css" rel="stylesheet" />
 <div class="row center">
-    <form action="" id="formMastOModel" name="formMastOMaster">
+    <form action="" id="formMastOModelReq" name="formMastOMasterReq">
         <div class="row center">
             <div class="col-100 ">
-                <table class="tbgreen" id="tbMastModel">
+                <table class="tbgreen" id="tbMastModelReq">
                     <tr>
                         <th style="text-align:left;" width="20%">Doc No</th>
                         <td style="text-align:center;font-size:9px">
-                            <span style="font-size:12px"> @Html.DisplayFor(model => model._ViewceMastType.mtId) </span>
-                            <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px;display:none" autocomplete="off" asp-for="_ViewceMastType.mtId" readonly>
+                            <span style="font-size:12px"> @Html.DisplayFor(model => model._ViewceMaster.msid) </span>
+                            <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px;display:none" autocomplete="off" asp-for="_ViewceMaster.msid" readonly>
                         </td>
                     </tr>
                     <tr>
                         <th style="text-align:left;" width="20%">Master Item</th>
-                        <td style="text-align:center;font-size:9px"> <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewceMastType.mtName" id="i_NewOther_mtName"></td>
+                        <td style="text-align:center;font-size:9px"> <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewceMaster.msItem" id="i_NewOther_msItem"></td>
                     </tr>
                     <tr>
                         <th style="text-align:left;" width="20%">TYPE</th>
                         <td style="text-align:center;font-size:9px">
-                            @Html.DropDownListFor(m => m._ViewceMastType.mtType, (SelectList)ViewBag._TypemtType, "กรุณาเลือก", new { @class = "form-control ", id = "i_NewOther_mtType", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
+                            @Html.DropDownListFor(m => m._ViewceMaster.msDes, (SelectList)ViewBag._TypemsType, "กรุณาเลือก", new { @class = "form-control ", id = "i_NewOther_msDes", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
                         </td>
                     </tr>
                 </table>
                 <br />
                 <div class="modal-footer">
                     <br />
-                    <button type="button" class="btn btn-primary" onclick="Menubar_AddMasterOMaster('@Url.Action("AddMasterMaster","AddOMaster")')">Save</button>
+                    <button type="button" class="btn btn-primary" onclick="Menubar_AddMasterOMasterReq('@Url.Action("AddMasterMaster","AddOMasterReq")')">Save</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
 

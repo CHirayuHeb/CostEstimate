@@ -30,7 +30,7 @@
                     </span>
                 </div>
                 <div class="col-40 center" style="text-align:right;">
-                    <button class="button " style="width:auto" onclick="Menubar_EditMasterOMaster('','','@Url.Action("SearchMasterItem","AddOMaster")')">
+                    <button class="button " style="width:auto" onclick="Menubar_EditMasterOMasterReq('','@Url.Action("SearchMasterItem","AddOMasterReq")')">
                         <img src="~/images/addcost.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
                         ADD
                     </button>
@@ -52,7 +52,7 @@
 
                             </label>
                             <div style="text-align:right">
-                                <span style="font-size:12px;font-weight:900">ค้นหา</span> <input type="text" id="searchInputtbOmaster" placeholder="Search..." style="margin-bottom:10px; width:200px; font-size:10px">
+                                <span style="font-size:12px;font-weight:900">ค้นหา</span> <input type="text" id="searchInputtbOmasterReq" placeholder="Search..." style="margin-bottom:10px; width:200px; font-size:10px">
                             </div>
 
                         </div>
@@ -66,10 +66,10 @@
                                             <thead>
                                                 <tr>
                                                     <th style="text-align:center" width="5%">NO</th>
-                                                    <th style="text-align:center">id</th>
+                                                    @*<th style="text-align:center">id</th>*@
                                                     <th style="text-align:center">Item Name</th>
                                                     <th style="text-align:center">Description</th>
-                                                    <th style="text-align:center">Status</th>
+                                                    <th style="text-align:center">Add Item</th>
                                                     <th style="text-align:center" width="15%">แก้ไข</th>
                                                     <th style="text-align:center" width="15%">ลบ</th>
                                                 </tr>
@@ -83,9 +83,9 @@
                                                     <tbody>
                                                         <tr>
                                                             <td style="text-align:right">@(row += 1)</td>
-                                                            <td>
+                                                            @*<td>
                                                                 @item.msid
-                                                            </td>
+                                                            </td>*@
                                                             <td>
                                                                 @item.msItem
                                                             </td>
@@ -93,7 +93,8 @@
                                                                 @item.msDes
                                                             </td>
                                                             <td>
-                                                                @item.msIsActive
+                                                                <input type="button" style="font-size:15px" value="&#128221;" onclick="Menubar_EditMasterOMasterReq('@item.msid','@Url.Action("SearchMasterParentItem","AddOMasterReq")')">
+
                                                             </td>
                                                             <td>
                                                                 @*&#128221; &#128203;*@
@@ -148,19 +149,18 @@
                                     <img src="~/images/wait1.gif" alt="Loading..." width="100px"><span style="font-weight:600">Loading...</span>
                                 </div>
                                 <div id="ResultMastOMasterReq" style="display: none;">
-                                    @*@await Html.PartialAsync("_PartialMastMasterReq", Model)*@
                                 </div>
 
                             </div>
-                            <!-- Modal Footer -->
-                            @*<div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-
-                        </div>*@
+                         
+                          
                         </div>
                     </div>
                 </div>
             </div>
+        
+
+        
         </div>
     </div>
 </div>

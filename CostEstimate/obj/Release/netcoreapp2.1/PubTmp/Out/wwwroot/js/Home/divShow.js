@@ -51,3 +51,4 @@ bindTableSearch("searchInputtbSM", "tbSM");
 
 //Mold other
 bindTableSearch("searchInputtbOmaster", "tbOmaster");
+bindTableSearch("searchInputtbOmasterReq", "tbOmasterReq");

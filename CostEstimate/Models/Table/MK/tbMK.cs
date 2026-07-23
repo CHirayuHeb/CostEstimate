@@ -1149,7 +1149,7 @@ namespace CostEstimate.Models.Table.MK
     {
         [Key]
         public int mtid { get; set; }
-        public string mtParent_id { get; set; }
+        public int mtParent_id { get; set; }
         public string mtItem { get; set; }
         public string mtDes { get; set; }
         public bool mtIsActive { get; set; }

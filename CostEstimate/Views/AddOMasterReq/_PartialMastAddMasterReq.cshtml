@@ -1,0 +1,116 @@
+﻿@model CostEstimate.Models.Common.Class;
+@{
+    //string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
+<link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<div class="row center">
+    <table>
+        <tr>
+            <th>Item</th>
+            <td>
+                <input type="text" class="form-control left " style="width:80%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMaster.msItem" readonly>
+
+            </td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>
+                <input type="text" class="form-control left " style="width:80%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMaster.msDes" readonly>
+
+            </td>
+        </tr>
+    </table>
+    <br />
+
+    <form action="" id="formMastOModelAddItemReq" name="formMastOModelAddItemReq">
+        <div class="row center">
+            <div class="col-100 ">
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <input  type="hidden" asp-for="_ViewceMaster.msid" id="txtparentId"/>
+                        <input type="text" id="txtItemName" class="form-control" placeholder="Enter Item Name" style="font-size:12px;">
+                    </div>
+                    <div class="col-md-4">
+                        @*<button type="button" class="btn btn-primary" onclick="Menubar_AddMasterOMasterReqParent('@Url.Action("AddMasterItemParent", "AddOMasterReq")')">
+                            Add Item
+                        </button>*@
+                        <button type="button" class="btn btn-primary"
+                                onclick="Menubar_AddMasterOMasterReqParent(
+            '@Url.Action("AddMasterItemParent", "AddOMasterReq")',
+            '@Url.Action("DeleteMasterItemParent", "AddOMasterReq")'
+        )">
+                            Add Item
+                        </button>
+                    </div>
+                </div>
+
+                <table class="tbgreen" id="tbMastAddModelReq">
+                    <tr>
+                        <th>
+                            No
+                        </th>
+                        <th>
+                            Item
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        @*<th>
+                            Edit
+                        </th>*@
+                        <th>
+                            Remove
+                        </th>
+                    </tr>
+                    @if (Model._ListViewceMaster_Type != null)
+                    {
+                        var row = 0;
+                        <tbody id="masterTableBodyParent">
+                            @foreach (var item in @Model._ListViewceMaster_Type)
+                            {
+                                <tr id="row-@item.mtid">
+                                    <td>
+                                        @item.mtid
+                                    </td>
+                                    <td>
+                                        @item.mtItem
+                                    </td>
+                                    <td>
+                                        @item.mtDes
+                                    </td>
+                                    @*<td>
+                                        @item.mtProgram
+                                    </td>*@
+                                    <td>
+                                        <input type="button"
+                                               style="font-size:12px"
+                                               value="&#x274c;"
+                                               onclick="Menubar_DeleteItemRequest('@item.mtid', '@Url.Action("DeleteMasterItemParent", "AddOMasterReq")', this)">
+
+                                    </td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    }
+
+                </table>
+
+                <br />
+                <div class="modal-footer">
+                    <br />
+                    @*<button type="button" class="btn btn-primary" onclick="Menubar_AddMasterOMasterReq('@Url.Action("AddMasterMaster","AddOMasterReq")')">Save</button>*@
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+</div>
