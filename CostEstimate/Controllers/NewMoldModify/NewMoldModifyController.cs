@@ -66,7 +66,7 @@ namespace CostEstimate.Controllers.NewMoldModify
                 @class._ViewceMastFlowApprove = new ViewceMastFlowApprove();
 
 
-                List<string> _listTypeofCavity = _MK._ViewceMastType.Where(x => x.mtType.Contains("Cavity") && x.mtProgram.Contains("MoldModify")).OrderBy(x=>x.mtName).Select(x => x.mtName).ToList();
+                List<string> _listTypeofCavity = _MK._ViewceMastType.Where(x => x.mtType.Contains("Cavity") && x.mtProgram.Contains("MoldModify")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
 
                 //List<string> _listTypeofCavity = new List<string>{
                 //                            "CAVITIES(R/L =1 Set) x 2MOLD",
@@ -794,7 +794,7 @@ _MOLD._ViewLLLedger
             }
             catch (Exception ex)
             {
-                string[] returnvar = { status_per, message_per };
+                string[] returnvar = { status_per, message_per = ex.Message };
                 return returnvar;
 
             }
@@ -861,15 +861,15 @@ _MOLD._ViewLLLedger
             string config = "S";
             string msg = "Send Mail & Save File Already";
 
-            string vStatus = "";
+            //string vStatus = "";
             string[] chkPermis;
             string[] chkSave;
             string[] chkSaveHistory;
             int i_Step = 0;
 
             string[] vRunDoc;
-            string[] vRunDocNo;
-            string[] sRunDoc;
+            // string[] vRunDocNo;
+            //string[] sRunDoc;
 
 
 
@@ -964,7 +964,7 @@ _MOLD._ViewLLLedger
                         catch (Exception ex)
                         {
                             config = "E";
-                            msg = "Please check email send to !!!!";
+                            msg = "Please check email send to !!!!" + ex.Message;
                             return Json(new { c1 = config, c2 = msg });
                         }
                     }
@@ -1243,7 +1243,7 @@ _MOLD._ViewLLLedger
                 }
                 catch (Exception ex)
                 {
-                   // dbContextTransaction.Rollback();
+                    // dbContextTransaction.Rollback();
                     try
                     {
                         dbContextTransaction.Rollback();
@@ -1545,7 +1545,7 @@ _MOLD._ViewLLLedger
                 }
                 catch (Exception ex)
                 {
-                   // dbContextTransaction.Rollback();
+                    // dbContextTransaction.Rollback();
                     try
                     {
                         dbContextTransaction.Rollback();
@@ -1680,8 +1680,8 @@ _MOLD._ViewLLLedger
 
             int i_Step = 0;
             string[] vRunDoc;
-            string[] vRunDocNo;
-            string[] sRunDoc;
+            // string[] vRunDocNo;
+            // string[] sRunDoc;
 
 
 
@@ -1813,7 +1813,7 @@ _MOLD._ViewLLLedger
 
                 catch (Exception ex)
                 {
-                   // dbContextTransaction.Rollback();
+                    // dbContextTransaction.Rollback();
                     try
                     {
                         dbContextTransaction.Rollback();
@@ -1840,7 +1840,7 @@ _MOLD._ViewLLLedger
             string config = "S";
             string msg = "Send Mail & Save File Already";
 
-            string vStatus = "";
+            //string vStatus = "";
             string[] chkPermis;
             string[] chkSave;
             string[] chkSaveHistory;
@@ -1934,7 +1934,7 @@ _MOLD._ViewLLLedger
                         catch (Exception ex)
                         {
                             config = "E";
-                            msg = "Please check email send to !!!!";
+                            msg = "Please check email send to !!!!" + ex.Message;
                             return Json(new { c1 = config, c2 = msg });
                         }
                     }
@@ -2457,7 +2457,7 @@ _MOLD._ViewLLLedger
                 }
                 catch (Exception ex)
                 {
-                   // dbContextTransaction.Rollback();
+                    // dbContextTransaction.Rollback();
                     try
                     {
                         dbContextTransaction.Rollback();
@@ -2532,7 +2532,7 @@ _MOLD._ViewLLLedger
 
                 catch (Exception ex)
                 {
-                   // dbContextTransaction.Rollback();
+                    // dbContextTransaction.Rollback();
                     try
                     {
                         dbContextTransaction.Rollback();

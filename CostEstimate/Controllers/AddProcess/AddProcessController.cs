@@ -103,8 +103,8 @@ namespace CostEstimate.Controllers.AddProcess
         public ActionResult AddMasterProcess(Class @class)
         {
             string config = "S";
-            string[] vRunCostNo;
-            string[] vSaveCost;
+            //string[] vRunCostNo;
+            //string[] vSaveCost;
             string msg = "Save Master Process success!!";
             string IssueBy = DateTime.Now.ToString("yyyy/MM/dd") + " : " + User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
 

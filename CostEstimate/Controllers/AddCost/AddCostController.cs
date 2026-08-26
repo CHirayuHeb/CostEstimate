@@ -107,7 +107,7 @@ namespace CostEstimate.Controllers.AddCost
             }
             catch (Exception ex)
             {
-
+                string msgr = ex.Message;
             }
 
             return PartialView("_PartialMastCostModel", @class);

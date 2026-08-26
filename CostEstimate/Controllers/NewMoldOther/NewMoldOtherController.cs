@@ -99,7 +99,7 @@ namespace CostEstimate.Controllers.NewMoldOther
             List<string> _listTypeMold = _MK._ViewceMastType.Where(x => x.mtType.Contains("TypeMold") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
             SelectList _TypeMold = new SelectList(_listTypeMold);
             ViewBag.TypeMold = _TypeMold;
-            
+
 
 
             List<string> _listCustomerName = _MK._ViewceMaster.Where(x => x.msDes.Contains("CustomerName") && x.msProgram.Contains("MoldOther")).OrderBy(x => x.msItem).Select(x => x.msItem).ToList();
@@ -182,7 +182,7 @@ namespace CostEstimate.Controllers.NewMoldOther
             return Json(models);
         }
 
-     
+
         [HttpPost]
         public JsonResult GetDetailMoldMassGoTry(string customerName, string modelName, string fuctionName)
         {
@@ -321,15 +321,15 @@ namespace CostEstimate.Controllers.NewMoldOther
                     string _ItemInforRequestPart = "";
 
 
-                    string ipGateType1 = "";
-                    string ipGateType2 = "";
-                    string ipGateType3 = "";
-                    string ipGateTypeMain = "";
+                    //string ipGateType1 = "";
+                    //string ipGateType2 = "";
+                    //string ipGateType3 = "";
+                    //string ipGateTypeMain = "";
 
-                    string ipNUMBER_POINT1 = "";
-                    string ipNUMBER_POINT2 = "";
-                    string ipNUMBER_POINT3 = "";
-                    string ipNUMBER_POINTMain = "";
+                    //string ipNUMBER_POINT1 = "";
+                    //string ipNUMBER_POINT2 = "";
+                    //string ipNUMBER_POINT3 = "";
+                    //string ipNUMBER_POINTMain = "";
 
 
                     string ipGate1 = "";
@@ -353,7 +353,7 @@ namespace CostEstimate.Controllers.NewMoldOther
 
 
                     string vitemSHIBO = "";
-                    string ELECTROFORM = "";
+                    //string ELECTROFORM = "";
 
                     var _listViewceItemInforRequestPartName = _MK._ViewceItemInforRequestPartName.Where(x => x.ipDocumentNoSub == DocNoSub && x.ipNoProcess == @class._ListViewceItemPartName[i].ipRunNo).ToList();
                     ipedit = _listViewceItemInforRequestPartName != null ? _listViewceItemInforRequestPartName[0].ipEditStatus : true;
@@ -827,9 +827,9 @@ namespace CostEstimate.Controllers.NewMoldOther
                 }
 
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-
+                string msgr = ex.Message;
             }
 
             //return Json(new { status = "empty", listHistory = _listHistory, partial = partialUrl });
@@ -1008,7 +1008,7 @@ namespace CostEstimate.Controllers.NewMoldOther
         {
             string config = "S";
             string msg = "Send Mail & Save File Already";
-            string vStatus = "";
+            //string vStatus = "";
             string[] chkPermis;
             string[] chkStatus;
             string[] chkSave;
@@ -1017,8 +1017,8 @@ namespace CostEstimate.Controllers.NewMoldOther
             int i_Step = 0;
 
             string[] vRunDoc;
-            string[] vRunDocNo;
-            string[] sRunDoc;
+            //string[] vRunDocNo;
+            //string[] sRunDoc;
             try
             {
                 chkPermis = chkPermission(@class);
@@ -1255,7 +1255,7 @@ namespace CostEstimate.Controllers.NewMoldOther
             }
             catch (Exception ex)
             {
-                string[] returnvar = { status_per, message_per };
+                string[] returnvar = { status_per, message_per = ex.Message };
                 return returnvar;
 
             }
@@ -1308,7 +1308,7 @@ namespace CostEstimate.Controllers.NewMoldOther
             }
             catch (Exception ex)
             {
-                string[] returnvar = { status_per, message_per };
+                string[] returnvar = { status_per, message_per = ex.Message };
                 return returnvar;
 
             }
@@ -2519,7 +2519,7 @@ namespace CostEstimate.Controllers.NewMoldOther
                     string vApproveBy = _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryApproveByEMPCODE).Select(x => x.NICKNAME).FirstOrDefault() is null ? "" : _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryApproveByEMPCODE).Select(x => x.NICKNAME).FirstOrDefault() + " , " + _HRMS.AccPOSMAST.Where(y => y.POS_CODE == _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == tbHistoryApproveByEMPCODE).Select(x => x.POS_CODE).FirstOrDefault()).Select(z => z.POS_NAME).FirstOrDefault();
 
                     @class._ViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == mpNo).FirstOrDefault();
-                    @class._ListViewceItemPartName = _MK._ViewceItemPartName.Where(x => x.ipDocumentNo == mpNo).ToList();
+                    @class._ListViewceItemPartName = _MK._ViewceItemPartName.Where(x => x.ipDocumentNo == mpNo).OrderBy(x => x.ipRunNo).ToList();
                     @class._ViewOperaterCP.IssueBy = vIssueBy;
                     @class._ViewOperaterCP.CheckedByTL = vCheckByTL;
                     @class._ViewOperaterCP.CheckedByTM = vCheckByTM;

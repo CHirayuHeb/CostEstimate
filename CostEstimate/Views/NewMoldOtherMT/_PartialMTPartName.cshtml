@@ -16,7 +16,7 @@
     <div class="grid-item fw-800 center  row" style="text-align:left;font-size:14px;margin-bottom:10px;">
         <div class="col-80">
             Material Detail.
-       
+
             <span style="color:#1565C0">ทั้งหมด @(Model._ListGroupViewceItemMaterialRequestPartName?.Count() ?? 0) Part</span>
         </div>
         <div class="col-20" style="text-align:right">
@@ -67,16 +67,16 @@
                     </td>
                 </tr>
                 @*<tr>
-                    <th colspan="2">
-                        <span>Issue Date</span>
-                    </th>
-                    <td colspan="2">
-                        <span style="font-size:12px">
-                            <span>@Model._ListGroupViewceItemMaterialRequestPartName[j].mpTypeCavity</span>
-                        </span>
+                        <th colspan="2">
+                            <span>Issue Date</span>
+                        </th>
+                        <td colspan="2">
+                            <span style="font-size:12px">
+                                <span>@Model._ListGroupViewceItemMaterialRequestPartName[j].mpTypeCavity</span>
+                            </span>
 
-                    </td>
-                </tr>*@
+                        </td>
+                    </tr>*@
                 <tr>
                     <th colspan="2">
                         <span>Type MOLD</span>
@@ -127,21 +127,13 @@
 
                                 string bgColor = isReadOnly ? "lightgray" : "yellow";
                             }
-                            <input class="form-control center input-mpPCS"
+                            <input class="form-control center input-mpPCS paste-col"
                                    autocomplete="off"
                                    type="number"
                                    style="width:100%; height:80%; font-size:10px; background-color:@bgColor"
                                    value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpPCS"
                                    @(isReadOnly ? "readonly" : "") />
-                            @*@if (@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem.Contains("CU, GR") || @Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem.Contains("TOOL") || @Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mmTypeGroup  is not null)
-                                {
-                                    <input class="form-control center input-mpPCS" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpPCS" type="number" readonly />
-                                }
-                                else
-                                {
-                                    <input class="form-control center input-mpPCS" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:yellow" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpPCS" type="number" />
 
-                                }*@
 
                         </td>
                         <td style="@(Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mmTypeGroup != null ?"background :#FFDEAD;":"")">
@@ -149,9 +141,6 @@
                             @{
                                 // เปลี่ยนชื่อตัวแปรให้สื่อถึง "ข้อมูลรายการวัสดุที่ขอ" (Material Request Item)
                                 var materialRequest = Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g];
-
-                                //(!materialRequest.mmTypeGroup.Contains("THS")
-                                //&& materialRequest.mpTypeMold.Contains("IN THS")
 
 
                                 // เปลี่ยนชื่อตัวแปรให้ชัดเจนว่าเป็นการล็อกไม่ให้แก้ไข
@@ -172,25 +161,12 @@
                                 // กำหนดสีตามสถานะการล็อก
                                 string inputBgColor = isLocked ? "lightgray" : "yellow";
                             }
-                            <input class="form-control center input-mpAmount"
+                            <input class="form-control center input-mpAmount paste-col"
                                    autocomplete="off"
                                    type="number"
                                    style="width:100%; height:80%; font-size:10px; background-color:@inputBgColor"
-                                   value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpAmount" 
+                                   value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpAmount"
                                    @(isLocked ? "readonly" : "") />
-
-                            @*@if (@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem.Contains("CU, GR") || @Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpItem.Contains("TOOL"))
-                                {
-                                    <input class="form-control center input-mpAmount" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:lightgray" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpAmount" type="number" readonly />
-
-                                }
-                                else
-                                {
-                                    <input class="form-control center input-mpAmount" autocomplete="off" style="width:100%;height:80%;font-size:10px;background-color:yellow" value="@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpAmount" type="number" />
-
-                                }*@
-
-                            @*<span>@Model._ListGroupViewceItemMaterialRequestPartName[j].ItemMaterialRequestPartName[g].mpAmount</span>*@
                         </td>
                     </tr>
                 }
@@ -235,4 +211,55 @@
     }
 
     document.addEventListener("DOMContentLoaded", calcRowMTTotals);
+    $(document).ready(function () {
+        // เปลี่ยนมาดัก Event ที่ระดับตาราง หรือ Input โดยตรง
+        $(document).on('paste', 'input.input-mpPCS, input.input-mpAmount', function (e) {
+            var clipboardData = (e.originalEvent || e).clipboardData.getData('text');
+            if (!clipboardData) return;
+
+            // แยกข้อมูลตามบรรทัด
+            var lines = clipboardData.split(/\r\n|\r|\n/).filter(line => line.trim() !== '');
+
+            // ถ้า copy มาแค่ค่าเดียว ปล่อยให้วางแบบปกติ
+            if (lines.length <= 1) return;
+
+            // ป้องกันการวางแบบปกติถ้า copy มาหลายบรรทัด
+            e.preventDefault();
+
+            var $currentInput = $(this);
+            // เช็กคลาสว่าเป็น PCS หรือ Amount
+            var inputClass = $currentInput.hasClass('input-mpPCS') ? '.input-mpPCS' : '.input-mpAmount';
+
+            // ดึง Input ทั้งหมดในคอลัมน์นั้น
+            var $allInputs = $(inputClass);
+            var startIndex = $allInputs.index($currentInput);
+
+            var lineIdx = 0;
+            for (var i = startIndex; i < $allInputs.length && lineIdx < lines.length; i++) {
+                var $input = $allInputs.eq(i);
+
+                // ข้ามช่องที่ readonly หรือ disabled
+                if ($input.prop('readonly') || $input.prop('disabled')) {
+                    continue;
+                }
+
+                var cellValue = lines[lineIdx].trim();
+
+                // กรณี copy ติดมาหลายคอลัมน์ เอาเฉพาะคอลัมน์แรก
+                if (cellValue.includes('\t')) {
+                    cellValue = cellValue.split('\t')[0];
+                }
+
+                // ใส่ค่าเข้า input
+                $input.val(cellValue);
+
+                // แจ้งเตือนการเปลี่ยนแปลง
+                $input.trigger('input').trigger('change');
+
+                lineIdx++;
+            }
+        });
+    });
+
+
 </script>

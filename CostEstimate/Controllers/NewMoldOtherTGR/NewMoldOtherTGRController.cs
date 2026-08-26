@@ -172,7 +172,7 @@ namespace CostEstimate.Controllers.NewMoldOtherTGR
                     ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "6").Select(x => x.mfTo).FirstOrDefault()
                     : "";
 
-            string v_listemailTo;
+           //string v_listemailTo;
 
             v_empCodeTo = v_empCodeTo != null ? v_empCodeTo.Split(",").Count() > 0 ? v_empCodeTo.Split(",")[0] : v_empCodeTo : "";
 
@@ -215,15 +215,15 @@ namespace CostEstimate.Controllers.NewMoldOtherTGR
         {
             string config = "S";
             string msg = "Send Mail & Save File Already";
-            string vStatus = "";
+            //string vStatus = "";
             string[] chkPermis;
             string[] chkSave;
             string[] chkSaveHistory;
             string[] chkSaveSendMail;
             int i_Step = 0;
 
-            string[] vRunDoc;
-            string[] vRunDocNo;
+            //string[] vRunDoc;
+            //string[] vRunDocNo;
             try
             {
                 chkPermis = chkPermission(@class);
@@ -380,7 +380,7 @@ namespace CostEstimate.Controllers.NewMoldOtherTGR
             }
             catch (Exception ex)
             {
-                string[] returnvar = { status_per, message_per };
+                string[] returnvar = { status_per, message_per = ex.Message };
                 return returnvar;
 
             }

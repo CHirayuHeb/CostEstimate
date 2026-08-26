@@ -394,6 +394,7 @@ namespace CostEstimate.Controllers.Account
             }
             catch (Exception ex)
             {
+                string msgr = ex.Message;
                 return "fail";
             }
 

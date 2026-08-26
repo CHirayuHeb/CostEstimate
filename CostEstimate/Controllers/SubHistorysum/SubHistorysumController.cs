@@ -1237,7 +1237,7 @@ namespace CostEstimate.Controllers.SubHistorysum
                     int W2_colD = 3; // doc no
 
                     int W2_rowW = 13; //row detail
-                    int W2_colW = 3; // col  detail
+                   // int W2_colW = 3; // col  detail
 
                     int W2_rowWSum = 13; //row detail
 
@@ -1270,8 +1270,8 @@ namespace CostEstimate.Controllers.SubHistorysum
                         double sumPWTCostSUB = 0;
                         double sumPWTProcessD = 0;
                         double sumPWTManNc = 0;
-                        double sumPWTMan = 0;
-                        double sumPWTAuto = 0;
+                        //double sumPWTMan = 0;
+                        //double sumPWTAuto = 0;
 
 
                         foreach (var subGroup in row.listGroupViewceDetailSubMakerRequest)

@@ -124,7 +124,7 @@ namespace CostEstimate.Controllers.SumRateMoldOtherSub
             }
             catch (Exception ex)
             {
-
+                string msgr = ex.Message;
             }
 
             return View(@class);

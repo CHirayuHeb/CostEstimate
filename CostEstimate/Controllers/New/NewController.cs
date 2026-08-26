@@ -60,11 +60,7 @@ namespace CostEstimate.Controllers.New
         //public IActionResult Index(Class @class, string smLotNo, string smOrderNo, string smRevision)
         public IActionResult Index(Class @class, string smDocumentNo, string smRevision)
         {
-
-
-
-
-
+            
             @class._ViewOperaterCP = new ViewOperaterCP();
             List<ViewmtMaster_Mold_Control> _ViewmtMaster_Mold_Control = _MOLD._ViewmtMaster_Mold_Control.OrderBy(x => x.mcLedger_Number).Distinct().ToList();
             SelectList formMaster_Mold_Control = new SelectList(_ViewmtMaster_Mold_Control.Select(s => s.mcLedger_Number).Distinct());
@@ -305,7 +301,7 @@ namespace CostEstimate.Controllers.New
         {
             //Class @class ,
             string partialUrl = "";
-            string v_status = "";
+            //string v_status = "";
 
             int v_step = @classs._ViewceMastSubMakerRequest != null ? @classs._ViewceMastSubMakerRequest.smStep : 0;
             string v_issue = @classs._ViewceMastSubMakerRequest != null ? @classs._ViewceMastSubMakerRequest.smEmpCodeRequest : "";
@@ -493,8 +489,8 @@ namespace CostEstimate.Controllers.New
             int i_Step = 0;
 
             string[] vRunDoc;
-            string[] vRunDocNo;
-            string[] sRunDoc;
+            //string[] vRunDocNo;
+            //string[] sRunDoc;
 
 
 
@@ -560,35 +556,141 @@ namespace CostEstimate.Controllers.New
                         //check emp positon
                         try
                         {
-                            string v_POS_HCM_CODE = "";
-                            string v_empcsup = _IT.rpEmails.Where(w => w.emName_M365 == @class._ViewceHistoryApproved.htTo).Select(x => x.emEmpcode).FirstOrDefault();
+                            //string v_POS_HCM_CODE = "";
+                            //string v_empcsup = _IT.rpEmails.Where(w => w.emName_M365 == @class._ViewceHistoryApproved.htTo).Select(x => x.emEmpcode).FirstOrDefault();
 
-                            if (i_Step == 1) //GL up
+                            //if (i_Step == 1) //GL up
+                            //{
+                            //    v_POS_HCM_CODE = _HRMS.AccPOSMAST.Where(x => x.POS_CODE == "TL").Select(x => x.POS_HCM_CODE).FirstOrDefault();
+                            //    msg = "Please send approval to GL Up of Dept.!!!";
+                            //}
+                            //else if (i_Step == 2) //DM up
+                            //{
+                            //    v_POS_HCM_CODE = _HRMS.AccPOSMAST.Where(x => x.POS_CODE == "DDM").Select(x => x.POS_HCM_CODE).FirstOrDefault();
+                            //    msg = "Please send approval to DM Up of Dept.!!!";
+                            //}
+
+                            //ViewAccEMPLOYEE _ViewAccEMPLOYEE = _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == v_empcsup).FirstOrDefault();
+                            //List<ViewAccPOSMAST> _ViewAccPOSMAST = _HRMS.AccPOSMAST.Where(x => int.Parse(x.POS_HCM_CODE) <= int.Parse(v_POS_HCM_CODE)).ToList();
+                            //string v_chk = _ViewAccPOSMAST.Where(x => x.POS_CODE == _ViewAccEMPLOYEE.POS_CODE).Select(x => x.POS_CODE).FirstOrDefault();
+
+                            //if (v_chk == null || v_chk == "")
+                            //{
+                            //    config = "E";
+                            //    // msg = msg;
+                            //    return Json(new { c1 = config, c2 = msg });
+                            //}
+                            string v_POS_HCM_CODE = "";
+
+                            string v_empcsup = _IT.rpEmails
+                                .Where(w => w.emName_M365 == @class._ViewceHistoryApproved.htTo)
+                                .Select(x => x.emEmpcode)
+                                .FirstOrDefault();
+
+                            if (i_Step == 1) // GL Up
                             {
-                                v_POS_HCM_CODE = _HRMS.AccPOSMAST.Where(x => x.POS_CODE == "TL").Select(x => x.POS_HCM_CODE).FirstOrDefault();
+                                v_POS_HCM_CODE = _HRMS.AccPOSMAST
+                                    .Where(x => x.POS_CODE == "TL")
+                                    .Select(x => x.POS_HCM_CODE)
+                                    .FirstOrDefault();
+
                                 msg = "Please send approval to GL Up of Dept.!!!";
                             }
-                            else if (i_Step == 2) //DM up
+                            else if (i_Step == 2) // DM Up
                             {
-                                v_POS_HCM_CODE = _HRMS.AccPOSMAST.Where(x => x.POS_CODE == "DDM").Select(x => x.POS_HCM_CODE).FirstOrDefault();
+                                v_POS_HCM_CODE = _HRMS.AccPOSMAST
+                                    .Where(x => x.POS_CODE == "DDM")
+                                    .Select(x => x.POS_HCM_CODE)
+                                    .FirstOrDefault();
+
                                 msg = "Please send approval to DM Up of Dept.!!!";
                             }
 
-                            ViewAccEMPLOYEE _ViewAccEMPLOYEE = _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == v_empcsup).FirstOrDefault();
-                            List<ViewAccPOSMAST> _ViewAccPOSMAST = _HRMS.AccPOSMAST.Where(x => int.Parse(x.POS_HCM_CODE) <= int.Parse(v_POS_HCM_CODE)).ToList();
-                            string v_chk = _ViewAccPOSMAST.Where(x => x.POS_CODE == _ViewAccEMPLOYEE.POS_CODE).Select(x => x.POS_CODE).FirstOrDefault();
 
-                            if (v_chk == null || v_chk == "")
+                            // ================================
+                            // Check Employee
+                            // ================================
+
+                            ViewAccEMPLOYEE _ViewAccEMPLOYEE =
+                                _HRMS.AccEMPLOYEE
+                                    .FirstOrDefault(x => x.EMP_CODE == v_empcsup);
+
+                            if (_ViewAccEMPLOYEE == null)
                             {
                                 config = "E";
-                                // msg = msg;
-                                return Json(new { c1 = config, c2 = msg });
+
+                                return Json(new
+                                {
+                                    c1 = config,
+                                    c2 = "Employee not found."
+                                });
                             }
+
+
+                            // ================================
+                            // Check Position Code
+                            // ================================
+
+                            if (!int.TryParse(v_POS_HCM_CODE, out int targetPos))
+                            {
+                                config = "E";
+
+                                return Json(new
+                                {
+                                    c1 = config,
+                                    c2 = "Position HCM Code is invalid."
+                                });
+                            }
+
+
+                            // ================================
+                            // Get Position Level
+                            // ================================
+
+                            List<ViewAccPOSMAST> _ViewAccPOSMAST =
+                                _HRMS.AccPOSMAST
+                                    .Where(x =>
+                                        x.POS_HCM_CODE != null &&
+                                        x.POS_HCM_CODE != ""
+                                    )
+                                    .ToList()
+                                    .Where(x =>
+                                        int.TryParse(x.POS_HCM_CODE, out int posCode) &&
+                                        posCode <= targetPos
+                                    )
+                                    .ToList();
+
+
+                            // ================================
+                            // Check Employee Position
+                            // ================================
+
+                            string v_chk = _ViewAccPOSMAST
+                                .Where(x => x.POS_CODE == _ViewAccEMPLOYEE.POS_CODE)
+                                .Select(x => x.POS_CODE)
+                                .FirstOrDefault();
+
+
+                            // ================================
+                            // Result
+                            // ================================
+
+                            if (string.IsNullOrEmpty(v_chk))
+                            {
+                                config = "E";
+
+                                return Json(new
+                                {
+                                    c1 = config,
+                                    c2 = msg
+                                });
+                            }
+
                         }
                         catch (Exception ex)
                         {
                             config = "E";
-                            msg = "Please check email send to !!!!";
+                            msg = "Please check email send to !!!!" + ex.Message;
                             return Json(new { c1 = config, c2 = msg });
                         }
                     }
@@ -903,8 +1005,8 @@ namespace CostEstimate.Controllers.New
 
                     double s_dsWT_Man = 0;
                     double s_dsWT_Auto = 0;
-                    double smTotalProcessWT = 0; // sum dsWT_Man + sum   dsWT_Auto
-                    double smTotalCost = 0; // sum dsLabour_Cost +  sum dsDP_Cost + sum dsME_Cost
+                    //double smTotalProcessWT = 0; // sum dsWT_Man + sum   dsWT_Auto
+                    //double smTotalCost = 0; // sum dsLabour_Cost +  sum dsDP_Cost + sum dsME_Cost
 
                     // status New  // status Update
                     if (status == "New")
