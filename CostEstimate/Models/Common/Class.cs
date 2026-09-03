@@ -96,7 +96,8 @@ namespace CostEstimate.Models.Common
         //IT
         public ViewAttachment Attachment { get; set; }
         public List<ViewAttachment> _listAttachment { get; set; }
-
+        public List<ViewAttachment> _listAttachmentDrawing { get; set; }
+        public List<ViewAttachment> _listAttachmentSpec { get; set; }
         public List<ViewLLLedger> _listViewLLLedger { get; set; }
 
 
@@ -317,6 +318,12 @@ namespace CostEstimate.Models.Common
         public List<ViewceMaster> _ListViewceMaster { get; set; }
         public ViewceMaster_Type _ViewceMaster_Type { get; set; }
         public List<ViewceMaster_Type> _ListViewceMaster_Type { get; set; }
+
+
+        public AttachmentUploadResult AttachmentUploadResult { get; set; }
+
+        public AttachmentGroupModel AttachmentGroupModel { get; set; }
+        public List<AttachmentGroupModel> _ListAttachmentGroupModel { get; set; }
 
 
     }

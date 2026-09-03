@@ -33,6 +33,7 @@ using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Storage;
 using MailKit.Security;
 using System.Net.Mail;
+using SMBLibrary;
 
 namespace CostEstimate.Controllers.NewMoldOtherSM
 {
@@ -254,9 +255,9 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
             var v_emailFrom = _IT.rpEmails.Where(x => x.emEmpcode == _UserId).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
 
             //To
-            string v_empCodeTo = s_step == 3 ? _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNoSub == mpNo).Select(x => x.irEmpCodeRequest).FirstOrDefault()
-               : _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "5") != null
-                    ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "5").Select(x => x.mfTo).FirstOrDefault()
+            string v_empCodeTo = s_step == 2 ? _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNoSub == mpNo).Select(x => x.irEmpCodeRequest).FirstOrDefault()
+               : _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "7") != null
+                    ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "7").Select(x => x.mfTo).FirstOrDefault()
                     : "";
 
             //string v_listemailTo;
@@ -267,7 +268,7 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
 
 
             var v_nameTo = _IT.rpEmails.Where(x => x.emEmpcode == v_empCodeTo.Trim()).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
-            string v_empCodeCC = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "5") != null ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "4").Select(x => x.mfCC).FirstOrDefault() : "";
+            string v_empCodeCC = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "7") != null ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "7").Select(x => x.mfCC).FirstOrDefault() : "";
 
 
             string[] s_empCodeCC;// = v_empCodeCC.Split(",");
@@ -353,9 +354,9 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
 
 
                 //To
-                string v_empCodeTo = s_step == 3 ? _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNoSub == mpNo).Select(x => x.irEmpCodeRequest).FirstOrDefault()
-                   : _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "5") != null
-                        ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "5").Select(x => x.mfTo).FirstOrDefault()
+                string v_empCodeTo = s_step == 2 ? _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNoSub == mpNo).Select(x => x.irEmpCodeRequest).FirstOrDefault()
+                   : _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "7") != null
+                        ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "7").Select(x => x.mfTo).FirstOrDefault()
                         : "";
 
                 //string v_listemailTo;
@@ -366,7 +367,7 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
 
 
                 var v_nameTo = _IT.rpEmails.Where(x => x.emEmpcode == v_empCodeTo.Trim()).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
-                string v_empCodeCC = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "5") != null ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "4").Select(x => x.mfCC).FirstOrDefault() : "";
+                string v_empCodeCC = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "7") != null ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "7").Select(x => x.mfCC).FirstOrDefault() : "";
 
 
                 string[] s_empCodeCC;// = v_empCodeCC.Split(",");
@@ -471,6 +472,7 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
 
 
                 chkSave = Save(@class, i_Step, files, "D");
+
                 if (chkSave[0] == "E")
                 {
                     config = chkSave[0];
@@ -556,6 +558,180 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
             }
         }
 
+        private AttachmentUploadResult UploadAttachmentsToNas(List<IFormFile> file, string RunDoc)
+        {
+            var result = new AttachmentUploadResult();
+
+            if (file == null || !file.Any())
+            {
+                result.Success = false;
+                result.Message = "ไม่พบไฟล์ที่จะอัปโหลด";
+                return result;
+            }
+
+            SMBLibrary.Client.SMB2Client client = new SMBLibrary.Client.SMB2Client();
+
+            try
+            {
+                var config = HttpContext.RequestServices.GetService(typeof(IConfiguration)) as IConfiguration;
+
+                string serverIp = config["NasSettings:ServerIp"] ?? "10.200.128.7";
+                string shareName = config["NasSettings:ShareName"] ?? "Product_Cost_Estimate";
+                string domain = config["NasSettings:Domain"] ?? "TSG";
+                string username = config["NasSettings:Username"] ?? "adminset";
+                string password = config["NasSettings:Password"];
+
+                bool isConnected = client.Connect(IPAddress.Parse(serverIp), SMBTransportType.DirectTCPTransport);
+                if (!isConnected)
+                {
+                    result.Success = false;
+                    result.Message = "ไม่สามารถเชื่อมต่อเน็ตเวิร์กไปยังเครื่อง NAS ได้";
+                    return result;
+                }
+
+                NTStatus logStatus = client.Login(domain, username, password);
+                if (logStatus != NTStatus.STATUS_SUCCESS)
+                {
+                    client.Disconnect();
+                    result.Success = false;
+                    result.Message = $"การยืนยันตัวตนเข้า NAS ล้มเหลว (บัญชี {domain}\\{username} รหัสผ่านไม่ถูกต้อง)";
+                    return result;
+                }
+
+                SMBLibrary.Client.ISMBFileStore fileStore = client.TreeConnect(shareName, out SMBLibrary.NTStatus treeStatus);
+                if (treeStatus != NTStatus.STATUS_SUCCESS)
+                {
+                    client.Disconnect();
+                    result.Success = false;
+                    result.Message = $"ไม่พบ Share Name '{shareName}' บนเครื่อง NAS";
+                    return result;
+                }
+
+                string empCode = User.Claims.FirstOrDefault(s => s.Type == "EmpCode")?.Value ?? "SYSTEM";
+                string baseSharedPath = $@"\\{serverIp}\{shareName}\";
+
+                var listInsert = new List<ViewAttachment>();
+
+                foreach (var formFile in file)
+                {
+                    // ป้องกันไฟล์ null หรือไฟล์ที่ stream ถูกอ่านไปแล้วจากที่อื่นก่อนหน้า
+                    //if (formFile == null || formFile.Length == 0)
+                    //{
+                    //    result.Success = false;
+                    //    result.Message = $"ไฟล์ '{formFile?.FileName}' ไม่มีข้อมูล (Length = 0) — ตรวจสอบว่า stream ถูกอ่านไปแล้วจากจุดอื่นก่อนหน้าหรือไม่";
+                    //    client.Disconnect();
+                    //    return result;
+                    //}
+
+                    string rawFileName = Path.GetFileName(formFile.FileName);
+                    string fileExtension = Path.GetExtension(rawFileName);
+                    string uniqueFileName = Guid.NewGuid().ToString() + fileExtension;
+                    string nasFilePath = uniqueFileName;
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        formFile.CopyTo(memoryStream);
+                        byte[] fileBytes = memoryStream.ToArray();
+
+                        //if (fileBytes.Length == 0)
+                        //{
+                        //    result.Success = false;
+                        //    result.Message = $"อ่านข้อมูลไฟล์ '{rawFileName}' ไม่ได้ (0 bytes หลัง CopyTo)";
+                        //    client.Disconnect();
+                        //    return result;
+                        //}
+
+                        NTStatus createStatus = fileStore.CreateFile(
+                            out object fileHandle,
+                            out FileStatus fileStatus,
+                            nasFilePath,
+                            AccessMask.GENERIC_WRITE,
+                            SMBLibrary.FileAttributes.Normal,
+                            ShareAccess.None,
+                            CreateDisposition.FILE_OVERWRITE_IF,
+                            CreateOptions.FILE_NON_DIRECTORY_FILE,
+                            null
+                        );
+
+                        if (createStatus != NTStatus.STATUS_SUCCESS)
+                        {
+                            client.Disconnect();
+                            result.Success = false;
+                            result.Message = $"บัญชี {domain}\\{username} ไม่มีสิทธิ์เขียนหรือสร้างไฟล์ในพื้นที่นี้ของ NAS (ไฟล์ {rawFileName}, Status: {createStatus})";
+                            return result;
+                        }
+
+                        try
+                        {
+                            int maxWriteSize = (int)(fileStore.MaxWriteSize > 0 ? fileStore.MaxWriteSize : 65536);
+                            int bytesLeft = fileBytes.Length;
+                            long offset = 0;
+
+                            while (bytesLeft > 0)
+                            {
+                                int bytesToWrite = Math.Min(bytesLeft, maxWriteSize);
+                                byte[] buffer = new byte[bytesToWrite];
+                                Array.Copy(fileBytes, offset, buffer, 0, bytesToWrite);
+
+                                NTStatus writeStatus = fileStore.WriteFile(out int bytesWritten, fileHandle, offset, buffer);
+
+                                if (writeStatus != NTStatus.STATUS_SUCCESS)
+                                {
+                                    result.Success = false;
+                                    result.Message = $"เกิดข้อผิดพลาดในการเขียนข้อมูลลงไฟล์ {rawFileName} (Status: {writeStatus})";
+                                    return result;
+                                }
+
+                                offset += bytesWritten;
+                                bytesLeft -= bytesWritten;
+                            }
+                        }
+                        finally
+                        {
+                            if (fileHandle != null)
+                            {
+                                fileStore.CloseFile(fileHandle);
+                            }
+                        }
+                    }
+
+                    string fullPath = Path.Combine(baseSharedPath, uniqueFileName);
+
+                    var entity = new ViewAttachment
+                    {
+                        fnNo = RunDoc,
+                        fnPath = fullPath,
+                        fnFilename = rawFileName,
+                        fnType = fileExtension,
+                        fnIssueBy = empCode + " : " + DateTime.Now.ToString("yyyyMMddHHmmss"),
+                        fnUpdateBy = empCode + " : " + DateTime.Now.ToString("yyyyMMddHHmmss"),
+                        fnProgram = PgName,
+                        fnDescription = rawFileName
+                    };
+
+                    listInsert.Add(entity);
+                }
+
+                _IT.Attachment.AddRange(listInsert);
+                _IT.SaveChanges();
+                client.Disconnect();
+
+                result.Success = true;
+                result.Message = "อัปโหลดสำเร็จ";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                if (client != null)
+                {
+                    try { client.Disconnect(); } catch { }
+                }
+                result.Success = false;
+                result.Message = "เกิดข้อผิดพลาดในการอัปโหลดระบบ NAS: " + ex.Message;
+                return result;
+            }
+        }
+
         public string[] savefile(Class @class, List<IFormFile> file, string RunDoc)
         {
             string IssueBy = DateTime.Now.ToString("yyyyMMdd HH:mm:ss") + " - " + HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
@@ -563,84 +739,90 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
             string v_error = "";
             string v_fnType = "";// v_type != "" ? v_type : @class._ViewsvsServiceRequest.srType;
 
-            string v_status = "";
+            string v_status = "S";
             string v_msg = "";
             int v_count = 0;
             try
             {
-                if (file is null)
+                if (file.Count > 0)
                 {
-                    v_status = "S";
-                    v_msg = "Save & Send Mail Already";
+                    var chkImport = UploadAttachmentsToNas(file, RunDoc);
+                    v_status = chkImport.Success == true ? "S" : "E";
+                    v_msg = chkImport.Success == true ? "Save & Send Mail Already" : chkImport.Message;
                 }
-                else
-                {
-                    List<ViewAttachment> listInsert = new List<ViewAttachment>();
-                    using (var dbContextTransaction = _IT.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            if (file is null)
-                            {
-                                //vStatus = "File not found";
-                                v_status = "S";
-                                v_msg = "Save & Send Mail Already";
-                            }
-                            else
-                            {
-                                for (int i = 0; i < file.Count; i++)
-                                {
-                                    string IssueDate = DateTime.Now.ToString("yyyyMMddHHmmss");
-                                    fileName = IssueDate + "-" + file[i].FileName;//System.IO.Path.GetExtension(file.FileName).ToLower();
-                                    string filePath = path + fileName;
-                                    var fileLocation = new FileInfo(filePath);
-                                    //filePaths.Add(filePath);
-                                    if (!Directory.Exists(filePath))
-                                    {
-                                        using (var stream = new FileStream(filePath, FileMode.Create))
-                                        {
-                                            file[i].CopyTo(stream);
-                                        }
-                                    }
-                                    ViewAttachment _viewAttachment = new ViewAttachment();
-                                    _viewAttachment.fnNo = RunDoc; // @class._ViewceMastSubMakerRequest.smRevision;//vSno.ToString();
-                                    _viewAttachment.fnPath = filePath;
-                                    _viewAttachment.fnFilename = fileName;
-                                    _viewAttachment.fnIssueBy = IssueBy;
-                                    _viewAttachment.fnUpdateBy = IssueBy;
-                                    _viewAttachment.fnType = v_fnType;
-                                    _viewAttachment.fnProgram = PgName; //Program  name CostEstimate
-                                                                        //_IT.Attachment.AddAsync(_viewAttachment);
-                                                                        //_IT.SaveChanges();
-                                                                        //vStatus = fileName;
-                                    listInsert.Add(_viewAttachment);
-                                }
+                //if (file is null)
+                //{
+                //    v_status = "S";
+                //    v_msg = "Save & Send Mail Already";
+                //}
+                //else
+                //{
+                //    List<ViewAttachment> listInsert = new List<ViewAttachment>();
+                //    using (var dbContextTransaction = _IT.Database.BeginTransaction())
+                //    {
+                //        try
+                //        {
+                //            if (file is null)
+                //            {
+                //                //vStatus = "File not found";
+                //                v_status = "S";
+                //                v_msg = "Save & Send Mail Already";
+                //            }
+                //            else
+                //            {
+                //                for (int i = 0; i < file.Count; i++)
+                //                {
+                //                    string IssueDate = DateTime.Now.ToString("yyyyMMddHHmmss");
+                //                    fileName = IssueDate + "-" + file[i].FileName;//System.IO.Path.GetExtension(file.FileName).ToLower();
+                //                    string filePath = path + fileName;
+                //                    var fileLocation = new FileInfo(filePath);
+                //                    //filePaths.Add(filePath);
+                //                    if (!Directory.Exists(filePath))
+                //                    {
+                //                        using (var stream = new FileStream(filePath, FileMode.Create))
+                //                        {
+                //                            file[i].CopyTo(stream);
+                //                        }
+                //                    }
+                //                    ViewAttachment _viewAttachment = new ViewAttachment();
+                //                    _viewAttachment.fnNo = RunDoc; // @class._ViewceMastSubMakerRequest.smRevision;//vSno.ToString();
+                //                    _viewAttachment.fnPath = filePath;
+                //                    _viewAttachment.fnFilename = fileName;
+                //                    _viewAttachment.fnIssueBy = IssueBy;
+                //                    _viewAttachment.fnUpdateBy = IssueBy;
+                //                    _viewAttachment.fnType = v_fnType;
+                //                    _viewAttachment.fnProgram = PgName; //Program  name CostEstimate
+                //                                                        //_IT.Attachment.AddAsync(_viewAttachment);
+                //                                                        //_IT.SaveChanges();
+                //                                                        //vStatus = fileName;
+                //                    listInsert.Add(_viewAttachment);
+                //                }
 
-                            }
-                            _IT.Attachment.AddRange(listInsert); // Add หลายรายการ
-                            _IT.SaveChanges(); // Save ทีเดียว
-                            dbContextTransaction.Commit();
-                            v_status = "S";
-                            v_msg = "Save & Send Mail Already";
-                        }
-                        catch (Exception e)
-                        {
-                            v_status = "E";
-                            v_error = e.Message;
-                            v_msg = "Error Save file :" + e.Message;
-                            //dbContextTransaction.Rollback();
-                            try
-                            {
-                                dbContextTransaction.Rollback();
-                            }
-                            catch
-                            {
-                                // ignore ถ้า transaction ปิดไปแล้ว
-                            }
-                        }
-                    }
+                //            }
+                //            _IT.Attachment.AddRange(listInsert); // Add หลายรายการ
+                //            _IT.SaveChanges(); // Save ทีเดียว
+                //            dbContextTransaction.Commit();
+                //            v_status = "S";
+                //            v_msg = "Save & Send Mail Already";
+                //        }
+                //        catch (Exception e)
+                //        {
+                //            v_status = "E";
+                //            v_error = e.Message;
+                //            v_msg = "Error Save file :" + e.Message;
+                //            //dbContextTransaction.Rollback();
+                //            try
+                //            {
+                //                dbContextTransaction.Rollback();
+                //            }
+                //            catch
+                //            {
+                //                // ignore ถ้า transaction ปิดไปแล้ว
+                //            }
+                //        }
+                //    }
 
-                }
+                //}
             }
             catch (Exception e)
             {
@@ -878,7 +1060,7 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
             string v_msg = "";
             string v_status = "";
 
-            using (var dbContextTransaction =  _MK.Database.BeginTransaction())
+            using (var dbContextTransaction = _MK.Database.BeginTransaction())
             {
                 try
                 {
@@ -889,11 +1071,7 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
                         : @class._ViewceMastInforSpacMoldRequest.irEmpCodeApprove
                         : @class._ViewceMastInforSpacMoldRequest.irEmpCodeApprove;
 
-
-
-                    //@class._ViewceHistoryApproved != null ? _IT.rpEmails.Where(w => w.emName_M365 == @class._ViewceHistoryApproved.htTo).Select(x => x.emEmpcode).First() : @class._ViewceMastInforSpacMoldRequest.irEmpCodeApprove;
                     string NickNameApprove = empApprove != null ? _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == empApprove).Select(x => x.NICKNAME).First() : @class._ViewceMastInforSpacMoldRequest.irNameApprove;
-
 
                     //checked dis approve   20/10/2025
                     int vStepDis = 0;
@@ -906,7 +1084,6 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
                             empApprove = @class._ViewceMastInforSpacMoldRequest.irEmpCodeRequest;
                             string vstatusPanding = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "4" && x.mfStep == 9).Select(x => x.mfSubject).FirstOrDefault();
 
-                            //update status
                             //wr
                             ViewceMastWorkingTimeRequest _MastWorkingTimeRequest = new ViewceMastWorkingTimeRequest();
                             _MastWorkingTimeRequest = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNo == vDocNoMain).FirstOrDefault();
@@ -916,27 +1093,26 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
 
                             _MastWorkingTimeRequest.wrStep = 0;
                             _MastWorkingTimeRequest.wrStatus = vstatusPanding;
-                            _MastWorkingTimeRequest.wrEmpCodeApprove = empCodeWr;//_IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _MastWorkingTimeRequest.wrDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault();
-                            _MastWorkingTimeRequest.wrNameApprove = nicknameAppWr;// _HRMS.AccEMPLOYEE.Where(u => u.EMP_CODE == _IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _MastWorkingTimeRequest.wrDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault()).Select(x => x.NICKNAME).FirstOrDefault();
+                            _MastWorkingTimeRequest.wrEmpCodeApprove = empCodeWr;
+                            _MastWorkingTimeRequest.wrNameApprove = nicknameAppWr;
                             _MK._ViewceMastWorkingTimeRequest.Update(_MastWorkingTimeRequest);
-                            _MK.SaveChanges();
+                            try { _MK.SaveChanges(); }
+                            catch (DbUpdateConcurrencyException ex) { throw new Exception("[DEBUG-POINT: WorkingTimeRequest Update] " + ex.Message, ex); }
 
                             //Mat
-
-
                             ViewceMastMaterialRequest _ceMastMaterialRequest = new ViewceMastMaterialRequest();
                             _ceMastMaterialRequest = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == vDocNoMain).FirstOrDefault();
                             var approvedNameMat = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastMaterialRequest.mrDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault();
                             var empCodeMat = _IT.rpEmails.Where(y => y.emName_M365 == approvedNameMat).Select(y => y.emEmpcode).FirstOrDefault();
                             var nicknameAppMat = _HRMS.AccEMPLOYEE.Where(u => u.EMP_CODE == empCodeMat).Select(u => u.NICKNAME).FirstOrDefault();
 
-
                             _ceMastMaterialRequest.mrStep = 0;
                             _ceMastMaterialRequest.mrStatus = vstatusPanding;
-                            _ceMastMaterialRequest.mrEmpCodeApprove = empCodeMat; // _IT.rpEmails.Where(y=>y.emName_M365 ==   _MK._ViewceHistoryApproved.Where(x=>x.htDocNo == _ceMastMaterialRequest.mrDocumentNo && x.htStep==1).Select(x=>x.htTo).FirstOrDefault()).Select(x=>x.emEmpcode).FirstOrDefault();
-                            _ceMastMaterialRequest.mrNameApprove = nicknameAppMat;//_HRMS.AccEMPLOYEE.Where(u=>u.EMP_CODE ==   _IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastMaterialRequest.mrDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault()).Select(x=>x.NICKNAME).FirstOrDefault();
+                            _ceMastMaterialRequest.mrEmpCodeApprove = empCodeMat;
+                            _ceMastMaterialRequest.mrNameApprove = nicknameAppMat;
                             _MK._ViewceMastMaterialRequest.Update(_ceMastMaterialRequest);
-                            _MK.SaveChanges();
+                            try { _MK.SaveChanges(); }
+                            catch (DbUpdateConcurrencyException ex) { throw new Exception("[DEBUG-POINT: MaterialRequest Update] " + ex.Message, ex); }
 
                             //Tool
                             ViewceMastToolGRRequest _ceMastToolGRRequest = new ViewceMastToolGRRequest();
@@ -947,51 +1123,33 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
 
                             _ceMastToolGRRequest.trStep = 0;
                             _ceMastToolGRRequest.trStatus = vstatusPanding;
-                            _ceMastToolGRRequest.trEmpCodeApprove = empCodeTool;//_IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastToolGRRequest.trDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault();
-                            _ceMastToolGRRequest.trNameApprove = nicknameAppTool;//_HRMS.AccEMPLOYEE.Where(u => u.EMP_CODE == _IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastToolGRRequest.trDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault()).Select(x => x.NICKNAME).FirstOrDefault();
+                            _ceMastToolGRRequest.trEmpCodeApprove = empCodeTool;
+                            _ceMastToolGRRequest.trNameApprove = nicknameAppTool;
                             _MK._ViewceMastToolGRRequest.Update(_ceMastToolGRRequest);
-                            _MK.SaveChanges();
-
-                            //SM
-                            //ViewceMastInforSpacMoldRequest _ceMastInforSpacMoldRequest = new ViewceMastInforSpacMoldRequest();
-                            //_ceMastInforSpacMoldRequest = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == vDocNoMain).FirstOrDefault();
-                            //var approvedNameSM = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastInforSpacMoldRequest.irDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault();
-                            //var empCodeSM = _IT.rpEmails.Where(y => y.emName_M365 == approvedNameSM).Select(y => y.emEmpcode).FirstOrDefault();
-                            //var nicknameAppSM = _HRMS.AccEMPLOYEE.Where(u => u.EMP_CODE == empCodeSM).Select(u => u.NICKNAME).FirstOrDefault();
-
-                            //_ceMastInforSpacMoldRequest.irStep = 0;
-                            //_ceMastInforSpacMoldRequest.irStatus = vstatusPanding;
-                            //_ceMastInforSpacMoldRequest.irEmpCodeApprove = empCodeSM;//_IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastInforSpacMoldRequest.irDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault();
-                            //_ceMastInforSpacMoldRequest.irNameApprove = nicknameAppSM;//_HRMS.AccEMPLOYEE.Where(u => u.EMP_CODE == _IT.rpEmails.Where(y => y.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == _ceMastInforSpacMoldRequest.irDocumentNo && x.htStep == 1).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).FirstOrDefault()).Select(x => x.NICKNAME).FirstOrDefault();
-                            //_MK._ViewceMastInforSpacMoldRequest.Update(_ceMastInforSpacMoldRequest);
-                            //_MK.SaveChanges();
-
+                            try { _MK.SaveChanges(); }
+                            catch (DbUpdateConcurrencyException ex) { throw new Exception("[DEBUG-POINT: ToolGRRequest Update] " + ex.Message, ex); }
 
                             //re step main other
                             string reStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "3" && x.mfStep == 1).Select(x => x.mfSubject).FirstOrDefault();
                             ViewceMastMoldOtherRequest _ViewceMastMoldOtherRequest = new ViewceMastMoldOtherRequest();
                             _ViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == vDocNoMain).FirstOrDefault();
                             _ViewceMastMoldOtherRequest.mrStep = 1;
-                            _ViewceMastMoldOtherRequest.mrStatus = reStatus;// _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "3" && x.mfStep == 1).Select(x => x.mfSubject).FirstOrDefault();
+                            _ViewceMastMoldOtherRequest.mrStatus = reStatus;
                             _MK._ViewceMastMoldOtherRequest.Update(_ViewceMastMoldOtherRequest);
-                            _MK.SaveChanges();
-
+                            try { _MK.SaveChanges(); }
+                            catch (DbUpdateConcurrencyException ex) { throw new Exception("[DEBUG-POINT: MoldOtherRequest Update] " + ex.Message, ex); }
                         }
                         else
                         {
                             vStepDis = 1;
                             vstep = 1;
-                            //mpApprove = _IT.rpEmails.Where(w => w.emName_M365 == _MK._ViewceHistoryApproved.Where(x => x.htDocNo == vDocNo && x.htStep == vStepDis).Select(x => x.htTo).FirstOrDefault()).Select(x => x.emEmpcode).First();
-
                             string vname = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == vDocNo && x.htStep == vStepDis).Select(x => x.htTo).FirstOrDefault();
                             empApprove = _IT.rpEmails.Where(w => w.emName_M365 == vname).Select(x => x.emEmpcode).FirstOrDefault();
-
                         }
                         _smStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == vStepDis && x.mfFlowNo == "7").Select(x => x.mfSubject).First();
                         NickNameApprove = empApprove != null ? _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == empApprove).Select(x => x.NICKNAME).First() : @class._ViewceMastInforSpacMoldRequest.irNameApprove;
                     }
 
-                    //vstep = vstep == 9 ? vstep = 0 : vstep;
                     vstep = vstep == 8 ? vstep = 0 : vstep;
                     ViewceMastInforSpacMoldRequest _ceMastInforSpacMoldRequest = new ViewceMastInforSpacMoldRequest();
                     if (savetype == "S")
@@ -1000,21 +1158,18 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
                         _ceMastInforSpacMoldRequest.irIssueDate = DateTime.Now.ToString("yyyyMMdd HH:mm:ss");
                         _ceMastInforSpacMoldRequest.irStep = vstep;
                         _ceMastInforSpacMoldRequest.irStatus = _smStatus;
-                        //_ceMastWorkingTimeRequest.wrEmpCodeRequest
-                        //_ceMastWorkingTimeRequest.wrNameRequest
                         _ceMastInforSpacMoldRequest.irEmpCodeApprove = empApprove;
                         _ceMastInforSpacMoldRequest.irNameApprove = NickNameApprove;
                         _ceMastInforSpacMoldRequest.irFlowNo = 7;
                         _MK._ViewceMastInforSpacMoldRequest.Update(_ceMastInforSpacMoldRequest);
-                        _MK.SaveChanges();
+                        try { _MK.SaveChanges(); }
+                        catch (DbUpdateConcurrencyException ex) { throw new Exception("[DEBUG-POINT: MastInforSpacMoldRequest Update] " + ex.Message, ex); }
                     }
 
-                    var itemSM = _MK._ViewceItemInforRequestPartName.Where(p => p.ipDocumentNoSub == vDocNo).ToList();
-                    if (itemSM.Count > 0)
-                    {
-                        _MK._ViewceItemInforRequestPartName.RemoveRange(itemSM);
-                        _MK.SaveChanges();
-                    }
+                    // ---------- ItemInforRequestPartName ----------
+                    _MK.Database.ExecuteSqlCommand("DELETE FROM ceItemInforRequestPartName WHERE ipDocumentNoSub = @p0", new SqlParameter("@p0", vDocNo));
+                    // ⚠️ เปลี่ยนชื่อ "ceItemInforRequestPartName" ให้ตรงกับ [Table("...")] จริงของ entity นี้
+
                     for (int i = 0; i < @class._ListViewceItemInforRequestPartName.Count(); i++)
                     {
                         var _ceItemInforRequestPartName = new ViewceItemInforRequestPartName()
@@ -1042,18 +1197,16 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
                             ipElectroFormType = @class._ListViewceItemInforRequestPartName[i].ipElectroFormType,
                             ipElectroFormPcs = @class._ListViewceItemInforRequestPartName[i].ipElectroFormPcs,
                             ipEditStatus = @class._ListViewceItemInforRequestPartName[i].ipEditStatus
-
                         };
-                        _MK._ViewceItemInforRequestPartName.AddAsync(_ceItemInforRequestPartName);
+                        _MK._ViewceItemInforRequestPartName.Add(_ceItemInforRequestPartName); // เปลี่ยนจาก AddAsync
                     }
+                    try { _MK.SaveChanges(); }
+                    catch (DbUpdateConcurrencyException ex) { throw new Exception("[DEBUG-POINT: ItemInforRequestPartName Insert] " + ex.Message, ex); }
 
+                    // ---------- ItemInforSlideSystem ----------
+                    _MK.Database.ExecuteSqlCommand("DELETE FROM ceItemInforSlideSystem WHERE isDocumentNoSub = @p0", new SqlParameter("@p0", vDocNo));
+                    // ⚠️ เปลี่ยนชื่อ "ceItemInforSlideSystem" ให้ตรงกับ [Table("...")] จริงของ entity นี้
 
-                    var itemSS = _MK._ViewceItemInforSlideSystem.Where(p => p.isDocumentNoSub == vDocNo).ToList();
-                    if (itemSS.Count > 0)
-                    {
-                        _MK._ViewceItemInforSlideSystem.RemoveRange(itemSS);
-                        _MK.SaveChanges();
-                    }
                     for (int i = 0; i < @class._ListViewceItemInforSlideSystem.Count(); i++)
                     {
                         var ceItemInforSlideSystem = new ViewceItemInforSlideSystem()
@@ -1066,23 +1219,16 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
                             isNoProcess = @class._ListViewceItemInforSlideSystem[i].isNoProcess,
                             isSlideSystemType = @class._ListViewceItemInforSlideSystem[i].isSlideSystemType,
                             isSlideSystemCount = @class._ListViewceItemInforSlideSystem[i].isSlideSystemCount,
-
                         };
-                        _MK._ViewceItemInforSlideSystem.AddAsync(ceItemInforSlideSystem);
+                        _MK._ViewceItemInforSlideSystem.Add(ceItemInforSlideSystem); // เปลี่ยนจาก AddAsync
                     }
+                    try { _MK.SaveChanges(); }
+                    catch (DbUpdateConcurrencyException ex) { throw new Exception("[DEBUG-POINT: ItemInforSlideSystem Insert] " + ex.Message, ex); }
 
+                    // ---------- ItemInforTypeOfCut ----------
+                    _MK.Database.ExecuteSqlCommand("DELETE FROM ceItemInforTypeOfCut WHERE icDocumentNoSub = @p0", new SqlParameter("@p0", vDocNo));
+                    // ⚠️ เปลี่ยนชื่อ "ceItemInforTypeOfCut" ให้ตรงกับ [Table("...")] จริงของ entity นี้
 
-                    var itemTC = _MK._ViewceItemInforTypeOfCut.Where(p => p.icDocumentNoSub == vDocNo).ToList();
-                    if (itemTC.Any())
-                    {
-                        _MK._ViewceItemInforTypeOfCut.RemoveRange(itemTC);
-                        _MK.SaveChanges(); // ✅ ใช้ async และ commit ก่อนเพิ่มข้อมูลใหม่
-                    }
-                    // 🔹 เคลียร์ทุก entity ที่ EF จำไว้ (เทียบเท่า ChangeTracker.Clear())
-                    //foreach (var entry in _MK.ChangeTracker.Entries().ToList())
-                    //{
-                    //    entry.State = EntityState.Detached;
-                    //}
                     for (int i = 0; i < @class._ListViewceItemInforTypeOfCut.Count(); i++)
                     {
                         var ceItemInforTypeOfCut = new ViewceItemInforTypeOfCut()
@@ -1095,49 +1241,44 @@ namespace CostEstimate.Controllers.NewMoldOtherSM
                             icNoProcess = @class._ListViewceItemInforTypeOfCut[i].icNoProcess,
                             icTypeofcut = @class._ListViewceItemInforTypeOfCut[i].icTypeofcut,
                         };
-                        _MK._ViewceItemInforTypeOfCut.AddAsync(ceItemInforTypeOfCut);
+                        _MK._ViewceItemInforTypeOfCut.Add(ceItemInforTypeOfCut); // เปลี่ยนจาก AddAsync
                     }
+                    try { _MK.SaveChanges(); }
+                    catch (DbUpdateConcurrencyException ex) { throw new Exception("[DEBUG-POINT: ItemInforTypeOfCut Insert] " + ex.Message, ex); }
 
+                    // ---------- ItemInforShibo ----------
+                    _MK.Database.ExecuteSqlCommand("DELETE FROM ceItemInforShibo WHERE ibDocumentNoSub = @p0", new SqlParameter("@p0", vDocNo));
 
-                    var itemSB = _MK._ViewceItemInforShibo.Where(p => p.ibDocumentNoSub == vDocNo).ToList();
-                    if (itemSB.Any())
-                    {
-                        _MK._ViewceItemInforShibo.RemoveRange(itemSB);
-                        _MK.SaveChanges();
-                    }
                     for (int i = 0; i < @class._ListViewceItemInforShibo.Count(); i++)
                     {
+                        var item = @class._ListViewceItemInforShibo[i];
                         var ceItemInforShibo = new ViewceItemInforShibo()
                         {
-                            ibDocumentNoSub = @class._ListViewceItemInforShibo[i].ibDocumentNoSub,
-                            ibRunNo = i + 1, //@class._ListViewceItemInforShibo[i].ibRunNo,
-                            ibPartName = @class._ListViewceItemInforShibo[i].ibPartName,
-                            ibCavityNo = @class._ListViewceItemInforShibo[i].ibCavityNo,
-                            ibTypeCavity = @class._ListViewceItemInforShibo[i].ibTypeCavity,
-                            ibNoProcess = @class._ListViewceItemInforShibo[i].ibNoProcess,
-                            ibShiboType = @class._ListViewceItemInforShibo[i].ibShiboType,
-                            ibSHiboPCS = @class._ListViewceItemInforShibo[i].ibSHiboPCS,
+                            ibDocumentNoSub = item.ibDocumentNoSub,
+                            ibRunNo = i + 1,
+                            ibPartName = item.ibPartName,
+                            ibCavityNo = item.ibCavityNo,
+                            ibTypeCavity = item.ibTypeCavity,
+                            ibNoProcess = item.ibNoProcess,
+                            ibShiboType = item.ibShiboType,
+                            ibSHiboPCS = item.ibSHiboPCS,
                         };
-                        _MK._ViewceItemInforShibo.AddAsync(ceItemInforShibo);
+                        _MK._ViewceItemInforShibo.Add(ceItemInforShibo);
                     }
+                    try { _MK.SaveChanges(); }
+                    catch (DbUpdateConcurrencyException ex) { throw new Exception("[DEBUG-POINT: ItemInforShibo Insert] " + ex.Message, ex); }
 
-                    _MK.SaveChanges();
                     dbContextTransaction.Commit();
 
-
                     string[] v_statusFile = savefile(@class, files, vDocNo);
-
                     v_status = v_statusFile[0];
                     v_msg = v_statusFile[1];
-
                 }
                 catch (Exception ex)
                 {
                     try { dbContextTransaction.Rollback(); } catch { }
                     v_status = "E";
-                    //v_msg = "Error Save: " + ex.InnerException.Message;
-
-                    v_msg = "Error Save: "  +(ex.InnerException?.Message ?? ex.Message);
+                    v_msg = "Error Save: " + (ex.InnerException?.Message ?? ex.Message);
                 }
             }
 

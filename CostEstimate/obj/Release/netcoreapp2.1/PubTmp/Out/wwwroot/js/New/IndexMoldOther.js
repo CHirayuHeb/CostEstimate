@@ -86,6 +86,13 @@ $("#btnfileMoldOther").click(function () {
     $("#myModalNewMoldOther").modal("show");
 });
 
+$("#btnfileMoldOtherSpec").click(function () {
+    $("#myModalNewMoldOtherSpec").modal("show");
+});
+$("#btnfileMoldOtherDrawing").click(function () {
+    $("#myModalNewMoldOtherDrawing").modal("show");
+});
+
 
 
 $("#btnfileMoldOtherWK").click(function () {

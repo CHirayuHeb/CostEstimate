@@ -30,6 +30,8 @@ namespace CostEstimate.Models.Table.IT
         public string fnUpdateBy { get; set; }
         public string fnType { get; set; }
         public string fnProgram { get; set; }
+        public string fnDescription { get; set; }
+        
 
     }
 

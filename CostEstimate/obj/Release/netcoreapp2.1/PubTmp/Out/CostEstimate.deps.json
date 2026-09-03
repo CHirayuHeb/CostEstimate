@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "69a599d4896ac4ae72637024c8000242f8c9758f"
+    "signature": "715d008f947c43e9e22f457bcc208c6f2c138363"
   },
   "compilationOptions": {
     "defines": [
@@ -31,7 +31,8 @@
           "Microsoft.EntityFrameworkCore": "2.1.14",
           "Microsoft.NETCore.App": "2.1.0",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.1.9",
-          "PagedList": "1.17.0"
+          "PagedList": "1.17.0",
+          "SMBLibrary": "1.5.7.1"
         },
         "runtime": {
           "CostEstimate.dll": {}
@@ -633,6 +634,20 @@
         },
         "compile": {
           "lib/netstandard2.0/SixLabors.Fonts.dll": {}
+        }
+      },
+      "SMBLibrary/1.5.7.1": {
+        "dependencies": {
+          "System.Buffers": "4.6.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/SMBLibrary.dll": {
+            "assemblyVersion": "1.5.7.1",
+            "fileVersion": "1.5.7.1"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/SMBLibrary.dll": {}
         }
       },
       "System.Buffers/4.6.0": {},
@@ -4058,6 +4073,13 @@
       "sha512": "sha512-LFQsCZlV0xlUyXAOMUo5kkSl+8zAQXXbbdwWchtk0B4o7zotZhQsQOcJUELGHdfPfm/xDAsz6hONAuV25bJaAg==",
       "path": "sixlabors.fonts/1.0.0",
       "hashPath": "sixlabors.fonts.1.0.0.nupkg.sha512"
+    },
+    "SMBLibrary/1.5.7.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-hcs1myPdnpmbp60rzWofrU9Kgmbmpht4OsrokEwRzxW/S2I47QJsh0s8EV5jIBRY8tp0UnNoJC3jm19wSvTb2A==",
+      "path": "smblibrary/1.5.7.1",
+      "hashPath": "smblibrary.1.5.7.1.nupkg.sha512"
     },
     "System.Buffers/4.6.0": {
       "type": "package",

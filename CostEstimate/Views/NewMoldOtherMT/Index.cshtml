@@ -132,7 +132,7 @@
 
                         </div>
                         <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                            <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Event.</div>
+                            <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">QUOTATION STAGE.</div>
                         </div>
                         <div class="col-25" style=" display: flex;align-items: center; ">
                             @*@Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfType, (SelectList)ViewBag.TypeofEvent, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMoldOther_Event", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })*@
@@ -170,11 +170,11 @@
                         <div class="col-25" style=" display: flex;align-items: center; ">
                             <input type="text" class="input-with-image   form-control center" style="width:100%;font-size:12px;background-color:lightgray" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrMoldMass" id="i_NewOtherWK_MoldMass" readonly>
                         </div>
-                        <div class="col-20 " style=" display: flex;align-items: center;">
+                        <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                            <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">DEVELOPMENT STAGE</div>
                         </div>
                         <div class="col-25 " style=" display: flex;align-items: center; ">
-                            @*<input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOtherWK_Type" asp-for="_ViewceMastMoldOtherRequest.mrType" readonly>*@
-
+                            <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray;" autocomplete="off" id="i_DevelopmentStage" asp-for="_ViewceMastMoldOtherRequest.mrDevelopmentStage" readonly>
                         </div>
                         <div class="col-5 " style="">
                         </div>
@@ -245,7 +245,10 @@
                                                             <td> <label>@(row1 += 1)</label></td>
                                                             <td>
 
-                                                                <a href="@Url.Action("openFile", "New", new { pathFile = @item.fnFilename })" class="btn-image" target="_blank" style="padding-left:5px;text-decoration:auto;">
+                                                                @*<a href="@Url.Action("openFile", "New", new { pathFile = @item.fnFilename })" class="btn-image" target="_blank" style="padding-left:5px;text-decoration:auto;">
+                                                                    @item.fnFilename
+                                                                </a>*@
+                                                                <a href="@Url.Action("openFileNas", "NewMoldOther", new { pathFile = @item.fnPath })" class="btn-image" target="_blank" style="padding-left:5px;text-decoration:auto;">
                                                                     @item.fnFilename
                                                                 </a>
                                                             </td>

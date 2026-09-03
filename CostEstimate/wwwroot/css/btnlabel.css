@@ -1,0 +1,224 @@
+﻿
+.action-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center; /* <-- เพิ่มตรงนี้เพื่อจัดกึ่งกลาง */
+    gap: 12px;
+    width: 100%;
+    margin: 0 auto; /* ช่วยจัดกึ่งกลางกรณีจำกัดความกว้าง */
+    font-family: sans-serif;
+    margin-top: 17px;
+    margin-bottom: 17px;
+}
+/* ซ่อนวงกลม Radio Button ดั้งเดิมของ ASP.NET */
+.action-card input[type="radio"] {
+    display: none;
+}
+
+/* ตกแต่งตัวปุ่มกด */
+.action-card .card-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 5px 13px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    border: 2px solid transparent;
+    opacity: 0.45; /* สีจางลงเมื่อยังไม่ได้เลือก */
+    filter: grayscale(40%);
+    transition: all 0.2s ease-in-out;
+}
+
+.action-card .icon {
+    font-size: 12px;
+    line-height: 1;
+}
+
+/* Hover Effect */
+.action-card:hover .card-body {
+    opacity: 0.8;
+    filter: grayscale(0%);
+    transform: translateY(-1px);
+}
+
+/* --- กำหนดสีของแต่ละสถานะ --- */
+.action-card.approve .card-body {
+    background-color: #10b981;
+    color: #ffffff;
+}
+
+.action-card.reject .card-body {
+    background-color: #ef4444;
+    color: #ffffff;
+}
+
+.action-card.rework .card-body {
+    background-color: #f59e0b;
+    color: #ffffff;
+}
+
+.action-card.return .card-body {
+    background-color: #ff7300;
+    color: #ffffff;
+}
+
+/* --- เมื่อ Radio Button ถูกเลือก (Checked State) --- */
+.action-card input[type="radio"]:checked + .card-body {
+    opacity: 1;
+    filter: grayscale(0%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: scale(1.03);
+}
+
+/* ใส่ขอบเข้มเพิ่มความชัดเจนขณะเลือก */
+.action-card.approve input[type="radio"]:checked + .card-body {
+    border-color: #047857;
+}
+
+.action-card.reject input[type="radio"]:checked + .card-body {
+    border-color: #b91c1c;
+}
+
+.action-card.rework input[type="radio"]:checked + .card-body {
+    border-color: #b45309;
+}
+
+.action-card.return input[type="radio"]:checked + .card-body {
+    border-color: #c2410c;
+}
+
+
+.attachment-table {
+    margin-top: 20px;
+    border: 1px solid #d9e5f2;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.attachment-header {
+    background: #eef5ff;
+    padding: 12px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: #4c5a92;
+}
+
+.badge-file {
+    background: #6c757d;
+    color: white;
+    border-radius: 20px;
+    padding: 5px 15px;
+    font-size: 14px;
+}
+
+.table-attachment {
+    margin: 0;
+}
+
+    .table-attachment thead {
+        background: #596396;
+        color: white;
+    }
+
+        .table-attachment thead th {
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+        }
+
+    .table-attachment tbody td {
+        padding: 15px;
+        vertical-align: middle;
+        border-top: 1px solid #edf2f7;
+    }
+
+    .table-attachment tbody tr:hover {
+        background: #f7fbff;
+    }
+
+.process-status-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0px 0;
+}
+
+
+.process-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 80px;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: #f7f7f7;
+}
+
+
+.process-name {
+    font-size: 8px;
+    font-weight: 500;
+    /*white-space: nowrap;*/
+}
+
+
+.process-dot {
+    width: 10px;
+    height: 10px;
+    min-width: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 3px;
+}
+
+
+.status-green {
+    background: #5cb85c;
+}
+
+
+.status-yellow {
+    background: #f0ad4e;
+}
+
+
+.status-red {
+    background: #d9534f;
+}
+
+.reason-card .card-body {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+    transition: all 0.2s ease;
+    font-size: 12px;
+    font-weight:600;
+}
+
+/* ใช้ class แทน :checked + selector */
+.reason-card.is-checked .card-body {
+    background-color: #e6f4ea;
+    border-color: #34a853;
+    color: #1e7e34;
+    font-weight: 600;
+}
+
+.reason-card:hover .card-body {
+    border-color: #999;
+}
+
+
+

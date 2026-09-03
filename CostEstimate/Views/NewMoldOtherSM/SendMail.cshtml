@@ -42,9 +42,9 @@
             <span class="input-group-text w-25" style="font-size: 13px;">
                 To
                 @*@if (@Model._ViewceMastSubMakerRequest.smStep == 0)
-                    {
-                        <span style="padding-left:5px">DM up.</span>
-                    }*@
+                {
+                    <span style="padding-left:5px">DM up.</span>
+                }*@
             </span>
             <input type="text" class="form-control" id="searchInputTO" asp-for="_ViewceHistoryApproved.htTo" required style="font-size: 13px;" readonly="@(ViewBag.step == 6  ?  "readonly" : null)" />
             @*<input type="text" class="form-control" id="searchInputTO" />*@
@@ -63,7 +63,7 @@
 
         </div>
 
-        <div class="d-flex justify-content-center" style="width: 100%; text-align: center; padding-top: 5px; padding-bottom: 5px;">
+        @*<div class="d-flex justify-content-center" style="width: 100%; text-align: center; padding-top: 5px; padding-bottom: 5px;">
             <div class="p-1-modify" style="width: 100%; border: 1px grey;   ">
                 <div class="form-check form-check-inline" style="@(ViewBag.step == 4 ? "display: none;" : "")">
                     @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Approve", new { @class = "", id = "StatusApp", onclick = "CheckDis('Approve')", required = "required", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Approve</label><br />
@@ -72,6 +72,23 @@
                     @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Disapprove", new { @class = "", id = "StatusApp", onclick = "CheckDis('Disapprove')", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Disapprove</label><br />
                 </div>
             </div>
+        </div>*@
+        <div class="action-group">
+            <!-- Approve -->
+            <label class="action-card approve" for="StatusApp">
+                @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Approve", new { id = "StatusApp", required = "required" })
+                <span class="card-body">
+                    <span class="icon">&#10003;</span> Approve
+                </span>
+            </label>
+
+            <!-- Reject -->
+            <label class="action-card reject" for="StatusRej">
+                @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Disapprove", new { id = "StatusRej" })
+                <span class="card-body">
+                    <span class="icon">&#10005;</span> Reject
+                </span>
+            </label>
         </div>
         <div class="input-group ig-property">
             <span class="input-group-text w-25" style="font-size: 13px;">Remark</span>
@@ -106,7 +123,7 @@
 
 
     <div class="modal-footer" style="width: 100%;">
-        <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="Menubar_MoldOtherSMsavesendMailData('@Url.Action("chkSaveData", "NewMoldOtherSM")')" style="@(@ViewBag.step == 4  ? "display:none" : "")">Send mail</button>
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="Menubar_MoldOtherSMsavesendMailData('@Url.Action("chkSaveData", "NewMoldOtherSM")')" style="@(@ViewBag.step == 3  ? "display:none" : "")">Send mail</button>
         @*<button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="Menubar_save_sendMailBG('@Url.Action("SaveForm_SendMail", "NewMoldModify")')" style="@(@ViewBag.step == 6  ? "display:none" : "")">Send mail</button>*@
         @*<button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="sendmailsubmit('@Url.Action("SendMail_post", "RequestForm", new { vform = @ViewBag.vForm,vSR= @ViewBag.SRno})')">Send mail</button>*@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

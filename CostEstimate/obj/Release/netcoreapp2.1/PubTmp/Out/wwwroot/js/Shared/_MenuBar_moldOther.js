@@ -4429,6 +4429,41 @@ function Menubar_MoldOther_saveDraft(action) {
     headerFormData.append("_ceItemPartName", JSON.stringify(ceItemPartName));
 
 
+
+
+    //save file
+    // ===== รวมไฟล์จากทุก input ที่มี class fileInputGroup พร้อม type =====
+    // ===== รวมไฟล์เป็น group ตาม fileType แล้ว append แบบ indexed =====
+    let groupIndex = 0;
+    let hasFile = false;
+
+    $('.fileInputGroup').each(function () {
+        var fileType = $(this).data('filetype'); // SPEC / MOLD
+        var files = this.files;
+
+        if (files.length === 0) return; // ข้าม type ที่ไม่มีไฟล์เลือกไว้
+
+        // ใส่ name ของ group นี้
+        headerFormData.append(`attachments[${groupIndex}].Name`, fileType);
+
+        // ใส่ไฟล์ทั้งหมดของ group นี้
+        for (var i = 0; i < files.length; i++) {
+            hasFile = true;
+            headerFormData.append(`attachments[${groupIndex}].Files`, files[i]);
+        }
+
+        groupIndex++;
+    });
+
+    //if (!hasFile) {
+    //    alert('กรุณาเลือกไฟล์อย่างน้อย 1 ไฟล์');
+    //    return;
+    //}
+
+
+
+
+
     //1.check send mail
     //2.save form
     //3.send mail
@@ -4779,7 +4814,7 @@ function Menubar_MoldOther_savesendMail(action) {
         document.getElementById("btnAddPartName").focus();
     }
     ceItemPartName = [];
-    if ((vstep == 1 || vstep == 4 || vstep == 5 || vstep == 6) && isChecked == true) {
+    if ((vstep == 1 || vstep == 4 || vstep == 5 || vstep == 6)) {
         rows.forEach((row, index) => {
             const itemPartNoInput = row.querySelector(".vPartName");
             const itemPartNo = itemPartNoInput.value.trim();
@@ -4826,6 +4861,39 @@ function Menubar_MoldOther_savesendMail(action) {
 
     }
     headerFormData.append("_ceItemPartName", JSON.stringify(ceItemPartName));
+
+
+
+    //save file
+    // ===== รวมไฟล์จากทุก input ที่มี class fileInputGroup พร้อม type =====
+    // ===== รวมไฟล์เป็น group ตาม fileType แล้ว append แบบ indexed =====
+    let groupIndex = 0;
+    let hasFile = false;
+
+    $('.fileInputGroup').each(function () {
+        var fileType = $(this).data('filetype'); // SPEC / MOLD
+        var files = this.files;
+
+        if (files.length === 0) return; // ข้าม type ที่ไม่มีไฟล์เลือกไว้
+
+        // ใส่ name ของ group นี้
+        headerFormData.append(`attachments[${groupIndex}].Name`, fileType);
+
+        // ใส่ไฟล์ทั้งหมดของ group นี้
+        for (var i = 0; i < files.length; i++) {
+            hasFile = true;
+            headerFormData.append(`attachments[${groupIndex}].Files`, files[i]);
+        }
+
+        groupIndex++;
+    });
+
+    //if (!hasFile) {
+    //    alert('กรุณาเลือกไฟล์อย่างน้อย 1 ไฟล์');
+    //    return;
+    //}
+
+
 
 
     //1.check send mail
@@ -4950,12 +5018,24 @@ function Menubar_MoldOtherWKsaveDraft(action, action2) {
         const tableItemName = div.querySelector('table.ItemName'); // ดึง table ภายใน
         const rowsTr = tableItemName.querySelectorAll('tr#trbodyItemName');
         //if (!tableItemName) return; // ถ้าไม่มี table ข้ามไป
+
+        // ✅ TOTAL ไม่ได้อยู่ใน <tr> แล้ว แต่อยู่ใน div.row-total-wrapper ต่อจาก </table>
+        // ดึงครั้งเดียวก่อนเข้า loop แถว (ค่า total มีค่าเดียวต่อ table ไม่ใช่ต่อแถว)
+        const totalWrapper = tableItemName.nextElementSibling;
+        const inputtotal = (totalWrapper && totalWrapper.classList.contains('row-total-wrapper'))
+            ? totalWrapper.querySelector('input.input-total')
+            : null;
+
+        if (inputtotal) {
+            console.log("✅ เจอ input inputtotal: " + inputtotal.value.trim());
+        } else {
+            console.warn("⚠️ ไม่พบ input-total สำหรับ table.ItemName");
+        }
+
         rowsTr.forEach((tr, rowIndex) => {
             //console.log("22222");
             //    // ดึงทุก td ของ tr นี้
             const tds = tr.querySelectorAll('td');
-            const inputtotal = tr.querySelector('input.input-total');
-            console.log("✅ เจอ input inputtotal: " + inputtotal.value.trim());
             tds.forEach((td, tdIndex) => {
                 const inputDocumentNo = td.querySelector('input.input-DocumentNo');
                 const inputPartName = td.querySelector('input.input-PartName');
@@ -4985,7 +5065,7 @@ function Menubar_MoldOtherWKsaveDraft(action, action2) {
                             wpWT_Auto: parseFloat(inputAuto.value.trim()).toFixed(2) || 0,//double
                             wpEnable_WTMan: inputEnableman.value,//bit
                             wpEnable_WTAuto: inputEnableAuto.value,//bit
-                            wpTotal: parseFloat(inputtotal.value.trim()).toFixed(2) || 0,//double
+                            wpTotal: inputtotal ? (parseFloat(inputtotal.value.trim()).toFixed(2) || 0) : 0,//double
                             wpIssueDate: "",
                             wpshipment: "start-try0",
                         });
@@ -5004,12 +5084,23 @@ function Menubar_MoldOtherWKsaveDraft(action, action2) {
         const tableItemNameM = div.querySelector('table.ItemNameTry0-Ship'); // ดึง table ภายใน
         const rowsTrM = tableItemNameM.querySelectorAll('tr#trbodyItemNameTry0-Ship');
         //if (!tableItemName) return; // ถ้าไม่มี table ข้ามไป
+
+        // ✅ เช่นเดียวกับด้านบน: TOTAL อยู่นอก table แล้ว ดึงครั้งเดียวก่อนเข้า loop แถว
+        const totalWrapperM = tableItemNameM.nextElementSibling;
+        const inputtotalM = (totalWrapperM && totalWrapperM.classList.contains('row-total-wrapper'))
+            ? totalWrapperM.querySelector('input.input-total')
+            : null;
+
+        if (inputtotalM) {
+            console.log("✅ เจอ input inputtotal: " + inputtotalM.value.trim());
+        } else {
+            console.warn("⚠️ ไม่พบ input-total สำหรับ table.ItemNameTry0-Ship");
+        }
+
         rowsTrM.forEach((tr, rowIndex) => {
             //console.log("22222");
             //    // ดึงทุก td ของ tr นี้
             const tds = tr.querySelectorAll('td');
-            const inputtotal = tr.querySelector('input.input-total');
-            console.log("✅ เจอ input inputtotal: " + inputtotal.value.trim());
             tds.forEach((td, tdIndex) => {
                 const inputDocumentNo = td.querySelector('input.input-DocumentNo');
                 const inputPartName = td.querySelector('input.input-PartName');
@@ -5039,7 +5130,7 @@ function Menubar_MoldOtherWKsaveDraft(action, action2) {
                             wpWT_Auto: parseFloat(inputAuto.value.trim()).toFixed(2) || 0,//double
                             wpEnable_WTMan: inputEnableman.value,//bit
                             wpEnable_WTAuto: inputEnableAuto.value,//bit
-                            wpTotal: parseFloat(inputtotal.value.trim()).toFixed(2) || 0,//double
+                            wpTotal: inputtotalM ? (parseFloat(inputtotalM.value.trim()).toFixed(2) || 0) : 0,//double
                             wpIssueDate: "",
                             wpshipment: "try0-ship",
                         });
@@ -5304,68 +5395,24 @@ function Menubar_MoldOtherWKsavesendMailData(action, action2) {
         const tableItemName = div.querySelector('table.ItemName'); // ดึง table ภายใน
         const rowsTr = tableItemName.querySelectorAll('tr#trbodyItemName');
         //if (!tableItemName) return; // ถ้าไม่มี table ข้ามไป
+
+        // ✅ TOTAL ไม่ได้อยู่ใน <tr> แล้ว แต่อยู่ใน div.row-total-wrapper ต่อจาก </table>
+        // ดึงครั้งเดียวก่อนเข้า loop แถว (ค่า total มีค่าเดียวต่อ table ไม่ใช่ต่อแถว)
+        const totalWrapper = tableItemName.nextElementSibling;
+        const inputtotal = (totalWrapper && totalWrapper.classList.contains('row-total-wrapper'))
+            ? totalWrapper.querySelector('input.input-total')
+            : null;
+
+        if (inputtotal) {
+            console.log("✅ เจอ input inputtotal: " + inputtotal.value.trim());
+        } else {
+            console.warn("⚠️ ไม่พบ input-total สำหรับ table.ItemName");
+        }
+
         rowsTr.forEach((tr, rowIndex) => {
             //console.log("22222");
             //    // ดึงทุก td ของ tr นี้
             const tds = tr.querySelectorAll('td');
-            const inputtotal = tr.querySelector('input.input-total');
-            console.log("✅ เจอ input inputtotal: " + inputtotal.value.trim());
-            tds.forEach((td, tdIndex) => {
-                const inputDocumentNo = td.querySelector('input.input-DocumentNo');
-                const inputPartName = td.querySelector('input.input-PartName');
-                const inputCavityNo = td.querySelector('input.input-CavityNo');
-                const inputTypeCavity = td.querySelector('input.input-TypeCavity');
-                const inputNoProcess = td.querySelector('input.input-NoProcess');
-                const inputGroupName = td.querySelector('input.input-GroupName');
-                const inputProcessName = td.querySelector('input.input-ProcessName');
-                // const inputNoProcess = td.querySelector('input.input-NoProcess');
-                const inputMan = td.querySelector('input.input-man');
-                const inputAuto = td.querySelector('input.input-auto');
-                const inputEnableman = td.querySelector('input.input-Enableman');
-                const inputEnableAuto = td.querySelector('input.input-EnableAuto');
-                if (inputAuto && inputMan) {
-                    if (inputAuto.value.trim() !== "") {
-                        console.log("✅ เจอ input: " + inputAuto.value.trim() + ": " + inputMan.value.trim());
-                        console.log("✅ เจอ input: " + inputEnableman.value + ": " + inputEnableAuto.value);
-                        _ItemWorkingTimePartName.push({
-                            wpDocumentNoSub: inputDocumentNo.value.trim(),
-                            wpRunNo: 0, //int
-                            wpPartName: inputPartName.value.trim(),
-                            wpCavityNo: inputCavityNo.value.trim(),
-                            wpTypeCavity: inputTypeCavity.value.trim(),
-                            wpNoProcess: inputNoProcess.value.trim() || 0, //int
-                            wpGroupName: inputGroupName.value.trim(),
-                            wpProcessName: inputProcessName.value.trim(),
-                            wpWT_Man: parseFloat(inputMan.value.trim()).toFixed(2) || 0,//double
-                            wpWT_Auto: parseFloat(inputAuto.value.trim()).toFixed(2) || 0,//double
-                            wpEnable_WTMan: inputEnableman.value,//bit
-                            wpEnable_WTAuto: inputEnableAuto.value,//bit
-                            wpTotal: parseFloat(inputtotal.value.trim()).toFixed(2) || 0,//double
-                            wpIssueDate: "",
-                            wpshipment: "start-try0",
-                        });
-
-
-
-
-                    }
-                }
-
-            });
-
-        });
-
-
-
-        const tableItemNameM = div.querySelector('table.ItemNameTry0-Ship'); // ดึง table ภายใน
-        const rowsTrM = tableItemNameM.querySelectorAll('tr#trbodyItemNameTry0-Ship');
-        //if (!tableItemName) return; // ถ้าไม่มี table ข้ามไป
-        rowsTrM.forEach((tr, rowIndex) => {
-            //console.log("22222");
-            //    // ดึงทุก td ของ tr นี้
-            const tds = tr.querySelectorAll('td');
-            const inputtotal = tr.querySelector('input.input-total');
-            console.log("✅ เจอ input inputtotal: " + inputtotal.value.trim());
             tds.forEach((td, tdIndex) => {
                 const inputDocumentNo = td.querySelector('input.input-DocumentNo');
                 const inputPartName = td.querySelector('input.input-PartName');
@@ -5395,7 +5442,72 @@ function Menubar_MoldOtherWKsavesendMailData(action, action2) {
                             wpWT_Auto: parseFloat(inputAuto.value.trim()).toFixed(2) || 0,//double
                             wpEnable_WTMan: inputEnableman.value,//bit
                             wpEnable_WTAuto: inputEnableAuto.value,//bit
-                            wpTotal: parseFloat(inputtotal.value.trim()).toFixed(2) || 0,//double
+                            wpTotal: inputtotal ? (parseFloat(inputtotal.value.trim()).toFixed(2) || 0) : 0,//double
+                            wpIssueDate: "",
+                            wpshipment: "start-try0",
+                        });
+
+
+
+
+                    }
+                }
+
+            });
+
+        });
+
+
+        const tableItemNameM = div.querySelector('table.ItemNameTry0-Ship'); // ดึง table ภายใน
+        const rowsTrM = tableItemNameM.querySelectorAll('tr#trbodyItemNameTry0-Ship');
+        //if (!tableItemName) return; // ถ้าไม่มี table ข้ามไป
+
+        // ✅ เช่นเดียวกับด้านบน: TOTAL อยู่นอก table แล้ว ดึงครั้งเดียวก่อนเข้า loop แถว
+        const totalWrapperM = tableItemNameM.nextElementSibling;
+        const inputtotalM = (totalWrapperM && totalWrapperM.classList.contains('row-total-wrapper'))
+            ? totalWrapperM.querySelector('input.input-total')
+            : null;
+
+        if (inputtotalM) {
+            console.log("✅ เจอ input inputtotal: " + inputtotalM.value.trim());
+        } else {
+            console.warn("⚠️ ไม่พบ input-total สำหรับ table.ItemNameTry0-Ship");
+        }
+
+        rowsTrM.forEach((tr, rowIndex) => {
+            //console.log("22222");
+            //    // ดึงทุก td ของ tr นี้
+            const tds = tr.querySelectorAll('td');
+            tds.forEach((td, tdIndex) => {
+                const inputDocumentNo = td.querySelector('input.input-DocumentNo');
+                const inputPartName = td.querySelector('input.input-PartName');
+                const inputCavityNo = td.querySelector('input.input-CavityNo');
+                const inputTypeCavity = td.querySelector('input.input-TypeCavity');
+                const inputNoProcess = td.querySelector('input.input-NoProcess');
+                const inputGroupName = td.querySelector('input.input-GroupName');
+                const inputProcessName = td.querySelector('input.input-ProcessName');
+                const inputMan = td.querySelector('input.input-man');
+                const inputAuto = td.querySelector('input.input-auto');
+                const inputEnableman = td.querySelector('input.input-Enableman');
+                const inputEnableAuto = td.querySelector('input.input-EnableAuto');
+                if (inputAuto && inputMan) {
+                    if (inputAuto.value.trim() !== "") {
+                        console.log("✅ เจอ input: " + inputAuto.value.trim() + ": " + inputMan.value.trim());
+                        console.log("✅ เจอ input: " + inputEnableman.value + ": " + inputEnableAuto.value);
+                        _ItemWorkingTimePartName.push({
+                            wpDocumentNoSub: inputDocumentNo.value.trim(),
+                            wpRunNo: 0, //int
+                            wpPartName: inputPartName.value.trim(),
+                            wpCavityNo: inputCavityNo.value.trim(),
+                            wpTypeCavity: inputTypeCavity.value.trim(),
+                            wpNoProcess: inputNoProcess.value.trim(), //int
+                            wpGroupName: inputGroupName.value.trim(),
+                            wpProcessName: inputProcessName.value.trim(),
+                            wpWT_Man: parseFloat(inputMan.value.trim()).toFixed(2) || 0,//double
+                            wpWT_Auto: parseFloat(inputAuto.value.trim()).toFixed(2) || 0,//double
+                            wpEnable_WTMan: inputEnableman.value,//bit
+                            wpEnable_WTAuto: inputEnableAuto.value,//bit
+                            wpTotal: inputtotalM ? (parseFloat(inputtotalM.value.trim()).toFixed(2) || 0) : 0,//double
                             wpIssueDate: "",
                             wpshipment: "try0-ship",
                         });
@@ -5412,17 +5524,18 @@ function Menubar_MoldOtherWKsavesendMailData(action, action2) {
 
 
 
+
         const table = div.querySelector('table.ItemSize'); // ดึง table ภายใน
         if (!table) return; // ถ้าไม่มี table ข้ามไป
 
         const itemTypeCavity = table.querySelector('.input-size');
         const itemValuesTypeCavity = itemTypeCavity.value.trim();
         console.log("itemTypeCavity==> " + itemTypeCavity);
-        if (itemValuesTypeCavity == "") {
-            alert(`กรุณาเลือก Type of Cavity`);
-            itemTypeCavity.focus(); // optional: focus ช่องนั้น
-            throw new Error("Type of Cavity.​ is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
-        }
+        //if (itemValuesTypeCavity == "") {
+        //    alert(`กรุณาเลือก Type of Cavity`);
+        //    itemTypeCavity.focus(); // optional: focus ช่องนั้น
+        //    throw new Error("Type of Cavity.​ is required."); // ❌ หยุดการทำงาน (ถ้าใช้ใน loop ใหญ่)
+        //}
 
         _ItemWorkingTimeSizeProduct.push({
             wsDocumentNoSub: table.querySelector('.input-DocumentNo').value.trim(),

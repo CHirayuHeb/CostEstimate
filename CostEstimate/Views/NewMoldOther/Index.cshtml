@@ -131,7 +131,7 @@
 
                                 </div>
                                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Event.</div>
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">QUOTATION STAGE.</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
                                     @*@Html.DropDownListFor(m => m._ViewceMastModifyRequest.mfType, (SelectList)ViewBag.TypeofEvent, "กรุณาเลือก", new { @class = "form-control", id = "i_NewMoldOther_Event", autocomplete = "off", @style = "width:100%;font-size:12px;background-color:yellow;height:80%;" })*@
@@ -174,10 +174,12 @@
                                 <div class="col-25" style=" display: flex;align-items: center; ">
                                     <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px;background-color:yellow" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrMoldMass" id="i_NewOther_MoldMass">
                                 </div>
-                                <div class="col-20 " style=" display: flex;align-items: center;">
-                                    @*<div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Type</div>*@
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">DEVELOPMENT STAGE</div>
                                 </div>
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow;" autocomplete="off" id="i_DevelopmentStage" asp-for="_ViewceMastMoldOtherRequest.mrDevelopmentStage">
+
                                     <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow;display:none" autocomplete="off" id="i_NewOther_Type" asp-for="_ViewceMastMoldOtherRequest.mrType">
 
                                 </div>
@@ -344,7 +346,7 @@
                                                 </td>
                                                 <td>@Html.DisplayFor(m => m._ViewceMastWorkingTimeRequest.wrDocumentNoSub)</td>
                                                 <td>
-                                                    @if (Model._ViewceMastWorkingTimeRequest?.wrStep != 4)
+                                                    @if (Model._ViewceMastWorkingTimeRequest?.wrStep != 3)
                                                     {
                                                         @Html.DisplayFor(m => m._ViewceMastWorkingTimeRequest.wrEmpCodeApprove)
                                                         <span> : </span>
@@ -364,9 +366,9 @@
                                                         { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
                                                         else if (Model._ViewceMastWorkingTimeRequest.wrStep == 2)
                                                         { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                        @*else if (Model._ViewceMastWorkingTimeRequest.wrStep == 3)
+                                                        { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}*@
                                                         else if (Model._ViewceMastWorkingTimeRequest.wrStep == 3)
-                                                        { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                        else if (Model._ViewceMastWorkingTimeRequest.wrStep == 4)
                                                         { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
                                                     }
                                                 </td>
@@ -385,8 +387,8 @@
                                                     }
 
                                                     @*<a href="@Url.Action("Index", "NewMoldOtherWK",new {Docno = Model._ViewceMastWorkingTimeRequest.wrDocumentNo})" target="_blank" style="font-size:15px;text-decoration: none;">
-                                                            <img src="~/images/searchWK.png" alt="icon" class="imgM" />
-                                                        </a>*@
+                                                <img src="~/images/searchWK.png" alt="icon" class="imgM" />
+                                            </a>*@
                                                 </td>
                                             </tr>
                                             <tr>
@@ -396,7 +398,7 @@
                                                 </td>
                                                 <td> @Html.DisplayFor(m => m._ViewceMastMaterialRequest.mrDocumentNoSub)</td>
                                                 <td>
-                                                    @if (Model._ViewceMastMaterialRequest?.mrStep != 4)
+                                                    @if (Model._ViewceMastMaterialRequest?.mrStep != 3)
                                                     {
                                                         @Html.DisplayFor(m => m._ViewceMastMaterialRequest.mrEmpCodeApprove)
                                                         <span>:</span>
@@ -417,9 +419,9 @@
                                                         { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
                                                         else if (Model._ViewceMastMaterialRequest.mrStep == 2)
                                                         { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                        @*else if (Model._ViewceMastMaterialRequest.mrStep == 3)
+                                                        { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}*@
                                                         else if (Model._ViewceMastMaterialRequest.mrStep == 3)
-                                                        { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                        else if (Model._ViewceMastMaterialRequest.mrStep == 4)
                                                         { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
                                                     }
 
@@ -497,7 +499,7 @@
                                                 <td>INFORMATION SPEC MOLD</td>
                                                 <td>@Html.DisplayFor(m => m._ViewceMastInforSpacMoldRequest.irDocumentNoSub)</td>
                                                 <td>
-                                                    @if (Model._ViewceMastInforSpacMoldRequest?.irStep != 4)
+                                                    @if (Model._ViewceMastInforSpacMoldRequest?.irStep !=3)
                                                     {
                                                         @Html.DisplayFor(m => m._ViewceMastInforSpacMoldRequest.irEmpCodeApprove)
 
@@ -519,9 +521,9 @@
                                                         { <img src="~/images/2.png" alt="icon" style="height: 23px; width: 23px;" /> }
                                                         else if (Model._ViewceMastInforSpacMoldRequest.irStep == 2)
                                                         { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
+                                                        @*else if (Model._ViewceMastInforSpacMoldRequest.irStep == 3)
+                                                        { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}*@
                                                         else if (Model._ViewceMastInforSpacMoldRequest.irStep == 3)
-                                                        { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}
-                                                        else if (Model._ViewceMastInforSpacMoldRequest.irStep == 4)
                                                         { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
                                                     }
 
@@ -556,8 +558,12 @@
 
 
                     </div>
+                    @*<div style="margin-top:10px">
+                @await Html.PartialAsync("_PartialOtherAttachFile", Model)
+
+            </div>*@
                     <div style="margin-top:10px">
-                        @await Html.PartialAsync("_PartialOtherAttachFile", Model)
+                        @await Html.PartialAsync("_PartialOtherAttachFileNas", Model)
 
                     </div>
 
@@ -603,7 +609,7 @@
                                         </div>
                                         <div class="panel-collapse collapse show" id="History" style="overflow-y: scroll; max-height: 200px;">
                                             @*<div id="divHistory" class="panel-body">
-                                                </div>*@
+                                    </div>*@
                                             <div class="panel-body">
                                                 <table class="summarys">
                                                     <tr>
@@ -623,20 +629,23 @@
                                                                 <td> <label>@(row1 += 1)</label></td>
                                                                 <td>
 
-                                                                    <a href="@Url.Action("openFile", "New", new { pathFile = @item.fnFilename })" class="btn-image" target="_blank" style="padding-left:5px;text-decoration:auto;">
+                                                                    @*<a href="@Url.Action("openFile", "New", new { pathFile = @item.fnFilename })" class="btn-image" target="_blank" style="padding-left:5px;text-decoration:auto;">
+                                                                @item.fnFilename
+                                                            </a>*@
+                                                                    <a href="@Url.Action("openFileNas", "NewMoldOther", new { pathFile = @item.fnPath })" class="btn-image" target="_blank" style="padding-left:5px;text-decoration:auto;">
                                                                         @item.fnFilename
                                                                     </a>
                                                                 </td>
                                                                 <td style="text-align:center">
 
                                                                     @*@if (@_UserId == @Model._ViewceMastMoldOtherRequest.mrEmpCodeApprove && @Model._ViewceMastMoldOtherRequest.mrStep < 6)
-                                                                        {
-                                                                            <input type="button" style="font-size:14px" value="&#x274C" onclick="DeleteFileUser('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","NewMoldOther")')">
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <input type="button" style="font-size:14px" value="&#x274C" disabled>
-                                                                        }*@
+                                                            {
+                                                                <input type="button" style="font-size:14px" value="&#x274C" onclick="DeleteFileUser('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","NewMoldOther")')">
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="button" style="font-size:14px" value="&#x274C" disabled>
+                                                            }*@
                                                                     <input type="button"
                                                                            style="font-size:14px"
                                                                            value="&#x274C"
@@ -663,13 +672,195 @@
                                 </div>
                                 @*<div class="modal-footer" style="width: 100%;">
 
-                                        <button type="button" class="button btnRed" data-bs-dismiss="modal" style="width:80px;height:30px">Close</button>
+                            <button type="button" class="button btnRed" data-bs-dismiss="modal" style="width:80px;height:30px">Close</button>
 
-                                    </div>*@
+                        </div>*@
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Modal openfile user-->
+                <div class="modal modal fade" id="myModalNewMoldOtherSpec" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body" id="myModalBodyNewMoldOtherSpec">
+                                <div class="modal-header" style="margin-top:1px">
+                                    <h5 class="modal-title">
+                                        <span style="font-weight: bold; font-size: 16px;"><img src="~/images/folders.png" height="35px" width="35px" style="vertical-align:middle" />  เอกสาร​ทั้งหมดของผู้ร้องขอ  @Model._listAttachmentSpec.Count() ไฟล์</span>
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class=" panel-group ir fadeInUp animated wowload animated" style="visibility: visible; animation-name: fadeInUp; margin-bottom: 5px; ">
+                                    <div class="panel panel-default property">
+                                        <div class=" panel-heading panel-heading-custom property" tabindex="0">
+                                            <br>
+                                            <h4 class="panel-title faq-title-range" data-bs-toggle="collapse" data-bs-target="#History" aria-expanded="true" aria-controls="collapseExample">
+                                                <label style="font-size:15px;font-weight:800">
+                                                    ไฟล์แนบ
+                                                </label>
+                                                <label class="lbV">
+                                                </label>
+                                            </h4>
+                                        </div>
+                                        <div class="panel-collapse collapse show" id="History" style="overflow-y: scroll; max-height: 200px;">
+                                            @*<div id="divHistory" class="panel-body">
+                                    </div>*@
+                                            <div class="panel-body">
+                                                <table class="summarys">
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>Name File</th>
+                                                        <th style="width:50px">Delete</th>
+                                                    </tr>
+
+
+                                                    @if (@Model._listAttachmentSpec != null)
+                                                    {
+
+                                                        var row1 = 0;
+                                                        @foreach (var item in @Model._listAttachmentSpec)
+                                                        {
+                                                            <tr>
+                                                                <td> <label>@(row1 += 1)</label></td>
+                                                                <td>
+
+                                                                    @*<a href="@Url.Action("openFile", "New", new { pathFile = @item.fnFilename })" class="btn-image" target="_blank" style="padding-left:5px;text-decoration:auto;">
+                                                                @item.fnFilename
+                                                            </a>*@
+                                                                    <a href="@Url.Action("openFileNas", "NewMoldOther", new { pathFile = @item.fnPath })" class="btn-image" target="_blank" style="padding-left:5px;text-decoration:auto;">
+                                                                        @item.fnFilename
+                                                                    </a>
+                                                                </td>
+                                                                <td style="text-align:center">
+
+
+                                                                    <input type="button"
+                                                                           style="font-size:14px"
+                                                                           value="&#x274C"
+                                                                           onclick="DeleteFileUser('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","NewMoldOther")')"
+                                                                           @( (_UserId == Model._ViewceMastMoldOtherRequest.mrEmpCodeApprove && Model._ViewceMastMoldOtherRequest.mrStep < 8) ? "" : "disabled") />
+
+                                                                </td>
+                                                            </tr>
+
+
+                                                            @*<input type="button" value="&#x274C">*@
+
+                                                        }
+
+                                                    }
+                                                </table>
+                                            </div>
+
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                @*<div class="modal-footer" style="width: 100%;">
+
+                            <button type="button" class="button btnRed" data-bs-dismiss="modal" style="width:80px;height:30px">Close</button>
+
+                        </div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal openfile user-->
+                <div class="modal modal fade" id="myModalNewMoldOtherDrawing" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body" id="myModalBodyNewMoldOtherDrawing">
+                                <div class="modal-header" style="margin-top:1px">
+                                    <h5 class="modal-title">
+                                        <span style="font-weight: bold; font-size: 16px;"><img src="~/images/folders.png" height="35px" width="35px" style="vertical-align:middle" />  เอกสาร​ทั้งหมดของผู้ร้องขอ  @Model._listAttachmentDrawing.Count() ไฟล์</span>
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class=" panel-group ir fadeInUp animated wowload animated" style="visibility: visible; animation-name: fadeInUp; margin-bottom: 5px; ">
+                                    <div class="panel panel-default property">
+                                        <div class=" panel-heading panel-heading-custom property" tabindex="0">
+                                            <br>
+                                            <h4 class="panel-title faq-title-range" data-bs-toggle="collapse" data-bs-target="#History" aria-expanded="true" aria-controls="collapseExample">
+                                                <label style="font-size:15px;font-weight:800">
+                                                    ไฟล์แนบ
+                                                </label>
+                                                <label class="lbV">
+                                                </label>
+                                            </h4>
+                                        </div>
+                                        <div class="panel-collapse collapse show" id="History" style="overflow-y: scroll; max-height: 200px;">
+                                            @*<div id="divHistory" class="panel-body">
+                                    </div>*@
+                                            <div class="panel-body">
+                                                <table class="summarys">
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>Name File</th>
+                                                        <th style="width:50px">Delete</th>
+                                                    </tr>
+
+
+                                                    @if (@Model._listAttachmentDrawing != null)
+                                                    {
+
+                                                        var row1 = 0;
+                                                        @foreach (var item in @Model._listAttachmentDrawing)
+                                                        {
+                                                            <tr>
+                                                                <td> <label>@(row1 += 1)</label></td>
+                                                                <td>
+
+                                                                    @*<a href="@Url.Action("openFile", "New", new { pathFile = @item.fnFilename })" class="btn-image" target="_blank" style="padding-left:5px;text-decoration:auto;">
+                                                                @item.fnFilename
+                                                            </a>*@
+                                                                    <a href="@Url.Action("openFileNas", "NewMoldOther", new { pathFile = @item.fnPath })" class="btn-image" target="_blank" style="padding-left:5px;text-decoration:auto;">
+                                                                        @item.fnFilename
+                                                                    </a>
+                                                                </td>
+                                                                <td style="text-align:center">
+
+
+                                                                    <input type="button"
+                                                                           style="font-size:14px"
+                                                                           value="&#x274C"
+                                                                           onclick="DeleteFileUser('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","NewMoldOther")')"
+                                                                           @( (_UserId == Model._ViewceMastMoldOtherRequest.mrEmpCodeApprove && Model._ViewceMastMoldOtherRequest.mrStep < 8) ? "" : "disabled") />
+
+                                                                </td>
+                                                            </tr>
+
+
+                                                            @*<input type="button" value="&#x274C">*@
+
+                                                        }
+
+                                                    }
+                                                </table>
+                                            </div>
+
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                @*<div class="modal-footer" style="width: 100%;">
+
+                            <button type="button" class="button btnRed" data-bs-dismiss="modal" style="width:80px;height:30px">Close</button>
+
+                        </div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
 
                 <!-- Modal QUOTATION  -->
                 <div class="modal modal-sxl fade" id="myModalMoldOtherQUOTATION" style="background-color:rgba(79,75,75,0.3);" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

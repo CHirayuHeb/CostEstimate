@@ -878,3 +878,14 @@ col-100 {
     align-items: center;
     justify-content: center;
 }
+
+
+.disabled-row {
+    pointer-events: none;
+}
+
+    .disabled-row input,
+    .disabled-row textarea {
+        pointer-events: auto; /* คืนสิทธิ์ select/copy ให้เฉพาะ input */
+        user-select: text;
+    }

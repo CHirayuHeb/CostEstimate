@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -131,7 +132,7 @@ namespace CostEstimate.Models.Table.MK
         public string mpshipment { get; set; } //start-try0 try0-ship
 
         [NotMapped]
-        public bool mpMoldTHS{ get; set; }
+        public bool mpMoldTHS { get; set; }
 
         [NotMapped]
         public bool mpMoldMaker { get; set; }
@@ -237,7 +238,14 @@ namespace CostEstimate.Models.Table.MK
         public string htTime { get; set; }
         public string htRemark { get; set; }
 
-
+        [NotMapped]
+        public bool htchkWK { get; set; } = false;
+        [NotMapped]
+        public bool htchkMT { get; set; } = false;
+        [NotMapped]
+        public bool htchkTGR { get; set; } = false;
+        [NotMapped]
+        public bool htchkSM { get; set; } = false;
 
     }
 
@@ -694,6 +702,8 @@ namespace CostEstimate.Models.Table.MK
         public int mrFlowNo { get; set; } = 3;
 
         public string mrChartRate { get; set; }
+        public string mrDevelopmentStage { get; set; }
+
 
 
     }
@@ -746,7 +756,7 @@ namespace CostEstimate.Models.Table.MK
         public double wpTotal { get; set; }
         public string wpIssueDate { get; set; }
         public string wpshipment { get; set; }
-        
+
 
         [NotMapped]
         public string wpTypeMold { get; set; }
@@ -754,7 +764,7 @@ namespace CostEstimate.Models.Table.MK
         [NotMapped]
         public bool wpshow { get; set; }
 
-      
+
     }
 
     public class GroupPartName
@@ -794,7 +804,7 @@ namespace CostEstimate.Models.Table.MK
 
         [NotMapped]
         public string wsSizeValues { get; set; }
-      
+
     }
     public class GroupViewItemWorkingTimeSizeProduct
     {
@@ -914,7 +924,7 @@ namespace CostEstimate.Models.Table.MK
     [Table("ceItemInforRequestPartName")]
     public class ViewceItemInforRequestPartName
     {
-        [Key]
+        //[Key]
         public string ipDocumentNoSub { get; set; }
         public int ipRunNo { get; set; }
         public string ipPartName { get; set; }
@@ -945,7 +955,7 @@ namespace CostEstimate.Models.Table.MK
     [Table("ceItemInforSlideSystem")]
     public class ViewceItemInforSlideSystem
     {
-        [Key]
+        //[Key]
         public string isDocumentNoSub { get; set; }
         public int isRunNo { get; set; }
         public string isPartName { get; set; }
@@ -959,7 +969,7 @@ namespace CostEstimate.Models.Table.MK
     [Table("ceItemInforTypeOfCut")]
     public class ViewceItemInforTypeOfCut
     {
-        [Key]
+       // [Key]
         public string icDocumentNoSub { get; set; }
         public int icRunNo { get; set; }
         public string icPartName { get; set; }
@@ -973,7 +983,7 @@ namespace CostEstimate.Models.Table.MK
     [Table("ceItemInforShibo")]
     public class ViewceItemInforShibo
     {
-        [Key]
+        //[Key]
         public string ibDocumentNoSub { get; set; }
         public int ibRunNo { get; set; }
         public string ibPartName { get; set; }
@@ -1157,6 +1167,17 @@ namespace CostEstimate.Models.Table.MK
         public string mtCreateBy { get; set; }
         public string mtUpdateBy { get; set; }
 
+    }
+    public class AttachmentUploadResult
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+    }
+
+    public class AttachmentGroupModel
+    {
+        public string Name { get; set; }           // fileType เช่น "SPEC", "MOLD"
+        public List<IFormFile> Files { get; set; }  // ไฟล์ของ type นั้น
     }
 
 }

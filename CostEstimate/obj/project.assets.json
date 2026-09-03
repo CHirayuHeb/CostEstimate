@@ -3184,6 +3184,18 @@
           "lib/netstandard2.0/SixLabors.Fonts.dll": {}
         }
       },
+      "SMBLibrary/1.5.7.1": {
+        "type": "package",
+        "dependencies": {
+          "System.Buffers": "4.5.1"
+        },
+        "compile": {
+          "lib/netstandard2.0/SMBLibrary.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/SMBLibrary.dll": {}
+        }
+      },
       "System.AppContext/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -8567,6 +8579,23 @@
         "sixlabors.fonts.nuspec"
       ]
     },
+    "SMBLibrary/1.5.7.1": {
+      "sha512": "hcs1myPdnpmbp60rzWofrU9Kgmbmpht4OsrokEwRzxW/S2I47QJsh0s8EV5jIBRY8tp0UnNoJC3jm19wSvTb2A==",
+      "type": "package",
+      "path": "smblibrary/1.5.7.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net20/SMBLibrary.dll",
+        "lib/net20/SMBLibrary.xml",
+        "lib/net40/SMBLibrary.dll",
+        "lib/net40/SMBLibrary.xml",
+        "lib/netstandard2.0/SMBLibrary.dll",
+        "lib/netstandard2.0/SMBLibrary.xml",
+        "smblibrary.1.5.7.1.nupkg.sha512",
+        "smblibrary.nuspec"
+      ]
+    },
     "System.AppContext/4.3.0": {
       "sha512": "fKC+rmaLfeIzUhagxY17Q9siv/sPrjjKcfNg1Ic8IlQkZLipo8ljcaZQu4VtI4Jqbzjc2VTjzGLF6WmsRXAEgA==",
       "type": "package",
@@ -13333,7 +13362,8 @@
       "Microsoft.EntityFrameworkCore >= 2.1.14",
       "Microsoft.NETCore.App >= 2.1.0",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.1.9",
-      "PagedList >= 1.17.0"
+      "PagedList >= 1.17.0",
+      "SMBLibrary >= 1.5.7.1"
     ]
   },
   "packageFolders": {
@@ -13416,6 +13446,10 @@
           "PagedList": {
             "target": "Package",
             "version": "[1.17.0, )"
+          },
+          "SMBLibrary": {
+            "target": "Package",
+            "version": "[1.5.7.1, )"
           }
         },
         "imports": [

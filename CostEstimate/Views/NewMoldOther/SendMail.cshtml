@@ -58,21 +58,80 @@
 
         <div style="margin:5px">
             <span style=" font-size: 13px;">วันที่ : @ViewBag.vDate</span>
-
-
-
         </div>
 
-        <div class="d-flex justify-content-center" style="width: 100%; text-align: center; padding-top: 5px; padding-bottom: 5px;">
-            <div class="p-1-modify" style="width: 100%; border: 1px grey;   ">
-                <div class="form-check form-check-inline" style="@(Model._ViewceHistoryApproved.htStep == 8 ? "display: none;" : "")">
-                    @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Approve", new { @class = "", id = "StatusApp", onclick = "CheckDis('Approve')", required = "required", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Approve</label><br />
+        @*<div class="d-flex justify-content-center" style="width: 100%; text-align: center; padding-top: 5px; padding-bottom: 5px;">
+                <div class="p-1-modify" style="width: 100%; border: 1px grey;   ">
+                    <div class="form-check form-check-inline" style="@(Model._ViewceHistoryApproved.htStep == 8 ? "display: none;" : "")">
+                        @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Approve", new { @class = "", id = "StatusApp", onclick = "CheckDis('Approve')", required = "required", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Approve</label><br />
+                    </div>
+                    <div class="form-check form-check-inline " style="@(Model._ViewceHistoryApproved.htStep == 0 || (Model._ViewceHistoryApproved.htStep ==8  ) ? "display: none;" : "")">
+                        @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Disapprove", new { @class = "", id = "StatusApp", onclick = "CheckDis('Disapprove')", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Disapprove</label><br />
+                    </div>
                 </div>
-                <div class="form-check form-check-inline " style="@(Model._ViewceHistoryApproved.htStep == 0 || (Model._ViewceHistoryApproved.htStep ==8  ) ? "display: none;" : "")">
-                    @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Disapprove", new { @class = "", id = "StatusApp", onclick = "CheckDis('Disapprove')", @style = "height:20px;width:20px;" }) <label style="font-size: 12px;">Disapprove</label><br />
-                </div>
-            </div>
+            </div>*@
+        <div class="action-group">
+            <!-- Approve -->
+            <label class="action-card approve" for="StatusApp">
+                @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Approve", new { id = "StatusApp", required = "required" })
+                <span class="card-body">
+                    <span class="icon">&#10003;</span> Approve
+                </span>
+            </label>
+
+            <!-- Reject -->
+            <label class="action-card reject" for="StatusRej" style="@(Model._ViewceHistoryApproved.htStep == 0 || (Model._ViewceHistoryApproved.htStep ==8  ) ? "display: none;" : "")">
+                @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Disapprove", new { id = "StatusRej" })
+                <span class="card-body">
+                    <span class="icon">&#10005;</span> Reject
+                </span>
+            </label>
+
+            <!-- Rework -->
+            @*<label class="action-card rework" for="StatusRew">
+                    @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Rework", new { id = "StatusRew" })
+                    <span class="card-body">
+                        <span class="icon">&#8635;</span> Rework
+                    </span>
+                </label>*@
+
+            <!-- Return -->
+            <label class="action-card return" for="StatusRet" style="@(Model._ViewceHistoryApproved.htStep == 4   ? "" : "display: none;")">
+                @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Return", new { id = "StatusRet" })
+                <span class="card-body">
+                    <span class="icon">&#8592;</span> Return
+                </span>
+            </label>
         </div>
+
+        <!-- เมนู checkbox ที่จะโชว์เมื่อเลือก Return -->
+        <div id="returnReasonGroup" class="return-reason-group" style="display:none;justify-content:center; align-items:center;margin-bottom:10px">
+            <label class="reason-card" for="@Html.IdFor(m => m._ViewceHistoryApproved.htchkWK)">
+                <input type="checkbox" asp-for="_ViewceHistoryApproved.htchkWK" />
+                <span class="card-body">
+                    <span class="icon">&#9744;</span> WORKING TIME
+                </span>
+            </label>
+            <label class="reason-card" for="@Html.IdFor(m => m._ViewceHistoryApproved.htchkMT)">
+                <input type="checkbox" asp-for="_ViewceHistoryApproved.htchkMT" />
+                <span class="card-body">
+                    <span class="icon">&#9744;</span> MATERIAL
+                </span>
+            </label>
+            <label class="reason-card" for="@Html.IdFor(m => m._ViewceHistoryApproved.htchkTGR)">
+                <input type="checkbox" asp-for="_ViewceHistoryApproved.htchkTGR" />
+                <span class="card-body">
+                    <span class="icon">&#9744;</span> TOOL & GR
+                </span>
+            </label>
+            <label class="reason-card" for="@Html.IdFor(m => m._ViewceHistoryApproved.htchkSM)">
+                <input type="checkbox" asp-for="_ViewceHistoryApproved.htchkSM" />
+                <span class="card-body">
+                    <span class="icon">&#9744;</span> INFORMATION SPEC MOLD
+                </span>
+            </label>
+        </div>
+
         <div class="input-group ig-property">
             <span class="input-group-text w-25" style="font-size: 13px;">Remark</span>
             @*<input asp-for="htCC" class="form-control" id="searchInputCC" />*@
@@ -120,8 +179,31 @@
 
 
 <script type="text/javascript">
-
-
+    $(document).ready(function () {
+        function toggleReturnReasons() {
+            if ($('#StatusRet').is(':checked')) {
+                $('#returnReasonGroup').css('display', 'flex');   // ⬅️ เปลี่ยนจาก .show()
+            } else {
+                $('#returnReasonGroup').css('display', 'none');   // ⬅️ เปลี่ยนจาก .hide()
+                $('#returnReasonGroup input[type="checkbox"]')
+                    .prop('checked', false)
+                    .each(updateCard);
+            }
+        }
+        function updateCard() {
+            var $checkbox = $(this);
+            var $label = $checkbox.closest('.reason-card');
+            var $icon = $label.find('.icon');
+            var isChecked = $checkbox.is(':checked');
+            $label.toggleClass('is-checked', isChecked);
+            $icon.html(isChecked ? '&#9745;' : '&#9744;'); // ☑ / ☐
+        }
+        // ตั้งสถานะเริ่มต้นตอนโหลดหน้า (เผื่อ model มีค่า true มาจาก DB)
+        $('#returnReasonGroup input[type="checkbox"]').each(updateCard);
+        toggleReturnReasons();
+        $('#StatusApp, #StatusRej, #StatusRet').on('change', toggleReturnReasons);
+        $('#returnReasonGroup').on('change', 'input[type="checkbox"]', updateCard);
+    });
 
 $(function () {
             function split(val) {

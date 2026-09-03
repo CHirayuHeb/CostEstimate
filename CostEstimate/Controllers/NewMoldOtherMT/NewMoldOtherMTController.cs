@@ -37,6 +37,7 @@ using System.Drawing;
 using System.Globalization;
 using MailKit.Security;
 using System.Net.Mail;
+using SMBLibrary;
 
 namespace CostEstimate.Controllers.NewMoldOtherMT
 {
@@ -138,7 +139,7 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
                 var msgr = ex.Message;
             }
 
-         
+
 
             return View(@class);
         }
@@ -206,12 +207,12 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
             var v_emailFrom = _IT.rpEmails.Where(x => x.emEmpcode == _UserId).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
 
             //To
-            string v_empCodeTo = s_step == 3 ? _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNoSub == mpNo).Select(x => x.mrEmpCodeRequest).FirstOrDefault()
+            string v_empCodeTo = s_step == 2 ? _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNoSub == mpNo).Select(x => x.mrEmpCodeRequest).FirstOrDefault()
                : _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "5") != null
                     ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "5").Select(x => x.mfTo).FirstOrDefault()
                     : "";
 
-           // string v_listemailTo;
+            // string v_listemailTo;
 
             v_empCodeTo = v_empCodeTo != null ? v_empCodeTo.Split(",").Count() > 0 ? v_empCodeTo.Split(",")[0] : v_empCodeTo : "";
 
@@ -219,7 +220,7 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
 
 
             var v_nameTo = _IT.rpEmails.Where(x => x.emEmpcode == v_empCodeTo.Trim()).Select(p => p.emName_M365).FirstOrDefault(); //chg to m365
-            string v_empCodeCC = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "5") != null ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "4").Select(x => x.mfCC).FirstOrDefault() : "";
+            string v_empCodeCC = _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "5") != null ? _MK._ViewceMastFlowApprove.Where(x => x.mfStep == s_step && x.mfFlowNo == "5").Select(x => x.mfCC).FirstOrDefault() : "";
 
 
             string[] s_empCodeCC;// = v_empCodeCC.Split(",");
@@ -667,7 +668,7 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
 
             }
         }
-        public string[] savefile(Class @class, List<IFormFile> file, string RunDoc)
+        public string[] savefileOld(Class @class, List<IFormFile> file, string RunDoc)
         {
             string IssueBy = DateTime.Now.ToString("yyyyMMdd HH:mm:ss") + " - " + HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
             string fileName = "";
@@ -761,6 +762,220 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
 
             }
             v_count = v_count;
+            string[] returnVal = { v_status, v_msg };
+            return returnVal;
+        }
+
+
+
+
+        private AttachmentUploadResult UploadAttachmentsToNas(List<IFormFile> file, string RunDoc)
+        {
+            var result = new AttachmentUploadResult();
+
+            if (file == null || !file.Any())
+            {
+                result.Success = false;
+                result.Message = "ไม่พบไฟล์ที่จะอัปโหลด";
+                return result;
+            }
+
+            SMBLibrary.Client.SMB2Client client = new SMBLibrary.Client.SMB2Client();
+
+            try
+            {
+                var config = HttpContext.RequestServices.GetService(typeof(IConfiguration)) as IConfiguration;
+
+                string serverIp = config["NasSettings:ServerIp"] ?? "10.200.128.7";
+                string shareName = config["NasSettings:ShareName"] ?? "Product_Cost_Estimate";
+                string domain = config["NasSettings:Domain"] ?? "TSG";
+                string username = config["NasSettings:Username"] ?? "adminset";
+                string password = config["NasSettings:Password"];
+
+                bool isConnected = client.Connect(IPAddress.Parse(serverIp), SMBTransportType.DirectTCPTransport);
+                if (!isConnected)
+                {
+                    result.Success = false;
+                    result.Message = "ไม่สามารถเชื่อมต่อเน็ตเวิร์กไปยังเครื่อง NAS ได้";
+                    return result;
+                }
+
+                NTStatus logStatus = client.Login(domain, username, password);
+                if (logStatus != NTStatus.STATUS_SUCCESS)
+                {
+                    client.Disconnect();
+                    result.Success = false;
+                    result.Message = $"การยืนยันตัวตนเข้า NAS ล้มเหลว (บัญชี {domain}\\{username} รหัสผ่านไม่ถูกต้อง)";
+                    return result;
+                }
+
+                SMBLibrary.Client.ISMBFileStore fileStore = client.TreeConnect(shareName, out SMBLibrary.NTStatus treeStatus);
+                if (treeStatus != NTStatus.STATUS_SUCCESS)
+                {
+                    client.Disconnect();
+                    result.Success = false;
+                    result.Message = $"ไม่พบ Share Name '{shareName}' บนเครื่อง NAS";
+                    return result;
+                }
+
+                string empCode = User.Claims.FirstOrDefault(s => s.Type == "EmpCode")?.Value ?? "SYSTEM";
+                string baseSharedPath = $@"\\{serverIp}\{shareName}\";
+
+                var listInsert = new List<ViewAttachment>();
+
+                foreach (var formFile in file)
+                {
+                    // ป้องกันไฟล์ null หรือไฟล์ที่ stream ถูกอ่านไปแล้วจากที่อื่นก่อนหน้า
+                    //if (formFile == null || formFile.Length == 0)
+                    //{
+                    //    result.Success = false;
+                    //    result.Message = $"ไฟล์ '{formFile?.FileName}' ไม่มีข้อมูล (Length = 0) — ตรวจสอบว่า stream ถูกอ่านไปแล้วจากจุดอื่นก่อนหน้าหรือไม่";
+                    //    client.Disconnect();
+                    //    return result;
+                    //}
+
+                    string rawFileName = Path.GetFileName(formFile.FileName);
+                    string fileExtension = Path.GetExtension(rawFileName);
+                    string uniqueFileName = Guid.NewGuid().ToString() + fileExtension;
+                    string nasFilePath = uniqueFileName;
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        formFile.CopyTo(memoryStream);
+                        byte[] fileBytes = memoryStream.ToArray();
+
+                        //if (fileBytes.Length == 0)
+                        //{
+                        //    result.Success = false;
+                        //    result.Message = $"อ่านข้อมูลไฟล์ '{rawFileName}' ไม่ได้ (0 bytes หลัง CopyTo)";
+                        //    client.Disconnect();
+                        //    return result;
+                        //}
+
+                        NTStatus createStatus = fileStore.CreateFile(
+                            out object fileHandle,
+                            out FileStatus fileStatus,
+                            nasFilePath,
+                            AccessMask.GENERIC_WRITE,
+                            SMBLibrary.FileAttributes.Normal,
+                            ShareAccess.None,
+                            CreateDisposition.FILE_OVERWRITE_IF,
+                            CreateOptions.FILE_NON_DIRECTORY_FILE,
+                            null
+                        );
+
+                        if (createStatus != NTStatus.STATUS_SUCCESS)
+                        {
+                            client.Disconnect();
+                            result.Success = false;
+                            result.Message = $"บัญชี {domain}\\{username} ไม่มีสิทธิ์เขียนหรือสร้างไฟล์ในพื้นที่นี้ของ NAS (ไฟล์ {rawFileName}, Status: {createStatus})";
+                            return result;
+                        }
+
+                        try
+                        {
+                            int maxWriteSize = (int)(fileStore.MaxWriteSize > 0 ? fileStore.MaxWriteSize : 65536);
+                            int bytesLeft = fileBytes.Length;
+                            long offset = 0;
+
+                            while (bytesLeft > 0)
+                            {
+                                int bytesToWrite = Math.Min(bytesLeft, maxWriteSize);
+                                byte[] buffer = new byte[bytesToWrite];
+                                Array.Copy(fileBytes, offset, buffer, 0, bytesToWrite);
+
+                                NTStatus writeStatus = fileStore.WriteFile(out int bytesWritten, fileHandle, offset, buffer);
+
+                                if (writeStatus != NTStatus.STATUS_SUCCESS)
+                                {
+                                    result.Success = false;
+                                    result.Message = $"เกิดข้อผิดพลาดในการเขียนข้อมูลลงไฟล์ {rawFileName} (Status: {writeStatus})";
+                                    return result;
+                                }
+
+                                offset += bytesWritten;
+                                bytesLeft -= bytesWritten;
+                            }
+                        }
+                        finally
+                        {
+                            if (fileHandle != null)
+                            {
+                                fileStore.CloseFile(fileHandle);
+                            }
+                        }
+                    }
+
+                    string fullPath = Path.Combine(baseSharedPath, uniqueFileName);
+
+                    var entity = new ViewAttachment
+                    {
+                        fnNo = RunDoc,
+                        fnPath = fullPath,
+                        fnFilename = rawFileName,
+                        fnType = fileExtension,
+                        fnIssueBy = empCode + " : " + DateTime.Now.ToString("yyyyMMddHHmmss"),
+                        fnUpdateBy = empCode + " : " + DateTime.Now.ToString("yyyyMMddHHmmss"),
+                        fnProgram = PgName,
+                        fnDescription = rawFileName
+                    };
+
+                    listInsert.Add(entity);
+                }
+
+                _IT.Attachment.AddRange(listInsert);
+                _IT.SaveChanges();
+                client.Disconnect();
+
+                result.Success = true;
+                result.Message = "อัปโหลดสำเร็จ";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                if (client != null)
+                {
+                    try { client.Disconnect(); } catch { }
+                }
+                result.Success = false;
+                result.Message = "เกิดข้อผิดพลาดในการอัปโหลดระบบ NAS: " + ex.Message;
+                return result;
+            }
+        }
+
+        public string[] savefile(Class @class, List<IFormFile> file, string RunDoc)
+        {
+            string IssueBy = DateTime.Now.ToString("yyyyMMdd HH:mm:ss") + " - " + HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+            string fileName = "";
+            string v_error = "";
+            string v_fnType = "";// v_type != "" ? v_type : @class._ViewsvsServiceRequest.srType;
+
+            string v_status = "S";
+            string v_msg = "";
+            int v_count = 0;
+
+            try
+            {
+                if (file.Count > 0)
+                {
+                    var chkImport = UploadAttachmentsToNas(file, RunDoc);
+
+
+                    v_status = chkImport.Success == true ? "S" : "E";
+                    v_msg = chkImport.Success == true ? "Save & Send Mail Already" : chkImport.Message;
+                }
+                
+
+
+            }
+            catch (Exception e)
+            {
+                v_status = "E";
+              
+                v_msg = "Error Save file :" + e.Message;
+
+            }
+
             string[] returnVal = { v_status, v_msg };
             return returnVal;
         }
@@ -964,7 +1179,7 @@ namespace CostEstimate.Controllers.NewMoldOtherMT
 
                 //bodyBuilder.HtmlBody = string.Format(EmailBody);
                 //email.Body = bodyBuilder.ToMessageBody();
-                
+
                 ///////// new send mail
                 var senderEmail = new MailAddress(fromEmailFrom.emEmail_M365, fromEmailFrom.emName_M365);
                 var receiverEmail = new MailAddress(fromEmailTO.emEmail_M365, fromEmailTO.emName_M365);

@@ -181,6 +181,18 @@ namespace CostEstimate.Controllers.New
 
         }
 
+        public FileResult openFileNas(string pathFile)
+        {
+            string locationfile = pathFile;//path + "/" + pathFile;
+            // string locationfile = @"//thsweb//MAINTENANCE_MOLD/denso_requestment.txt";
+            string extension = Path.GetExtension(locationfile);
+            byte[] fileByte = System.IO.File.ReadAllBytes(locationfile);
+            return File(fileByte, "application/octet-stream", locationfile);
+
+        }
+
+
+
 
         public ActionResult SearchMold_Ledger_Number(string term)
         {

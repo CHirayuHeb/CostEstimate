@@ -22,26 +22,20 @@
             </div>
             <div class="col-20" style="text-align:right">
 
-
             </div>
             <div class="col-20" style="text-align:right">
-
                 @*<button type="submit"
-                        formaction='@Url.Action("btnExportExcel", "NewMoldOtherWK")?id=@Model._ViewceMastMoldOtherRequest.mrDocmentNo'
-                        formmethod="post"
-                        class="button"
-                        style="margin-right:5px;font-size:8px;width:130px">
-                    <img src="~/images/excel.png"
-                         style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top:2px;margin-bottom:2px;" />
-                    FROMAT EXPORT
-                </button>*@
+                            formaction='@Url.Action("btnExportExcel", "NewMoldOtherWK")?id=@Model._ViewceMastMoldOtherRequest.mrDocmentNo'
+                            formmethod="post"
+                            class="button"
+                            style="margin-right:5px;font-size:8px;width:130px">
+                        <img src="~/images/excel.png"
+                             style="width:35px;height:26px;padding-right:5px;margin-right:8px;margin-top:2px;margin-bottom:2px;" />
+                        FROMAT EXPORT
+                    </button>*@
             </div>
         </div>
-
     </div>
-
-   
-
 
 
     @for (int k = 0; k < Model._ListGroupPartName.Count(); k++)
@@ -52,14 +46,12 @@
                 </div>
                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Part Name</div>
-
                 </div>
                 <div class="col-25" style=" display: flex;align-items: center; ">
                     <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" value="@Model._ListGroupPartName[k].wpPartName" readonly>
                 </div>
                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Type Mold</div>
-
                 </div>
                 <div class="col-25 " style=" display: flex;align-items: center; ">
                     <input type="text" class="form-control left " style="width:100%;height:80%;font-size:13px;font-weight:600;background-color:lightgray" autocomplete="off" readonly value="@Model._ListGroupPartName[k].wpTypeMold">
@@ -72,14 +64,12 @@
                 </div>
                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Cavity No</div>
-
                 </div>
                 <div class="col-25" style=" display: flex;align-items: center; ">
                     <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" value="@Model._ListGroupPartName[k].wpCavityNo" readonly>
                 </div>
                 <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Type of Cavity</div>
-
                 </div>
                 <div class="col-25 " style=" display: flex;align-items: center; ">
                     <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" readonly value="@Model._ListGroupPartName[k].wpTypeCavity">
@@ -88,14 +78,11 @@
                 </div>
             </div>
 
-
             <div style="text-align:left;margin-top:10px;">
                 <span style="font-weight:600;font-size:12px;">START - Try 0</span>
             </div>
-
             <table class="tbgreen ItemName Start-Try0" style="width:100%;margin-right:10px;" data-index="@k">
                 <tr>
-                  
                     @for (int h = 0; h < @Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName.Count(); h++)
                     {
                         <th colspan="2" rowspan="@(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpEnable_WTAuto == false ? 2 : 1)" style=" @(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpshow == false ? "display:none;" :"")">
@@ -103,9 +90,6 @@
                         </th>
 
                     }
-                    <th rowspan="2">
-                        <span style="display:inline-block; width:100px;">TOTAL</span>
-                    </th>
                 </tr>
                 <tr>
                     @for (int h = 0; h < @Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName.Count(); h++)
@@ -123,7 +107,6 @@
                     @for (int h = 0; h < @Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName.Count(); h++)
                     {
                         <td colspan="2" style=" @(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpshow == false ? "display:none;" :"")">
-
                             <input class="form-control center input-DocumentNo" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpDocumentNoSub" type="text" />
                             <input class="form-control center input-PartName" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpPartName" type="text" />
                             <input class="form-control center input-CavityNo" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartName[h].wpCavityNo" type="number" />
@@ -139,20 +122,20 @@
                         </td>
 
                     }
-                    <td>
-                        <input type="number" class="form-control input-total txt-right" style="width:100px;height:80%;font-size:10px;background-color:lightgray" autocomplete="off" readonly>
-                    </td>
-
                 </tr>
             </table>
-
+            <div class="row-total-wrapper" data-index="@k" style="margin-top:10px; text-align:left;">
+                <span style="display:inline-block; width:50px; font-weight:bold;">TOTAL</span>
+                <input type="number" class="form-control input-total txt-right"
+                       style="width:100px;height:30px;font-size:10px;background-color:lightgray;display:inline-block;"
+                       autocomplete="off" readonly>
+            </div>
 
             <div style="text-align:left;margin-top:10px;@(Model._ListGroupPartName[k].wpTypeMold.ToUpper().Contains("MAKER")?"":"display:none")">
                 <span style="font-weight:600;font-size:12px;">Try 0 - SHIP</span>
             </div>
             <table class="tbgreen ItemNameTry0-Ship" data-index="@k" style="@(Model._ListGroupPartName[k].wpTypeMold.ToUpper().Contains("MAKER")?"":"display:none")">
                 <tr>
-
                     @for (int h = 0; h < @Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartNameSubMaker.Count(); h++)
                     {
                         <th colspan="2" rowspan="@(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartNameSubMaker[h].wpEnable_WTAuto == false ? 2 : 1)" style=" @(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartNameSubMaker[h].wpshow == false ? "display:none;" :"")">
@@ -160,9 +143,6 @@
                         </th>
 
                     }
-                    <th rowspan="2">
-                        <span style="display:inline-block; width:100px;">TOTAL</span>
-                    </th>
                 </tr>
                 <tr>
                     @for (int h = 0; h < @Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartNameSubMaker.Count(); h++)
@@ -177,11 +157,9 @@
                     }
                 </tr>
                 <tr id="trbodyItemNameTry0-Ship">
-
                     @for (int h = 0; h < @Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartNameSubMaker.Count(); h++)
                     {
                         <td colspan="2" style=" @(Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartNameSubMaker[h].wpshow == false ? "display:none;" :"")">
-
                             <input class="form-control center input-DocumentNo" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartNameSubMaker[h].wpDocumentNoSub" type="text" />
                             <input class="form-control center input-PartName" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartNameSubMaker[h].wpPartName" type="text" />
                             <input class="form-control center input-CavityNo" autocomplete="off" style="width:100%;height:80%;font-size:10px;display:none" value="@Model._ListGroupPartName[k]._GroupViewceItemWorkingTimePartNameSubMaker[h].wpCavityNo" type="number" />
@@ -197,13 +175,14 @@
                         </td>
 
                     }
-                    <td>
-                        <input type="number" class="form-control input-total txt-right" style="width:100px;height:80%;font-size:10px;background-color:lightgray" autocomplete="off" readonly>
-                    </td>
-
                 </tr>
             </table>
-
+            <div class="row-total-wrapper" data-index="@k" style="margin-top:10px; text-align:left; @(Model._ListGroupPartName[k].wpTypeMold.ToUpper().Contains("MAKER")?"":"display:none")">
+                <span style="display:inline-block; width:50px; font-weight:bold;">TOTAL</span>
+                <input type="number" class="form-control input-total txt-right"
+                       style="width:100px;height:30px;font-size:10px;background-color:lightgray;display:inline-block;"
+                       autocomplete="off" readonly>
+            </div>
             <br />
             <div style="text-align:left;margin-top:10px">
                 <span style="font-weight:600;font-size:12px">Size Product</span>
@@ -235,58 +214,50 @@
                         @Html.DropDownListFor(m => m._ListGroupPartName[k]._GroupViewItemWorkingTimeSizeProduct[0].wsSize, (SelectList)ViewBag.TypeofSizeProduct, "กรุณาเลือก", new { @class = "form-control input-size", id = "i_NewMoldOtherWK", autocomplete = "off", @style = "width:100px;font-size:12px;background-color:yellow;height:80%;" })
                     </td>
                 </tr>
-
-
-
-
-
             </table>
             <br />
         </div>
     }
-
-
-
-
-
-
-
-
-
 </div>
-
 <script>
     function calcRowTotals() {
-        // หาทุกแถวในตาราง (ยกเว้น header)
-        const rows = document.querySelectorAll(".tbgreen tr");
+        // วนทุก table ที่มี class tbgreen (แต่ละ table = 1 ชุดข้อมูล อาจมี 2 table ต่อ 1 item)
+        const tables = document.querySelectorAll(".tbgreen");
 
-        rows.forEach(row => {
-            const manInputs = row.querySelectorAll(".input-man");
-            const autoInputs = row.querySelectorAll(".input-auto");
-            const totalInput = row.querySelector(".input-total");
-            //const remainInput = row.querySelector(".input-remain");
-
-
-            if (totalInput) {
-                // ฟังก์ชันคำนวณรวมในแถว
-                const updateTotal = () => {
-                    let sum = 0;
-                    [...manInputs, ...autoInputs].forEach(inp => {
-                        let val = parseFloat(inp.value) || 0;
-                        sum += val;
-                    });
-                    totalInput.value = sum.toFixed(2);
-                    // remainInput.value = sum;
-                };
-
-                // ผูก event ให้คำนวณใหม่เมื่อกรอกค่า
-                [...manInputs, ...autoInputs].forEach(input => {
-                    input.addEventListener("input", updateTotal);
-                });
-
-                // คำนวณครั้งแรกตอนโหลดหน้า
-                updateTotal();
+        tables.forEach(table => {
+            // total ของ table นี้จะอยู่ใน div ที่เป็น sibling ถัดไปทันที (row-total-wrapper)
+            const wrapper = table.nextElementSibling;
+            if (!wrapper || !wrapper.classList.contains("row-total-wrapper")) {
+                return; // table นี้ไม่มี total ให้คำนวณ (เช่น ItemSize) ข้ามไป
             }
+
+            const totalInput = wrapper.querySelector(".input-total");
+            if (!totalInput) return;
+
+            const manInputs = table.querySelectorAll(".input-man");
+            const autoInputs = table.querySelectorAll(".input-auto");
+
+            const updateTotal = () => {
+                let sum = 0;
+                [...manInputs, ...autoInputs].forEach(inp => {
+                    let val = parseFloat(inp.value) || 0;
+                    sum += val;
+                });
+                totalInput.value = sum.toFixed(2);
+                console.log("totalInput ===> " + totalInput.value);
+            };
+
+            // ผูก event ให้คำนวณใหม่เมื่อกรอกค่า (กันผูกซ้ำถ้าเรียก calcRowTotals หลายรอบ)
+            [...manInputs, ...autoInputs].forEach(input => {
+                if (input._updateTotalHandler) {
+                    input.removeEventListener("input", input._updateTotalHandler);
+                }
+                input._updateTotalHandler = updateTotal;
+                input.addEventListener("input", updateTotal);
+            });
+
+            // คำนวณครั้งแรกตอนโหลดหน้า
+            updateTotal();
         });
     }
 
@@ -347,3 +318,4 @@
         });
     });
 </script>
+

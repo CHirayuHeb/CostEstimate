@@ -30,6 +30,7 @@ using MailKit.Net.Smtp;
 using System.Globalization;
 using MailKit.Security;
 using System.Net.Mail;
+using SMBLibrary;
 
 namespace CostEstimate.Controllers.NewMoldOther
 {
@@ -63,6 +64,9 @@ namespace CostEstimate.Controllers.NewMoldOther
             @class._ViewOperaterCP = new ViewOperaterCP();
 
             @class._listAttachment = new List<ViewAttachment>();
+            @class._listAttachmentDrawing = new List<ViewAttachment>();
+            @class._listAttachmentSpec = new List<ViewAttachment>();
+
             List<string> _listRequestBy = _MK._ViewceMastType.Where(x => x.mtType.Contains("RequestBy") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
             SelectList _TypeofRequestBy = new SelectList(_listRequestBy);
             ViewBag.TypeofRequestBy = _TypeofRequestBy;
@@ -110,7 +114,7 @@ namespace CostEstimate.Controllers.NewMoldOther
             SelectList _TypeModelName = new SelectList(_listModelName);
             ViewBag.TypeModelName = _TypeModelName;
 
-            List<string> _listFunction = _MK._ViewceMaster_Type.Where(x => x.mtDes.Contains("Function") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtItem).Select(x => x.mtItem).ToList();
+            List<string> _listFunction = _MK._ViewceMastType.Where(x => x.mtType.Contains("Function") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
             SelectList _TypeFunction = new SelectList(_listFunction);
             ViewBag.TypeFunction = _TypeFunction;
 
@@ -148,6 +152,10 @@ namespace CostEstimate.Controllers.NewMoldOther
                 @class._ViewceMastToolGRRequest = _MK._ViewceMastToolGRRequest.Where(x => x.trDocumentNo == id).FirstOrDefault();
                 @class._ViewceMastInforSpacMoldRequest = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == id).FirstOrDefault();
                 @class._listAttachment = _IT.Attachment.Where(x => x.fnNo == id).ToList();
+
+
+                @class._listAttachmentDrawing = _IT.Attachment.Where(x => x.fnNo == id && x.fnType.ToLower().Contains("drawing")).ToList();
+                @class._listAttachmentSpec = _IT.Attachment.Where(x => x.fnNo == id && x.fnType.ToLower().Contains("spec")).ToList();
 
             }
 
@@ -215,7 +223,7 @@ namespace CostEstimate.Controllers.NewMoldOther
             int vstepMT = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == id).Select(x => x.mrStep).FirstOrDefault();
             int vstepTGR = _MK._ViewceMastToolGRRequest.Where(x => x.trDocumentNo == id).Select(x => x.trStep).FirstOrDefault();
             int vstepSP = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == id).Select(x => x.irStep).FirstOrDefault();
-            if (vstepWK == 4 && vstepMT == 4 && vstepTGR == 4 && vstepSP == 4)
+            if (vstepWK == 3 && vstepMT == 3 && vstepTGR == 4 && vstepSP == 3)
             {
                 var _ceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == id).FirstOrDefault();
                 _ceMastMoldOtherRequest.mrStep = 3;
@@ -1004,7 +1012,8 @@ namespace CostEstimate.Controllers.NewMoldOther
         }
 
         [HttpPost]
-        public JsonResult chkSaveData(Class @class, List<IFormFile> files, string _ceItemPartName)
+        // public JsonResult chkSaveData(Class @class, List<IFormFile> files, string _ceItemPartName)
+        public JsonResult chkSaveData(Class @class, List<IFormFile> files, List<string> fileTypes, string _ceItemPartName, List<AttachmentGroupModel> attachments)
         {
             string config = "S";
             string msg = "Send Mail & Save File Already";
@@ -1022,6 +1031,29 @@ namespace CostEstimate.Controllers.NewMoldOther
             try
             {
                 chkPermis = chkPermission(@class);
+
+
+
+
+                // 1) บันทึก header ตามปกติ (matDetail, summary, email ฯลฯ)
+                // _service.SaveHeader(...);
+
+                // 2) บันทึกไฟล์แยกตาม type (ใช้ SaveFiles ที่ทำไว้)
+                if (files != null && fileTypes != null && files.Count == fileTypes.Count)
+                {
+                    var grouped = files
+                        .Select((f, i) => new { File = f, Type = fileTypes[i] })
+                        .GroupBy(x => x.Type);
+
+                    //foreach (var group in grouped)
+                    //{
+                    //    SaveFiles(group.Select(x => x.File).ToList(), group.Key, refId);
+                    //}
+                }
+
+
+
+
                 if (chkPermis[0] == "P")
                 {
                     config = chkPermis[0];
@@ -1114,6 +1146,21 @@ namespace CostEstimate.Controllers.NewMoldOther
                             string v_empissue = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == @class._ViewceMastMoldOtherRequest.mrDocmentNo).Select(x => x.mrEmpCodeRequest).First(); // _IT.rpEmails.Where(x=>x.emName_M365.co)
                             @class._ViewceHistoryApproved.htTo = _IT.rpEmails.Where(x => x.emEmpcode == v_empissue).Select(x => x.emName_M365).First();
                         }
+                        else if (@class._ViewceHistoryApproved.htStatus == "Return") //-1 step 
+                        {
+
+                            //3   3   Waiting approve By GL up(Operation Planning Group) 004168
+                            //3   4   Waiting Checked By ST Department    002429
+                            //4-1=3
+                            var v_runDoc = @class._ViewceMastMoldOtherRequest.mrDocmentNo;
+                            i_Step = i_Step - 1;
+                            config = "S";
+                            string v_chkname = _MK._ViewceHistoryApproved.Where(x => x.htDocNo == v_runDoc && x.htStep == 4).Select(x => x.htFrom).FirstOrDefault();
+
+                            string v_empCode = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "3" && x.mfStep == 2).Select(x => x.mfTo).FirstOrDefault();
+                            @class._ViewceHistoryApproved.htTo = v_chkname;//   _IT.rpEmails.Where(x => x.emEmpcode == v_empCode).Select(x => x.emName_M365).First();
+
+                        }
                         else
                         {
                             config = "E";
@@ -1147,6 +1194,8 @@ namespace CostEstimate.Controllers.NewMoldOther
 
 
                     chkSave = Save(@class, i_Step, vRunDoc[0], vRunDoc[1], files, "S");
+                    var chkImport = UploadAttachmentsToNasMultiType(attachments, vRunDoc[1]);
+
                     if (chkSave[0] == "E")
                     {
                         config = chkSave[0];
@@ -1450,6 +1499,9 @@ namespace CostEstimate.Controllers.NewMoldOther
                         _ViewceMastMoldOtherRequest.mrNameApprove = savetype == "D" ? "" : NickNameApprove;
                         _ViewceMastMoldOtherRequest.mrFlowNo = 3;
                         _ViewceMastMoldOtherRequest.mrChartRate = @class._ViewceMastMoldOtherRequest.mrChartRate;
+                        //add 28/08/2026
+                        _ViewceMastMoldOtherRequest.mrChartRate = @class._ViewceMastMoldOtherRequest.mrDevelopmentStage;
+
                         _MK._ViewceMastMoldOtherRequest.AddAsync(_ViewceMastMoldOtherRequest);
 
 
@@ -1460,11 +1512,128 @@ namespace CostEstimate.Controllers.NewMoldOther
                     // status Old
                     else if (status == "Update")
                     {
+                        //case Return
+                        if (@class._ViewceHistoryApproved?.htStatus == "Return")
+                        {
+
+                            //4   0   Waiting Checked By Operation Planning Group 001723,001656,002429,011998,015142,012271
+                            //4   1   Create Document Working Time    001656
+                            //4   2   Waiting Check Document Working Time 001623
+                            //4   3   Waiting Approve Document Working Time ตัด ออก
+                            //4   4   Finished
+                            //4   8   Disapprove
+                            if (@class._ViewceHistoryApproved.htchkWK == true)
+                            {
+                                //get step history 
+                                // CE-O-26-07-004-I    2   Approve WONGSILARTAI PHADONG(วงษ์ศิลาทัย ผดุง) WONGSILARTAI PHADONG(วงษ์ศิลาทัย ผดุง)     2026 / 07 / 31  16:58:46
+                                var v_runDoc = $"{RunDoc}-W";
+                                //var v_fName = _MK?._ViewceHistoryApproved?.Where(x => x.htDocNo == v_runDoc && x.htStep == 2).Select(x => x.htFrom).FirstOrDefault() ?? "";
+                                //var v_empCode = _IT?.rpEmails?.Where(x => x.emEmpcode == v_fName).Select(x => x.emEmpcode).FirstOrDefault() ?? "";
+                                ////update status
+                                var _moldOther = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNoSub == v_runDoc).FirstOrDefault();
+                                _moldOther.wrEmpCodeApprove = _moldOther?.wrEmpCodeRequest;//v_empCode;
+                                _moldOther.wrNameApprove = _moldOther?.wrNameRequest; //_HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == v_empCode).Select(x => x.NICKNAME).FirstOrDefault();
+                                _moldOther.wrStep = 1;
+                                _moldOther.wrStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "4" && x.mfStep == 1).Select(x => x.mfSubject).FirstOrDefault();
+                                _MK.SaveChanges();
+                            }
+                            if (@class._ViewceHistoryApproved.htchkMT == true)
+                            {
+                                var v_runDoc = $"{RunDoc}-M";
+                                var _moldOther = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNoSub == v_runDoc).FirstOrDefault();
+                                _moldOther.mrEmpCodeApprove = _moldOther?.mrEmpCodeRequest;//v_empCode;
+                                _moldOther.mrNameApprove = _moldOther?.mrNameRequest; //_HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == v_empCode).Select(x => x.NICKNAME).FirstOrDefault();
+                                _moldOther.mrStep = 1;
+                                _moldOther.mrStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "5" && x.mfStep == 1).Select(x => x.mfSubject).FirstOrDefault();
+                                _MK.SaveChanges();
+                            }
+                            if (@class._ViewceHistoryApproved.htchkTGR == true)
+                            {
+                                var v_runDoc = $"{RunDoc}-T";
+                                var _moldOther = _MK._ViewceMastToolGRRequest.Where(x => x.trDocumentNoSub == v_runDoc).FirstOrDefault();
+                                _moldOther.trEmpCodeApprove = _moldOther?.trEmpCodeRequest;//v_empCode;
+                                _moldOther.trNameApprove = _moldOther?.trNameRequest; //_HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == v_empCode).Select(x => x.NICKNAME).FirstOrDefault();
+                                _moldOther.trStep = 1;
+                                _moldOther.trStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "6" && x.mfStep == 1).Select(x => x.mfSubject).FirstOrDefault();
+                                _MK.SaveChanges();
+                            }
+                            if (@class._ViewceHistoryApproved.htchkSM == true)
+                            {
+                                //I
+                                var v_runDoc = $"{RunDoc}-I";
+                                var _moldOther = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNoSub == v_runDoc).FirstOrDefault();
+                                _moldOther.irEmpCodeApprove = _moldOther?.irEmpCodeRequest;//v_empCode;
+                                _moldOther.irNameApprove = _moldOther?.irNameRequest; //_HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == v_empCode).Select(x => x.NICKNAME).FirstOrDefault();
+                                _moldOther.irStep = 1;
+                                _moldOther.irStatus = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "7" && x.mfStep == 1).Select(x => x.mfSubject).FirstOrDefault();
+                                _MK.SaveChanges();
+                            }
+                            //if (@class._ViewceHistoryApproved.htchkWK == true)
+                            //{
+                            //    UpdateApproveStatus(
+                            //        $"{RunDoc}-W", "4",
+                            //        doc => _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNoSub == doc).FirstOrDefault(),
+                            //        (e, empCode, name, approveStatus) =>
+                            //        {
+                            //            e.wrEmpCodeRequest = empCode;
+                            //            e.wrNameApprove = name;
+                            //            e.wrStep = 1;
+                            //            e.wrStatus = approveStatus;
+                            //        });
+                            //}
+
+                            //if (@class._ViewceHistoryApproved.htchkMT == true)
+                            //{
+                            //    UpdateApproveStatus(
+                            //        $"{RunDoc}-M", "5",
+                            //        doc => _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNoSub == doc).FirstOrDefault(),
+                            //        (e, empCode, name, approveStatus) =>
+                            //        {
+                            //            e.mrEmpCodeRequest = empCode;
+                            //            e.mrNameApprove = name;
+                            //            e.mrStep = 1;
+                            //            e.mrStatus = approveStatus;
+                            //        });
+                            //}
+
+                            //if (@class._ViewceHistoryApproved.htchkTGR == true)
+                            //{
+                            //    UpdateApproveStatus(
+                            //        $"{RunDoc}-T", "6",
+                            //        doc => _MK._ViewceMastToolGRRequest.Where(x => x.trDocumentNoSub == doc).FirstOrDefault(),
+                            //        (e, empCode, name, approveStatus) =>
+                            //        {
+                            //            e.trEmpCodeRequest = empCode;
+                            //            e.trNameApprove = name;
+                            //            e.trStep = 1;
+                            //            e.trStatus = approveStatus;
+                            //        });
+                            //}
+
+                            //if (@class._ViewceHistoryApproved.htchkSM == true)
+                            //{
+                            //    UpdateApproveStatus(
+                            //        $"{RunDoc}-I", "7",
+                            //        doc => _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNoSub == doc).FirstOrDefault(),
+                            //        (e, empCode, name, approveStatus) =>
+                            //        {
+                            //            e.irEmpCodeRequest = empCode;
+                            //            e.irNameApprove = name;
+                            //            e.irStep = 1;
+                            //            e.irStatus = approveStatus;
+                            //        });
+                            //}
+
+
+
+                        }
 
                         //update chartrate
-                        var _MoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == RunDoc).FirstOrDefault();
-                        _MoldOtherRequest.mrChartRate = @class._ViewceMastMoldOtherRequest.mrChartRate;
-                        _MK.SaveChanges();
+                        // var _MoldOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == RunDoc).FirstOrDefault();
+                        // _MoldOtherRequest.mrChartRate = @class._ViewceMastMoldOtherRequest.mrChartRate;
+                        // //add 28/08/2026
+                        ////_MoldOtherRequest.mrChartRate = @class._ViewceMastMoldOtherRequest.mrDevelopmentStage;
+                        // _MK.SaveChanges();
 
                         //update 
                         int chkstep = @class._ViewceMastMoldOtherRequest.mrStep;
@@ -1496,23 +1665,6 @@ namespace CostEstimate.Controllers.NewMoldOther
                                 }
 
                             }
-
-                            //for (int i = 0; i < @class._ListViewceItemPartName.Count; i++)
-                            //{
-                            //    var _vitemItemPartName = _MK._ViewceItemPartName.Where(p => p.ipDocumentNo == RunDoc && p.ipRunNo == @class._ListViewceItemPartName[i].ipRunNo).FirstOrDefault();
-                            //    if (_vitemItemPartName != null)
-                            //    {
-                            //        _vitemItemPartName.ipPartName = @class._ListViewceItemPartName[i].ipPartName;
-                            //        _vitemItemPartName.ipCavityNo = @class._ListViewceItemPartName[i].ipCavityNo;
-                            //        _vitemItemPartName.ipTypeCavity = @class._ListViewceItemPartName[i].ipTypeCavity;
-                            //        _vitemItemPartName.ipRateReport = @class._ListViewceItemPartName[i].ipRateReport;
-                            //        _MK._ViewceItemPartName.UpdateRange(_vitemItemPartName);
-                            //        _MK.SaveChanges();
-                            //    }
-
-
-
-                            //}
 
                         }
 
@@ -1593,8 +1745,8 @@ namespace CostEstimate.Controllers.NewMoldOther
                                         _ViewceMastWorkingTimeRequest.wrIssueDate = IssueBy;
                                         _ViewceMastWorkingTimeRequest.wrStep = 1;//vstep;// 1;
                                         _ViewceMastWorkingTimeRequest.wrStatus = _smsubStatus;
-                                        _ViewceMastWorkingTimeRequest.wrEmpCodeRequest = empSubIssue;
-                                        _ViewceMastWorkingTimeRequest.wrNameRequest = NickNameSubIssue;
+                                        _ViewceMastWorkingTimeRequest.wrEmpCodeRequest = empSubApprove;//empSubIssue;
+                                        _ViewceMastWorkingTimeRequest.wrNameRequest = NickNameSubApprove;//NickNameSubIssue;
                                         _ViewceMastWorkingTimeRequest.wrEmpCodeApprove = empSubApprove;
                                         _ViewceMastWorkingTimeRequest.wrNameApprove = NickNameSubApprove;
                                         _ViewceMastWorkingTimeRequest.wrFlowNo = i + 4;
@@ -1625,8 +1777,8 @@ namespace CostEstimate.Controllers.NewMoldOther
                                         _ViewceMastMaterialRequest.mrIssueDate = IssueBy;
                                         _ViewceMastMaterialRequest.mrStep = 1;//vstep;// 1;
                                         _ViewceMastMaterialRequest.mrStatus = _smsubStatus;
-                                        _ViewceMastMaterialRequest.mrEmpCodeRequest = empSubIssue;
-                                        _ViewceMastMaterialRequest.mrNameRequest = NickNameSubIssue;
+                                        _ViewceMastMaterialRequest.mrEmpCodeRequest = empSubApprove;//empSubIssue;
+                                        _ViewceMastMaterialRequest.mrNameRequest = NickNameSubApprove;//NickNameSubIssue;
                                         _ViewceMastMaterialRequest.mrEmpCodeApprove = empSubApprove;
                                         _ViewceMastMaterialRequest.mrNameApprove = NickNameSubApprove;
                                         _ViewceMastMaterialRequest.mrFlowNo = i + 4;
@@ -1660,8 +1812,8 @@ namespace CostEstimate.Controllers.NewMoldOther
                                         _ViewceMastToolGRRequest.trIssueDate = IssueBy;
                                         _ViewceMastToolGRRequest.trStep = 1;//vstep;//1;
                                         _ViewceMastToolGRRequest.trStatus = _smsubStatus;
-                                        _ViewceMastToolGRRequest.trEmpCodeRequest = empSubIssue;
-                                        _ViewceMastToolGRRequest.trNameRequest = NickNameSubIssue;
+                                        _ViewceMastToolGRRequest.trEmpCodeRequest = empSubApprove;//empSubIssue;
+                                        _ViewceMastToolGRRequest.trNameRequest = NickNameSubApprove;// NickNameSubIssue;
                                         _ViewceMastToolGRRequest.trEmpCodeApprove = empSubApprove;
                                         _ViewceMastToolGRRequest.trNameApprove = NickNameSubApprove;
                                         _ViewceMastToolGRRequest.trFlowNo = i + 4;
@@ -1692,8 +1844,8 @@ namespace CostEstimate.Controllers.NewMoldOther
                                         _ViewceMastInforSpacMoldRequest.irIssueDate = IssueBy;
                                         _ViewceMastInforSpacMoldRequest.irStep = 1;//vstep;// 1;
                                         _ViewceMastInforSpacMoldRequest.irStatus = _smsubStatus;
-                                        _ViewceMastInforSpacMoldRequest.irEmpCodeRequest = empSubIssue;
-                                        _ViewceMastInforSpacMoldRequest.irNameRequest = NickNameSubIssue;
+                                        _ViewceMastInforSpacMoldRequest.irEmpCodeRequest = empSubApprove;//empSubIssue;
+                                        _ViewceMastInforSpacMoldRequest.irNameRequest = NickNameSubApprove;// NickNameSubIssue;
                                         _ViewceMastInforSpacMoldRequest.irEmpCodeApprove = empSubApprove;
                                         _ViewceMastInforSpacMoldRequest.irNameApprove = NickNameSubApprove;
                                         _ViewceMastInforSpacMoldRequest.irFlowNo = i + 4;
@@ -1714,14 +1866,6 @@ namespace CostEstimate.Controllers.NewMoldOther
 
                         }
 
-                        //string empMainApprove = @class._ViewceHistoryApproved != null ? _IT.rpEmails.Where(w => w.emName_M365 == @class._ViewceHistoryApproved.htTo).Select(x => x.emEmpcode).First() :
-                        //                      _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == RunDoc).Select(x => x.mrEmpCodeApprove).FirstOrDefault() == null ?
-                        //                       _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == RunDoc).Select(x => x.mrEmpCodeRequest).FirstOrDefault()
-                        //                      : _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == RunDoc).Select(x => x.mrEmpCodeApprove).FirstOrDefault();
-                        //string NickNameMainApprove = _HRMS.AccEMPLOYEE.Where(x => x.EMP_CODE == empMainApprove).Select(x => x.NICKNAME).First();
-
-
-
                         var vOtherRequest = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == RunDoc).FirstOrDefault();
                         //vOtherRequest.mrDocmentNo = RunDoc;
                         vOtherRequest.mrRevision = @class._ViewceMastMoldOtherRequest.mrRevision;
@@ -1736,6 +1880,8 @@ namespace CostEstimate.Controllers.NewMoldOther
                         vOtherRequest.mrIssueDate = vstep == 0 ? "" : @class._ViewceMastMoldOtherRequest.mrIssueDate;
                         vOtherRequest.mrStep = vstep;
                         vOtherRequest.mrStatus = _smStatus;
+                        vOtherRequest.mrDevelopmentStage = @class._ViewceMastMoldOtherRequest.mrDevelopmentStage;
+                        vOtherRequest.mrChartRate = @class._ViewceMastMoldOtherRequest.mrChartRate;
                         //vOtherRequest.mrEmpCodeRequest = empIssue;
                         //vOtherRequest.mrNameRequest = NickNameIssue;
                         vOtherRequest.mrEmpCodeApprove = empApprove;// empMainApprove;
@@ -1789,10 +1935,12 @@ namespace CostEstimate.Controllers.NewMoldOther
                     _MK.SaveChanges();
                     dbContextTransaction.Commit();
 
-                    string[] v_statusFile = savefile(@class, files, RunDoc);
+                    //string[] v_statusFile = savefile(@class, files, RunDoc);
 
-                    v_status = v_statusFile[0];
-                    v_msg = v_statusFile[1];
+                    //v_status = v_statusFile[0];
+                    //v_msg = v_statusFile[1];
+                    v_status = "S";
+                    v_msg = "Success";
                 }
                 catch (Exception ex)
                 {
@@ -1814,7 +1962,556 @@ namespace CostEstimate.Controllers.NewMoldOther
             string[] returnVal = { v_status, v_msg };
             return returnVal;
         }
-        public string[] savefile(Class @class, List<IFormFile> file, string RunDoc)
+
+
+
+        // ---------- Helper 1: หา EmpCode และชื่อผู้อนุมัติจาก RunDoc ----------
+        private (string empCode, string approveName) GetApproverInfo(string v_runDoc)
+        {
+            var v_fName = _MK?._ViewceHistoryApproved?
+                .Where(x => x.htDocNo == v_runDoc && x.htStep == 2)
+                .Select(x => x.htFrom)
+                .FirstOrDefault() ?? "";
+            var v_empCode = _IT?.rpEmails?
+                .Where(x => x.emName_M365 == v_fName)
+                .Select(x => x.emEmpcode)
+                .FirstOrDefault() ?? "";
+            var v_name = _HRMS.AccEMPLOYEE
+                .Where(x => x.EMP_CODE == v_empCode)
+                .Select(x => x.NICKNAME)
+                .FirstOrDefault() ?? "";   // เพิ่ม ?? "" กันไว้ด้วย
+
+            return (v_empCode, v_name);
+        }
+
+        // ---------- Helper 2: หา Subject ของ Flow/Step ----------
+        private string GetFlowSubject(string flowNo, int step)
+        {
+            return _MK._ViewceMastFlowApprove
+                .Where(x => x.mfFlowNo == flowNo && x.mfStep == step)
+                .Select(x => x.mfSubject)
+                .FirstOrDefault();
+        }
+
+        // ---------- ฟังก์ชันกลาง: อัปเดตสถานะเอกสาร ----------
+        private void UpdateApproveStatus<T>(
+            string v_runDoc,
+            string flowNo,
+            Func<string, T> findEntity,
+            Action<T, string, string, string> applyUpdate // entity, empCode, approveName, status
+        ) where T : class
+        {
+            var (empCode, approveName) = GetApproverInfo(v_runDoc);
+            var entity = findEntity(v_runDoc);
+            if (entity == null) return;
+
+            var status = GetFlowSubject(flowNo, 1);
+            applyUpdate(entity, empCode, approveName, status);
+
+            _MK.SaveChanges();
+        }
+
+
+
+
+
+        private AttachmentUploadResult UploadAttachmentsToNasMultiType(List<AttachmentGroupModel> attachments, string RunDoc)
+        {
+            var result = new AttachmentUploadResult();
+
+            if (attachments == null || !attachments.Any(a => a.Files != null && a.Files.Any()))
+            {
+                result.Success = false;
+                result.Message = "ไม่พบไฟล์ที่จะอัปโหลด";
+                return result;
+            }
+
+            SMBLibrary.Client.SMB2Client client = new SMBLibrary.Client.SMB2Client();
+
+            try
+            {
+                var config = HttpContext.RequestServices.GetService(typeof(IConfiguration)) as IConfiguration;
+
+                string serverIp = config["NasSettings:ServerIp"] ?? "10.200.128.7";
+                string shareName = config["NasSettings:ShareName"] ?? "Product_Cost_Estimate";
+                string domain = config["NasSettings:Domain"] ?? "TSG";
+                string username = config["NasSettings:Username"] ?? "adminset";
+                string password = config["NasSettings:Password"];
+
+                bool isConnected = client.Connect(IPAddress.Parse(serverIp), SMBTransportType.DirectTCPTransport);
+                if (!isConnected)
+                {
+                    result.Success = false;
+                    result.Message = "ไม่สามารถเชื่อมต่อเน็ตเวิร์กไปยังเครื่อง NAS ได้";
+                    return result;
+                }
+
+                NTStatus logStatus = client.Login(domain, username, password);
+                if (logStatus != NTStatus.STATUS_SUCCESS)
+                {
+                    client.Disconnect();
+                    result.Success = false;
+                    result.Message = $"การยืนยันตัวตนเข้า NAS ล้มเหลว (บัญชี {domain}\\{username} รหัสผ่านไม่ถูกต้อง)";
+                    return result;
+                }
+
+                SMBLibrary.Client.ISMBFileStore fileStore = client.TreeConnect(shareName, out SMBLibrary.NTStatus treeStatus);
+                if (treeStatus != NTStatus.STATUS_SUCCESS)
+                {
+                    client.Disconnect();
+                    result.Success = false;
+                    result.Message = $"ไม่พบ Share Name '{shareName}' บนเครื่อง NAS";
+                    return result;
+                }
+
+                string empCode = User.Claims.FirstOrDefault(s => s.Type == "EmpCode")?.Value ?? "SYSTEM";
+                string baseSharedPath = $@"\\{serverIp}\{shareName}\";
+
+                var listInsert = new List<ViewAttachment>();
+                var skippedFiles = new List<string>();
+
+                // วนตาม group (type) ก่อน แล้วค่อยวนไฟล์ในแต่ละ group
+                foreach (var group in attachments)
+                {
+                    string fileType = group.Name; // "SPEC" / "MOLD" / ...
+
+                    if (group.Files == null || !group.Files.Any())
+                        continue;
+
+                    foreach (var formFile in group.Files)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"[{fileType}] FileName={formFile?.FileName}, Length={formFile?.Length}");
+
+                        //if (formFile == null || formFile.Length == 0)
+                        //{
+                        //    skippedFiles.Add($"{formFile?.FileName ?? "(null)"} (Length=0, Type={fileType})");
+                        //    continue;
+                        //}
+
+                        string rawFileName = Path.GetFileName(formFile.FileName);
+                        string fileExtension = Path.GetExtension(rawFileName);
+                        string uniqueFileName = Guid.NewGuid().ToString() + fileExtension;
+                        string nasFilePath = uniqueFileName;
+
+                        byte[] fileBytes;
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            using (var readStream = formFile.OpenReadStream())
+                            {
+                                if (readStream.CanSeek && readStream.Position != 0)
+                                    readStream.Position = 0;
+
+                                readStream.CopyTo(memoryStream);
+                            }
+                            fileBytes = memoryStream.ToArray();
+                        }
+
+                        System.Diagnostics.Debug.WriteLine($"[{fileType}] After CopyTo: fileBytes.Length={fileBytes.Length}");
+
+                        //if (fileBytes.Length == 0)
+                        //{
+                        //    skippedFiles.Add($"{rawFileName} (อ่าน 0 bytes, Type={fileType})");
+                        //    continue;
+                        //}
+
+                        NTStatus createStatus = fileStore.CreateFile(
+                            out object fileHandle,
+                            out FileStatus fileStatus,
+                            nasFilePath,
+                            AccessMask.GENERIC_WRITE,
+                            SMBLibrary.FileAttributes.Normal,
+                            ShareAccess.None,
+                            CreateDisposition.FILE_OVERWRITE_IF,
+                            CreateOptions.FILE_NON_DIRECTORY_FILE,
+                            null
+                        );
+
+                        if (createStatus != NTStatus.STATUS_SUCCESS)
+                        {
+                            client.Disconnect();
+                            result.Success = false;
+                            result.Message = $"บัญชี {domain}\\{username} ไม่มีสิทธิ์เขียนหรือสร้างไฟล์ในพื้นที่นี้ของ NAS (ไฟล์ {rawFileName}, Status: {createStatus})";
+                            return result;
+                        }
+
+                        try
+                        {
+                            int maxWriteSize = (int)(fileStore.MaxWriteSize > 0 ? fileStore.MaxWriteSize : 65536);
+                            int bytesLeft = fileBytes.Length;
+                            long offset = 0;
+
+                            while (bytesLeft > 0)
+                            {
+                                int bytesToWrite = Math.Min(bytesLeft, maxWriteSize);
+                                byte[] buffer = new byte[bytesToWrite];
+                                Array.Copy(fileBytes, offset, buffer, 0, bytesToWrite);
+
+                                NTStatus writeStatus = fileStore.WriteFile(out int bytesWritten, fileHandle, offset, buffer);
+
+                                if (writeStatus != NTStatus.STATUS_SUCCESS)
+                                {
+                                    result.Success = false;
+                                    result.Message = $"เกิดข้อผิดพลาดในการเขียนข้อมูลลงไฟล์ {rawFileName} (Status: {writeStatus})";
+                                    return result;
+                                }
+
+                                offset += bytesWritten;
+                                bytesLeft -= bytesWritten;
+                            }
+                        }
+                        finally
+                        {
+                            if (fileHandle != null)
+                                fileStore.CloseFile(fileHandle);
+                        }
+
+                        string fullPath = Path.Combine(baseSharedPath, uniqueFileName);
+
+                        listInsert.Add(new ViewAttachment
+                        {
+                            fnNo = RunDoc,
+                            fnPath = fullPath,
+                            fnFilename = rawFileName,
+                            fnType = fileType,
+                            fnIssueBy = empCode + " : " + DateTime.Now.ToString("yyyyMMddHHmmss"),
+                            fnUpdateBy = empCode + " : " + DateTime.Now.ToString("yyyyMMddHHmmss"),
+                            fnProgram = PgName,
+                            fnDescription = ""
+                        });
+                    }
+                }
+
+                if (listInsert.Count == 0)
+                {
+                    client.Disconnect();
+                    result.Success = false;
+                    result.Message = "ไม่มีไฟล์ใดอัปโหลดสำเร็จ: " + string.Join(", ", skippedFiles);
+                    return result;
+                }
+
+                _IT.Attachment.AddRange(listInsert);
+                _IT.SaveChanges();
+                client.Disconnect();
+
+                result.Success = true;
+                result.Message = skippedFiles.Any()
+                    ? $"อัปโหลดสำเร็จ {listInsert.Count} ไฟล์ (ข้าม: {string.Join(", ", skippedFiles)})"
+                    : "อัปโหลดสำเร็จ";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                if (client != null)
+                {
+                    try { client.Disconnect(); } catch { }
+                }
+                result.Success = false;
+                result.Message = "เกิดข้อผิดพลาดในการอัปโหลดระบบ NAS: " + ex.Message;
+                return result;
+            }
+        }
+
+        private AttachmentUploadResult UploadAttachmentsToNas(List<IFormFile> file, string RunDoc)
+        {
+            var result = new AttachmentUploadResult();
+
+            if (file == null || !file.Any())
+            {
+                result.Success = false;
+                result.Message = "ไม่พบไฟล์ที่จะอัปโหลด";
+                return result;
+            }
+
+            SMBLibrary.Client.SMB2Client client = new SMBLibrary.Client.SMB2Client();
+
+            try
+            {
+                var config = HttpContext.RequestServices.GetService(typeof(IConfiguration)) as IConfiguration;
+
+                string serverIp = config["NasSettings:ServerIp"] ?? "10.200.128.7";
+                string shareName = config["NasSettings:ShareName"] ?? "Product_Cost_Estimate";
+                string domain = config["NasSettings:Domain"] ?? "TSG";
+                string username = config["NasSettings:Username"] ?? "adminset";
+                string password = config["NasSettings:Password"];
+
+                bool isConnected = client.Connect(IPAddress.Parse(serverIp), SMBTransportType.DirectTCPTransport);
+                if (!isConnected)
+                {
+                    result.Success = false;
+                    result.Message = "ไม่สามารถเชื่อมต่อเน็ตเวิร์กไปยังเครื่อง NAS ได้";
+                    return result;
+                }
+
+                NTStatus logStatus = client.Login(domain, username, password);
+                if (logStatus != NTStatus.STATUS_SUCCESS)
+                {
+                    client.Disconnect();
+                    result.Success = false;
+                    result.Message = $"การยืนยันตัวตนเข้า NAS ล้มเหลว (บัญชี {domain}\\{username} รหัสผ่านไม่ถูกต้อง)";
+                    return result;
+                }
+
+                SMBLibrary.Client.ISMBFileStore fileStore = client.TreeConnect(shareName, out SMBLibrary.NTStatus treeStatus);
+                if (treeStatus != NTStatus.STATUS_SUCCESS)
+                {
+                    client.Disconnect();
+                    result.Success = false;
+                    result.Message = $"ไม่พบ Share Name '{shareName}' บนเครื่อง NAS";
+                    return result;
+                }
+
+                string empCode = User.Claims.FirstOrDefault(s => s.Type == "EmpCode")?.Value ?? "SYSTEM";
+                string baseSharedPath = $@"\\{serverIp}\{shareName}\";
+
+                var listInsert = new List<ViewAttachment>();
+
+                foreach (var formFile in file)
+                {
+                    // ป้องกันไฟล์ null หรือไฟล์ที่ stream ถูกอ่านไปแล้วจากที่อื่นก่อนหน้า
+                    //if (formFile == null || formFile.Length == 0)
+                    //{
+                    //    result.Success = false;
+                    //    result.Message = $"ไฟล์ '{formFile?.FileName}' ไม่มีข้อมูล (Length = 0) — ตรวจสอบว่า stream ถูกอ่านไปแล้วจากจุดอื่นก่อนหน้าหรือไม่";
+                    //    client.Disconnect();
+                    //    return result;
+                    //}
+
+                    string rawFileName = Path.GetFileName(formFile.FileName);
+                    string fileExtension = Path.GetExtension(rawFileName);
+                    string uniqueFileName = Guid.NewGuid().ToString() + fileExtension;
+                    string nasFilePath = uniqueFileName;
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        formFile.CopyTo(memoryStream);
+                        byte[] fileBytes = memoryStream.ToArray();
+
+                        //if (fileBytes.Length == 0)
+                        //{
+                        //    result.Success = false;
+                        //    result.Message = $"อ่านข้อมูลไฟล์ '{rawFileName}' ไม่ได้ (0 bytes หลัง CopyTo)";
+                        //    client.Disconnect();
+                        //    return result;
+                        //}
+
+                        NTStatus createStatus = fileStore.CreateFile(
+                            out object fileHandle,
+                            out FileStatus fileStatus,
+                            nasFilePath,
+                            AccessMask.GENERIC_WRITE,
+                            SMBLibrary.FileAttributes.Normal,
+                            ShareAccess.None,
+                            CreateDisposition.FILE_OVERWRITE_IF,
+                            CreateOptions.FILE_NON_DIRECTORY_FILE,
+                            null
+                        );
+
+                        if (createStatus != NTStatus.STATUS_SUCCESS)
+                        {
+                            client.Disconnect();
+                            result.Success = false;
+                            result.Message = $"บัญชี {domain}\\{username} ไม่มีสิทธิ์เขียนหรือสร้างไฟล์ในพื้นที่นี้ของ NAS (ไฟล์ {rawFileName}, Status: {createStatus})";
+                            return result;
+                        }
+
+                        try
+                        {
+                            int maxWriteSize = (int)(fileStore.MaxWriteSize > 0 ? fileStore.MaxWriteSize : 65536);
+                            int bytesLeft = fileBytes.Length;
+                            long offset = 0;
+
+                            while (bytesLeft > 0)
+                            {
+                                int bytesToWrite = Math.Min(bytesLeft, maxWriteSize);
+                                byte[] buffer = new byte[bytesToWrite];
+                                Array.Copy(fileBytes, offset, buffer, 0, bytesToWrite);
+
+                                NTStatus writeStatus = fileStore.WriteFile(out int bytesWritten, fileHandle, offset, buffer);
+
+                                if (writeStatus != NTStatus.STATUS_SUCCESS)
+                                {
+                                    result.Success = false;
+                                    result.Message = $"เกิดข้อผิดพลาดในการเขียนข้อมูลลงไฟล์ {rawFileName} (Status: {writeStatus})";
+                                    return result;
+                                }
+
+                                offset += bytesWritten;
+                                bytesLeft -= bytesWritten;
+                            }
+                        }
+                        finally
+                        {
+                            if (fileHandle != null)
+                            {
+                                fileStore.CloseFile(fileHandle);
+                            }
+                        }
+                    }
+
+                    string fullPath = Path.Combine(baseSharedPath, uniqueFileName);
+
+                    var entity = new ViewAttachment
+                    {
+                        fnNo = RunDoc,
+                        fnPath = fullPath,
+                        fnFilename = rawFileName,
+                        fnType = fileExtension,
+                        fnIssueBy = empCode + " : " + DateTime.Now.ToString("yyyyMMddHHmmss"),
+                        fnUpdateBy = empCode + " : " + DateTime.Now.ToString("yyyyMMddHHmmss"),
+                        fnProgram = PgName,
+                        fnDescription = rawFileName
+                    };
+
+                    listInsert.Add(entity);
+                }
+
+                _IT.Attachment.AddRange(listInsert);
+                _IT.SaveChanges();
+                client.Disconnect();
+
+                result.Success = true;
+                result.Message = "อัปโหลดสำเร็จ";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                if (client != null)
+                {
+                    try { client.Disconnect(); } catch { }
+                }
+                result.Success = false;
+                result.Message = "เกิดข้อผิดพลาดในการอัปโหลดระบบ NAS: " + ex.Message;
+                return result;
+            }
+        }
+        //public FileResult openFileNas(string pathFile)
+        //{
+        //    string locationfile = pathFile;//path + "/" + pathFile;
+        //    // string locationfile = @"//thsweb//MAINTENANCE_MOLD/denso_requestment.txt";
+        //    string extension = Path.GetExtension(locationfile);
+        //    byte[] fileByte = System.IO.File.ReadAllBytes(locationfile);
+        //    return File(fileByte, "application/octet-stream", locationfile);
+
+        //}
+
+        public IActionResult openFileNas(string pathFile)
+        {
+            // 1. ตรวจสอบกรณีไม่มีการส่งค่าพารามิเตอร์เข้ามา
+            if (string.IsNullOrWhiteSpace(pathFile))
+            {
+                return BadRequest("ไม่พบเส้นทางไฟล์ที่ต้องการเปิด (File path is empty)");
+            }
+
+            //SMB2Client client = new SMB2Client();
+            SMBLibrary.Client.SMB2Client client = new SMBLibrary.Client.SMB2Client();
+            try
+            {
+                // 2. ดึงค่าคอนฟิกบัญชี NAS จาก appsettings.json
+                var config = HttpContext.RequestServices.GetService(typeof(IConfiguration)) as IConfiguration;
+
+                string serverIp = config["NasSettings:ServerIp"] ?? "10.200.128.7";
+                string shareName = config["NasSettings:ShareName"] ?? "Product_Cost_Estimate";
+                string domain = config["NasSettings:Domain"] ?? "";
+                string username = config["NasSettings:Username"] ?? "product_cost";
+                string password = config["NasSettings:Password"] ?? "Stanley@cost1234";
+
+                // แกะชื่อไฟล์สั้นออกมาจาก Path เต็ม
+                string uniqueFileName = Path.GetFileName(pathFile);
+                string nasFilePath = uniqueFileName;
+
+                // เริ่มต้นเชื่อมต่อเครือข่ายไปยังเครื่อง NAS
+                bool isConnected = client.Connect(IPAddress.Parse(serverIp), SMBTransportType.DirectTCPTransport);
+                if (!isConnected)
+                {
+                    return StatusCode(500, "ไม่สามารถเชื่อมต่อเน็ตเวิร์กไปยังเครื่อง NAS ได้");
+                }
+
+                // ล็อกอินด้วยสิทธิ์ Local User
+                NTStatus logStatus = client.Login(domain, username, password);
+                if (logStatus != NTStatus.STATUS_SUCCESS)
+                {
+                    return StatusCode(500, $"การยืนยันตัวตนเข้า NAS ล้มเหลว (บัญชี {username} รหัสผ่านไม่ถูกต้อง)");
+                }
+
+                // เชื่อมต่อเข้าสู่ Tree โฟลเดอร์หลักที่แชร์ไว้
+                SMBLibrary.Client.ISMBFileStore fileStore = client.TreeConnect(shareName, out NTStatus treeStatus);
+                if (treeStatus != NTStatus.STATUS_SUCCESS)
+                {
+                    client.Disconnect();
+                    return NotFound($"ไม่พบ Share Name '{shareName}' บนเครื่อง NAS");
+                }
+
+                // 3. สั่งเปิดไฟล์เพื่อเตรียมอ่านข้อมูล
+                NTStatus createStatus = fileStore.CreateFile(
+                    out object fileHandle,
+                    out FileStatus fileStatus,
+                    nasFilePath,
+                    AccessMask.GENERIC_READ,
+                    SMBLibrary.FileAttributes.Normal,
+                    ShareAccess.Read,
+                    CreateDisposition.FILE_OPEN,
+                    CreateOptions.FILE_NON_DIRECTORY_FILE,
+                    null
+                );
+
+                if (createStatus != NTStatus.STATUS_SUCCESS)
+                {
+                    client.Disconnect();
+                    return NotFound($"ไม่พบไฟล์ในระบบ หรือไม่มีสิทธิ์เข้าถึงไฟล์ (Status: {createStatus})");
+                }
+
+                // 4. วนลูปอ่านไฟล์ทีละ Chunk เข้า MemoryStream (รองรับไฟล์ขนาดใหญ่ได้ไม่จำกัด)
+                byte[] finalFileBytes;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    long offset = 0;
+                    int chunkSize = 64 * 1024; // ขนาดบัฟเฟอร์ 64 KB ยอดนิยมของ SMB
+
+                    while (true)
+                    {
+                        byte[] chunkBytes;
+                        NTStatus readStatus = fileStore.ReadFile(out chunkBytes, fileHandle, offset, chunkSize);
+
+                        if (readStatus == NTStatus.STATUS_SUCCESS && chunkBytes != null && chunkBytes.Length > 0)
+                        {
+                            ms.Write(chunkBytes, 0, chunkBytes.Length);
+                            offset += chunkBytes.Length;
+                        }
+                        else
+                        {
+                            break; // อ่านเสร็จสิ้น หรือถึงจุดสิ้นสุดของไฟล์ (STATUS_END_OF_FILE)
+                        }
+                    }
+                    finalFileBytes = ms.ToArray();
+                }
+
+                // ปิด Handle และตัด Connection ทันทีหลังอ่านข้อมูลลงเว็บเซิร์ฟเวอร์เสร็จ
+                fileStore.CloseFile(fileHandle);
+                client.Disconnect();
+
+                if (finalFileBytes.Length == 0)
+                {
+                    return StatusCode(500, "ไฟล์ปลายทางไม่มีข้อมูลหรือเกิดข้อผิดพลาดในการดึงข้อมูลไฟล์");
+                }
+
+                // 5 & 6. ส่งไฟล์คืนกลับไปแสดงผลหรือดาวน์โหลดบน Web Browser
+                // ใช้ "application/octet-stream" เพื่อให้เบราว์เซอร์ดาวน์โหลดไฟล์อัตโนมัติทันที 
+                // โดยตัวไฟล์จะคงชื่อเดิมและนามสกุลเดิม (เช่น .dwg, .zip, .xlsx) อย่างถูกต้องแม่นยำ 100%
+                return File(finalFileBytes, "application/octet-stream", uniqueFileName);
+            }
+            catch (Exception ex)
+            {
+                if (client != null)
+                {
+                    try { client.Disconnect(); } catch { }
+                }
+                return StatusCode(500, $"เกิดข้อผิดพลาดที่ไม่คาดคิด: {ex.InnerException?.Message ?? ex.Message}");
+            }
+        }
+
+
+
+        public string[] savefile(Class @class, List<IFormFile> file, string RunDoc, List<AttachmentGroupModel> attachments)
         {
             string IssueBy = DateTime.Now.ToString("yyyyMMdd HH:mm:ss") + " - " + HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
             string fileName = "";
@@ -1826,79 +2523,11 @@ namespace CostEstimate.Controllers.NewMoldOther
             int v_count = 0;
             try
             {
-                if (file is null)
-                {
-                    v_status = "S";
-                    v_msg = "Save & Send Mail Already";
-                }
-                else
-                {
-                    List<ViewAttachment> listInsert = new List<ViewAttachment>();
-                    using (var dbContextTransaction = _IT.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            if (file is null)
-                            {
-                                //vStatus = "File not found";
-                                v_status = "S";
-                                v_msg = "Save & Send Mail Already";
-                            }
-                            else
-                            {
-                                for (int i = 0; i < file.Count; i++)
-                                {
-                                    string IssueDate = DateTime.Now.ToString("yyyyMMddHHmmss");
-                                    fileName = IssueDate + "-" + file[i].FileName;//System.IO.Path.GetExtension(file.FileName).ToLower();
-                                    string filePath = path + fileName;
-                                    var fileLocation = new FileInfo(filePath);
-                                    //filePaths.Add(filePath);
-                                    if (!Directory.Exists(filePath))
-                                    {
-                                        using (var stream = new FileStream(filePath, FileMode.Create))
-                                        {
-                                            file[i].CopyTo(stream);
-                                        }
-                                    }
-                                    ViewAttachment _viewAttachment = new ViewAttachment();
-                                    _viewAttachment.fnNo = RunDoc; // @class._ViewceMastSubMakerRequest.smRevision;//vSno.ToString();
-                                    _viewAttachment.fnPath = filePath;
-                                    _viewAttachment.fnFilename = fileName;
-                                    _viewAttachment.fnIssueBy = IssueBy;
-                                    _viewAttachment.fnUpdateBy = IssueBy;
-                                    _viewAttachment.fnType = v_fnType;
-                                    _viewAttachment.fnProgram = PgName; //Program  name CostEstimate
-                                                                        //_IT.Attachment.AddAsync(_viewAttachment);
-                                                                        //_IT.SaveChanges();
-                                                                        //vStatus = fileName;
-                                    listInsert.Add(_viewAttachment);
-                                }
+                //var chkImportMulti = UploadAttachmentsToNasMultiType(file, fileTypes, RunDoc);
 
-                            }
-                            _IT.Attachment.AddRange(listInsert); // Add หลายรายการ
-                            _IT.SaveChanges(); // Save ทีเดียว
-                            dbContextTransaction.Commit();
-                            v_status = "S";
-                            v_msg = "Save & Send Mail Already";
-                        }
-                        catch (Exception e)
-                        {
-                            v_status = "E";
-                            v_error = e.Message;
-                            v_msg = "Error Save file :" + e.Message;
-                            //dbContextTransaction.Rollback();
-                            try
-                            {
-                                dbContextTransaction.Rollback();
-                            }
-                            catch
-                            {
-                                // ignore ถ้า transaction ปิดไปแล้ว
-                            }
-                        }
-                    }
-
-                }
+                var chkImport = UploadAttachmentsToNas(file, RunDoc);
+                v_status = chkImport.Success == true ? "S" : "E";
+                v_msg = chkImport.Success == true ? "Save & Send Mail Already" : chkImport.Message;
             }
             catch (Exception e)
             {
@@ -2379,7 +3008,7 @@ namespace CostEstimate.Controllers.NewMoldOther
         }
 
         [HttpPost]
-        public JsonResult SaveDraft(Class @class, List<IFormFile> files, string _ceItemPartName)
+        public JsonResult SaveDraft(Class @class, List<IFormFile> files, string _ceItemPartName, List<AttachmentGroupModel> attachments)
         {
             string config = "S";
             string msg = "";
@@ -2432,6 +3061,8 @@ namespace CostEstimate.Controllers.NewMoldOther
                 }
 
                 chkSave = Save(@class, i_Step, vRunDoc[0], vRunDoc[1], files, "D");
+                //var chkImport = UploadAttachmentsToNasMultiType(files, fileTypes, vRunDoc[0]);
+                var chkImport = UploadAttachmentsToNasMultiType(attachments, vRunDoc[1]);
                 if (chkSave[0] == "E")
                 {
                     config = chkSave[0];
