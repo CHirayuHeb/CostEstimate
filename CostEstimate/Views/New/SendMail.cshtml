@@ -57,9 +57,6 @@
 
         <div style="margin:5px">
             <span style=" font-size: 13px;">วันที่ : @ViewBag.vDate</span>
-
-
-
         </div>
 
         @*<div class="d-flex justify-content-center" style="width: 100%; text-align: center; padding-top: 5px; padding-bottom: 5px;">
@@ -82,7 +79,7 @@
             </label>
 
             <!-- Reject -->
-            <label class="action-card reject" for="StatusRej" style="@(ViewBag.step == 0 || (ViewBag.step <8 && ViewBag.step>3 ) ? "display: none;" : "")">
+            <label class="action-card reject" for="StatusRej" style="@(ViewBag.step == 0 || (ViewBag.step <8 && ViewBag.step>4) ? "display: none;" : "")">
                 @Html.RadioButtonFor(m => m._ViewceHistoryApproved.htStatus, "Disapprove", new { id = "StatusRej", onclick = "CheckDis('Disapprove')" })
                 <span class="card-body">
                     <span class="icon">&#10005;</span> Disapprove

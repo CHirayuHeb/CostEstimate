@@ -42,7 +42,8 @@ namespace CostEstimate.Controllers.New
         private MOLD _MOLD;
         private CacheSettingController _Cache;
         private FunctionsController _callFunc;
-        public string path = @"\\thsweb\\CostEstimate\\";
+        //public string path = @"\\thsweb\\CostEstimate\\";
+        public string path = @"\\10.200.128.20\\CostEstimate\\";
         public string PgName = "CostEstimate";
 
         public NewController(LAMP lamp, HRMS hrms, IT it, MK mk, MOLD mold, CacheSettingController cacheController, FunctionsController callfunction)
@@ -60,7 +61,7 @@ namespace CostEstimate.Controllers.New
         //public IActionResult Index(Class @class, string smLotNo, string smOrderNo, string smRevision)
         public IActionResult Index(Class @class, string smDocumentNo, string smRevision)
         {
-            
+
             @class._ViewOperaterCP = new ViewOperaterCP();
             List<ViewmtMaster_Mold_Control> _ViewmtMaster_Mold_Control = _MOLD._ViewmtMaster_Mold_Control.OrderBy(x => x.mcLedger_Number).Distinct().ToList();
             SelectList formMaster_Mold_Control = new SelectList(_ViewmtMaster_Mold_Control.Select(s => s.mcLedger_Number).Distinct());
@@ -869,7 +870,13 @@ namespace CostEstimate.Controllers.New
                             }
                         }
                     }
-                    var varifyUrl = "http://thsweb/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=SubMarker";// + getSrNo[0].ToString();
+                    //var varifyUrl = "http://thsweb/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=SubMarker";// + getSrNo[0].ToString();
+                    //var varifyUrlM = "http://10.200.128.20/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=SubMarker";// + getSrNo[0].ToString();
+
+                    var varifyUrl = $"http://thsweb/MVCPublish/CostEstimate/Login/index?DocumentNo={RunDoc}&DocType=SubMarker";
+
+                    var varifyUrlM = $"http://10.200.128.20/MVCPublish/CostEstimate/Login/index?DocumentNo={RunDoc}&DocType=SubMarker";
+
                     var bodyBuilder = new BodyBuilder();
                     //var image = bodyBuilder.LinkedResources.Add(@"E:\01_My Document\02_Project\_2023\1. PartTransferUnbalance\PartTransferUnbalance\wwwroot\images\btn\OK.png");
                     string vIssue = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
@@ -881,14 +888,21 @@ namespace CostEstimate.Controllers.New
                         $"<B>Lot No : </B> " + @class._ViewceMastSubMakerRequest.smLotNo + "<br>" +
                         $"<B>Revision No : </B> " + vRevision + "<br>" +
                         $"<B>Request By : </B> " + v_EmpCodeRequest + "<br>" +
-                        // $"<B>Request By : </B> " + @class._ViewceMastSubMakerRequest.smEmpCodeRequest + " : " + @class._ViewceMastSubMakerRequest.smNameRequest + "<br>" +
-                        //$"<B>Subject : </B>" + _smStatus + "<br>" +
+
                         $"<B>Status : </B> " + _smStatus + "<br> " +
                         $"<B> หมายเหตุ : </B> " + @class._ViewceHistoryApproved.htRemark + "<br> " +
-                        $"คลิ๊กลิงค์เพื่อเปิดเอกสาร <a href='" + varifyUrl + "'>More Detail" +
-                        //$"<img src = 'http://thsweb/MVCPublish/LR_Service_Request/images/btn/mail1.png' alt = 'HTML tutorial' style = 'width: 42px; height: 42px;'>" +
-                        $"</a>" +
-                        $"</div>";
+
+                        //$"คลิ๊กลิงค์เพื่อเปิดเอกสาร <a href='" + varifyUrl + "'>More Detail" +
+                        //$"</a>" +
+                        $"<p><b>คลิ๊กลิงก์เพื่อเปิดเอกสาร (คอมพิวเตอร์)</b></p>" +
+                        $"<a href='{varifyUrl}'>เปิดเอกสาร (PC)</a>" +
+
+                        $"<br><br>" +
+
+                        $"<p><b>คลิ๊กลิงก์เพื่อเปิดเอกสาร (มือถือ / iPad)</b></p>" +
+                        $"<a href='{varifyUrlM}'>เปิดเอกสาร (Mobile / iPad)</a>" +
+
+                    $"</div>";
 
                     // bodyBuilder.Attachments.Add(@"E:\01_My Document\02_Project\_2023\1. PartTransferUnbalance\PartTransferUnbalance\dev_rfc.log");
 

@@ -1,349 +1,599 @@
 ﻿@model CostEstimate.Models.Common.Class;
+
 @{
-    //string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
     string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
     string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
     string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
     string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
     string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
-
 }
-<link href="~/css/Home/siteHome.css" rel="stylesheet" />
-@*<link href="~/css/New/pageQuotation.css" rel="stylesheet" />*@
-<link href="~/css/New/pageQuotation_moldOther.css" rel="stylesheet" />
 
-<body>
-    @* ใช้ไฟล์ Razor/CSHTML *@
+<link href="~/css/StyleQuatation.css" rel="stylesheet" />
+
+<body class="estimation-page moldother-page">
+
     <div class="a4-page">
-        <div class="row">
-            <div class="col-10" style="align-items:center; justify-content:center;display:flex;">
-                <span style="font-size:12px">MAIL :</span>
+
+        <!-- =========================================================
+             HEADER
+        ========================================================== -->
+
+        <div class="row" style="align-items:flex-start;">
+
+            <div class="col-40 header-box">
+
+                <table style="width:150px;">
+
+                    <tr>
+                        <td style="width:30%;" class="label-cell">
+                            MAIL :
+                        </td>
+
+                        <td class="dept-cell">
+                            SATELLITE
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+
+                        <td class="dept-cell">
+                            ST
+                        </td>
+                    </tr>
+
+                </table>
+
             </div>
 
-            <div class="col-40">
-                <div style="display:flex; width:100%;">
-                    <div style="flex:0 0 40%;height:18px;width:150px; border:0.5px solid black;
-                            display:flex; align-items:center; justify-content:center; ">
-                        <span style="font-size:12px">SATELLITE</span>
-                    </div>
-                </div>
-                <div style="display:flex; width:100%;">
-                    <div style="flex:0 0 40%;height:18px;width:150px; border:0.5px solid black;
-                            display:flex; align-items:center; justify-content:center; ">
-                        <span style="font-size:12px">ST</span>
-                    </div>
-                </div>
+            <div class="col-60"></div>
 
-            </div>
-            <div class="col-50"></div>
-            @*<div class="col-10">
-                    <div class="circle">
-                            <div class="content">1/1</div>
-                        </div>
-                </div>*@
         </div>
+
 
         <br />
 
-        <div class="row">
+
+        <!-- =========================================================
+             TITLE
+        ========================================================== -->
+
+        <div class="row" style="align-items:baseline;">
+
             <div class="col-60">
-                <span style="font-size:25px">
+
+                <span class="doc-title">
                     ESTIMATION
-                    <span style="font-size:20px">
-                        in MANUFACTURING  COST
+                    <span class="sub">
+                        in Manufacturing Cost.
                     </span>
                 </span>
+
             </div>
-            <div class="col-40" style="text-align:right"></div>
 
-        </div>
-        <hr style="border:0.5px double black;margin-top:2px" />
-        <div class="row">
-            <div class="col-60">
+            <div class="col-40 txt-right">
 
-                <span style="font-size:16px">
-                    REVISED @Html.DisplayFor(model => model._ViewceMastMoldOtherRequest.mrRevision) <span>-Ref.NO.  CE</span>@Html.DisplayFor(model => model._ViewceMastMoldOtherRequest.mrDocmentNo)<span>@Html.DisplayFor(model => model._ViewceMastMoldOtherRequest.mrEvent)</span>
+                <span class="issue-date-value">
+                    DATE :
+                    @Html.DisplayFor(model =>
+                        model._ViewceMastMoldOtherRequest.mrIssueDate)
                 </span>
 
+            </div>
 
-            </div>
-            <div class="col-40" style="text-align:right;font-size:16px">
-                DATE :
-                <span style="text-decoration: underline; text-underline-offset:5px;font-size:18px">
-                    @Html.DisplayFor(model => model._ViewceMastMoldOtherRequest.mrIssueDate)
-                </span>
-            </div>
         </div>
 
-        <div class="row" style="margin-top:10px">
+
+        <!-- =========================================================
+             REVISION
+        ========================================================== -->
+
+        <div class="row"
+             style="align-items:flex-start; margin-top:2px;">
+
+            <div class="col-100">
+
+                <span class="rev-tag">
+
+                    REVISED
+                    @Html.DisplayFor(model =>
+                        model._ViewceMastMoldOtherRequest.mrRevision)
+
+                    -Ref.NO. CE
+
+                    @Html.DisplayFor(model =>
+                        model._ViewceMastMoldOtherRequest.mrDocmentNo)
+
+                    @Html.DisplayFor(model =>
+                        model._ViewceMastMoldOtherRequest.mrEvent)
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <hr class="title-divider" />
+
+
+        <!-- =========================================================
+             CUSTOMER / MODEL
+        ========================================================== -->
+
+        <div class="row" style="margin-top:10px;">
+
             <div class="col-30"></div>
-            <div class="col-70" style="text-align:right">
-                <span style="font-size:25px;border: 0px solid black; padding: 5px;text-decoration: underline; text-underline-offset:5px;">
-                    @Html.DisplayFor(model => model._ViewceMastMoldOtherRequest.mrCustomerName)
-                    @Html.DisplayFor(model => model._ViewceMastMoldOtherRequest.mrModelName)
-                    (@Html.DisplayFor(model => model._ViewceMastMoldOtherRequest.mrFunction))
+
+            <div class="col-70 txt-right">
+
+                <span class="customer-line">
+
+                    @Html.DisplayFor(model =>
+                        model._ViewceMastMoldOtherRequest.mrCustomerName)
+
+                    @Html.DisplayFor(model =>
+                        model._ViewceMastMoldOtherRequest.mrModelName)
+
+                    (
+                    @Html.DisplayFor(model =>
+                        model._ViewceMastMoldOtherRequest.mrFunction)
+                    )
+
                 </span>
+
             </div>
+
         </div>
 
-        <div class="row" style="margin-top:10px">
+
+        <!-- =========================================================
+             DOCUMENT NO / TYPE
+        ========================================================== -->
+
+        <div class="row"
+             style="margin-top:10px; align-items:center;">
+
             <div class="col-20">
-                <span style="font-size:16px;padding:0.5px">
-                    @Html.DisplayFor(model => model._ViewceMastMoldOtherRequest.mrDocmentNo)
+
+                <span class="ref-no">
+
+                    @Html.DisplayFor(model =>
+                        model._ViewceMastMoldOtherRequest.mrDocmentNo)
+
                 </span>
+
             </div>
+
             <div class="col-50"></div>
-            <div class="col-30" style="text-align:center;">
-                <span style="font-size:16px">NEW  MOLD</span>
+
+            <div class="col-30"
+                 style="text-align:center;">
+
+                <span class="type-tag">
+                    NEW MOLD
+                </span>
+
             </div>
-            <hr style="border:0.5px solid black;" />
+
         </div>
 
 
+        <hr class="section-rule" />
 
-        <!-- Loop Rows -->
 
+        <!-- =========================================================
+             ITEM TABLE
+        ========================================================== -->
 
         @{
-            int loopCount = Model._ListViewceItemPartName.Count < 5 ? 4 : Model._ListViewceItemPartName.Count;
-            //int loopCount1 = Model._ListViewMoldOtherDatailQuotation is null ? 0 : Model._ListViewMoldOtherDatailQuotation.Count;
-            //int loopCount = 10;
+            int loopCount = Model._ListViewceItemPartName.Count;
         }
 
-        @for (int i = 0; i < loopCount; i++)
-        {
-            if (i == 0)
+        <div class="item-table">
+
+            <!-- ================= HEADER ================= -->
+
+            <div class="item-table-head">
+
+                <div class="col-30 item-cell item-cell-head">
+                    MOLD No. &amp; NAME
+                </div>
+
+                <div class="col-30 item-cell item-cell-head">
+                    CAVITY &amp; AMOUNT BAHT
+                </div>
+
+                <div class="col-40 item-cell item-cell-head">
+                    TYPE, GATE, SLIDE &amp; OTHER SPEC.
+                </div>
+
+            </div>
+
+
+            <!-- ================= ITEMS ================= -->
+
+            @for (int i = 0; i < loopCount; i++)
             {
-                <div class="page-item">
-                    <div style="display:flex; width:100%;">
-                        <div style="flex:0 0 30%;height:30px; display:flex; align-items:center; justify-content:center;padding-left:5px;border:0.5px solid black;border-collapse: collapse;">
-                            <span style="font-size:12px">MOLD No. & NAME</span>
-                        </div>
+                bool hasDetail =
+                    i < Model._ListViewMoldOtherDatailQuotation.Count;
 
-                        <div style="flex:0 0 30%;height:30px; display:flex; align-items:center; justify-content:center;padding-left:5px;border:0.5px solid black;border-collapse: collapse;">
-                            <span style="font-size:12px">CAVITY & AMOUNT BAHT</span>
-                        </div>
+                string estimateCostRaw =
+                    hasDetail
+                    ? Model._ListViewMoldOtherDatailQuotation[i].dEstimateCost
+                    : null;
 
-                        <div style="flex:0 0 40%;height:30px; display:flex; align-items:center; justify-content:center;padding-left:5px;border:0.5px solid black;border-collapse: collapse;">
-                            <span style="font-size:12px">TYPE, GATE, SLIDE & OTHER SPEC.</span>
-                        </div>
+                decimal estimateCost = 0;
+
+                if (!string.IsNullOrWhiteSpace(estimateCostRaw))
+                {
+                    decimal.TryParse(
+                        estimateCostRaw.Replace(",", ""),
+                        out estimateCost
+                    );
+                }
+
+                <div class="item-table-row">
+
+                    <!-- ================= MOLD NAME ================= -->
+
+                    <div class="col-30 item-cell item-cell-mold">
+
+                        @Html.DisplayFor(x =>
+                            x._ListViewceItemPartName[i].ipPartName)
+
                     </div>
+
+
+                    <!-- ================= CAVITY / AMOUNT ================= -->
+
+                    <div class="col-30 item-cell item-cell-cavity">
+
+                        <div class="item-cavity-info">
+
+                            @Html.DisplayFor(x =>
+                                x._ListViewceItemPartName[i].ipCavityNo)
+
+                            @Html.DisplayFor(x =>
+                                x._ListViewceItemPartName[i].ipTypeCavity)
+
+                        </div>
+
+
+                        @if (hasDetail && estimateCost > 0)
+                        {
+                            <div class="item-cost-value">
+
+                                @Html.DisplayFor(x =>
+                                    x._ListViewMoldOtherDatailQuotation[i]
+                                        .dEstimateCost)
+
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="item-cost-empty">
+                                -
+                            </div>
+                        }
+
+                    </div>
+
+
+                    <!-- ================= SPECIFICATION ================= -->
+
+                    <div class="col-40 item-cell item-cell-spec">
+
+                        @if (hasDetail)
+                        {
+                            @Html.DisplayFor(x =>
+                                x._ListViewMoldOtherDatailQuotation[i].dDetail)
+                        }
+
+                    </div>
+
                 </div>
             }
 
-
-            <div class="page-item">
-                <div style="display:flex; width:100%;">
-                    <div style="flex:0 0 30%;height:125px;
-            display:flex; align-items:center; justify-content:flex-start; padding-left:5px;
-            @(i < Model._ListViewceItemPartName.Count ? "border:0.5px solid black;" : "")">
-                        <span style="font-size:20px">
-                            @if (i < Model._ListViewceItemPartName.Count)
-                            {@Html.DisplayFor(x => x._ListViewceItemPartName[i].ipPartName)}
-
-                        </span>
-                    </div>
-
-                    <div style="flex:0 0 30%;height:125px;
-                        text-align:right;padding-right:5px;  @(i < Model._ListViewceItemPartName.Count ? "border:0.5px solid black;border-collapse: collapse;" : "")">
-                        <span style="font-size:12px;padding-right:10px;padding-top:10px">
-                            @if (i < Model._ListViewceItemPartName.Count)
-                            {@Html.DisplayFor(x => x._ListViewceItemPartName[i].ipCavityNo)}
-                        </span>
-                        <span style="font-size:12px">
-                            @if (i < Model._ListViewceItemPartName.Count)
-                            {@Html.DisplayFor(x => x._ListViewceItemPartName[i].ipTypeCavity)
+        </div>
 
 
-                        }
+        <!-- =========================================================
+             MAKING SCHEDULE
+        ========================================================== -->
 
+        <div class="row"
+             style="margin-top:14px;">
 
-                        </span>
-                        @if (i < Model._ListViewceItemPartName.Count)
-                        {
-                            <div style="flex:0 0 40%; height:70px; display:flex; justify-content:flex-end; align-items:flex-end;padding:5px;">
-                                <span style="font-size:30px;display:flex; justify-content:flex-end; align-items:flex-end;padding-right:5px;">
-                                    @*@Html.DisplayFor(x => x._ListViewMoldOtherDatailQuotation[i].dEstimateCost)*@
-                                    @if (i < Model._ListViewMoldOtherDatailQuotation.Count)
-                                    {@Html.DisplayFor(x => x._ListViewMoldOtherDatailQuotation[i].dEstimateCost)}
-                                </span>
-                            </div>
+            <div class="col-100">
 
+                <span class="schedule-heading">
+                    Making schedule
+                </span>
 
-                        }
+                <br />
 
+                <span class="info-value-note">
+                    LEAD TIME
+                </span>
 
-                    </div>
-
-                    <div style="flex:0 0 40%;height:125px;
-                        display:flex; align-items:self-start; justify-content:left;padding-left:5px;  @(i < Model._ListViewceItemPartName.Count ? "border:0.5px solid black;border-collapse: collapse;" : "")">
-                        <span style="font-size:11px; width:100%; height:100%; display:block; word-wrap:break-word; white-space:normal;">
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            @if (i < Model._ListViewMoldOtherDatailQuotation.Count)
-                            {@Html.DisplayFor(x => x._ListViewMoldOtherDatailQuotation[i].dDetail)}
-                        </span>
-
-
-
-                    </div>
-                </div>
             </div>
-        }
-      
-        <div class="row" style="text-align:left;padding-left:5px;">
-            <span style="font-size:14px;padding:0.5px">Making  schedule </span><br />
-            <span style="font-size:12px;padding:0.5px">LEAD  TIME</span>
+
         </div>
 
-        <div class="center" style="padding-left:10px;margin-top:10px">
-            <div class="page-item">
-                <div style="display: flex; width: 100%; box-sizing: border-box;">
 
-                    <div style="flex:0 0 20%;height:25px; display:flex; align-items:center; justify-content:center;padding-left:5px;border:0.5px solid black;border-collapse: collapse; box-sizing: border-box;">
-                        (MON.)
-                    </div>
+        <!-- ================= SCHEDULE TABLE ================= -->
 
-                    <div style="flex:0 0 20%;height:25px; display:flex; align-items:center; justify-content:center;padding-left:5px;border:0.5px solid black;border-collapse: collapse; box-sizing: border-box;">
-                        <span>@Html.DisplayFor(model => model.rMoldGO)</span>
-                    </div>
+        <div class="schedule-table">
 
-                    <div style="flex:0 0 20%;height:25px; display:flex; align-items:center; justify-content:center;padding-left:5px;border:0.5px solid black;border-collapse: collapse; box-sizing: border-box;">
-                        <span>@Html.DisplayFor(model => model.rMoldTry1)</span>
-                    </div>
+            <!-- DATE ROW -->
 
-                    <div style="flex:0 0 20%;height:25px; display:flex; align-items:center; justify-content:center;padding-left:5px;border:0.5px solid black;border-collapse: collapse; box-sizing: border-box;">
-                        <span>@Html.DisplayFor(model => model.rMoldMass1)</span>
-                    </div>
+            <div class="schedule-row">
 
-                    <div style="flex:0 0 20%;height:25px; display:flex; align-items:center; justify-content:center;padding-left:5px;border:0.5px solid black;border-collapse: collapse; box-sizing: border-box;">
-                        <span>@Html.DisplayFor(model => model.rMoldMass)</span>
-                    </div>
+                <div class="schedule-cell">
+                    (MON.)
                 </div>
-            </div>
-            <div class="page-item">
-                <div style="display: flex; width: 100%; box-sizing: border-box;">
-                    <div style="flex: 0 0 20%; height: 40px; display: flex; align-items: center; justify-content: center; padding-left: 5px; border: 0.5px solid black; box-sizing: border-box;">
-                        ITEM
-                    </div>
 
-                    <div style="flex: 0 0 20%; height: 40px; display: flex; align-items: center; justify-content: center; padding-left: 5px; border: 0.5px solid black; box-sizing: border-box;">
-                        <span>
-                            O
-                            <br />
-                            DS
-                        </span>
-                    </div>
-
-                    <div style="flex: 0 0 20%; height: 40px; display: flex; align-items: center; justify-content: center; padding-left: 5px; border: 0.5px solid black; box-sizing: border-box;">
-                        <span>T1</span>
-                    </div>
-
-                    <div style="flex: 0 0 20%; height: 40px; display: flex; align-items: center; justify-content: center; padding-left: 5px; border: 0.5px solid black; box-sizing: border-box;">
-                        <span>SH</span>
-                    </div>
-
-                    <div style="flex: 0 0 20%; height: 40px; display: flex; align-items: center; justify-content: center; padding-left: 5px; border: 0.5px solid black; box-sizing: border-box;">
-                        <span>MP</span>
-                    </div>
+                <div class="schedule-cell">
+                    @Html.DisplayFor(model =>
+                        model.rMoldGO)
                 </div>
+
+                <div class="schedule-cell">
+                    @Html.DisplayFor(model =>
+                        model.rMoldTry1)
+                </div>
+
+                <div class="schedule-cell">
+                    @Html.DisplayFor(model =>
+                        model.rMoldMass1)
+                </div>
+
+                <div class="schedule-cell">
+                    @Html.DisplayFor(model =>
+                        model.rMoldMass)
+                </div>
+
             </div>
+
+
+            <!-- ITEM ROW -->
+
+            <div class="schedule-row">
+
+                <div class="schedule-cell schedule-cell-tall">
+                    ITEM
+                </div>
+
+                <div class="schedule-cell schedule-cell-tall">
+                    O<br />
+                    DS
+                </div>
+
+                <div class="schedule-cell schedule-cell-tall">
+                    T1
+                </div>
+
+                <div class="schedule-cell schedule-cell-tall">
+                    SH
+                </div>
+
+                <div class="schedule-cell schedule-cell-tall">
+                    MP
+                </div>
+
+            </div>
+
         </div>
 
 
-        <div class="center" style="margin-top:5px">
-            <span style="font-size:10px">O : P/O      D : DRAW.      S : START      T1 : TRY-1      T : TRY 2-3,…,      PP : PRE-PRODUCTION      MP : MASS-PRODUCTION      FS : FIN. & SHIP   </span>
+        <!-- ================= SCHEDULE LEGEND ================= -->
+
+        <div class="row center"
+             style="margin-top:5px;">
+
+            <span class="schedule-legend">
+
+                O : P/O&nbsp;&nbsp;&nbsp;&nbsp;
+                D : DRAW.&nbsp;&nbsp;&nbsp;&nbsp;
+                S : START&nbsp;&nbsp;&nbsp;&nbsp;
+                T1 : TRY-1&nbsp;&nbsp;&nbsp;&nbsp;
+                T : TRY 2-3,…,&nbsp;&nbsp;&nbsp;&nbsp;
+                PP : PRE-PRODUCTION&nbsp;&nbsp;&nbsp;&nbsp;
+                MP : MASS-PRODUCTION&nbsp;&nbsp;&nbsp;&nbsp;
+                FS : FIN. &amp; SHIP
+
+            </span>
+
         </div>
 
 
+        <!-- =========================================================
+             SIGN-OFF
+        ========================================================== -->
 
+        <div class="row"
+             style="margin-top:20px;">
 
+            <div class="col-80"></div>
 
-
-
-        <br />
-        <div class="row" style="text-align:right;padding-right:10px">
-            <span style="font-size:15px;padding:0.5px">Yours  faithfully,</span>
-        </div>
-        <br />
-        <div class="row" style="padding-right:10px">
             <div class="col-20">
-                <span style="font-size:12px;padding:0.5px">ISSUED BY:</span>
+
+                <span class="signoff">
+                    Yours faithfully,
+                </span>
+
             </div>
+
+        </div>
+
+
+        <!-- =========================================================
+             SIGNATURE : ISSUED BY
+        ========================================================== -->
+
+        <div class="row sig-block"
+             style="align-items:flex-end;">
+
+            <div class="col-20">
+
+                <span class="sig-role">
+                    ISSUED BY:
+                </span>
+
+            </div>
+
             <div class="col-50">
-                <span style="font-size:12px;padding:0.5px">@Html.DisplayFor(model => model._ViewOperaterCP.IssueBy)</span>
+
+                <span class="sig-name">
+
+                    @Html.DisplayFor(model =>
+                        model._ViewOperaterCP.IssueBy)
+
+                </span>
+
             </div>
-            <div class="col-30 center" style="text-decoration: underline; border-bottom: 1px solid black;nderline;padding-bottom: 1px;">
+
+            <div class="col-30 center sig-line">
+
                 @{
                     var empOP = Model._ViewOperaterCP.empIssueBy;
                 }
 
-                <img src="~/images/@(empOP).png" style="width:100px;height:20px;" onerror="this.style.display='none';" />
+                <img src="~/images/@(empOP).png"
+                     style="width:100px;height:20px;"
+                     onerror="this.style.display='none';" />
 
             </div>
+
         </div>
-        <br />
-        <div class="row" style="padding-right:10px">
+
+
+        <!-- =========================================================
+             SIGNATURE : CHECKED BY TL
+        ========================================================== -->
+
+        <div class="row sig-block"
+             style="align-items:flex-end;">
+
             <div class="col-20">
-                <span style="font-size:12px;padding:0.5px">CHECKED BY:</span>
-            </div>
-            <div class="col-50">
-                <span style="font-size:12px;padding:0.5px">@Html.DisplayFor(model => model._ViewOperaterCP.CheckedByTL)</span>
 
-            </div>
-            <div class="col-30 center" style="text-decoration: underline; border-bottom: 1px solid black;nderline;padding-bottom: 1px;">
+                <span class="sig-role">
+                    CHECKED BY:
+                </span>
 
-                @{
-                    var empTL = Model._ViewOperaterCP.empCheckedByTL;
-                }
-
-                <img src="~/images/@(empTL).png" style="width:100px;height:20px;" onerror="this.style.display='none';" />
-
-            </div>
-        </div>
-        <br />
-        <div class="row" style="padding-right:10px">
-            <div class="col-20">
-                <span style="font-size:12px;padding:0.5px">CHECKED BY:</span>
-            </div>
-            <div class="col-50">
-                <span style="font-size:12px;padding:0.5px">@Html.DisplayFor(model => model._ViewOperaterCP.CheckedByTM)</span>
-
-            </div>
-            <div class="col-30 center" style="text-decoration: underline; border-bottom: 1px solid black;nderline;padding-bottom: 1px;">
-                @*<img src="~/images/@(Model._ViewOperaterCP.empCheckedBy + ".png")" style="width:100px;height:30px;" />*@
-
-                @{
-                    var empTM = Model._ViewOperaterCP.empCheckedByTM;
-                }
-
-                <img src="~/images/@(empTM).png" style="width:100px;height:20px;" onerror="this.style.display='none';" />
-
-
-            </div>
-        </div>
-        <br />
-        <div class="row" style="padding-right:10px">
-            <div class="col-20">
-                <span style="font-size:12px;padding:0.5px">APPROVED BY:</span>
             </div>
 
             <div class="col-50">
-                <span style="font-size:12px;padding:0.5px">@Html.DisplayFor(model => model._ViewOperaterCP.ApproveBy)</span>
-            </div>
-            <div class="col-30 center" style="text-decoration: underline; border-bottom: 1px solid black;nderline;padding-bottom: 1px;">
 
+                <span class="sig-name">
+
+                    @Html.DisplayFor(model =>
+                        model._ViewOperaterCP.CheckedByTL)
+
+                </span>
+
+            </div>
+
+            <div class="col-30 center sig-line">
 
                 @{
-                    var empAP = Model._ViewOperaterCP.empApproveBy;
+                    var empTL =
+                        Model._ViewOperaterCP.empCheckedByTL;
                 }
 
-                <img src="~/images/@(empAP).png" style="width:100px;height:20px;" onerror="this.style.display='none';" />
+                <img src="~/images/@(empTL).png"
+                     style="width:100px;height:20px;"
+                     onerror="this.style.display='none';" />
 
             </div>
+
         </div>
-        <br />
+
+
+        <!-- =========================================================
+             SIGNATURE : CHECKED BY TM
+        ========================================================== -->
+
+        <div class="row sig-block"
+             style="align-items:flex-end;">
+
+            <div class="col-20">
+
+                <span class="sig-role">
+                    CHECKED BY:
+                </span>
+
+            </div>
+
+            <div class="col-50">
+
+                <span class="sig-name">
+
+                    @Html.DisplayFor(model =>
+                        model._ViewOperaterCP.CheckedByTM)
+
+                </span>
+
+            </div>
+
+            <div class="col-30 center sig-line">
+
+                @{
+                    var empTM =
+                        Model._ViewOperaterCP.empCheckedByTM;
+                }
+
+                <img src="~/images/@(empTM).png"
+                     style="width:100px;height:20px;"
+                     onerror="this.style.display='none';" />
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================================
+             SIGNATURE : APPROVED BY
+        ========================================================== -->
+
+        <div class="row sig-block"
+             style="align-items:flex-end;">
+
+            <div class="col-20">
+
+                <span class="sig-role">
+                    APPROVED BY:
+                </span>
+
+            </div>
+
+            <div class="col-50">
+
+                <span class="sig-name">
+
+                    @Html.DisplayFor(model =>
+                        model._ViewOperaterCP.ApproveBy)
+
+                </span>
+
+            </div>
+
+            <div class="col-30 center sig-line">
+
+                @{
+                    var empAP =
+                        Model._ViewOperaterCP.empApproveBy;
+                }
+
+                <img src="~/images/@(empAP).png"
+                     style="width:100px;height:20px;"
+                     onerror="this.style.display='none';" />
+
+            </div>
+
+        </div>
+
     </div>
 
-
 </body>
-

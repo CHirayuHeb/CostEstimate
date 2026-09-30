@@ -593,6 +593,12 @@ namespace CostEstimate.Models.Table.MK
         public string s_LotNoMoldName { get; set; }
     }
 
+    public class ViewMaster
+    {
+        public string v_value { get; set; }
+    }
+
+
     public class GroupedListceDetailSubMakerRequest
     {
 
@@ -703,6 +709,8 @@ namespace CostEstimate.Models.Table.MK
 
         public string mrChartRate { get; set; }
         public string mrDevelopmentStage { get; set; }
+
+        public string mrTargetDate { get; set; }
 
 
 

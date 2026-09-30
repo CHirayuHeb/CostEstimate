@@ -307,18 +307,19 @@
                             </div>
                         </div>
 
-                        <div id="ResultProcess" class="row center">
+                        <div id="ResultProcess" class="row center" style="padding:5px">
                             @await Html.PartialAsync("_PartialNewRequestProcess", Model)
                         </div>
 
-                        <div class="row center">
+                        <div class="row center" style="padding:5px;margin-top:5px">
                             @await Html.PartialAsync("_PartialNewRequestDetail", Model)
                         </div>
-                        <div class="row center">
-                            @await Html.PartialAsync("_PartialNewAttachFile", Model)
-                        </div>
-
-                        <div class="row center">
+                    </fieldset>
+                    <div class="row center" style="padding:5px;margin-top:5px">
+                        @await Html.PartialAsync("_PartialNewAttachFile", Model)
+                    </div>
+                    <fieldset @(isReadOnly ? "disabled" : "")>
+                        <div class="row center" style="padding:5px;margin-top:5px">
                             @await Html.PartialAsync("_PartialNewSummary", Model)
                         </div>
                     </fieldset>
@@ -391,7 +392,7 @@
                                                     <td style="text-align:center">
 
                                                         @*<input type="button" style="font-size:14px" value="&#x274C" disabled>*@
-                                                        @if (@_UserId == @Model._ViewceMastSubMakerRequest.smEmpCodeApprove && @Model._ViewceMastSubMakerRequest.smStep < 7)
+                                                        @if ((@Model._ViewceMastSubMakerRequest.smStep == 0 && @_UserId == @Model._ViewceMastSubMakerRequest.smEmpCodeRequest) || (@_UserId == @Model._ViewceMastSubMakerRequest.smEmpCodeApprove && @Model._ViewceMastSubMakerRequest.smStep < 7))
                                                         {
                                                             <input type="button" style="font-size:14px" value="&#x274C" onclick="DeleteFileUser('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","New")')">
                                                         }
@@ -399,9 +400,6 @@
                                                         {
                                                             <input type="button" style="font-size:14px" value="&#x274C" disabled>
                                                         }
-                                                        @*<input type="button" style="@(@_UserId == @Model._ViewsvsServiceRequest.srRequestBy|| @_UserId == @Model._ViewsvsServiceRequest.srApproveEmpcode ? "font-size:14px" : "pointer-events: none; font-size:14px")" value="&#x274C" onclick="DeleteFileUser('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","RequestForm")')">*@
-
-                                                        @*<input type="button" style="font-size:14px" value="&#x274C" onclick="DeleteFileUser('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","RequestForm")')">*@
                                                     </td>
                                                 </tr>
 
@@ -472,7 +470,7 @@
 
                     </div>
                     <div class="modal-footer" style="width: 100%;">
-                        <button class="btn btn-primary" onclick="printQuotationA4('@Model._ViewceMastSubMakerRequest.smDocumentNo','New?smDocumentNo=','SubMaker')" style="@(Model._ViewceMastSubMakerRequest.smStep ==7 ? "" : "display:none")">🖨 พิมพ์ A4</button>
+                        <button class="btn btn-primary" onclick="printQuotationA4Cost('@Model._ViewceMastSubMakerRequest.smDocumentNo','New?smDocumentNo=','SubMaker')" style="@(Model._ViewceMastSubMakerRequest.smStep ==7 ? "" : "display:none")">🖨 พิมพ์ A4</button>
                     </div>
                 </div>
             </div>

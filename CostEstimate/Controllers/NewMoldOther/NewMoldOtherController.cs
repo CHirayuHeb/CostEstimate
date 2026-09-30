@@ -44,7 +44,8 @@ namespace CostEstimate.Controllers.NewMoldOther
         private MOLD _MOLD;
         private CacheSettingController _Cache;
         private FunctionsController _callFunc;
-        public string path = @"\\thsweb\\CostEstimate\\";
+       // public string path = @"\\thsweb\\CostEstimate\\";
+        public string path = @"\\10.200.128.20\\CostEstimate\\";
         public string PgName = "CostEstimate";
         public NewMoldOtherController(LAMP lamp, HRMS hrms, IT it, MK mk, MOLD mold, CacheSettingController cacheController, FunctionsController callfunction)
         {
@@ -986,7 +987,7 @@ namespace CostEstimate.Controllers.NewMoldOther
         public ActionResult SearchEvent(string term)
         {
 
-            var listEvent = Enumerable.Range(1, 99)
+            var listEvent = Enumerable.Range(0, 99)
                              .Select(i => $"Q{i}")
                              .ToList();
 
@@ -1502,6 +1503,9 @@ namespace CostEstimate.Controllers.NewMoldOther
                         //add 28/08/2026
                         _ViewceMastMoldOtherRequest.mrChartRate = @class._ViewceMastMoldOtherRequest.mrDevelopmentStage;
 
+                        //add 30/09/2026
+                        _ViewceMastMoldOtherRequest.mrTargetDate = @class._ViewceMastMoldOtherRequest.mrTargetDate;
+
                         _MK._ViewceMastMoldOtherRequest.AddAsync(_ViewceMastMoldOtherRequest);
 
 
@@ -1886,6 +1890,10 @@ namespace CostEstimate.Controllers.NewMoldOther
                         //vOtherRequest.mrNameRequest = NickNameIssue;
                         vOtherRequest.mrEmpCodeApprove = empApprove;// empMainApprove;
                         vOtherRequest.mrNameApprove = NickNameApprove;//NickNameMainApprove;
+
+                        //add 30/09/2026
+                        vOtherRequest.mrTargetDate = @class._ViewceMastMoldOtherRequest.mrTargetDate;
+
                         _MK._ViewceMastMoldOtherRequest.Update(vOtherRequest);
                         _MK.SaveChanges();
 
@@ -2621,7 +2629,7 @@ namespace CostEstimate.Controllers.NewMoldOther
                         //}
 
                         // body
-                        var varifyUrl = "http://thsweb/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=MoldOther&subType=" + _listStep2Type1[i].ToString();
+                        var varifyUrl = "//10.200.128.20/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=MoldOther&subType=" + _listStep2Type1[i].ToString();
                         var bodyBuilder = new BodyBuilder();
                         string EmailBody = $"<div>" +
                       $"<B>Cost Estimate : Mold Other : Type => " + _listStep2Type[i].ToString() + " </B> <br>" +
@@ -2742,7 +2750,7 @@ namespace CostEstimate.Controllers.NewMoldOther
                     //        }
                     //    }
                     //}
-                    var varifyUrl = "http://thsweb/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=MoldOther";// + getSrNo[0].ToString();
+                    var varifyUrl = "//10.200.128.20/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=MoldOther";// + getSrNo[0].ToString();
                     var bodyBuilder = new BodyBuilder();
                     //var image = bodyBuilder.LinkedResources.Add(@"E:\01_My Document\02_Project\_2023\1. PartTransferUnbalance\PartTransferUnbalance\wwwroot\images\btn\OK.png");
                     string vIssue = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;

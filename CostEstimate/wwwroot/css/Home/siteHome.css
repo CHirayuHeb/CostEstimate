@@ -889,3 +889,10 @@ col-100 {
         pointer-events: auto; /* คืนสิทธิ์ select/copy ให้เฉพาะ input */
         user-select: text;
     }
+
+.btn-padding{
+    padding:6px 4px ;
+    font-size:14px;
+    width:auto;
+    min-width:30px;
+}

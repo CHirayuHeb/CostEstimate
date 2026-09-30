@@ -325,6 +325,8 @@ namespace CostEstimate.Models.Common
         public AttachmentGroupModel AttachmentGroupModel { get; set; }
         public List<AttachmentGroupModel> _ListAttachmentGroupModel { get; set; }
 
+        public List<ViewMaster> _ListViewMaster { get; set; }
+        
 
     }
     public class UserActivity

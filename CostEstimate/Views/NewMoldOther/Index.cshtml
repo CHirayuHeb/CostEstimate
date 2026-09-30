@@ -1,4 +1,6 @@
-﻿@model CostEstimate.Models.Common.Class;
+﻿@using System.Security.Claims;
+@model CostEstimate.Models.Common.Class;
+@using CostEstimate.Models.Common;
 @{
     ViewData["Title"] = "New Mold Other | ThaiStanley";
     //Layout = "~/Views/Shared/_MenuBar_Mold.cshtml";
@@ -12,6 +14,7 @@
     string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
     string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
     string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+    string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
 
 }
 
@@ -31,7 +34,7 @@
                     </span>
                 </div>
                 <div class="col-40 center" style="text-align:right;">
-                    <button class="button btnBlue" style="margin-right:20px;width:auto; @(Model._ViewceMastMoldOtherRequest.mrStep > 3 ? "" : "display:none")"
+                    <button class="button btnBlue" style="margin-right:20px;width:auto; @(Model._ViewceMastMoldOtherRequest.mrStep > 2 ? "" : "display:none")"
                             onclick="Menubar_PrintMoldOtherQUOTATION('@Url.Action("PrintMoldQUOTATION", "NewMoldOther")','@Model._ViewceMastMoldOtherRequest.mrDocmentNo')">
                         <img src="~/images/printer.png" style="width:33px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
                         REPORT
@@ -112,7 +115,18 @@
                                     <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">Revision.</div>
                                 </div>
                                 <div class="col-25" style=" display: flex;align-items: center; ">
-                                    <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_Rev" readonly asp-for="_ViewceMastMoldOtherRequest.mrRevision">
+                                    @{
+                                        bool isAdmin = string.Equals(_Permission, GlobalVariable.perAdmin, StringComparison.OrdinalIgnoreCase);
+                                    }
+                                    <input type="text"
+                                           class="form-control left"
+                                           style="width:100%; height:80%; font-size:12px; @(!isAdmin ? "background-color:lightgray;" : "background-color:yellow;")"
+                                           autocomplete="off"
+                                           id="i_NewOther_Rev"
+                                           readonly="@(!isAdmin ? "readonly" : null)"
+                                           asp-for="_ViewceMastMoldOtherRequest.mrRevision">
+                                    @*<input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:lightgray" autocomplete="off" id="i_NewOther_Rev" readonly asp-for="_ViewceMastMoldOtherRequest.mrRevision">*@
+
                                 </div>
                                 <div class="col-5 " style="">
                                 </div>
@@ -179,7 +193,6 @@
                                 </div>
                                 <div class="col-25 " style=" display: flex;align-items: center; ">
                                     <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow;" autocomplete="off" id="i_DevelopmentStage" asp-for="_ViewceMastMoldOtherRequest.mrDevelopmentStage">
-
                                     <input type="text" class="form-control left " style="width:100%;height:80%;font-size:12px;background-color:yellow;display:none" autocomplete="off" id="i_NewOther_Type" asp-for="_ViewceMastMoldOtherRequest.mrType">
 
                                 </div>
@@ -187,6 +200,27 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row center">
+                            <div class="row center">
+                                <div class="col-5 " style="">
+                                </div>
+                                <div class="col-20 " style=" display: flex;align-items: center;">
+
+                                </div>
+                                <div class="col-25" style=" display: flex;align-items: center; ">
+
+                                </div>
+                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                    <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">TARGET QUOTATION DATE</div>
+                                </div>
+                                <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    <input type="text" class="input-with-image datepicker  form-control center" style="width:100%;font-size:12px;background-color:yellow" autocomplete="off" asp-for="_ViewceMastMoldOtherRequest.mrTargetDate" id="i_NewOther_TargetDate">
+                                </div>
+                                <div class="col-5 " style="">
+                                </div>
+                            </div>
+                        </div>
+
 
                         <hr style="@(Model._ViewceMastMoldOtherRequest.mrStep > 0 ? "" : "display:none;")" />
                         <div id="divMoldOtherPartName" style="@(Model._ViewceMastMoldOtherRequest.mrStep > 0 ? "" : "display:none;")">
@@ -367,7 +401,7 @@
                                                         else if (Model._ViewceMastWorkingTimeRequest.wrStep == 2)
                                                         { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
                                                         @*else if (Model._ViewceMastWorkingTimeRequest.wrStep == 3)
-                                                        { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}*@
+                                                            { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}*@
                                                         else if (Model._ViewceMastWorkingTimeRequest.wrStep == 3)
                                                         { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
                                                     }
@@ -387,8 +421,8 @@
                                                     }
 
                                                     @*<a href="@Url.Action("Index", "NewMoldOtherWK",new {Docno = Model._ViewceMastWorkingTimeRequest.wrDocumentNo})" target="_blank" style="font-size:15px;text-decoration: none;">
-                                                <img src="~/images/searchWK.png" alt="icon" class="imgM" />
-                                            </a>*@
+                                                            <img src="~/images/searchWK.png" alt="icon" class="imgM" />
+                                                        </a>*@
                                                 </td>
                                             </tr>
                                             <tr>
@@ -420,7 +454,7 @@
                                                         else if (Model._ViewceMastMaterialRequest.mrStep == 2)
                                                         { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
                                                         @*else if (Model._ViewceMastMaterialRequest.mrStep == 3)
-                                                        { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}*@
+                                                            { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}*@
                                                         else if (Model._ViewceMastMaterialRequest.mrStep == 3)
                                                         { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
                                                     }
@@ -499,7 +533,7 @@
                                                 <td>INFORMATION SPEC MOLD</td>
                                                 <td>@Html.DisplayFor(m => m._ViewceMastInforSpacMoldRequest.irDocumentNoSub)</td>
                                                 <td>
-                                                    @if (Model._ViewceMastInforSpacMoldRequest?.irStep !=3)
+                                                    @if (Model._ViewceMastInforSpacMoldRequest?.irStep != 3)
                                                     {
                                                         @Html.DisplayFor(m => m._ViewceMastInforSpacMoldRequest.irEmpCodeApprove)
 
@@ -522,7 +556,7 @@
                                                         else if (Model._ViewceMastInforSpacMoldRequest.irStep == 2)
                                                         { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
                                                         @*else if (Model._ViewceMastInforSpacMoldRequest.irStep == 3)
-                                                        { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}*@
+                                                            { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}*@
                                                         else if (Model._ViewceMastInforSpacMoldRequest.irStep == 3)
                                                         { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
                                                     }
@@ -559,9 +593,9 @@
 
                     </div>
                     @*<div style="margin-top:10px">
-                @await Html.PartialAsync("_PartialOtherAttachFile", Model)
+                            @await Html.PartialAsync("_PartialOtherAttachFile", Model)
 
-            </div>*@
+                        </div>*@
                     <div style="margin-top:10px">
                         @await Html.PartialAsync("_PartialOtherAttachFileNas", Model)
 
@@ -609,7 +643,7 @@
                                         </div>
                                         <div class="panel-collapse collapse show" id="History" style="overflow-y: scroll; max-height: 200px;">
                                             @*<div id="divHistory" class="panel-body">
-                                    </div>*@
+                                                </div>*@
                                             <div class="panel-body">
                                                 <table class="summarys">
                                                     <tr>
@@ -630,8 +664,8 @@
                                                                 <td>
 
                                                                     @*<a href="@Url.Action("openFile", "New", new { pathFile = @item.fnFilename })" class="btn-image" target="_blank" style="padding-left:5px;text-decoration:auto;">
-                                                                @item.fnFilename
-                                                            </a>*@
+                                                                            @item.fnFilename
+                                                                        </a>*@
                                                                     <a href="@Url.Action("openFileNas", "NewMoldOther", new { pathFile = @item.fnPath })" class="btn-image" target="_blank" style="padding-left:5px;text-decoration:auto;">
                                                                         @item.fnFilename
                                                                     </a>
@@ -639,18 +673,18 @@
                                                                 <td style="text-align:center">
 
                                                                     @*@if (@_UserId == @Model._ViewceMastMoldOtherRequest.mrEmpCodeApprove && @Model._ViewceMastMoldOtherRequest.mrStep < 6)
-                                                            {
-                                                                <input type="button" style="font-size:14px" value="&#x274C" onclick="DeleteFileUser('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","NewMoldOther")')">
-                                                            }
-                                                            else
-                                                            {
-                                                                <input type="button" style="font-size:14px" value="&#x274C" disabled>
-                                                            }*@
+                                                                        {
+                                                                            <input type="button" style="font-size:14px" value="&#x274C" onclick="DeleteFileUser('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","NewMoldOther")')">
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <input type="button" style="font-size:14px" value="&#x274C" disabled>
+                                                                        }*@
                                                                     <input type="button"
                                                                            style="font-size:14px"
                                                                            value="&#x274C"
                                                                            onclick="DeleteFileUser('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","NewMoldOther")')"
-                                                                           @( (_UserId == Model._ViewceMastMoldOtherRequest.mrEmpCodeApprove && Model._ViewceMastMoldOtherRequest.mrStep < 8) ? "" : "disabled") />
+                                                                           @( (_UserId == Model._ViewceMastMoldOtherRequest.mrEmpCodeApprove && Model._ViewceMastMoldOtherRequest.mrStep < 8 && Model._ViewceMastMoldOtherRequest.mrStep > 0) ? "" : "disabled") />
 
                                                                 </td>
                                                             </tr>
@@ -672,9 +706,9 @@
                                 </div>
                                 @*<div class="modal-footer" style="width: 100%;">
 
-                            <button type="button" class="button btnRed" data-bs-dismiss="modal" style="width:80px;height:30px">Close</button>
+                                        <button type="button" class="button btnRed" data-bs-dismiss="modal" style="width:80px;height:30px">Close</button>
 
-                        </div>*@
+                                    </div>*@
                             </div>
                         </div>
                     </div>
@@ -705,7 +739,7 @@
                                         </div>
                                         <div class="panel-collapse collapse show" id="History" style="overflow-y: scroll; max-height: 200px;">
                                             @*<div id="divHistory" class="panel-body">
-                                    </div>*@
+                                                </div>*@
                                             <div class="panel-body">
                                                 <table class="summarys">
                                                     <tr>
@@ -726,8 +760,8 @@
                                                                 <td>
 
                                                                     @*<a href="@Url.Action("openFile", "New", new { pathFile = @item.fnFilename })" class="btn-image" target="_blank" style="padding-left:5px;text-decoration:auto;">
-                                                                @item.fnFilename
-                                                            </a>*@
+                                                                            @item.fnFilename
+                                                                        </a>*@
                                                                     <a href="@Url.Action("openFileNas", "NewMoldOther", new { pathFile = @item.fnPath })" class="btn-image" target="_blank" style="padding-left:5px;text-decoration:auto;">
                                                                         @item.fnFilename
                                                                     </a>
@@ -739,7 +773,7 @@
                                                                            style="font-size:14px"
                                                                            value="&#x274C"
                                                                            onclick="DeleteFileUser('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","NewMoldOther")')"
-                                                                           @( (_UserId == Model._ViewceMastMoldOtherRequest.mrEmpCodeApprove && Model._ViewceMastMoldOtherRequest.mrStep < 8) ? "" : "disabled") />
+                                                                           @( (Model._ViewceMastMoldOtherRequest.mrStep == 0 && _UserId == Model._ViewceMastMoldOtherRequest.mrEmpCodeRequest) || (_UserId == Model._ViewceMastMoldOtherRequest.mrEmpCodeApprove && Model._ViewceMastMoldOtherRequest.mrStep < 8) ? "" : "disabled") />
 
                                                                 </td>
                                                             </tr>
@@ -761,9 +795,9 @@
                                 </div>
                                 @*<div class="modal-footer" style="width: 100%;">
 
-                            <button type="button" class="button btnRed" data-bs-dismiss="modal" style="width:80px;height:30px">Close</button>
+                                        <button type="button" class="button btnRed" data-bs-dismiss="modal" style="width:80px;height:30px">Close</button>
 
-                        </div>*@
+                                    </div>*@
                             </div>
                         </div>
                     </div>
@@ -794,7 +828,7 @@
                                         </div>
                                         <div class="panel-collapse collapse show" id="History" style="overflow-y: scroll; max-height: 200px;">
                                             @*<div id="divHistory" class="panel-body">
-                                    </div>*@
+                                                </div>*@
                                             <div class="panel-body">
                                                 <table class="summarys">
                                                     <tr>
@@ -815,8 +849,8 @@
                                                                 <td>
 
                                                                     @*<a href="@Url.Action("openFile", "New", new { pathFile = @item.fnFilename })" class="btn-image" target="_blank" style="padding-left:5px;text-decoration:auto;">
-                                                                @item.fnFilename
-                                                            </a>*@
+                                                                            @item.fnFilename
+                                                                        </a>*@
                                                                     <a href="@Url.Action("openFileNas", "NewMoldOther", new { pathFile = @item.fnPath })" class="btn-image" target="_blank" style="padding-left:5px;text-decoration:auto;">
                                                                         @item.fnFilename
                                                                     </a>
@@ -828,7 +862,7 @@
                                                                            style="font-size:14px"
                                                                            value="&#x274C"
                                                                            onclick="DeleteFileUser('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","NewMoldOther")')"
-                                                                           @( (_UserId == Model._ViewceMastMoldOtherRequest.mrEmpCodeApprove && Model._ViewceMastMoldOtherRequest.mrStep < 8) ? "" : "disabled") />
+                                                                           @( (Model._ViewceMastMoldOtherRequest.mrStep == 0 && _UserId == Model._ViewceMastMoldOtherRequest.mrEmpCodeRequest) || (_UserId == Model._ViewceMastMoldOtherRequest.mrEmpCodeApprove && Model._ViewceMastMoldOtherRequest.mrStep < 8) ? "" : "disabled") />
 
                                                                 </td>
                                                             </tr>
@@ -850,9 +884,9 @@
                                 </div>
                                 @*<div class="modal-footer" style="width: 100%;">
 
-                            <button type="button" class="button btnRed" data-bs-dismiss="modal" style="width:80px;height:30px">Close</button>
+                                        <button type="button" class="button btnRed" data-bs-dismiss="modal" style="width:80px;height:30px">Close</button>
 
-                        </div>*@
+                                    </div>*@
                             </div>
                         </div>
                     </div>
@@ -894,8 +928,8 @@
                             <!-- Footer -->
                             <div class="modal-footer" style="width:100%;">
                                 <button class="btn btn-primary"
-                                        onclick="printQuotationA4('@Model._ViewceMastMoldOtherRequest.mrDocmentNo','NewMoldOther?id=','MoldOther')"
-                                        style="@(Model._ViewceMastMoldOtherRequest.mrStep >5 ? "" : "display:none")">
+                                        onclick="printQuotationA4Cost('@Model._ViewceMastMoldOtherRequest.mrDocmentNo','NewMoldOther?id=','MoldOther')"
+                                        style="@(Model._ViewceMastMoldOtherRequest.mrStep >3 ? "" : "display:none")">
                                     🖨 พิมพ์ A4
                                 </button>
                             </div>
@@ -1342,20 +1376,20 @@
 
 
     $(document).ready(function () {
-    
+
     // ==========================================
     // 1. เหตุการณ์เมื่อเปลี่ยน Customer -> โหลด Model
     // ==========================================
     $('#i_NewOther_CusName').change(function () {
-        var customerName = $(this).val(); 
-        var $modelDd = $('#i_NewOther_ModelName'); 
+        var customerName = $(this).val();
+        var $modelDd = $('#i_NewOther_ModelName');
 
         // ล้างข้อมูลเก่าออกก่อน
         $modelDd.empty().append('<option value="">กรุณาเลือก</option>');
 
         if (customerName) {
             $.ajax({
-                url: '@Url.Action("GetModelsByCustomer", "NewMoldOther")', 
+                url: '@Url.Action("GetModelsByCustomer", "NewMoldOther")',
                 type: 'GET',
                 data: { customerName: customerName },
                 success: function (data) {
@@ -1392,10 +1426,10 @@
         if (customerName && ModelName && fuctionName) {
             $.ajax({
                 url: '@Url.Action("GetDetailMoldMassGoTry", "NewMoldOther")',
-                type: 'POST', 
-                data: { 
-                    customerName: customerName, 
-                    ModelName: ModelName, 
+                type: 'POST',
+                data: {
+                    customerName: customerName,
+                    ModelName: ModelName,
                     fuctionName: fuctionName
                 },
                 success: function (response) {
@@ -1411,8 +1445,8 @@
                     $('#i_NewOther_Try1').val(val2);
                     $('#i_NewOther_MoldMass').val(val3);
                     $('#i_NewOther_ChartRate').val(val4);
-                    
-                   
+
+
                 },
                 error: function (xhr, status, error) {
                     console.error("เกิดข้อผิดพลาดในการดึงรายละเอียด: " + error);

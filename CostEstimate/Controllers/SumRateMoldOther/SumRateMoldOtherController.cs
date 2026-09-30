@@ -39,7 +39,8 @@ namespace CostEstimate.Controllers.SumRateMoldOther
         private MOLD _MOLD;
         private CacheSettingController _Cache;
         private FunctionsController _callFunc;
-        public string path = @"\\thsweb\\CostEstimate\\";
+        //public string path = @"\\thsweb\\CostEstimate\\";
+        public string path = @"\\10.200.128.20\\CostEstimate\\";
         public string PgName = "CostEstimate";
         public SumRateMoldOtherController(LAMP lamp, HRMS hrms, IT it, MK mk, MOLD mold, CacheSettingController cacheController, FunctionsController callfunction)
         {

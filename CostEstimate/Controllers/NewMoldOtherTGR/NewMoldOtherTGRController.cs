@@ -42,7 +42,8 @@ namespace CostEstimate.Controllers.NewMoldOtherTGR
         private MOLD _MOLD;
         private CacheSettingController _Cache;
         private FunctionsController _callFunc;
-        public string path = @"\\thsweb\\CostEstimate\\";
+       // public string path = @"\\thsweb\\CostEstimate\\";
+        public string path = @"\\10.200.128.20\\CostEstimate\\";
         public string PgName = "CostEstimate";
         public NewMoldOtherTGRController(LAMP lamp, HRMS hrms, IT it, MK mk, MOLD mold, CacheSettingController cacheController, FunctionsController callfunction)
         {
@@ -1049,7 +1050,7 @@ namespace CostEstimate.Controllers.NewMoldOtherTGR
                         }
                     }
                 }
-                var varifyUrl = "http://thsweb/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=MoldOther&subType=T";
+                var varifyUrl = "//10.200.128.20/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=MoldOther&subType=T";
                 //var varifyUrl = "http://thsweb/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=MoldOther";// + getSrNo[0].ToString();
                 var bodyBuilder = new BodyBuilder();
                 //var image = bodyBuilder.LinkedResources.Add(@"E:\01_My Document\02_Project\_2023\1. PartTransferUnbalance\PartTransferUnbalance\wwwroot\images\btn\OK.png");

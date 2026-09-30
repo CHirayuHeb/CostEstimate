@@ -24,14 +24,12 @@
     <input type="text" style="width:80%;font-size:12px;display:none" autocomplete="off" id="i_New_EmpCodeRequest" asp-for="_ViewceMastSubMakerRequest.smEmpCodeRequest">
 
 
-    <div class="col-5 " style="">
-
-    </div>
-    <div class="col-90 " style="@(Model._ViewceMastSubMakerRequest.smStep == 7 ? "pointer-events: none;border:1.5px solid gray;padding:10px " : "border:1.5px solid gray;padding:10px")" id="radioGroupContainer" >
-        <div class="row center">
+   
+    <div class="col-100 " style="@(Model._ViewceMastSubMakerRequest.smStep == 7 ? "pointer-events: none;border:1.5px solid gray;padding:10px " : "border:1.5px solid gray;padding:10px")" id="radioGroupContainer" >
+        <div class="row ">
 
             <div class="col-30 " style="">
-                <div class="grid-item fw-800 center" style="text-align:left;text-decoration: underline;"><span style=""></span>REMARK</div>
+                <div class="grid-item fw-800 left" style="text-align:left;text-decoration: underline;"><span style=""></span>REMARK</div>
             </div>
             <div class="col-5 " style="">
             </div>
@@ -40,7 +38,7 @@
             <div class="col-5 " style="">
             </div>
             <div class="col-30" style="">
-                <div class="grid-item fw-800 center" style="text-align:right;"> <span style="color:red">**ให้ติ๊ก เลือกได้ Process เดียว</span></div>
+                <div class="grid-item fw-800 left" style="text-align:right;"> <span style="color:red">**ให้ติ๊ก เลือกได้ Process เดียว</span></div>
 
             </div>
 
@@ -49,26 +47,11 @@
             <div class="col-5 " style="">
             </div>
             <div class="col-40 " style="">
-                <div class="grid-item fw-800 center" style="text-align:left;">เนื่องจากมีการ Revise แผนงาน</div>
+                <div class="grid-item fw-800 left" style="text-align:left;">เนื่องจากมีการ Revise แผนงาน</div>
             </div>
 
             <div class="col-50" style="">
-                <div class="grid-item fw-800 center" style="text-align:left;">เนื่องจากไม่สามารถขึ้นเครื่องได้​</div>
-
-            </div>
-            <div class="col-5 " style="">
-
-            </div>
-        </div>
-        <div class="row center">
-            <div class="col-5 " style="">
-            </div>
-            <div class="col-40 " style="">
-                <div class="grid-item fw-400 center" style="text-align:left;">@Html.RadioButtonFor(m => m._ViewceMastSubMakerRequest.smRemark, "The schedule is therefore at TRY-0", new { @class = "", id = "StatussmRemark", onclick = "CheckStatus('')", required = "required", @style = "height:15px;width:15px;" }) แผนงานเลย TRY-0​</div>
-            </div>
-
-            <div class="col-50" style="">
-                <div class="grid-item fw-400 center" style="text-align:left;">@Html.RadioButtonFor(m => m._ViewceMastSubMakerRequest.smRemark, "The machine already has work in progress", new { @class = "", id = "StatussmRemark", onclick = "CheckStatus('')", required = "required", @style = "height:15px;width:15px;" }) เครื่องมีงานขึ้นอยู่แล้ว (เครื่องมีจำนวนจำกัดเช่นเครื่อง BM,NCG​)​</div>
+                <div class="grid-item fw-800 left" style="text-align:left;">เนื่องจากไม่สามารถขึ้นเครื่องได้​</div>
 
             </div>
             <div class="col-5 " style="">
@@ -79,24 +62,11 @@
             <div class="col-5 " style="">
             </div>
             <div class="col-40 " style="">
-                <div class="grid-item fw-400 center" style="text-align:left;">@Html.RadioButtonFor(m => m._ViewceMastSubMakerRequest.smRemark, "Adjust schedule to speed up,for next model", new { @class = "", id = "StatussmRemark", onclick = "CheckStatus('')", required = "required", @style = "height:15px;width:15px;" }) ปรับแผนงานให้ใวขึ้น (เพื่อรองรับ Model ตัวต่อไป)​</div>
+                <div class="grid-item fw-400 left" style="text-align:left;">@Html.RadioButtonFor(m => m._ViewceMastSubMakerRequest.smRemark, "The schedule is therefore at TRY-0", new { @class = "", id = "StatussmRemark", onclick = "CheckStatus('')", required = "required", @style = "height:15px;width:15px;" }) แผนงานเลย TRY-0​</div>
             </div>
 
             <div class="col-50" style="">
-                <div class="grid-item fw-400 center" style="text-align:left;">@Html.RadioButtonFor(m => m._ViewceMastSubMakerRequest.smRemark, "mold is large,machine cannot handle the weight", new { @class = "", id = "StatussmRemark", onclick = "CheckStatus('')", required = "required", @style = "height:15px;width:15px;" }) แม่พิมพ์มีขนาดใหญ่เครื่องจักรไม่สามารถรับน้ำหนักได้​​</div>
-            </div>
-            <div class="col-5 " style="">
-            </div>
-        </div>
-        <div class="row center">
-            <div class="col-5 " style="">
-            </div>
-            <div class="col-40 " style="">
-                <div class="grid-item fw-400 center" style="text-align:left;">@Html.RadioButtonFor(m => m._ViewceMastSubMakerRequest.smRemark, "CAM not finishing on time", new { @class = "", id = "StatussmRemark", onclick = "CheckStatus('')", required = "required", @style = "height:15px;width:15px;" }) เนื่องจาก CAM ทำ Program ไม่ทัน​</div>
-            </div>
-
-            <div class="col-50" style="">
-                <div class="grid-item fw-400 center" style="text-align:left;">@Html.RadioButtonFor(m => m._ViewceMastSubMakerRequest.smRemark, "Break Down", new { @class = "", id = "StatussmRemark", onclick = "CheckStatus('')", required = "required", @style = "height:15px;width:15px;" })  เนื่องจากเครื่องจักรเสีย ( Break Down )​​​</div>
+                <div class="grid-item fw-400 left" style="text-align:left;">@Html.RadioButtonFor(m => m._ViewceMastSubMakerRequest.smRemark, "The machine already has work in progress", new { @class = "", id = "StatussmRemark", onclick = "CheckStatus('')", required = "required", @style = "height:15px;width:15px;" }) เครื่องมีงานขึ้นอยู่แล้ว (เครื่องมีจำนวนจำกัดเช่นเครื่อง BM,NCG​)​</div>
 
             </div>
             <div class="col-5 " style="">
@@ -107,9 +77,37 @@
             <div class="col-5 " style="">
             </div>
             <div class="col-40 " style="">
+                <div class="grid-item fw-400 left" style="text-align:left;">@Html.RadioButtonFor(m => m._ViewceMastSubMakerRequest.smRemark, "Adjust schedule to speed up,for next model", new { @class = "", id = "StatussmRemark", onclick = "CheckStatus('')", required = "required", @style = "height:15px;width:15px;" }) ปรับแผนงานให้ใวขึ้น (เพื่อรองรับ Model ตัวต่อไป)​</div>
+            </div>
+
+            <div class="col-50" style="">
+                <div class="grid-item fw-400 left" style="text-align:left;">@Html.RadioButtonFor(m => m._ViewceMastSubMakerRequest.smRemark, "mold is large,machine cannot handle the weight", new { @class = "", id = "StatussmRemark", onclick = "CheckStatus('')", required = "required", @style = "height:15px;width:15px;" }) แม่พิมพ์มีขนาดใหญ่เครื่องจักรไม่สามารถรับน้ำหนักได้​​</div>
+            </div>
+            <div class="col-5 " style="">
+            </div>
+        </div>
+        <div class="row center">
+            <div class="col-5 " style="">
+            </div>
+            <div class="col-40 " style="">
+                <div class="grid-item fw-400 left" style="text-align:left;">@Html.RadioButtonFor(m => m._ViewceMastSubMakerRequest.smRemark, "CAM not finishing on time", new { @class = "", id = "StatussmRemark", onclick = "CheckStatus('')", required = "required", @style = "height:15px;width:15px;" }) เนื่องจาก CAM ทำ Program ไม่ทัน​</div>
+            </div>
+
+            <div class="col-50" style="">
+                <div class="grid-item fw-400 left" style="text-align:left;">@Html.RadioButtonFor(m => m._ViewceMastSubMakerRequest.smRemark, "Break Down", new { @class = "", id = "StatussmRemark", onclick = "CheckStatus('')", required = "required", @style = "height:15px;width:15px;" })  เนื่องจากเครื่องจักรเสีย ( Break Down )​​​</div>
+
+            </div>
+            <div class="col-5 " style="">
+
+            </div>
+        </div>
+        <div class="row center">
+            <div class="col-5 " style="">
+            </div>
+            <div class="col-40 " style="">
             </div>
             <div class="col-50" style="">
-                <div class="grid-item fw-400 center" style="text-align:left;">@Html.RadioButtonFor(m => m._ViewceMastSubMakerRequest.smRemark, "Other", new { @class = "", id = "StatussmRemark", onclick = "CheckStatus('Other')", required = "required", @style = "height:15px;width:15px;" })  อื่นๆ​​​</div>
+                <div class="grid-item fw-400 left" style="text-align:left;">@Html.RadioButtonFor(m => m._ViewceMastSubMakerRequest.smRemark, "Other", new { @class = "", id = "StatussmRemark", onclick = "CheckStatus('Other')", required = "required", @style = "height:15px;width:15px;" })  อื่นๆ​​​</div>
 
             </div>
             <div class="col-5 " style="">
@@ -130,16 +128,15 @@
             </div>
         </div>
     </div>
-    <div class="col-5 " style="">
-    </div>
+  
 </div>
 
 @*detail*@
-<div class="row center" style="@(Model._ViewceMastSubMakerRequest.smStep == 7 ? "pointer-events: none; " : "")">
+<div class="row center" style="margin-top:5px;@(Model._ViewceMastSubMakerRequest.smStep == 7 ? "pointer-events: none; " : "")" >
     
     <div class="col-100 " style="border:1.5px solid gray;padding:10px">
-        <div class="row center">
-            <div class="col-5 " style="">
+        <div class="row ">
+            <div class="col-5" style="">
                 <div class="grid-item fw-800 center" style="text-align:left;text-decoration: underline;">Detail</div>
             </div>
             <div class="col-90 " style="">
@@ -149,8 +146,8 @@
 
             </div>
         </div>
-        <div class="row center">
-            <div class="col-5 " style="">
+        <div class="row center" >
+            <div class="col-5 " >
                 <div class="grid-item fw-800 center" style="text-align:left;">Weight.</div>
             </div>
 

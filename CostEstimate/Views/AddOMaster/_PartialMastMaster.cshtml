@@ -7,40 +7,155 @@
     string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
     string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
 
+    // mtId เป็น 0 / ว่าง = เพิ่มรายการใหม่
+    bool isNew = (Model._ViewceMastType?.mtId ?? 0) == 0;
 }
 <link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<style>
+
+    .mf-card {
+        background: aliceblue;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #d9e3c6;
+    }
+
+    .mf-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 16px;
+        background: #eaf2d6;
+        border-bottom: 1px solid #d9e3c6;
+    }
+
+        .mf-head .mf-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #6fa54f;
+        }
+
+        .mf-head .mf-title {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+    .mf-badge {
+        margin-left: auto;
+        font-size: 12px;
+        padding: 2px 12px;
+        border-radius: 999px;
+        background: #6fa54f;
+        color: #fff;
+    }
+
+        .mf-badge.edit {
+            background: #2f6fb5;
+        }
+
+    .mf-body {
+        padding: 16px;
+        background: #fff;
+    }
+
+    .mf-field {
+        margin-bottom: 14px;
+    }
+
+    .mf-label {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #4a5a36;
+    }
+
+    .mf-hint {
+        font-size: 12px;
+        color: #888;
+        margin-top: 3px;
+    }
+
+    .mf-body .form-control {
+        width: 100%;
+        font-size: 14px;
+        border: 1px solid #b9c7a0;
+        border-radius: 6px;
+        padding: 7px 10px;
+    }
+
+        .mf-body .form-control:focus {
+            border-color: #6fa54f;
+            outline: 0;
+            box-shadow: 0 0 0 3px #e0ecc4;
+        }
+
+    .mf-foot {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        padding: 12px 16px;
+        background: aliceblue;
+        border-top: 1px solid #d9e3c6;
+    }
+
+        .mf-foot .btn {
+            min-width: 90px;
+            border-radius: 6px;
+            border: 0;
+            padding: 7px 16px;
+            font-size: 14px;
+        }
+
+    .mf-save {
+        background: #6fa54f;
+        color: #fff;
+    }
+
+        .mf-save:hover {
+            background: #5d9040;
+            color: #fff;
+        }
+
+    .mf-close {
+        background: #e8ecdf;
+        color: #333;
+    }
+</style>
 <div class="row center">
-    <form action="" id="formMastOModel" name="formMastOMaster">
-        <div class="row center">
-            <div class="col-100 ">
-                <table class="tbgreen" id="tbMastModel">
-                    <tr>
-                        <th style="text-align:left;" width="20%">Doc No</th>
-                        <td style="text-align:center;font-size:9px">
-                            <span style="font-size:12px"> @Html.DisplayFor(model => model._ViewceMastType.mtId) </span>
-                            <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px;display:none" autocomplete="off" asp-for="_ViewceMastType.mtId" readonly>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align:left;" width="20%">Master Item</th>
-                        <td style="text-align:center;font-size:9px"> <input type="text" class="form-control left" style="width:100%;height:80%;font-size:12px" autocomplete="off" asp-for="_ViewceMastType.mtName" id="i_NewOther_mtName"></td>
-                    </tr>
-                    <tr>
-                        <th style="text-align:left;" width="20%">TYPE</th>
-                        <td style="text-align:center;font-size:9px">
-                            @Html.DropDownListFor(m => m._ViewceMastType.mtType, (SelectList)ViewBag._TypemtType, "กรุณาเลือก", new { @class = "form-control ", id = "i_NewOther_mtType", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
-                        </td>
-                    </tr>
-                </table>
-                <br />
-                <div class="modal-footer">
-                    <br />
-                    <button type="button" class="btn btn-primary" onclick="Menubar_AddMasterOMaster('@Url.Action("AddMasterMaster","AddOMaster")')">Save</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-
+    <form action="" id="formMastOModel" name="formMastOMaster" style="width:100%">
+        <div class="mf-card">
+            <div class="mf-head">
+                <i class="mf-dot"></i>
+                <span class="mf-title">@(isNew ? "เพิ่ม Master Item" : "แก้ไข Master Item")</span>
+                <span class="mf-badge @(isNew ? " " : " edit")">
+                    @if (isNew)
+                    {
+                        <text>ใหม่</text>
+                    }
+                    else
+                    {
+                        <text>Doc No: @Html.DisplayFor(model => model._ViewceMastType.mtId)</text>
+                    }
+                </span>
+                <input type="text" class="form-control left" style="display:none" autocomplete="off" asp-for="_ViewceMastType.mtId" readonly>
             </div>
-
+            <div class="mf-body">
+                <div class="mf-field">
+                    <label class="mf-label">TYPE (ประเภท)</label>
+                    @Html.DropDownListFor(m => m._ViewceMastType.mtType, (SelectList)ViewBag._TypemtType, "กรุณาเลือก", new { @class = "form-control ", id = "i_NewOther_mtType", autocomplete = "off", @style = "width:100%;font-size:14px;background-color:#fffbd6;" })
+                    <div class="mf-hint">เลือกประเภทก่อน แล้วจึงกรอกชื่อ Item</div>
+                </div>
+                <div class="mf-field" style="margin-bottom:0">
+                    <label class="mf-label">Master Item (ชื่อรายการ)</label>
+                    <input type="text" class="form-control left" autocomplete="off" asp-for="_ViewceMastType.mtName" id="i_NewOther_mtName" placeholder="เช่น CAVITIES x 2 MOLD">
+                </div>
+            </div>
+            <div class="mf-foot">
+                <button type="button" class="btn mf-close" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn mf-save" onclick="Menubar_AddMasterOMaster('@Url.Action("AddMasterMaster","AddOMaster")')">Save</button>
+            </div>
         </div>
     </form>
 </div>

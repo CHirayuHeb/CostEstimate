@@ -51,7 +51,8 @@ namespace CostEstimate.Controllers.Search
 
         [Authorize("Checked")]
         //public IActionResult Index(Class @class, int? page)
-        public IActionResult Index(Class @class)
+        //public IActionResult Index(Class @class)
+        public IActionResult Index(Class @class, int page = 1, int pageSize = 25)
         {
             try
             {
@@ -218,26 +219,29 @@ namespace CostEstimate.Controllers.Search
                         @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest.Where(x => x.smRevision.Contains(@class._ViewSearchData.v_Revision)).ToList();
                     }
                 }
-                // ViewBag.Listcount = @class._ListceMastSubMakerRequest.Count();
-                // var pagedList = @class._ListceMastSubMakerRequest
-                //.Skip((pageNumber - 1) * pageSize) // ข้ามหน้าที่แล้ว
-                //.Take(pageSize) // เลือกข้อมูลในหน้า
-                //.ToList();
 
-                // // คำนวณจำนวนหน้าทั้งหมด
-                // ViewBag.CurrentPage = pageNumber;
-                // //ViewBag.TotalPages = Math.Ceiling((double)@class._ListceMastSubMakerRequest.Count() / pageSize);
-                // ViewBag.TotalPages = (int)Math.Ceiling((double)@class._ListceMastSubMakerRequest.Count() / pageSize);
-                // // คำนวณหน้าใกล้เคียงที่จะแสดง (เช่น 3 หน้า)
-                // int startPage = Math.Max(1, pageNumber - 1); // คำนวณหน้าเริ่มต้น (แสดงหน้า 1 ถึง 3)
-                // int endPage = Math.Min(ViewBag.TotalPages, pageNumber + 1); // คำนวณหน้าสิ้นสุด
+                int totalRecords = @class._ListceMastSubMakerRequest.Count;
+
+                if (pageSize != 25 && pageSize != 50)
+                    pageSize = 25; // กันค่าผิดปกติ
+
+                if (page < 1) page = 1;
+
+                int totalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
+                if (totalPages > 0 && page > totalPages) page = totalPages;
+
+                ViewBag.TotalRecords = totalRecords;
+                ViewBag.CurrentPage = page;
+                ViewBag.PageSize = pageSize;
+                ViewBag.TotalPages = totalPages;
+
+                @class._ListceMastSubMakerRequest = @class._ListceMastSubMakerRequest
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
 
 
 
-                // ViewBag.StartPage = startPage;
-                // ViewBag.EndPage = endPage;
-
-                // @class._ListceMastSubMakerRequest = pagedList; // ส่งข้อมูลที่แบ่งหน้าแล้วไปยัง View
             }
             catch (Exception ex)
             {

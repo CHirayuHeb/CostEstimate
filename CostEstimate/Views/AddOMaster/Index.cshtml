@@ -12,8 +12,206 @@
     string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
     string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
 
+    // ---- จัดกลุ่มตาม Type (เรียงตามลำดับที่เจอในข้อมูล) ----
+    var allItems = Model._ListceMastType.ToList();
+    var groups = allItems
+        .GroupBy(x => string.IsNullOrWhiteSpace(x.mtType) ? "(ไม่ระบุ)" : x.mtType.Trim())
+        .ToList();
 }
 <link href="~/css/Home/siteHome.css" rel="stylesheet" />
+<style>
+
+    /* ===== Master Item : grouped by Type ===== */
+    .mm-wrap {
+        background: aliceblue;
+        padding: 12px;
+        border-radius: 6px;
+    }
+
+    .mm-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+    }
+
+    .mm-total {
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+        .mm-total b {
+            color: royalblue;
+        }
+
+    .mm-search {
+        width: 240px;
+        max-width: 100%;
+        padding: 6px 10px;
+        font-size: 13px;
+        border: 1px solid #b9c7a0;
+        border-radius: 6px;
+    }
+
+    .mm-tabs {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+    }
+
+    .mm-tab {
+        border: 1px solid #b9c7a0;
+        background: #fff;
+        color: #333;
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+        .mm-tab .mm-n {
+            margin-left: 6px;
+            padding: 1px 8px;
+            border-radius: 999px;
+            background: #e6efd3;
+            font-size: 12px;
+        }
+
+        .mm-tab.active {
+            background: #6fa54f;
+            border-color: #6fa54f;
+            color: #fff;
+        }
+
+            .mm-tab.active .mm-n {
+                background: rgba(255,255,255,.28);
+            }
+
+    .mm-group {
+        background: #fff;
+        border: 1px solid #d9e3c6;
+        border-radius: 10px;
+        margin-bottom: 14px;
+        overflow: hidden;
+    }
+
+    .mm-ghead {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border-bottom: 1px solid #d9e3c6;
+    }
+
+        .mm-ghead .mm-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .mm-ghead .mm-gname {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .mm-ghead .mm-gcount {
+            margin-left: auto;
+            font-size: 13px;
+            color: #666;
+        }
+
+    /* สีต่อกลุ่ม (วนซ้ำทุก 4 สี) */
+    .mm-c0 .mm-ghead {
+        background: #eaf2d6;
+    }
+
+    .mm-c0 .mm-dot {
+        background: #6fa54f;
+    }
+
+    .mm-c1 .mm-ghead {
+        background: #e3eefa;
+    }
+
+    .mm-c1 .mm-dot {
+        background: #2f6fb5;
+    }
+
+    .mm-c2 .mm-ghead {
+        background: #fdf0d8;
+    }
+
+    .mm-c2 .mm-dot {
+        background: #e0932b;
+    }
+
+    .mm-c3 .mm-ghead {
+        background: #f3e5f7;
+    }
+
+    .mm-c3 .mm-dot {
+        background: #9a4fb0;
+    }
+
+    .mm-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 9px 14px;
+        border-bottom: 1px solid #edf2e2;
+    }
+
+        .mm-row:last-child {
+            border-bottom: 0;
+        }
+
+        .mm-row:hover {
+            background: #f6faee;
+        }
+
+    .mm-no {
+        width: 28px;
+        flex: none;
+        text-align: right;
+        color: #888;
+        font-size: 13px;
+    }
+
+    .mm-name {
+        flex: 1;
+        font-size: 14px;
+        word-break: break-word;
+    }
+
+    .mm-btn {
+        flex: none;
+        border: 0;
+        border-radius: 6px;
+        padding: 5px 12px;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    .mm-edit {
+        background: #e3eefa;
+        color: #2f6fb5;
+    }
+
+    .mm-del {
+        background: #fde8ec;
+        color: #d64562;
+    }
+
+    .mm-empty {
+        display: none;
+        text-align: center;
+        color: #888;
+        padding: 30px 0;
+    }
+</style>
 <script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("AddOMaster"); } }</script>
 <div class="home-content">
     <div id="DisplayContent" class="content-box">
@@ -25,106 +223,73 @@
                     <span style="font-size:24px; font-weight:600; color:blue; line-height:1.4;">
                         <span style="color:#b3e07d">MOLD OTHER</span> Master Item.
                     </span>
-                    <span style="font-size:22px; font-weight:600; color:white; line-height:1.4; margin-top:10px; display:block;">
-
-                    </span>
                 </div>
                 <div class="col-40 center" style="text-align:right;">
                     <button class="button " style="width:auto" onclick="Menubar_EditMasterOMaster('','','@Url.Action("SearchMasterItem","AddOMaster")')">
                         <img src="~/images/addcost.png" style="width:30px;height:24px;padding-right:5px;margin-right:8px;margin-top: 2px;margin-bottom: 2px;" />
                         ADD
                     </button>
-
                 </div>
             </div>
-
-
-
+           
             <form action="" id="formRequestMasterOModel" name="formDataMasterOModel">
                 <div style="width:100%;">
-                    <div style="margin-inline: auto;border: 0px solid white; background-color: aliceblue;padding:10px;border-radius:2px;">
-                        @*summary*@
-                        <div class="grid-item fw-800" style="text-align:left;padding-left:10px">
-                            <label style="font-size:14px">
-                                จำนวน
-                                <span style="color:royalblue">
-                                    @Model._ListceMastType.Count
-                                </span>
-                                แถว
-
-                            </label>
-                            <div style="text-align:right">
-                                <span style="font-size:12px;font-weight:900">ค้นหา</span> <input type="text" id="searchInputtbOmaster" placeholder="Search..." style="margin-bottom:10px; width:200px; font-size:10px">
+                    <div class="mm-wrap">
+                        @* ---- summary + search ---- *@
+                        <div class="mm-toolbar">
+                            <div class="mm-total">
+                                จำนวน <b id="mmTotal">@allItems.Count</b> แถว
                             </div>
-                            
+                            <div>
+                                <span style="font-size:12px;font-weight:900">ค้นหา</span>
+                                <input type="text" id="searchInputtbOmaster" class="mm-search" placeholder="Search Item...">
+                            </div>
                         </div>
-                        <div class="row center">
-                            <div class="row center" style="">
-                                <div class="col-5 " style="margin-bottom:0px">
-                                </div>
-                                <div class="col-90" style=" display: flex;align-items: center;">
-                                    <div class="table-container400">
-                                        <table class="tbgreen tbOmaster">
-                                            <thead>
-                                                <tr>
-                                                    <th style="text-align:center" width="5%">NO</th>
-                                                    <th style="text-align:center">Item Name</th>
-                                                    <th style="text-align:center">Type</th>
-                                                    <th style="text-align:center" width="15%">แก้ไข</th>
-                                                    <th style="text-align:center" width="15%">ลบ</th>
-                                                </tr>
-                                            </thead>
-
-                                            @if (Model._ListceMastType != null)
-                                            {
-                                                var row = 0;
-                                                @foreach (var item in @Model._ListceMastType)
-                                                {
-                                                    <tbody>
-                                                        <tr>
-                                                            <td style="text-align:right">@(row += 1)</td>
-                                                            <td>
-                                                                @item.mtName
-                                                            </td>
-                                                            <td>
-                                                                @item.mtType
-                                                            </td>
-                                                            <td>
-                                                                @*&#128221; &#128203;*@
-                                                                <input type="button" style="font-size:15px" value="&#128221;" onclick="Menubar_EditMasterOMaster('@item.mtId','@item.mtName','@Url.Action("SearchMasterItem","AddOMaster")')">
-                                                            </td>
-                                                            <td>
-                                                                <input type="button" style="font-size:15px" value="&#x274c;" onclick="Menubar_DeleteMasterOMaster('@item.mtId','@item.mtName','@Url.Action("DeleteMasterItem","AddOMaster")')">
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-
-
-                                                }
-
-                                            }
-
-
-
-
-                                        </table>
+                        @* ---- tabs : กรองตาม Type ---- *@
+                        <div class="mm-tabs" id="mmTabs">
+                            <button type="button" class="mm-tab active" data-type="">ทั้งหมด<span class="mm-n">@allItems.Count</span></button>
+                            @foreach (var g in groups)
+                            {
+                                <button type="button" class="mm-tab" data-type="@g.Key">@g.Key<span class="mm-n">@g.Count()</span></button>
+                            }
+                        </div>
+                        @* ---- กลุ่มตาม Type ---- *@
+                        <div id="mmList">
+                            @{ var gi = 0; }
+                            @foreach (var g in groups)
+                            {
+                                var no = 0;
+                                <div class="mm-group mm-c@(gi % 4)" data-type="@g.Key">
+                                    <div class="mm-ghead">
+                                        <i class="mm-dot"></i>
+                                        <span class="mm-gname">@g.Key</span>
+                                        <span class="mm-gcount"><span class="mm-gc">@g.Count()</span> รายการ</span>
                                     </div>
-
-
-
+                                    @foreach (var item in g)
+                                    {
+                                        <div class="mm-row" data-name="@((item.mtName ?? "").ToLower())">
+                                            <div class="mm-no">@(no += 1)</div>
+                                            <div class="mm-name">@item.mtName</div>
+                                            <button type="button" class="mm-btn mm-edit"
+                                                    data-id="@item.mtId" data-name-raw="@item.mtName"
+                                                    onclick="Menubar_EditMasterOMaster(this.dataset.id, this.dataset.nameRaw, '@Url.Action("SearchMasterItem","AddOMaster")')">
+                                                &#128221; แก้ไข
+                                            </button>
+                                            <button type="button" class="mm-btn mm-del"
+                                                    data-id="@item.mtId" data-name-raw="@item.mtName"
+                                                    onclick="Menubar_DeleteMasterOMaster(this.dataset.id, this.dataset.nameRaw, '@Url.Action("DeleteMasterItem","AddOMaster")')">
+                                                &#x274c; ลบ
+                                            </button>
+                                        </div>
+                                    }
                                 </div>
-
-                                <div class="col-5 " style="">
-                                </div>
-                            </div>
+                                gi++;
+                            }
+                            <div class="mm-empty" id="mmEmpty">ไม่พบรายการ</div>
                         </div>
                     </div>
-
-
-
                 </div>
             </form>
-
             <!-- Modal Add Master Cost planning -->
             <div class="modal modal-lx fade" id="myModalOmaster" style="background-color:#4f4b4b4d;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -139,25 +304,17 @@
                             <div class="modal-body">
                                 <br />
                                 <div id="loadingIndicatorOMaster" style="display: block; position: absolute; left: 50%; transform: translate(-50%, -50%); z-index: 9999;margin:0px">
-                                    @*<div class="loader"></div>*@
                                     <img src="~/images/wait1.gif" alt="Loading..." width="100px"><span style="font-weight:600">Loading...</span>
                                 </div>
                                 <div id="ResultMastOMaster" style="display: none;">
                                     @await Html.PartialAsync("_PartialMastMaster", Model)
                                 </div>
-
                             </div>
-                            <!-- Modal Footer -->
-                            @*<div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-
-                                </div>*@
                         </div>
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>
+

@@ -25,7 +25,8 @@ namespace CostEstimate.Controllers.AddOMaster
         private MOLD _MOLD;
         private CacheSettingController _Cache;
         private FunctionsController _callFunc;
-        public string path = @"\\thsweb\\CostEstimate\\";
+      //  public string path = @"\\thsweb\\CostEstimate\\";
+        public string path = @"\\10.200.128.20\\CostEstimate\\";
         public string PgName = "CostEstimate";
 
         public AddOMasterController(LAMP lamp, HRMS hrms, IT it, MK mk, MOLD mold, CacheSettingController cacheController, FunctionsController callfunction)
@@ -42,6 +43,15 @@ namespace CostEstimate.Controllers.AddOMaster
         [Authorize("Checked")]
         public IActionResult Index(Class @class)
         {
+            @class._ListViewMaster = new List<ViewMaster>();
+
+            //_MK._ViewceMastType.Where(x => x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtType).Select(x => x.mtType).Distinct().ToList();
+
+            //@class._ListViewMaster.Add(new ViewMaster
+            //{
+
+            //});
+
             @class._ListceMastType = new List<ViewceMastType>();
             @class._ListceMastType = _MK._ViewceMastType.Where(x => x.mtProgram == "MoldOther").OrderBy(z => z.mtType.Trim()).ToList();
 

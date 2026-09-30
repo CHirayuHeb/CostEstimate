@@ -397,19 +397,19 @@
                     @*form2*@
                     <form action="" id="formMoldRequest3" name="formMoldData3">
                         <fieldset @(isReadOnly ? "disabled" : "")>
-                            <div id="ResultMoldMaterial" class="row center">
+                            <div id="ResultMoldMaterial" class="row center" style="margin-top:5px">
                                 @await Html.PartialAsync("_PartialNewMoldRequestMaterial", Model)
                             </div>
                             @*form3*@
-                            <div class="row center">
+                            <div class="row center" style="margin-top:5px">
                                 @await Html.PartialAsync("_PartialNewMoldSummary", Model)
                             </div>
-                            <div class="row center">
+                            <div class="row center" style="margin-top:5px">
                                 @await Html.PartialAsync("_PartialNewMoldRequestDetail", Model)
                             </div>
 
                         </fieldset>
-                        <div class="row center">
+                        <div class="row center" style="margin-top:5px">
                             @await Html.PartialAsync("_PartialNewMoldAttachFile", Model)
                         </div>
 
@@ -460,7 +460,7 @@
                         </div>
                     </div>
                     <div class="modal-footer" style="width: 100%;">
-                        <button class="btn btn-primary" onclick="printQuotationA4('@Model._ViewceMastModifyRequest.mfCENo','NewMoldModify?id=','MoldModify')" style="@(Model._ViewceMastModifyRequest.mfStep >5 ? "" : "display:none")">🖨 พิมพ์ A4</button>
+                        <button class="btn btn-primary" onclick="printQuotationA4Modify('@Model._ViewceMastModifyRequest.mfCENo','NewMoldModify?id=','MoldModify')" style="@(Model._ViewceMastModifyRequest.mfStep >5 ? "" : "display:none")">🖨 พิมพ์ A4 MOLD</button>
                     </div>
                 </div>
             </div>
@@ -520,7 +520,7 @@
                                                     <td style="text-align:center">
 
                                                         @*<input type="button" style="font-size:14px" value="&#x274C" disabled>*@
-                                                        @if (@_UserId == @Model._ViewceMastModifyRequest.mfEmpCodeApprove && @Model._ViewceMastModifyRequest.mfStep < 6)
+                                                        @if ((@Model._ViewceMastModifyRequest.mfStep == 0 && @_UserId == @Model._ViewceMastModifyRequest.mfEmpCodeRequest) || (@_UserId == @Model._ViewceMastModifyRequest.mfEmpCodeApprove && @Model._ViewceMastModifyRequest.mfStep < 7))
                                                         {
                                                             <input type="button" style="font-size:14px" value="&#x274C" onclick="DeleteFileUser('@item.fnNo','@item.fnFilename','@Url.Action("DeteleDataFile","NewMoldModify")')">
                                                         }

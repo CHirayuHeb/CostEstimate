@@ -42,7 +42,8 @@ namespace CostEstimate.Controllers.NewMoldModify
         private MOLD _MOLD;
         private CacheSettingController _Cache;
         private FunctionsController _callFunc;
-        public string path = @"\\thsweb\\CostEstimate\\";
+        //public string path = @"\\thsweb\\CostEstimate\\";
+        public string path = @"\\10.200.128.20\\CostEstimate\\";
         public string PgName = "CostEstimate";
         public NewMoldModifyController(LAMP lamp, HRMS hrms, IT it, MK mk, MOLD mold, CacheSettingController cacheController, FunctionsController callfunction)
         {
@@ -1260,7 +1261,13 @@ _MOLD._ViewLLLedger
                             }
                         }
                     }
-                    var varifyUrl = "http://thsweb/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=MoldModify";// + getSrNo[0].ToString();
+                    // var varifyUrl = "http://thsweb/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=MoldModify";// + getSrNo[0].ToString();
+                    //var varifyUrl = "//10.200.128.20/MVCPublish/CostEstimate/Login/index?DocumentNo=" + RunDoc + "&DocType=MoldModify";// + getSrNo[0].ToString();
+
+                    var varifyUrl = $"http://thsweb/MVCPublish/CostEstimate/Login/index?DocumentNo={RunDoc}&DocType=MoldModify";
+
+                    var varifyUrlM =$"http://10.200.128.20/MVCPublish/CostEstimate/Login/index?DocumentNo={RunDoc}&DocType=MoldModify";
+
                     var bodyBuilder = new BodyBuilder();
                     //var image = bodyBuilder.LinkedResources.Add(@"E:\01_My Document\02_Project\_2023\1. PartTransferUnbalance\PartTransferUnbalance\wwwroot\images\btn\OK.png");
                     string vIssue = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
@@ -1276,9 +1283,16 @@ _MOLD._ViewLLLedger
                         //$"<B>Subject : </B>" + _smStatus + "<br>" +
                         $"<B>Status : </B> " + _smStatus + "<br> " +
                         $"<B> หมายเหตุ : </B> " + @class._ViewceHistoryApproved.htRemark + "<br> " +
-                        $"คลิ๊กลิงค์เพื่อเปิดเอกสาร <a href='" + varifyUrl + "'>More Detail" +
+                        //$"คลิ๊กลิงค์เพื่อเปิดเอกสาร <a href='" + varifyUrl + "'>More Detail" +
+
+                        $"คลิ๊กลิงก์เพื่อเปิดเอกสาร (คอมพิวเตอร์) <a href='{varifyUrl}'>More Detail (PC)</a><br><br>" +
+                        $"คลิ๊กลิงก์เพื่อเปิดเอกสาร (มือถือ / iPad) <a href='{varifyUrlM}'>More Detail (Mobile / iPad)</a><br>" +
+
+
+
+
                         //$"<img src = 'http://thsweb/MVCPublish/LR_Service_Request/images/btn/mail1.png' alt = 'HTML tutorial' style = 'width: 42px; height: 42px;'>" +
-                        $"</a>" +
+                    $"</a>" +
                         $"</div>";
 
                     // bodyBuilder.Attachments.Add(@"E:\01_My Document\02_Project\_2023\1. PartTransferUnbalance\PartTransferUnbalance\dev_rfc.log");

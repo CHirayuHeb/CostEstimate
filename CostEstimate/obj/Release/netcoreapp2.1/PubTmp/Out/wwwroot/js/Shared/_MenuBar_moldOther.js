@@ -462,6 +462,7 @@ function PositionY(menu) {
         case "AddOMaster":
             LoadScript("js/Home/Index.js", "Home");
             LoadScript("js/Home/divShow.js", "Home");
+            LoadScript("js/Home/Omaster.js", "Home");
             PY = "265px";
             // PY = "331px";
             opacity = "opacity-dot-3";
@@ -1961,7 +1962,7 @@ function Menubar_PrintQUOTATION(action, mpNo) {
     });
     $("#myModalQUOTATION").modal("show");
 }
-function printQuotationA4(mpNo, action, type) {
+function printQuotationA4old(mpNo, action, type) {
     var printContents;
     // MoldModify
     //SubMaker
@@ -1996,6 +1997,48 @@ function printQuotationA4(mpNo, action, type) {
     //$("#myModalQUOTATION").hide();
 }
 
+function printQuotationA4(mpNo, action, type) {
+    console.log("printQuotationA4 MOLD ");
+    // เลือก container ให้ตรงกับ id จริงตาม type
+    // (แก้ mapping ตรงนี้ให้ตรงกับ modal ของแต่ละประเภทที่มีในหน้านี้จริง ๆ)
+    var containerId = "ResultMoldQuotation"; // MoldModify -> ใช้ id นี้ตาม modal ที่ส่งมา
+    // if (type === "SubMaker") containerId = "ResultQuotation";
+    // if (type === "MoldOther") containerId = "ResultMoldOtherQuotation";
+
+    var container = document.getElementById(containerId);
+    if (!container) {
+        console.error("ไม่พบ container สำหรับพิมพ์: #" + containerId);
+        return;
+    }
+    var printContents = container.innerHTML;
+
+    var printWindow = window.open('', '', 'height=800,width=1000');
+    printWindow.document.write('<html><head><title>Quotation</title>');
+
+    // copy <style>/<link> ของหน้าปัจจุบันไปด้วย ไม่งั้น layout/สีที่จัดไว้จะหาย
+    document.querySelectorAll('style, link[rel="stylesheet"]').forEach(function (node) {
+        printWindow.document.write(node.outerHTML);
+    });
+
+    printWindow.document.write('<style>@media print { body { font-family: Arial; } @page { size: A4; margin: 0; } }</style>');
+    printWindow.document.write('</head>');
+
+    // ต้องใส่ class นี้เพราะ CSS ของเราถูก scope ไว้ที่ .estimation-page
+    printWindow.document.write('<body class="estimation-page">');
+    printWindow.document.write(printContents);
+    printWindow.document.write('</body></html>');
+
+    printWindow.document.close();
+
+    printWindow.onload = function () {
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
+
+        let url = action + mpNo;
+        GoSideMenu(url);
+    };
+}
 
 //Process
 function Menubar_EditMasterProcess(mpNo, action) {
@@ -4377,7 +4420,12 @@ function Menubar_MoldOther_saveDraft(action) {
     } else if (document.getElementById("i_NewOther_Type").value == "") {
         vmsg = "กรุณากรอกข้อมูล Type !!!";
         document.getElementById("i_NewOther_Type").focus();
-    } else if (rows.length == 0 && vstep == 1) {
+    }
+    else if (document.getElementById("i_NewOther_TargetDate").value == "") {
+        vmsg = "กรุณากรอกข้อมูล Target Date !!!";
+        document.getElementById("i_NewOther_TargetDate").focus();
+    }
+    else if (rows.length == 0 && vstep == 1) {
         vmsg = "กรุณาเพิ่ม Part name !!!";
         document.getElementById("btnAddPartName").focus();
     }
@@ -7994,4 +8042,53 @@ function Menubar_AddMasterOMasterReqParent(url, deleteUrl) {
             console.error('Error:', error);
             Swal.fire("Error", "Unable to connect to the server.", "error");
         });
+}
+
+function printQuotationA4Cost(mpNo, action, type) {
+    // เลือก container ให้ตรงกับ id จริงตาม type
+    // (แก้ mapping ตรงนี้ให้ตรงกับ modal ของแต่ละประเภทที่มีในหน้านี้จริง ๆ)
+    var containerId = "ResultMoldOtherQuotation"; // MoldModify -> ใช้ id นี้ตาม modal ที่ส่งมา
+
+    //if (type == "SubMaker") {
+    //    containerId = "ResultQuotation";//document.getElementById("ResultQuotation").innerHTML;
+    //} else {
+    //    containerId = "ResultMoldQuotation";// document.getElementById("ResultMoldQuotation").innerHTML;
+    //}
+
+    // if (type === "SubMaker") containerId = "ResultQuotation";
+    // if (type === "MoldOther") containerId = "ResultMoldOtherQuotation";
+
+    var container = document.getElementById(containerId);
+    if (!container) {
+        console.error("ไม่พบ container สำหรับพิมพ์: #" + containerId);
+        return;
+    }
+    var printContents = container.innerHTML;
+
+    var printWindow = window.open('', '', 'height=800,width=1000');
+    printWindow.document.write('<html><head><title>Quotation</title>');
+
+    // copy <style>/<link> ของหน้าปัจจุบันไปด้วย ไม่งั้น layout/สีที่จัดไว้จะหาย
+    document.querySelectorAll('style, link[rel="stylesheet"]').forEach(function (node) {
+        printWindow.document.write(node.outerHTML);
+    });
+
+    printWindow.document.write('<style>@media print { body { font-family: Arial; } @page { size: A4; margin: 0; } }</style>');
+    printWindow.document.write('</head>');
+
+    // ต้องใส่ class นี้เพราะ CSS ของเราถูก scope ไว้ที่ .estimation-page
+    printWindow.document.write('<body class="estimation-page moldother-page">');
+    printWindow.document.write(printContents);
+    printWindow.document.write('</body></html>');
+
+    printWindow.document.close();
+
+    printWindow.onload = function () {
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
+
+        let url = action + mpNo;
+        GoSideMenu(url);
+    };
 }
