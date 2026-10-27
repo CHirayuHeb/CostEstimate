@@ -46,10 +46,12 @@ namespace CostEstimate.Controllers.SearchMoldOther
         [Authorize("Checked")]
         public IActionResult Index(Class @class)
         {
-            
+
             List<ViewceMastMoldOtherRequest> _ListViewceMastMoldOtherRequest = new List<ViewceMastMoldOtherRequest>();
             @class._ListViewceMastMoldOtherRequest = new List<ViewceMastMoldOtherRequest>();
             @class._ListViewceMastMoldOtherRequest = _MK._ViewceMastMoldOtherRequest.OrderByDescending(x => x.mrDocmentNo).ToList();
+
+
 
             List<ViewceMastFlowApprove> _ViewceMastFlowApprove = _MK._ViewceMastFlowApprove.Where(x => x.mfFlowNo == "3").OrderBy(x => x.mfStep).Distinct().ToList();
             SelectList formStatus = new SelectList(_ViewceMastFlowApprove.Select(s => s.mfSubject).Distinct());
@@ -137,7 +139,7 @@ namespace CostEstimate.Controllers.SearchMoldOther
              && !string.IsNullOrEmpty(@class._ViewSearchData.v_DateIssueFrom)
              && DateTime.Parse(x.mrIssueDate) >= DateTime.Parse(@class._ViewSearchData.v_DateIssueFrom)).ToList();
 
-                   // @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => DateTime.Parse(x.mrIssueDate) >= DateTime.Parse(@class._ViewSearchData.v_DateIssueFrom)).ToList();
+                    // @class._ListViewceMastMoldOtherRequest = @class._ListViewceMastMoldOtherRequest.Where(x => DateTime.Parse(x.mrIssueDate) >= DateTime.Parse(@class._ViewSearchData.v_DateIssueFrom)).ToList();
                 }
                 if (@class._ViewSearchData.v_DateIssueTo != null && @class._ViewSearchData.v_DateIssueTo != "")
                 {
@@ -153,6 +155,39 @@ namespace CostEstimate.Controllers.SearchMoldOther
 
                 }
             }
+
+
+
+            // mrtTargetStatus target date -issue date
+            //delay
+
+            //success
+
+            //string delay = "";
+            @class._ListViewceMastMoldOtherRequest.ForEach(item =>
+            {
+                //DateTime targetDate = DateTime.ParseExact(item.mrTargetDate, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                DateTime targetDate = DateTime.ParseExact(item.mrTargetDate, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                //4 ใบ สำเร็จ
+                //🟡 สีเหลือง: ยังไม่เกินกำหนด CP Target Date
+                //🟢 สีเขียว: Close Project(อยู่ Sheet1 ถึง Step6)
+                //🔴 สีแดง: ยังไม่ Close Project และเกินกำหนด CP Target
+                var vWoriking = _MK._ViewceMastWorkingTimeRequest.Where(x => x.wrDocumentNo == item.mrDocmentNo).FirstOrDefault();
+                var vMaterrail = _MK._ViewceMastMaterialRequest.Where(x => x.mrDocumentNo == item.mrDocmentNo).FirstOrDefault();
+                var vToolGR = _MK._ViewceMastToolGRRequest.Where(x => x.trDocumentNo == item.mrDocmentNo).FirstOrDefault();
+                var vInSpecMold = _MK._ViewceMastInforSpacMoldRequest.Where(x => x.irDocumentNo == item.mrDocmentNo).FirstOrDefault();
+
+
+
+
+                item.mrStatusWorking = vWoriking is null ? "lightgrey" : vWoriking?.wrStep == 3 ? "Green" : targetDate < DateTime.Today ? "Red" : "Yellow";
+                item.mrStatusMaterrail = vMaterrail is null ? "lightgrey" : vMaterrail?.mrStep == 3 ? "Green" : targetDate < DateTime.Today ? "Red" : "Yellow";
+                item.mrStatusToolGR = vToolGR is null ? "lightgrey" : vToolGR?.trStep == 4 ? "Green" : targetDate < DateTime.Today ? "Red" : "Yellow";
+                item.mrStatusInSpecMold = vInSpecMold is null ? "lightgrey" : vInSpecMold?.irStep == 3 ? "Green" : targetDate < DateTime.Today ? "Red" : "Yellow";
+
+
+            });
+
 
             return @class._ListViewceMastMoldOtherRequest;
         }
@@ -325,6 +360,27 @@ namespace CostEstimate.Controllers.SearchMoldOther
                 // string fileName = $"Export_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
                 return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
             }
+
+        }
+
+        public ActionResult DeleteDocItem(string mrDoc)
+        {
+            try
+            {
+                //ViewceMastMoldOtherRequest
+                ViewceMastMoldOtherRequest vRun = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrDocmentNo == mrDoc).FirstOrDefault();
+                if (vRun != null)
+                {
+                    _MK._ViewceMastMoldOtherRequest.Remove(vRun);
+                }
+                _MK.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return Json(new { res = "error: " + ex.Message });
+
+            }
+            return Json(new { res = "success" });
 
         }
 

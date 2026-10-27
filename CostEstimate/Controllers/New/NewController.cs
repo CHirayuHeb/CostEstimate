@@ -612,7 +612,7 @@ namespace CostEstimate.Controllers.New
                             else if (i_Step == 2) // DM Up
                             {
                                 v_POS_HCM_CODE = _HRMS.AccPOSMAST
-                                    .Where(x => x.POS_CODE == "DDM")
+                                    .Where(x => x.POS_CODE == "SPM") //DDM
                                     .Select(x => x.POS_HCM_CODE)
                                     .FirstOrDefault();
 

@@ -480,9 +480,9 @@
 
 .moldother-page .rev-tag {
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 600;
     color: #0000CC;
-    text-decoration: underline;
+    /*text-decoration: underline;*/
     text-underline-offset: 3px;
 }
 

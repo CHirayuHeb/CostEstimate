@@ -44,7 +44,7 @@ namespace CostEstimate.Controllers.NewMoldOther
         private MOLD _MOLD;
         private CacheSettingController _Cache;
         private FunctionsController _callFunc;
-       // public string path = @"\\thsweb\\CostEstimate\\";
+        // public string path = @"\\thsweb\\CostEstimate\\";
         public string path = @"\\10.200.128.20\\CostEstimate\\";
         public string PgName = "CostEstimate";
         public NewMoldOtherController(LAMP lamp, HRMS hrms, IT it, MK mk, MOLD mold, CacheSettingController cacheController, FunctionsController callfunction)
@@ -104,6 +104,16 @@ namespace CostEstimate.Controllers.NewMoldOther
             List<string> _listTypeMold = _MK._ViewceMastType.Where(x => x.mtType.Contains("TypeMold") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
             SelectList _TypeMold = new SelectList(_listTypeMold);
             ViewBag.TypeMold = _TypeMold;
+
+
+            List<string> _listItemMold = _MK._ViewceMastType.Where(x => x.mtType == "MoldType" && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+            SelectList _TypeItemMold = new SelectList(_listItemMold);
+            ViewBag.TypeItemMold = _TypeItemMold;
+
+
+            List<string> _listShippingType = _MK._ViewceMastType.Where(x => x.mtType.Contains("ShippingType") && x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtName).Select(x => x.mtName).ToList();
+            SelectList _TypeShippingType = new SelectList(_listShippingType);
+            ViewBag.TypeShippingType = _TypeShippingType;
 
 
 
@@ -330,17 +340,6 @@ namespace CostEstimate.Controllers.NewMoldOther
                     string _ItemInforRequestPart = "";
 
 
-                    //string ipGateType1 = "";
-                    //string ipGateType2 = "";
-                    //string ipGateType3 = "";
-                    //string ipGateTypeMain = "";
-
-                    //string ipNUMBER_POINT1 = "";
-                    //string ipNUMBER_POINT2 = "";
-                    //string ipNUMBER_POINT3 = "";
-                    //string ipNUMBER_POINTMain = "";
-
-
                     string ipGate1 = "";
                     string ipGate2 = "";
                     string ipGate3 = "";
@@ -373,53 +372,6 @@ namespace CostEstimate.Controllers.NewMoldOther
                         ipGate2 += _listViewceItemInforRequestPartName[j].ipGateType2 != null && _listViewceItemInforRequestPartName[j].ipGateType2 != "" ? _listViewceItemInforRequestPartName[j].ipGateType2 + "(" + _listViewceItemInforRequestPartName[j].ipNumberPoint2.ToString() + " DROP), " : "";
                         ipGate3 += _listViewceItemInforRequestPartName[j].ipGateType3 != null && _listViewceItemInforRequestPartName[j].ipGateType3 != "" ? _listViewceItemInforRequestPartName[j].ipGateType3 + "(" + _listViewceItemInforRequestPartName[j].ipNumberPoint3.ToString() + " DROP), " : "";
 
-
-                        //ipGateType1 += _listViewceItemInforRequestPartName[j].ipGateType1 != null && _listViewceItemInforRequestPartName[j].ipGateType1 != "" ? _listViewceItemInforRequestPartName[j].ipGateType1 : "";
-                        //ipGateType2 += _listViewceItemInforRequestPartName[j].ipGateType2 != null && _listViewceItemInforRequestPartName[j].ipGateType2 != "" ? " + " + _listViewceItemInforRequestPartName[j].ipGateType2 : "";
-                        //ipGateType3 += _listViewceItemInforRequestPartName[j].ipGateType3 != null && _listViewceItemInforRequestPartName[j].ipGateType3 != "" ? " + " + _listViewceItemInforRequestPartName[j].ipGateType3 : "";
-
-                        //ipGateTypeMain = ipGateType1 + ipGateType2 + ipGateType3;
-
-
-                        //ipNUMBER_POINT1 += _listViewceItemInforRequestPartName[j].ipGateType1 != null && _listViewceItemInforRequestPartName[j].ipGateType1 != "" ? "" + _listViewceItemInforRequestPartName[j].ipNumberPoint1.ToString() : "";
-                        //ipNUMBER_POINT2 += _listViewceItemInforRequestPartName[j].ipGateType2 != null && _listViewceItemInforRequestPartName[j].ipGateType2 != "" ? "+ " + _listViewceItemInforRequestPartName[j].ipNumberPoint2.ToString() : "";
-                        //ipNUMBER_POINT3 += _listViewceItemInforRequestPartName[j].ipGateType3 != null && _listViewceItemInforRequestPartName[j].ipGateType3 != "" ? "+ " + _listViewceItemInforRequestPartName[j].ipNumberPoint3.ToString() : "";
-
-                        //ipNUMBER_POINTMain = _listViewceItemInforRequestPartName[j].ipGateType1 != null && _listViewceItemInforRequestPartName[j].ipGateType1 != "" ? " (" + ipNUMBER_POINT1 + ipNUMBER_POINT2 + ipNUMBER_POINT3 + " DROP), " : "";
-
-
-
-
-                        //ipsprueSys = _listViewceItemInforRequestPartName[0].ipSprueSystem != null && _listViewceItemInforRequestPartName[0].ipSprueSystem != "" ?
-                        //                                        _listViewceItemInforRequestPartName[0].ipSprueSystem : "";
-                        //ipMakerRunHot = _listViewceItemInforRequestPartName[0].ipMakerHotRunner != null && _listViewceItemInforRequestPartName[0].ipMakerHotRunner != "" ? "(" + _listViewceItemInforRequestPartName[0].ipMakerHotRunner + "), " : ", ";
-
-
-
-                        //ถ้าเป็น Cold Sprue ให้ขึ้นคำว่า " Cold Sprue System " แต่ถ้าเป็น Hot sprue และ Runner เป็น cold Runner ให้ขึ้นเป็น " Hot sprue System "  
-                        //และถ้าเป็น Hot sprue และ Runner เป็น Hot Runner ให้ขึ้นเป็น " Hot Runner System " ครับนี่เป็นเงื่อนไขครับ
-
-                        //if (_listViewceItemInforRequestPartName?[0].ipSprueSystem != null)
-                        //{
-
-                        //    if (_listViewceItemInforRequestPartName[0].ipSprueSystem.Contains("COLD"))
-                        //    {
-                        //        ipsprueSys = _listViewceItemInforRequestPartName[0].ipSprueSystem ?? "";
-                        //    }
-                        //    else //HOT SPRUE SYSTEM
-                        //    {
-                        //        //แต่ถ้าเป็น Hot sprue และ Runner เป็น cold Runner ให้ขึ้นเป็น " Hot sprue System
-                        //        if (_listViewceItemInforRequestPartName[0].ipMakerHotRunner.Contains("COLD"))
-                        //        {
-                        //            ipsprueSys = _listViewceItemInforRequestPartName[0].ipSprueSystem ?? "";
-                        //        }
-                        //        else
-                        //        {
-                        //            ipsprueSys = " HOT RUNNER SYSTEM";
-                        //        }
-                        //    }
-
-                        //}
                         var firstItem = _listViewceItemInforRequestPartName?[0];
 
                         if (firstItem?.ipSprueSystem != null)
@@ -1508,6 +1460,9 @@ namespace CostEstimate.Controllers.NewMoldOther
 
                         _MK._ViewceMastMoldOtherRequest.AddAsync(_ViewceMastMoldOtherRequest);
 
+                        //add 21/10/2026
+                        _ViewceMastMoldOtherRequest.mrShippingType = @class._ViewceMastMoldOtherRequest.mrShippingType;
+                        _ViewceMastMoldOtherRequest.mrMoldType = @class._ViewceMastMoldOtherRequest.mrMoldType;
 
 
                         _MK.SaveChanges();
@@ -1893,6 +1848,11 @@ namespace CostEstimate.Controllers.NewMoldOther
 
                         //add 30/09/2026
                         vOtherRequest.mrTargetDate = @class._ViewceMastMoldOtherRequest.mrTargetDate;
+
+
+                        //add 21/10/2026
+                        vOtherRequest.mrShippingType = @class._ViewceMastMoldOtherRequest.mrShippingType;
+                        vOtherRequest.mrMoldType = @class._ViewceMastMoldOtherRequest.mrMoldType;
 
                         _MK._ViewceMastMoldOtherRequest.Update(vOtherRequest);
                         _MK.SaveChanges();
@@ -3169,15 +3129,36 @@ namespace CostEstimate.Controllers.NewMoldOther
                     @class._ViewOperaterCP.empCheckedByTM = tbHistoryCheckedEMPCODE;
                     @class._ViewOperaterCP.empApproveBy = tbHistoryApproveByEMPCODE;
 
-
-
                     @class._ListViewMoldOtherDatailQuotation = getDatailQuotation(mpNo, @class);
-
 
                     @class.rMoldGO = chgDateFormat(@class._ViewceMastMoldOtherRequest.mrMoldGo, "MM/yy", 0);
                     @class.rMoldTry1 = chgDateFormat(@class._ViewceMastMoldOtherRequest.mrTry1, "MM/yy", 0);
+
                     @class.rMoldMass1 = chgDateFormat(@class._ViewceMastMoldOtherRequest.mrMoldMass, "MM/yy", 1);
                     @class.rMoldMass = chgDateFormat(@class._ViewceMastMoldOtherRequest.mrMoldMass, "MM/yy", 0);
+
+
+                    var Q0IssueDate = _MK._ViewceMastMoldOtherRequest
+                                           .Where(x => x.mrCustomerName == @class._ViewceMastMoldOtherRequest.mrCustomerName
+                                                    && x.mrFunction == @class._ViewceMastMoldOtherRequest.mrFunction
+                                                    && x.mrModelName == @class._ViewceMastMoldOtherRequest.mrModelName
+                                                     && x.mrEvent == "Q0")
+                                           .Select(x => x.mrIssueDate).FirstOrDefault();
+
+                    if (@class._ViewceMastMoldOtherRequest.mrEvent != "Q0" && Q0IssueDate != null) { @class._ViewceMastMoldOtherRequest.mrIssueDate = Q0IssueDate; }
+
+                    //SHIPPING TYPE,MOLD TYPE,Date Issue order by CE
+                    var vShipping = @class._ViewceMastMoldOtherRequest.mrShippingType ?? "";
+                    var vMoldType = @class._ViewceMastMoldOtherRequest.mrMoldType ?? "";
+                    var vIssueDate = @class._ViewceMastMoldOtherRequest.mrIssueDate ?? "";
+                    var vCE = @class._ViewceMastMoldOtherRequest.mrDocmentNo ?? "";
+
+
+                    // var vDocMold = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrShippingType == vShipping && x.mrMoldType == vMoldType && x.mrIssueDate == vIssueDate).OrderByDescending(x => x.mrDocmentNo).ToList();
+
+                    var vDocMold = _MK._ViewceMastMoldOtherRequest.Where(x => x.mrShippingType == vShipping&& x.mrMoldType == vMoldType && x.mrIssueDate == vIssueDate).OrderBy(x => x.mrDocmentNo).ToList();
+                    //int vIndex = vDocMold.FindIndex(x => x.mrDocmentNo == vCE) + 1;
+                    @class._ViewceMastMoldOtherRequest.mrDocMold =Math.Max(vDocMold.FindIndex(x => x.mrDocmentNo == vCE) + 1, 1).ToString();
 
                     //MoldTry1
                     //MoldMass1

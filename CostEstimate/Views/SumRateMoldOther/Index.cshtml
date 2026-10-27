@@ -16,6 +16,8 @@
 <link href="~/css/New/mNew.css" rel="stylesheet" />
 <link href="~/css/Home/siteHome.css" rel="stylesheet" />
 <script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("SumRateMoldOther"); } }</script>
+<link href="~/css/PrintReportSum.css" rel="stylesheet" />
+
 <div class="home-content">
     <div id="DisplayContent" class="content-box">
         <br />
@@ -31,8 +33,11 @@
                 </div>
                 <div class="col-40 center" style="text-align:right;">
                     <span style="font-size:14px; font-weight:800; color:#b3e07d; line-height:1.4;">
-                        MOLD SUBMAKER COST ESTIMATE SHEET 
+                        MOLD SUBMAKER COST ESTIMATE SHEET
                     </span>
+                    <button type="button" id="btnExportPdf" class="btn btn-success">
+                        <i class="fa fa-file-pdf-o"></i> Export PDF
+                    </button>
                     @*<span style="font-size:14px; font-weight:600; color:white; line-height:1.4; margin-top:2px; display:block;">
                     OVERSEA MAKER
                 </span>*@
@@ -139,7 +144,7 @@
                     <div class="col-20 " style=" display: flex;align-items: center;">
                     </div>
                     <div class="col-25 " style=" display: flex;align-items: center; ">
-                       
+
                     </div>
 
 
@@ -147,59 +152,23 @@
                     </div>
                 </div>
                 <br />
-             
+
             </div>
-            <div  class=" center" style="display:flex; width:100%;margin-top:10px;border:0px solid #000;border-radius:5px;background:#fff;padding:10px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
-                <div style="flex:0 0 80%;">
-                    @await Html.PartialAsync("_PartialSumRateProcess", Model)
+            <div class="pdf-process" style="flex:0 0 80%;">
+                <div class=" center" style="display:flex; width:100%;margin-top:10px;border:0px solid #000;border-radius:5px;background:#fff;padding:10px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
+                    <div style="flex:0 0 80%;">
+                        @await Html.PartialAsync("_PartialSumRateProcess", Model)
+                    </div>
+                    <div style="flex:0 0 20%;margin-left:5px">
+                        @await Html.PartialAsync("_PartialSumRateMaterial", Model)
+                    </div>
                 </div>
-                <div style="flex:0 0 20%;margin-left:5px">
-                    @await Html.PartialAsync("_PartialSumRateMaterial", Model)
+                <div class=" center" style="margin-top:10px;border:0px solid #000;border-radius:5px;background:#fff;padding:5px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
+                    @await Html.PartialAsync("_PartialEstimateCost", Model)
                 </div>
+
             </div>
-            @*<br />*@
-            @*<div class="row center" style="margin-top:10px;border:0px solid #000;border-radius:5px;background:#fff;padding-bottom:10px;padding-top:5px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
-                <div class="col-80">
-                    @await Html.PartialAsync("_PartialSumRateProcess", Model)
-                </div>
-                <div class="col-20">
-                    @await Html.PartialAsync("_PartialSumRateMaterial", Model)
-                </div>
-            </div>*@
-
-
-            <div class=" center" style="margin-top:10px;border:0px solid #000;border-radius:5px;background:#fff;padding:5px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
-                @await Html.PartialAsync("_PartialEstimateCost", Model)
-            </div>
-
-            @*  <div class="row center" style="margin-top:10px;border:0px solid #000;border-radius:5px;background:#fff;padding:10px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
-            <div class="col-25">
-                @await Html.PartialAsync("_PartialSumRateMaterial", Model)
-            </div>
-
-        </div>*@
-
-            @*<div class="row center" style="margin-top:10px;border:0px solid #000;border-radius:5px;background:#fff;padding-bottom:10px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
-            <div class="col-75">
-                @await Html.PartialAsync("_PartialEstimateCost", Model)
-            </div>
-            <div class="col-25">
-                @await Html.PartialAsync("_PartialSumRateMaterial", Model)
-            </div>
-        </div>*@
-
-
-
-
-            @*<div style="margin-top:10px;border:0px solid #000;border-radius:5px;background:#fff;padding:5px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
-            @await Html.PartialAsync("_PartialSumRateMaterial", Model)
-        </div>
-
-        <div style="margin-top:10px;border:0px solid #000;border-radius:5px;background:#fff;padding:5px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
-            @await Html.PartialAsync("_PartialEstimateCost", Model)
-        </div>*@
-
-
+            
 
 
         </div>
@@ -207,5 +176,35 @@
 
 
 
-            </div>
-        </div>
+    </div>
+</div>
+<script>
+    document.getElementById('btnExportPdf').addEventListener('click', function () {
+        var el = document.querySelector('.content-text');
+
+        // พื้นที่พิมพ์ A4 แนวนอน หักขอบ 8mm: 281mm x 194mm (96dpi)
+        var pageW = 281 * 96 / 25.4;   // ~1062 px
+        var pageH = 194 * 96 / 25.4;   // ~733 px
+
+        var fitOnePage = true;          // false = ย่อให้พอดีความกว้าง ยอมให้ยาวหลายหน้า
+        var zw = pageW / el.scrollWidth;
+        var zh = pageH / el.scrollHeight;
+        var zoom = fitOnePage ? Math.min(zw, zh) : zw;
+        zoom = Math.max(0.3, Math.min(1, zoom)).toFixed(3);
+
+        var style = document.createElement('style');
+        style.id = 'printZoomStyle';
+        style.textContent = '@@media print { body { zoom: ' + zoom + ' !important; } }';
+        document.head.appendChild(style);
+
+        var oldTitle = document.title;
+        document.title = '@Model._ViewceMastMoldOtherRequest.mrDocmentNo';
+
+        window.onafterprint = function () {
+            document.title = oldTitle;
+            var s = document.getElementById('printZoomStyle');
+            if (s) s.remove();
+        };
+        window.print();
+    });
+</script>

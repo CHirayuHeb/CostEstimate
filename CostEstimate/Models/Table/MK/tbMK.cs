@@ -712,6 +712,24 @@ namespace CostEstimate.Models.Table.MK
 
         public string mrTargetDate { get; set; }
 
+        [NotMapped]
+        public string mrtTargetStatus { get; set; }
+
+        [NotMapped]
+        public string mrStatusWorking { get; set; }
+        [NotMapped]
+        public string mrStatusMaterrail { get; set; }
+        [NotMapped]
+        public string mrStatusToolGR { get; set; }
+        [NotMapped]
+        public string mrStatusInSpecMold { get; set; }
+
+        [NotMapped]
+        public string mrDocMold { get; set; }
+
+
+        public string mrShippingType { get; set; }
+        public string mrMoldType { get; set; }
 
 
     }
@@ -1187,5 +1205,24 @@ namespace CostEstimate.Models.Table.MK
         public string Name { get; set; }           // fileType เช่น "SPEC", "MOLD"
         public List<IFormFile> Files { get; set; }  // ไฟล์ของ type นั้น
     }
+
+
+
+    public class MoldOtherRequestDto
+    {
+        public string mrDocmentNo { get; set; }
+        public List<SubDto> WorkingTimes { get; set; }
+        public List<SubDto> Materials { get; set; }
+        public List<SubDto> ToolGRs { get; set; }
+        public List<SubDto> InforSpacMolds { get; set; }
+    }
+
+    public class SubDto
+    {
+        public int step { get; set; }
+        public string type { get; set; }
+        public string status { get; set; }
+    }
+
 
 }

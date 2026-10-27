@@ -8092,3 +8092,40 @@ function printQuotationA4Cost(mpNo, action, type) {
         GoSideMenu(url);
     };
 }
+
+
+function Menubar_DeleteDocOMaster(mrDoc, action) {
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Delete Document No:" + mrDoc + " ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result['isConfirmed']) {
+            $.ajax({
+                type: 'post',
+                url: action,
+                data: { mrDoc: mrDoc },
+                success: function (res) {
+                    swal.fire({
+                        title: 'แจ้งเตือน',
+                        icon: res.res,
+                        text: res.res,
+                    })
+                        .then((result) => {
+                            GoSideMenu("SearchMoldOther");
+                        });
+
+
+
+                }
+            });
+        } else {
+            //console.log('Cancel');
+            return false;
+        }
+    });
+}

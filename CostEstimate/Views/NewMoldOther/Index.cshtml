@@ -222,9 +222,37 @@
                         </div>
 
 
-                        <hr style="@(Model._ViewceMastMoldOtherRequest.mrStep > 0 ? "" : "display:none;")" />
+                        
+
+                        <hr style="margin-left:5px;margin-right:5px;" />
+                        <div id="divMoldOtherType">
+                            @*style="@(Model._ViewceMastMoldOtherRequest.mrStep > 4 ? "" : "display:none;")">*@
+                            <div class="row center" style="@(Model._ViewceMastMoldOtherRequest.mrStep > 4 ? "" : "display:none;")">
+                                <div class="row center">
+                                    <div class="col-5 " style="">
+                                    </div>
+                                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">MOLD TYPE</div>
+                                    </div>
+                                    <div class="col-25 " style=" display: flex;align-items: center; ">
+                                        @Html.DropDownListFor(m => m._ViewceMastMoldOtherRequest.mrMoldType, (SelectList)ViewBag.TypeItemMold, "กรุณาเลือก", new { @class = "form-control", id = "i_NewOther_MoldType", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
+                                    </div>
+                                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                        <div class="grid-item fw-800 center " style="text-align:left;font-size:12px">SHIPPING TYPE</div>
+                                    </div>
+                                    <div class="col-25" style=" display: flex;align-items: center; ">
+                                        @Html.DropDownListFor(m => m._ViewceMastMoldOtherRequest.mrShippingType, (SelectList)ViewBag.TypeShippingType, "กรุณาเลือก", new { @class = "form-control", id = "i_NewOther_shippingType", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
+                                    </div>
+
+                                    <div class="col-5 " style="">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
                         <div id="divMoldOtherPartName" style="@(Model._ViewceMastMoldOtherRequest.mrStep > 0 ? "" : "display:none;")">
-                            <div class="grid-item fw-800 center " style="text-align:left;font-size:13px">Part Name</div>
+                            <div class="grid-item fw-800 left " style="text-align:left;font-size:13px;padding-left:20px;">Part Name</div>
                             <div class="row center">
                                 <div class="row center">
                                     <div class="col-5 " style="">
@@ -240,7 +268,6 @@
                                     </div>
                                     <div class="col-25" style=" display: flex;align-items: center; ">
                                         @Html.DropDownListFor(m => m._ViewceMastMoldOtherRequest.mrChartRate, (SelectList)ViewBag._TypeChartRate, "กรุณาเลือก", new { @class = "form-control", id = "i_NewOther_ChartRate", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })
-                                        @*@Html.DropDownListFor(m => m._ViewceMastMoldOtherRequest.mrChartRate, ViewBag._TypeChartRate as SelectList, "กรุณาเลือก", new { @class = "form-control", id = "i_NewOther_ChartRate", autocomplete = "off", @style = "width:100%;font-size:10px;background-color:yellow;" })*@
                                     </div>
 
                                     <div class="col-5 " style="">
@@ -358,7 +385,7 @@
 
                         <hr style="@(Model._ViewceMastMoldOtherRequest.mrStep > 1 ? "" : "display:none;")">
                         <div id="divMoldOtherItem" style="@(Model._ViewceMastMoldOtherRequest.mrStep > 1 ? "" : "display:none;")">
-                            <div class="grid-item fw-800 center " style="text-align:left;font-size:13px">ITEM</div>
+                            <div class="grid-item fw-800 left " style="text-align:left;font-size:13px;padding-left:20px;">ITEM</div>
                             <div class="row center">
                                 <div class="col-5 " style="">
                                 </div>
@@ -401,7 +428,7 @@
                                                         else if (Model._ViewceMastWorkingTimeRequest.wrStep == 2)
                                                         { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
                                                         @*else if (Model._ViewceMastWorkingTimeRequest.wrStep == 3)
-                                                            { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}*@
+                                        { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}*@
                                                         else if (Model._ViewceMastWorkingTimeRequest.wrStep == 3)
                                                         { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
                                                     }
@@ -421,8 +448,8 @@
                                                     }
 
                                                     @*<a href="@Url.Action("Index", "NewMoldOtherWK",new {Docno = Model._ViewceMastWorkingTimeRequest.wrDocumentNo})" target="_blank" style="font-size:15px;text-decoration: none;">
-                                                            <img src="~/images/searchWK.png" alt="icon" class="imgM" />
-                                                        </a>*@
+                                        <img src="~/images/searchWK.png" alt="icon" class="imgM" />
+                                    </a>*@
                                                 </td>
                                             </tr>
                                             <tr>
@@ -454,13 +481,10 @@
                                                         else if (Model._ViewceMastMaterialRequest.mrStep == 2)
                                                         { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
                                                         @*else if (Model._ViewceMastMaterialRequest.mrStep == 3)
-                                                            { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}*@
+                                        { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}*@
                                                         else if (Model._ViewceMastMaterialRequest.mrStep == 3)
                                                         { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
                                                     }
-
-
-
                                                 </td>
                                                 <td class="center">
                                                     @if (!string.IsNullOrEmpty(Model._ViewceMastMaterialRequest?.mrDocumentNo))
@@ -473,9 +497,6 @@
                                                     {
                                                         <img src="~/images/searchWK.png" alt="icon" class="imgM" style="cursor:not-allowed" />
                                                     }
-
-
-
                                                 </td>
                                             </tr>
                                             <tr>
@@ -556,7 +577,7 @@
                                                         else if (Model._ViewceMastInforSpacMoldRequest.irStep == 2)
                                                         { <img src="~/images/3.png" alt="icon" style="height: 23px; width: 23px;" />}
                                                         @*else if (Model._ViewceMastInforSpacMoldRequest.irStep == 3)
-                                                            { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}*@
+                                        { <img src="~/images/4.png" alt="icon" style="height: 23px; width: 23px;" />}*@
                                                         else if (Model._ViewceMastInforSpacMoldRequest.irStep == 3)
                                                         { <img src="~/images/f1.png" alt="icon" style="height: 25px; width: 25px;" />}
                                                     }

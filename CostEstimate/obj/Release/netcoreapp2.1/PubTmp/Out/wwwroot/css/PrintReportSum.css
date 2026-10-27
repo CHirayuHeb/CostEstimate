@@ -1,0 +1,43 @@
+﻿@page {
+    size: A4 landscape;
+    margin: 8mm;
+}
+
+@media print {
+    /* ซ่อนปุ่มและเมนู */
+    .no-print,
+    .navbar, .sidebar, footer,
+    header, nav {
+        display: none !important;
+    }
+
+    /* ปลดความสูง/overflow ของ container ไม่ให้ PDF ถูกตัดเหลือหน้าเดียว */
+    html, body,
+    .home-content, .content-box, .content-text {
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+        position: static !important;
+        margin: 0 !important;
+    }
+
+    body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        zoom: 0.6; /* ย่อให้ตารางกว้างพอดีหน้า ปรับ 0.5-0.7 */
+    }
+
+    /* พื้นหลังขาว ไม่เอาเงากล่อง */
+    .content-box, .content-text {
+        background: #fff !important;
+        box-shadow: none !important;
+    }
+
+    tr {
+        page-break-inside: avoid;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+}

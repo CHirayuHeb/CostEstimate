@@ -91,15 +91,24 @@
         <div class="row"
              style="align-items:flex-start; margin-top:2px;">
 
+            @{
+                var _revised = Model._ViewceMastMoldOtherRequest?.mrRevision > 0
+                    ? "REVISED " + Model._ViewceMastMoldOtherRequest.mrRevision +" -"
+                    : "";
+
+                var _trevise = Model._ViewceMastMoldOtherRequest?.mrRevision > 0
+                   ?  "-"+ Model._ViewceMastMoldOtherRequest.mrRevision
+                    : "";
+            }
             <div class="col-100">
 
-                <span class="rev-tag">
-
-                    REVISED
-                    @Html.DisplayFor(model =>
-                        model._ViewceMastMoldOtherRequest.mrRevision)
-
-                    -Ref.NO. CE
+                <span class="rev-tag" style="font-size:16px">
+                    <span style="font-size:20px ;color:red">
+                        @_revised
+                    </span>
+                    
+                 
+                    Ref.No.
 
                     @Html.DisplayFor(model =>
                         model._ViewceMastMoldOtherRequest.mrDocmentNo)
@@ -108,8 +117,21 @@
                         model._ViewceMastMoldOtherRequest.mrEvent)
 
                 </span>
+                <br />
+                <span class="rev-tag" style="font-size:13px">
+                    Ref.Mold No :
+                    @Html.DisplayFor(model => model._ViewceMastMoldOtherRequest.mrShippingType)
+                    -
+                    @Html.DisplayFor(model => model._ViewceMastMoldOtherRequest.mrIssueDate)
+                    -
+                    @Html.DisplayFor(model => model._ViewceMastMoldOtherRequest.mrMoldType)
+                    -
+                    @Html.DisplayFor(model => model._ViewceMastMoldOtherRequest.mrDocMold)
+                    @_trevise
+                </span>
 
             </div>
+
 
         </div>
 
@@ -545,7 +567,7 @@
                 }
 
                 <img src="~/images/@(empTM).png"
-                     style="width:100px;height:20px;"
+                     style="width:110px;height:30px;"
                      onerror="this.style.display='none';" />
 
             </div>
@@ -587,7 +609,7 @@
                 }
 
                 <img src="~/images/@(empAP).png"
-                     style="width:100px;height:20px;"
+                     style="width:100px;height:30px;"
                      onerror="this.style.display='none';" />
 
             </div>

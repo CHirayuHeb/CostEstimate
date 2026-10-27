@@ -53,7 +53,7 @@ namespace CostEstimate.Controllers.AddOMaster
             //});
 
             @class._ListceMastType = new List<ViewceMastType>();
-            @class._ListceMastType = _MK._ViewceMastType.Where(x => x.mtProgram == "MoldOther").OrderBy(z => z.mtType.Trim()).ToList();
+            @class._ListceMastType = _MK._ViewceMastType.Where(x => x.mtProgram.Contains("MoldOther")).OrderBy(z => z.mtType.Trim()).ToList();
 
             List<string> _listmtType = _MK._ViewceMastType.Where(x => x.mtProgram.Contains("MoldOther")).OrderBy(x => x.mtType).Select(x => x.mtType).Distinct().ToList();
             SelectList _TypemtType = new SelectList(_listmtType);
@@ -131,7 +131,7 @@ namespace CostEstimate.Controllers.AddOMaster
                         {
                             _ViewceMastType.mtName = @class._ViewceMastType.mtName;
                             _ViewceMastType.mtType = @class._ViewceMastType.mtType;
-                            _ViewceMastType.mtProgram = "MoldOther";
+                            _ViewceMastType.mtProgram = _MK._ViewceMastType.Where(x => x.mtType == @class._ViewceMastType.mtType).Select(x => x.mtProgram).FirstOrDefault() ?? "MoldOther";
                             _ViewceMastType.mtIssueBy = IssueBy;
                             _MK._ViewceMastType.Update(_ViewceMastType);
                         }
@@ -142,7 +142,7 @@ namespace CostEstimate.Controllers.AddOMaster
                         // _ViewceMastModel.mpProcessName = @class._ViewceMastProcess.mpProcessName;
                         _ViewceMastType.mtName = @class._ViewceMastType.mtName;
                         _ViewceMastType.mtType = @class._ViewceMastType.mtType;
-                        _ViewceMastType.mtProgram = "MoldOther";
+                        _ViewceMastType.mtProgram = _MK._ViewceMastType.Where(x => x.mtType == @class._ViewceMastType.mtType).Select(x => x.mtProgram).FirstOrDefault() ?? "MoldOther";
                         _ViewceMastType.mtIssueBy = IssueBy;
                         _ViewceMastType.mtIssueBy = IssueBy;
                         _MK._ViewceMastType.Add(_ViewceMastType);

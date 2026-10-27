@@ -1,11 +1,38 @@
-﻿@model CostEstimate.Models.Common.Class;
+﻿@using System.Security.Claims;
+@model CostEstimate.Models.Common.Class;
+@using CostEstimate.Models.Common;
 @{
     ViewData["Title"] = "Search | Thai Stanley";
     //Layout = "~/Views/Shared/_MenuBar.cshtml";
     Layout = "~/Views/Shared/_MenuBar_MoldOther.cshtml";
 }
+@{
+    string _Permission = User.Claims.FirstOrDefault(s => s.Type == "Permission").Value;
+    string _UserId = User.Claims.FirstOrDefault(s => s.Type == "UserId")?.Value;
+    string _NickName = User.Claims.FirstOrDefault(s => s.Type == "NICKNAME")?.Value;
+    string _Name = User.Claims.FirstOrDefault(s => s.Type == "Name")?.Value;
+    string _SurName = User.Claims.FirstOrDefault(s => s.Type == "SurName")?.Value;
+    string _Division = User.Claims.FirstOrDefault(s => s.Type == "Division")?.Value;
+    string _Section = User.Claims.FirstOrDefault(s => s.Type == "Section")?.Value;
+
+}
 <link href="~/css/Home/siteHome.css" rel="stylesheet" />
 <script type="text/javascript">document.onreadystatechange = () => { if (document.readyState === "interactive") { PositionY("SearchMoldOther"); } }</script>
+<style>
+    .mm-btn {
+        flex: none;
+        border: 0;
+        border-radius: 6px;
+        padding: 5px 12px;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    .mm-del {
+        background: #fde8ec;
+        color: #d64562;
+    }
+</style>
 <div class="home-content">
     <div id="DisplayContent" class="content-box">
         <div class="row center" style="margin-bottom:3px">
@@ -92,7 +119,7 @@
                             </div>
 
 
-                          
+
                             <div class="row center">
                                 <div class="col-5 " style="">
 
@@ -185,24 +212,24 @@
 
                             </div>
                             @*<div class="row center">
-                                <div class="col-5 " style="">
+                                    <div class="col-5 " style="">
 
-                                </div>
-                                <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
-                                    <div class="grid-item fw-800 center" style="text-align:left;">Status.</div>
-                                </div>
-                                <div class="col-25 " style=" display: flex;align-items: center; ">
-                                    @Html.DropDownListFor(m => m._ViewSearchData.v_status, (SelectList)ViewBag.vbformStatus, "กรุณาเลือก", new { @class = "form-control", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:12px" })
-                                </div>
-                                <div class="col-20  " style=" display: flex;align-items: center;">
-                                </div>
-                                <div class="col-25 " style=" display: flex;align-items: center; ">
-                                </div>
+                                    </div>
+                                    <div class="col-20 border1_5green" style=" display: flex;align-items: center;">
+                                        <div class="grid-item fw-800 center" style="text-align:left;">Status.</div>
+                                    </div>
+                                    <div class="col-25 " style=" display: flex;align-items: center; ">
+                                        @Html.DropDownListFor(m => m._ViewSearchData.v_status, (SelectList)ViewBag.vbformStatus, "กรุณาเลือก", new { @class = "form-control", id = "ipStatus", autocomplete = "off", @style = "width:100%;font-size:12px" })
+                                    </div>
+                                    <div class="col-20  " style=" display: flex;align-items: center;">
+                                    </div>
+                                    <div class="col-25 " style=" display: flex;align-items: center; ">
+                                    </div>
 
-                                <div class="col-5 " style="">
+                                    <div class="col-5 " style="">
 
-                                </div>
-                            </div>*@
+                                    </div>
+                                </div>*@
 
                             <br />
 
@@ -266,8 +293,13 @@
                                     <th style="text-align:center">Date Issue</th>
                                     <th style="text-align:center">Request Name​</th>
                                     <th style="text-align:center">Waiting Approve​</th>
-                                    <th style="text-align:center">Status​</th>
-                                    <th style="text-align:center">Action​</th>
+                                    <th style="text-align:center;font-size:9px">Status Working Time</th>
+                                    <th style="text-align:center;font-size:9px">Status MATERIAL</th>
+                                    <th style="text-align:center;font-size:9px">Status TOOL&GR</th>
+                                    <th style="text-align:center;font-size:9px">Status In SPEC MOLD</th>
+                                    <th style="text-align:center;">Status​</th>
+                                    <th style="text-align:center;">Action​</th>
+                                    <th style="text-align:center;">Del​</th>
                                 </tr>
                             </thead>
 
@@ -290,6 +322,7 @@
                                         <td style="text-align:center;">@item.mrMoldMass</td>
                                         <td style="text-align:center;">@item.mrIssueDate</td>
                                         <td style="text-align:center;">@item.mrEmpCodeRequest @item.mrNameRequest</td>
+
                                         <td style="text-align:center">
                                             @if (@item.mrStep == 2)
                                             {
@@ -306,7 +339,18 @@
                                                 </span>
                                             }
                                         </td>
-
+                                        <td style="text-align:center">
+                                            <span class="status-dot status-@item.mrStatusWorking" title="@item.mrStatusWorking"></span>
+                                        </td>
+                                        <td style="text-align:center">
+                                            <span class="status-dot status-@item.mrStatusMaterrail" title="@item.mrStatusMaterrail"></span>
+                                        </td>
+                                        <td style="text-align:center">
+                                            <span class="status-dot status-@item.mrStatusToolGR" title="@item.mrStatusToolGR"></span>
+                                        </td>
+                                        <td style="text-align:center">
+                                            <span class="status-dot status-@item.mrStatusInSpecMold" title="@item.mrStatusInSpecMold"></span>
+                                        </td>
                                         <td style="text-align:center">
                                             @*@item.smStep*@
                                             @if (@item.mrStep == 0 && @item.mrStatus.Contains("Disapprove"))
@@ -336,10 +380,18 @@
 
                                         <td style="text-align:center">
                                             @*@if (@item.mrStep == 8)
-                                            {
-                                                <img src="~/images/revision.png" alt="icon" onclick="GoNewMoldOtherRequest('@item.mrDocmentNo','@item.mrRevision')" class="img" />
-                                            }*@
+                                                {
+                                                    <img src="~/images/revision.png" alt="icon" onclick="GoNewMoldOtherRequest('@item.mrDocmentNo','@item.mrRevision')" class="img" />
+                                                }*@
                                             <input type="button" style="font-size:18px" value="&#x1F50E;" onclick="GoNewMoldOtherRequest('@item.mrDocmentNo','')">
+                                        </td>
+                                        <td style="text-align:center">
+                                            @if (_Permission.ToUpper() == GlobalVariable.perAdmin.ToUpper() && @item.mrStep != 8)
+                                            {
+                                                <button type="button" class="mm-btn mm-del"
+                                                        onclick="Menubar_DeleteDocOMaster('@item.mrDocmentNo', '@Url.Action("DeleteDocItem", "SearchMoldOther")')">
+                                                    &#x274c;
+                                                </button>}
                                         </td>
                                     </tr>
 
